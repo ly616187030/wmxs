@@ -1,0 +1,51 @@
+<style>
+    .ubbb{
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        color: #999999;
+    }
+    .fll{
+        text-align: center;
+    }
+    .size{
+        font-size: 18px;
+    }
+    .red{
+        color: red;
+    }
+    .redd{
+        color: red;
+    }
+    .reddd{
+        color: red;
+    }
+</style>
+<div class="ub ubbb" style="border-top: 1px #dddddd solid; background-color: white; z-index: 9999">
+    <div class="ub-f1 fll {$red}" id="index">
+        <div class="size"><i class="fa fa-align-justify"></i></div>
+        <div>外卖</div>
+    </div>
+    <div  class="ub-f1 fll {$redd}" id="orderlist">
+        <div  class="size"><i class="fa fa-file"></i></div>
+        <div>订单</div>
+    </div>
+    <div  class="ub-f1 fll {$reddd}" id="user">
+        <div  class="size"><i class="fa fa-user"></i></div>
+        <div>我的</div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#index').click(function(){
+            window.location.href="{:U('Index/index')}";
+        })
+        $('#orderlist').click(function(){
+            window.location.href="{:U('Orderlist/index')}"
+        })
+        $('#user').click(function(){
+            window.location.href="{:U('Usercenter/index')}"
+        })
+    })
+</script>

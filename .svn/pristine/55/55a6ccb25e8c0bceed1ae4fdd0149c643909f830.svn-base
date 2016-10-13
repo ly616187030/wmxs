@@ -1,0 +1,1080 @@
+<extend name="Base/orderlist"/>
+<block name="title">订单确认</block>
+<block name="right"><i class="fa fa-exclamation-circle" id="tips"></i></block>
+<block name="style">
+    <style>
+        .yangshi {
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+            line-height: 2em;
+        }
+
+        .bili-l {
+            width: 30%;
+        }
+
+        .bili-r {
+            width: 70%;
+        }
+
+        .bili-r input {
+            width: 2em;
+            height: 1em;
+            text-align: center;
+            border: none;
+            padding-bottom: 0.4em;
+        }
+
+        .yaj a {
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+            border: 1px solid #fe4d3d;
+            line-height: 1.5em;
+            text-align: center;
+        }
+
+        .bili-a {
+            width: 25%;
+            line-height: 2.5em;
+        }
+
+        .canju input {
+            width: 4em;
+            text-align: center;
+        }
+
+        .text-c {
+            text-align: center;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .ui_selected {
+            position: relative;
+            border-color: #eb6100;
+            box-shadow: 0 0 0 1px #eb6100 inset
+        }
+
+        .ui_selected:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 13px;
+            height: 13px;
+        }
+
+        h5 {
+            color: #999999;
+        }
+
+        #n_p a {
+            background-color: orangered;
+            color: white;
+            display: inline-block;
+            width: 20%;
+            border-bottom-right-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+
+        .t-color-d {
+            color: red;
+            padding: 5px 5px;
+        }
+
+        .t-color-w {
+            color: green;
+            padding: 5px 5px;
+        }
+
+        .cpayment-choice.ui_selected {
+            background-color: orangered;
+            color: white;
+        }
+    </style>
+</block>
+<block name="body">
+    <script>
+        $(document).ready(function () {
+            var addressid = $("#address_id").val();
+            if (addressid == '') {
+                location.href = "{:U('Myaddress/index')}";
+            }
+        })
+    </script>
+    <div id="module_addr" class="relative yangshi">
+        <empty name="address">
+            <div id="module_address" class="cart-module caddress-module group ub">
+                <input type="hidden" value="" id="address_id"/>
+
+                <div class="ub-f1 bili-l">送达地址：</div>
+                <div class="ub-f4 bili-r cmodule-content" data-toggle="modal" data-target="#myModal"
+                     data-target=".bs-example-modal-lg">
+                    <span class="cmodule-info current_addr"> 请选择地址 </span>
+                </div>
+            </div>
+            <else/>
+            <div id="content" class="ub-f1 tx-l">
+                <volist name="address" id="vo">
+                    <input type="hidden" value="{$vo.address_id}" id="address_idd"/>
+
+                    <div id="listcontent" style="border: 1px solid #FFFFFF;">
+                        <div style="height: 4em;background-color:#FFFFFF;">
+                            <div style="float: left; margin-left: 1em;">
+                                <div class="infoaa" style="padding-top: 0.3em;"><span>{$vo.username}</span>&nbsp;
+                                    <if condition="$vo.gender eq 1">
+                                        <span>先生</span>
+                                    </if>
+                                    <if condition="$vo.gender eq 2">
+                                        <span>女士</span>
+                                    </if>
+                                    &nbsp;&nbsp;<span style="margin-left: 2em;">{$vo.phone}</span></div>
+                                <div class="infoaa"
+                                     style="padding-top: 0.3em; text-overflow: ellipsis;white-space:nowrap;overflow:hidden; width: 15em;">
+                                    {$vo[detail_address][0]}{$vo[detail_address][1]}
+                                </div>
+                            </div>
+                            <div style="float: right;margin-top: 1em;margin-right: 1em;"><a
+                                    href="{:U('Myaddress/index?address_id='.$vo['address_id'])}"><i
+                                    style="font-size: 1.5em;" class="fa fa-edit"></i></a></div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </div>
+                </volist>
+            </div>
+        </empty>
+    </div>
+    <div id="module_time" class="cart-module ctime-module group ub yangshi">
+        <div class="ub-f1 bili-l" style="padding-left: 0.9em">就餐时间：</div>
+        <div class="cmodule-content ub-f4 bili-r ub">
+            <div class="cart-time ub-f1">
+                <!--<select class="e_dropdown ctime-dropdown" name="send_day" id="send_day">-->
+                    <!--<option class="ctime-item dlv_time" value="0" id="today_day">今天</option>-->
+                <!--</select>-->
+                <select class="e_dropdown ctime-dropdown" name="send_time" id="send_time">
+                    <option class="ctime-item dlv_time" value="0" id="today_time">立即送餐</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+//            var g = "<option class='ctime-item dlv_time'>" + GetDateStr(1) + "</option>" + "<option class='ctime-item dlv_time'>" + GetDateStr(2) + "</option>" + "<option class='ctime-item dlv_time'>" + GetDateStr(3) + "</option>" + "<option class='ctime-item dlv_time'>" + GetDateStr(4) + "</option>" + "<option class='ctime-item dlv_time'>" + GetDateStr(5) + "</option>"
+//            $("#send_day").append(g);
+            getTime();
+
+//            $('#send_day').change(function () {
+//                $("#send_time").find('option').remove();
+//                getTime();
+//            })
+            function getTime() {
+                var a = new Date();
+                var year = a.getFullYear();
+                var month = (a.getMonth() + 1 < 10) ? ('0' + (a.getMonth() + 1)) : (a.getMonth() + 1);
+                var day = (a.getDate() < 10) ? ('0' + a.getDate()) : (a.getDate());
+                var hour = (a.getHours() < 10) ? ('0' + a.getHours()) : (a.getHours());
+                var minute = (a.getMinutes() < 10) ? ('0' + a.getMinutes()) : (a.getMinutes());
+                var second = (a.getSeconds() < 10) ? ('0' + a.getSeconds()) : (a.getSeconds());
+//                alert(month);
+
+                if ($('#send_day').val() == 0) {
+                    if ('{$is_open}' == 1) {
+                        if (hour < '{$etime[0]}') {
+                            var e = '{$stime[2]}';
+                            var d = (hour) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + e + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+                            var hours = parseInt('{$etime[0]}');
+                            var ee = '{$etime[2]}';
+                            if (ee == 24) {
+                                ee = ee - 1
+                            }
+                            var d = (hours) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + ee + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+                        } else {
+                            var e = '{$etime[2]}';
+                            if (e == 24) {
+                                e = e - 1
+                            }
+                            var d = (hour) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + e + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+                        }
+                    } else {
+                        if (hour < '{$stime[0]}') {
+                            hour = parseInt('{$stime[0]}');
+                            var e = parseInt('{$stime[2]}');
+
+                            var d = (hour) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + e + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+                            var hours = parseInt('{$etime[0]}');
+                            var ee = parseInt('{$etime[2]}');
+                            if (ee == 24) {
+                                ee = ee - 1
+                            }
+                            var d = (hours) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + ee + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+
+                        } else if (hour > '{$stime[2]}' && hour < '{$etime[0]}') {
+                            hour = parseInt('{$etime[0]}');
+                            var e = parseInt('{$etime[2]}');
+                            if (e == 24) {
+                                e = ee - 1
+                            }
+                            var d = (hour) + ":00:00";
+                            var b = year + "/" + month + "/" + day + "  " + d;
+
+                            var date = new Date(b);
+                            var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                            var enddate = new Date(year + "/" + month + "/" + day + "  " + e + ":30:00");
+                            var cha = enddate.getTime() - startdate.getTime();
+                            var time_str = date.getTime();
+                            var minutes = Math.floor(cha / (60 * 1000));
+
+                            for (var i = 1; i <= (minutes / 30); i++) {
+                                time_str += 1800000;
+                                var new_date = new Date(time_str);
+                                var myHour = new_date.getHours();
+                                var myMinutes = new_date.getMinutes();
+
+                                if (i % 2 == 1) {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                                } else {
+                                    var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                                }
+                                $("#send_time").append(f);
+                            }
+                        } else if (hour > '{$etime[2]}') {
+                            $("#send_time").append("<option class='ctime-item dlv_time'>请选择明天</option>");
+                        }
+                    }
+                } else {
+                    hour = '{$stime[0]}';
+                    var e = '{$stime[2]}';
+
+                    var d = (hour) + ":00:00";
+                    var b = year + "/" + month + "/" + day + "  " + d;
+
+                    var date = new Date(b);
+                    var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                    var enddate = new Date(year + "/" + month + "/" + day + "  " + e + ":30:00");
+                    var cha = enddate.getTime() - startdate.getTime();
+                    var time_str = date.getTime();
+                    var minutes = Math.floor(cha / (60 * 1000));
+
+                    for (var i = 1; i <= (minutes / 30); i++) {
+                        time_str += 1800000;
+                        var new_date = new Date(time_str);
+                        var myHour = new_date.getHours();
+                        var myMinutes = new_date.getMinutes();
+
+                        if (i % 2 == 1) {
+                            var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                        } else {
+                            var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                        }
+                        $("#send_time").append(f);
+                    }
+                    var hours = parseInt('{$etime[0]}');
+                    var ee = parseInt('{$etime[2]}');
+                    if (ee == 24) {
+                        ee = ee - 1
+                    }
+                    var d = (hours) + ":00:00";
+                    var b = year + "/" + month + "/" + day + "  " + d;
+
+                    var date = new Date(b);
+                    var startdate = new Date(year + "/" + month + "/" + day + "  " + d);
+                    var enddate = new Date(year + "/" + month + "/" + day + "  " + ee + ":30:00");
+                    var cha = enddate.getTime() - startdate.getTime();
+                    var time_str = date.getTime();
+                    var minutes = Math.floor(cha / (60 * 1000));
+
+                    for (var i = 1; i <= (minutes / 30); i++) {
+                        time_str += 1800000;
+                        var new_date = new Date(time_str);
+                        var myHour = new_date.getHours();
+                        var myMinutes = new_date.getMinutes();
+
+                        if (i % 2 == 1) {
+                            var f = "<option class='ctime-item dlv_time'>" + myHour + ":" + myMinutes + ":00</option>";
+                        } else {
+                            var f = "<option class='ctime-item dlv_time'>" + myHour + ":00:00</option>";
+
+                        }
+                        $("#send_time").append(f);
+                    }
+                }
+            }
+        });
+//        function GetDateStr(AddDayCount) {
+//            var dd = new Date();
+//            dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+//            var y = dd.getFullYear();
+//            var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期，不足10补0
+//            var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate(); //获取当前几号，不足10补0
+//            return y + "-" + m + "-" + d;
+//        }
+    </script>
+    <div style="margin-top: 20px; border: 1px solid #dddddd">
+        <div class="ub text-c" style="margin-top: 0.8em">
+            <div class="ub-f1 bili-a detail" style="display: block">菜品信息</div>
+            <div class="ub-f1 bili-a">单价</div>
+            <div class="ub-f1 bili-a">数量</div>
+            <div class="ub-f1 bili-a">总计</div>
+        </div>
+        <div class="centent">
+            <volist name="store_list" id="vo">
+                <div class="ub text-c" style="margin-top: 10px ; border: 1px solid #dddddd; height: 2.5em;">
+                    <div class="ub-f1 bili-a cm_name"
+                         style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{$vo.name}
+                    </div>
+                    <div class="ub-f1 bili-a">{$vo.price}</div>
+                    <div class="ub-f1 bili-a cm_num">{$vo.count}</div>
+                    <div class="ub-f1 bili-a cdish-total">{$vo.subtotal}</div>
+                </div>
+            </volist>
+            <div class="ub text-c" style="margin-top: 10px ; border: 1px solid #dddddd; height: 2.5em;">
+                <div class="ub-f1 bili-a" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">餐盒费
+                </div>
+                <div class="ub-f1 bili-a"></div>
+                <div class="ub-f1 bili-a cm_num"></div>
+                <div class="ub-f1 bili-a cdish-total">{$canjutotal}</div>
+            </div>
+        </div>
+        <!--<div class="ub yangshi" style="border-top: 1px solid #ddd;margin-top: 10px">-->
+            <!--<div class="ub-f2 bili-l" style="padding-left: 0.7em;width: 20%">用餐人数：</div>-->
+            <!--<div class="ub-f4 bili-r ub">-->
+                <!--<div class="ub-f1">-->
+                <!--</div>-->
+                <!--<div class="yaj">-->
+                    <!--<a id="jian_people">-</a>-->
+                    <!--<input id="quantity_people" type="text" value="0" readonly="readonly" style="height: 30px">-->
+                    <!--<a id="jia_people">+</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<volist name="guoju" id="ro">-->
+            <!--<div class="ub yangshi" style="border-top: 1px solid #ddd;margin-top: 10px">-->
+                <!--<div class="ub-f2 bili-l guoju-detail" style="padding-left: 0.7em;width: 20%">-->
+                    <!--锅具租用<i class="fa fa-angle-down"></i></div>-->
+                <!--<div class="ub-f4 bili-r ub">-->
+                    <!--<div class="ub-f1">-->
+                        <!--押金 ￥<span id="yamoney" style="color: orangered">{$ro.tab_deposit}</span>-->
+                    <!--</div>-->
+                    <!--<div class="yaj">-->
+                        <!--<a id="jian">-</a>-->
+                        <!--<input id="quantity" type="text" value="0" readonly="readonly" style="height: 30px">-->
+                        <!--<a id="jia">+</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="yangshi detail-guoju" style="padding-left: 15px;display: none">-->
+                <!--<p>含：{$ro.tab_remarks}</p>-->
+
+                <!--<p style="color: red">{$ro.tab_details}</p>-->
+            <!--</div>-->
+        <!--</volist>-->
+        <div class="text-c" style="padding: 5px; margin-top: 5px">
+            <div class="">
+                <div id="module_note" class="cart-note">
+                    <div class="ctable-form group"><i class="icon-note"></i>
+                        <textarea id="c_n_text" class="ctable-input" placeholder="给餐厅留言,如需要发票请说明" maxlength="150"
+                                  type="text"
+                                  style="height: 4em; width: 100%;border: solid 1px #ddd; border-radius: 4px"></textarea>
+                    </div>
+                    <div id="n_p" class="hide" style="width: 100%">
+                        <a class="cnote-item c_n_i">不吃辣</a>
+                        <a class="cnote-item c_n_i">辣一点</a>
+                        <a class="cnote-item c_n_i">快一点</a>
+                        <a class="cnote-item c_n_i">没零钱</a>
+                    </div>
+                </div>
+            </div>
+            <div class="" style="margin-top: 0.4em">
+                <div class="float-r">
+                    <notempty name="yhui">
+                        <div id="youhui">下单优惠<i class="fa fa-angle-up"></i></div>
+                        <div style=" " id="youhui_detail">
+                            <volist name="youhui" id="yo">
+                                <div class="ub" style="margin-top: 2px ;">
+                                    <div class="ub-f1" style="width: 10%;color:#{$yo.color};">{$yo.promotional_labels}</div>
+                                    <div class="ub-f1" style="width: 90%;text-align: left;color:#{$yo.color}">{$yo.promotion_name}</div>
+                                </div>
+                            </volist>
+                        </div>
+                    </notempty>
+                    <div id="juli">您的就餐位置距离商家店铺<span style="color: orangered">{$_store_info.juli}</span>公里</div>
+                    <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                        <div class="ub-f1 bili-a" style="width: 80%;text-align: right">菜品总价：</div>
+                        <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥{$store_total}</div>
+                    </div>
+                    <div id="daijinquan"></div>
+                    <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                        <div class="ub-f1 bili-a" style="width: 80%;text-align: right">餐盒费：</div>
+                        <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥{$canjutotal}</div>
+                        <input type="hidden" value="0" id="deposit"/>
+                    </div>
+                    <!--<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">-->
+                        <!--<div class="ub-f1 bili-a" style="width: 80%;text-align: right">锅具押金：</div>-->
+                        <!--<div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥<span id="yajin">0</span></div>-->
+                    <!--</div>-->
+                    <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                        <div class="ub-f1 bili-a" style="width: 80%;text-align: right">配送费：</div>
+                        <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥<span id="nps_price">{$peisongfei|default=0}</span>
+                        </div>
+                    </div>
+                    <notempty name="customer">
+                        <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                            <div class="ub-f1 bili-a" style="width: 80%;text-align: right">折扣率{$customer}%：</div>
+                            <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span id="customer"></span></div>
+                        </div>
+                    </notempty>
+                    <notempty name="kanjia_total">
+                        <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                            <div class="ub-f1 bili-a" style="width: 80%;text-align: right">砍价减：</div>
+                            <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span id="">{$kanjia_total}</span></div>
+                        </div>
+                    </notempty>
+                    <div id="shou"></div>
+                    <div id="online"></div>
+                    <div id="zeng"></div>
+                    <div id="man"></div>
+                    <div id="zhe"></div>
+                    <div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;">
+                        <div class="ub-f1 bili-a" style="width: 80%;text-align: right">共<span style="color: orangered">{$store_num}</span>份美食
+                            &nbsp;应付金额：
+                        </div>
+                        <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥<span id="total_price_basket">{$store_total+$canjutotal+$peisongfei}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="module_payment" class="cart-module cpayment-module group">
+        <div class="bili-l" style="padding-left: 0.9em">支付方式</div>
+        <div class="cmodule-content" style="border: solid 1px #ddd;margin: 0px 10px 10px 10px; border-radius: 5px">
+            <div class="cart-payment ub">
+                <if condition="$_store_info.is_daohuo_pay eq 1">
+                    <div class="ub-f1 text-c" style="padding: 5px 5px">
+                        <a id="offline_pay_btn" data-payonline="0" class="cpayment-choice t-color-d">
+                            <i class="fa fa-truck"></i>餐到付款
+                        </a>
+                    </div>
+                </if>
+                <if condition="$_store_info.is_online_pay eq 1">
+                    <div class="ub-f1 text-c" style="padding: 5px 5px">
+                        <a id="online_pay_btn" data-payonline="1" class="cpayment-choice t-color-w">
+                            <i class="fa fa-weixin"></i>微信支付
+                        </a>
+                    </div>
+                </if>
+            </div>
+        </div>
+    </div>
+    <div class="ub-fh text-c" style="margin-bottom:10px;">
+        <!--<notempty name="kanjia"><button id="confirm_kanjia" class="ub-f1" style="width:45%;background-color: orangered; display: inline-block;color: white; padding: 10px;margin-top: 20px;border-radius: 5px">找人砍价</button></notempty>-->
+        <button id="confirm_order" class="ub-f1"
+                style="width:90%;background-color: orangered; display: inline-block;color: white; padding: 10px;margin-top: 20px;border-radius: 5px">
+            立即下单
+        </button>
+    </div>
+    <div id="bg"
+         style="width: 100%;  display: none; z-index: 9; height: 100%; position: fixed; top: 0; background-color: #000000; filter:alpha(opacity=50); -moz-opacity:0.5; opacity:0.5;"></div>
+    <div style="display:none ; position: absolute;width: 80% ;top:20%;z-index: 10;background-color: white;padding:10px 10px ;border-radius: 5px;left: 8%" id="tip">
+        <p style="color: red;font-size: 16px">重要提示</p>
+        <ul>
+            <ol>1.{$_store_info.peisong_price}</ol>
+            <ol>2.【-】前面表示商家配送距离</ol>
+            <ol>3.【-】后面表示商家配送距离内相应的配送费</ol>
+            <ol>4.超出可能不予配送</ol>
+        </ul>
+    </div>
+    <script type="text/javascript" src="__STATIC__/ztools.js" charset="utf-8"></script>
+    <script type="text/javascript"
+            src="http://webapi.amap.com/maps?v=1.3&key=4e7f747958afeac1324ccd3e2015c006"></script>
+    <script>
+        $(function () {
+            $('#tips').click(function () {
+                $('#tip').toggle();
+                $('#bg').toggle();
+            })
+            $('#bg').click(function () {
+                $('#tip').hide();
+                $('#bg').hide();
+            })
+            $('#youhui').click(function () {
+                if ($('#youhui_detail').css('display') == 'block') {
+                    $(this).find('i').removeClass('fa-angle-up').addClass('fa-angle-down')
+                } else {
+                    $(this).find('i').removeClass('fa-angle-down').addClass('fa-angle-up')
+                }
+                $('#youhui_detail').slideToggle();
+            });
+            var a = '{$_store_info.is_daohuo_pay}';
+            var b = '{$_store_info.is_online_pay}';
+            if (a == 0 && b == 1) {
+                $('#online_pay_btn').addClass("ui_selected");
+                $("#offline_pay_btn").removeClass("ui_selected");
+                zxzf(1);
+            } else if (a == 1 && b == 0) {
+                $('#online_pay_btn').removeClass("ui_selected");
+                $("#offline_pay_btn").addClass("ui_selected");
+                zxzf(2);
+            } else {
+                $('#online_pay_btn').addClass("ui_selected");
+                $("#offline_pay_btn").removeClass("ui_selected");
+                zxzf(1);
+            }
+        })
+        //var peisong = sessionStorage.getItem('nps_price');
+        var yhdata = {$yhui|default= null};
+        //alert(JSON.stringify(yhdata));
+        //var yh_detail =[],yh_id=[], yh_money = 0, yh_jian = 0,man_jian= 0,zhe_jian=0;quan_jian = 0;
+        function zxzf(a) {
+            //初始化
+            yh_detail =[],yh_id=[], yh_money = 0, yh_jian = 0,man_jian= 0,zhe_jian=0;nps_jian=0;quan_jian = 0;
+            $('#zeng').html('');
+            $('#daijinquan').html('');
+            $('#online').html('');
+            $('#shou').html('');
+            $('#man').html('');
+            $('#zhe').html('');
+            $('#nps_price').text("{$peisongfei|default=0}");
+//            alert(sessionStorage.setItem('nps_price'));
+            $.each(yhdata, function () {
+                if (this['payment'] == 0 || this['payment'] == a) {
+                    if(timeStamp(0,0)>this['effective_date']&&timeStamp(0,0)<this['termination_date']){
+                        var subtotal = parseFloat('{$store_total}');
+//                        alert(subtotal);
+                        if (this['promotion_time'] == 0) {
+                            if(subtotal>=this['promotion_money']){
+                                var detail = detailY(this);
+                                yh_detail.push(detail);
+                                if(this['first']!=0){
+                                    detailYm(this['first'],a);
+                                }
+                                return false;
+                            }else{
+                                return true;
+                            }
+                        }else if(this['promotion_time'] == 1){
+                            var date = new Date();
+                            var day = (date.getDay());
+                            var time_quantum = this['time_quantum'].split(",");
+                            for (var i = 0; i < time_quantum.length; i++) {
+                                if (time_quantum[i] == day) {
+                                    if(subtotal>=this['promotion_money']){
+                                        var detail = detailY(this);
+                                        yh_detail.push(detail);
+                                        if(this['first']!=0){
+                                            detailYm(this['first'],a);
+                                        }
+                                        return false;
+                                    }else{
+                                        return true;
+                                    }
+                                }
+                            }
+                        }else{
+                            var time_quantum = this['time_quantum'].split(",");
+                            var n_t = timeStamp(0, 0);
+                            var s_t = timeStamp(0, time_quantum[0]);
+                            var e_t = timeStamp(0, time_quantum[1]);
+                            if (n_t >= s_t && n_t <= e_t) {
+                                if(subtotal>=this['promotion_money']){
+                                    var detail = detailY(this);
+                                    yh_detail.push(detail);
+                                    if(this['first']!=0){
+                                        detailYm(this['first'],a);
+                                    }
+                                    return false;
+                                }else{
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            yhui();
+        }
+        function detailY($this){
+            var detail={
+                store_id:$this['store_id'],
+                promotion_id:$this['promotion_id'],
+                promotion_name:$this['promotion_name'],
+                promotion_money:$this['promotion_money'],
+                promotion_time:$this['promotion_time'],
+                time_quantum:$this['time_quantum'],
+                promotion_type:$this['promotion_type'],
+                present_name:$this['present_name'],
+                present_numbe:$this['present_numbe'],
+                reduction:$this['reduction'],
+                discount:$this['discount'],
+                jian:$this['jian'],
+                shou_jian:$this['shou_jian'],
+                effective_date:$this['effective_date'],
+                termination_date:$this['termination_date'],
+                promotional_labels:$this['promotional_labels'],
+                payment:$this['payment'],
+                first_order:$this['first_order'],
+                vertical:$this['vertical'],
+                first:$this['first'],
+                first_ord:$this['first_ord'],
+                state:$this['state']
+            }
+            return detail;
+        }
+        function detailYm($this,a){
+            $.each(yhdata,function(){
+                if($this==this['promotion_id']){
+                    if (this['payment'] == 0 || this['payment'] == a) {
+                        if (this['promotion_time'] == 0) {
+                            var detail=detailY(this)
+                            yh_detail.push(detail);
+                        }else if(this['promotion_time'] == 1){
+                            var date = new Date();
+                            var day = (date.getDay());
+                            var time_quantum = this['time_quantum'].split(",");
+                            for (var i = 0; i < time_quantum.length; i++) {
+                                if (time_quantum[i] == day) {
+                                    var detail=detailY(this)
+                                    yh_detail.push(detail);
+                                }
+                            }
+                        }else{
+                            var time_quantum = this['time_quantum'].split(",");
+                            var n_t = timeStamp(0, 0);
+                            var s_t = timeStamp(0, time_quantum[0]);
+                            var e_t = timeStamp(0, time_quantum[1]);
+                            if (n_t >= s_t && n_t <= e_t) {
+                                var detail = detailY(this)
+                                yh_detail.push(detail);
+                            }
+                        }
+                    }
+                    return false;
+                }else{
+                    return true;
+                }
+            })
+        }
+        function yhui() {
+            //var url = "{:U('Cart/countPrice')}";
+            var quan = daijinquan();
+            // $.get(url).success(function (data) {
+            //alert(JSON.stringify(yh_detail))
+            var subtotal = parseFloat('{$store_total}');
+            if (yh_detail != null) {
+                $.each(yh_detail,function(){
+                    if(this['promotion_type']==0&&this['promotion_money']<=subtotal){
+                        $('#zeng').html('<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;"> <div class="ub-f1 bili-a" style="width: 80%;text-align: right">赠品：</div> <div class="ub-f1 bili-a" style="width: 20%;text-align: left"><span>' + this['present_name'] + '</span></div></div>');
+                        yh_id.push(this['promotion_id']);
+                    }
+                    if(this['promotion_type']==1&&this['promotion_money']<=subtotal){
+                        yh_jian=this['reduction'];
+                        yh_id.push(this['promotion_id']);
+                    };
+                    if(this['promotion_type']==2&&this['promotion_money']<=subtotal){
+                        zhe_jian=subtotal-subtotal*this['discount']/100;
+                        zhe_jian = Math.formatFloat(zhe_jian, 2);
+                        yh_id.push(this['promotion_id']);
+                    };
+                    if(this['promotion_type']==3&&this['promotion_money']<=subtotal){
+                        $('#nps_price').text('免');
+                        nps_jian = parseFloat('{$peisongfei|default=0}');
+                        yh_id.push(this['promotion_id']);
+                    };
+                    if(this['promotion_type']==4){
+                        var jian = this['jian'].split(',');
+                        var yh_con =[];
+                        $.each(jian,function(){
+                            yh_con.push(this.split('-'));
+                        })
+                        for (var i = 0; i < yh_con.length; i++) {
+                            man_jian = 0;
+                            if (subtotal >= yh_con[i][0]) {
+                                man_jian = yh_con[i][1];
+                                break;
+                            }
+                        }
+                        yh_id.push(this['promotion_id']);
+                    };
+                    if(this['promotion_type']==5&&this['first_ord']==1){
+                        yh_money=this['shou_jian'];
+                        yh_id.push(this['promotion_id']);
+                    };
+                })
+            } else if (quan != null) {
+                var condition = [];
+                var bao_price = [];
+                var price = [];
+                $.each(quan, function () {
+                    condition.push(this['user_condition']);
+                    bao_price.push([this['user_bao_id'], this['user_bao_price']]);
+                });
+                for (var j = 0; j < condition.length; j++) {
+                    if (subtotal > condition[j]) {
+                        price.push(bao_price[j][1]);
+                    } else {
+                        price.push(null);
+                    }
+                }
+                ;
+                if (price[0] != null) {
+                    quan_jian = Math.max.apply(null, price);
+                    $.each(bao_price, function () {
+                        if (this[1] == quan_jian) {
+                            var bao_id = this[0];
+                            sessionStorage.setItem('bao_id', bao_id);
+                        }
+                    })
+                    $('#daijinquan').html("<a class='ub' href='{:U('Voucher/index')}' style='margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;'> <div class='ub-f1 bili-a' style='width: 80%;text-align: right'>优惠抵用券/代金券/红包：</div> <div class='ub-f1 bili-a' style='width: 15%;text-align: left'>￥-<span>" + quan_jian + "</span></div><i class='ub-f1 bili-a fa fa-angle-right' style='width: 5%;margin-right:9px;color: #ccc'></i></a>");
+                }
+            } else {
+                yh_jian = 0;
+                quan_jian = 0;
+            }
+            //var deposit = parseFloat($('#deposit').val());
+//            var customer= "{$store_total}"*"{$customer?$customer:0}"/100;
+//            $('#customer').text(customer);
+            var total = subtotal + parseFloat('{$peisongfei|default=0}') - parseFloat(yh_money) - parseFloat(yh_jian) + parseFloat('{$canjutotal}') - parseFloat(quan_jian)-parseFloat(man_jian)-parseFloat(zhe_jian)-parseFloat(nps_jian);
+            total = Math.formatFloat(total, 2);
+            if (yh_jian > 0) {
+                $('#online').html('<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;"> <div class="ub-f1 bili-a" style="width: 80%;text-align: right">优惠减：</div> <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span>' + yh_jian + '</span></div></div>')
+            } if (yh_money > 0) {
+                $('#shou').html('<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;"> <div class="ub-f1 bili-a" style="width: 80%;text-align: right">首单减：</div> <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span>' + yh_money + '</span></div></div>')
+            }if(man_jian>0){
+                $('#man').html('<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;"> <div class="ub-f1 bili-a" style="width: 80%;text-align: right">满立减：</div> <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span>' + man_jian + '</span></div></div>')
+            }
+            if(zhe_jian>0){
+                $('#zhe').html('<div class="ub" style="margin-top: 2px ; border: 1px solid #dddddd; height: 2.5em;"> <div class="ub-f1 bili-a" style="width: 80%;text-align: right">折扣减：</div> <div class="ub-f1 bili-a" style="width: 20%;text-align: left">￥-<span>' + zhe_jian + '</span></div></div>')
+            }
+            $('#total_price_basket').html(total);
+            // })
+        }
+        //确认下单
+        var url_order = "{:U('Order/doOrder')}";
+        var url_count = "{:U('Cart/countPrice')}";
+        $("#confirm_order").click(function () {
+            var url = "{:U('Cart/cartView')}";
+            var url_order_detail = "{:U('Order/doOrderDetail')}";
+            var addressid = $("#address_id").val();
+            if (addressid == '') {
+                alert("请选择收货地址！");
+                return;
+            }
+//            if ($('#quantity_people').val() == 0) {
+//                alert("请添加用餐人数！");
+//                return;
+//            }
+//            if (sessionStorage.getItem('juli') > 7) {
+//                alert("您的就餐位置超出配送范围！");
+//                return;
+//            }
+//            if ($('#quantity').val() == 0) {
+//                if (confirm('您还没租用锅具，确定，返回租用锅具，取消，不租用，继续下单！')) {
+//                    return;
+//                }
+//            }
+            // $.post(url_count).success(function (data) {
+            $('#confirm_order').attr('disabled', true).css('background-color', '#999').text('请稍后...');
+            var total = parseFloat('{$store_total}', 2);
+            var message = $("#c_n_text").val();
+            if($("#send_time").val()==0){
+                var send_time = 0;
+            }else{
+                var send_time = timeStamp(0, $("#send_time").val());
+            }
+            var pay_type = $(".cart-payment").find(".ui_selected").data('payonline');
+            var yhjian = parseFloat(yh_jian) + parseFloat(yh_money)+parseFloat(man_jian)+parseFloat(zhe_jian);
+            var cuxiao_id=yh_id.join(',');
+//            var quantity_guo = $('#quantity').val();
+            //var kanjia_id = '{$kanjia}';
+            if (pay_type == 1) {
+                var canming = new Array();
+                var shuliang = new Array();
+                for (var i = 0; i < $('.cm_name').length; i++) {
+                    var cm_name = $('.cm_name:eq(' + i + ')').text();
+                    var num = $('.cm_num:eq(' + i + ')').text();
+                    canming.push(cm_name);
+                    shuliang.push(num);
+                    var total1 = parseFloat($('#total_price_basket').text());
+                }
+                $.post(url_order, {
+                    "store_id": "{$store_id}",
+                    "store_name": "{$store_name}",
+                    "store_sn" : "{$store_sn}",
+                    "ps_cost": parseInt("{$peisongfei}"),
+                    "yh_price": yhjian,
+                    "cuxiao_id":cuxiao_id,
+                    "total": total,
+                    "send_time": send_time,
+                    "order_message": message,
+                    "address_id": $('#address_idd').val(),
+                    "pay_type": pay_type,
+                    "sh_mode": "{$_store_info.sh_mode}",
+//                    "yajin": $('#deposit').val(),
+//                    "people_num": $("#quantity_people").val(),
+                    "canjutotal": "{$canjutotal}",
+//                    "quantity_guo": quantity_guo,
+                    "juan_price": quan_jian,
+//                    "juan_id": sessionStorage.getItem('bao_id'),
+//                    "kanjia_id": kanjia_id
+                }).success(function (data) {
+                    var order_id = data.order_id;
+                    var order_sn = data.order_sn;
+                    if (data.status == true) {
+                        $.get("{:U('Cart/removeAll')}", function () {
+                            window.location.href = "{:U('pay','',false)}/store_name/{$store_name}/cm_name/" + canming + "/cm_num/" + shuliang + "/total/" + total1 + "/order_sn/" + order_sn + ""
+                        });
+                    }
+                });
+            } else {
+                $.post(url_order, {
+                    "store_id": "{$store_id}",
+                    "store_name": "{$store_name}",
+                    "store_sn" : "{$store_sn}",
+                    "ps_cost": parseInt("{$peisongfei}"),
+                    "yh_price": yhjian,
+                    "cuxiao_id":cuxiao_id,
+                    "total": total,
+                    "send_time": send_time,
+                    "order_message": message,
+                    "address_id": $('#address_idd').val(),
+                    "pay_type": pay_type,
+                    "sh_mode": "{$_store_info.sh_mode}",
+//                    "yajin": $('#deposit').val(),
+//                    "people_num": $("#quantity_people").val(),
+                    "canjutotal": "{$canjutotal}",
+//                    "quantity_guo": quantity_guo,
+                    "juan_price": quan_jian,
+//                    "juan_id": sessionStorage.getItem('bao_id'),
+//                    "kanjia_id": kanjia_id
+                }).success(function (data) {
+                    var order_id = data.order_id;
+                    var peisongfei="{$peisongfei}";
+                    if (data.status == true) {
+                        $.get("{:U('Cart/removeAll')}", function () {
+                            window.location.href = "{:U('Orderlist/detail','',false)}&order_id=" + order_id + "&peisongfei=" + peisongfei;
+                        });
+                    }
+                });
+            }
+            //  });
+
+        });
+        $('.current_addr').click(function () {
+            window.location.href = "{:U('Myaddress/index?aa=ok')}"
+        })
+        $("#c_n_text").focus(function () {
+            $("#n_p").removeClass("hide");
+            $("#n_p a").click(function () {
+                var a = $(this).html();
+                $("#c_n_text").val(a);
+            });
+        });
+        //显示菜品详情
+        /* $('.detail').click(function(){
+         $('.centent').toggle();
+         $('.bili-a').show();
+         })*/
+        $(document).click(function (e) {
+
+            if ($(e.target).closest('#c_n_text').length <= 0) {
+                $("#n_p").addClass("hide");
+            }
+        });
+        $('#online_pay_btn').click(function () {
+            $(this).addClass("ui_selected");
+            $("#offline_pay_btn").removeClass("ui_selected");
+            $('#activity_discount').removeClass('hide');
+            $('#online').html('');
+            zxzf(1);
+            $('#confirm_order').attr("disabled",false);
+        });
+        $('#offline_pay_btn').click(function () {
+            var deposit = parseFloat($('#deposit').val());
+            $(this).addClass("ui_selected");
+            $("#online_pay_btn").removeClass("ui_selected");
+            $('#online').html('');
+            zxzf(2);
+            $('#confirm_order').attr("disabled",false);
+        });
+        //选择地址
+        $('#content').click(function () {
+            var address = $('#address_idd').val();
+            var url = "{:U('Myaddress/index','',false)}/address_id/" + address;
+            location.href = url;
+        });
+        //转换日期为时间戳
+        function timeStamp(d, t) {
+            var a = new Date();
+            var year = a.getFullYear();
+            var month = (a.getMonth() + 1 < 10) ? ('0' + (a.getMonth() + 1)) : (a.getMonth() + 1);
+            var day = (a.getDate() < 10) ? ('0' + a.getDate()) : (a.getDate());
+            var hour = (a.getHours() < 10) ? ('0' + a.getHours()) : (a.getHours());
+            var minute = (a.getMinutes() < 10) ? ('0' + a.getMinutes()) : (a.getMinutes());
+            var second = (a.getSeconds() < 10) ? ('0' + a.getSeconds()) : (a.getSeconds());
+            if (d == 0) {
+                d = year + "-" + month + "-" + day;
+            }
+            ;
+            if (t == 0) {
+                t = hour + ":" + minute + ":" + second
+            }
+            ;
+            var date = d + ' ' + t;
+            date = date.substring(0, 19);
+            date = date.replace(/-/g, '/');
+            var timestamp = new Date(date).getTime() / 1000;
+            return timestamp;
+        }
+        function daijinquan() {
+            var quan = {$daijinquan|default=null};
+            return quan;
+        }
+        //找人砍价
+        /* $('#confirm_kanjia').click(function () {
+         $.post(url_count).success(function (data) {
+         var cai_total = data[0];
+         // var total = $('#total_price_basket').text();
+         var storeid = '{$store_id}';
+         $.post("{:U('Kanjia/kanjiaOrder')}", {cai_total: cai_total, storeid: storeid}).success(function (data) {
+         var kanjia_id = data.kanjia_id;
+         if (data.status == true) {
+         $.get("{:U('Cart/removeAll')}", function () {
+         window.location.href = "{:U('Kanjia/kan','',false)}/kanjia_id/" + kanjia_id + "";
+         });
+         }
+         })
+         })
+         })*/
+        Math.formatFloat = function (f, digit) {
+            var m = Math.pow(10, digit);
+            return parseInt(f * m, 10) / m;
+        }
+
+//        if($('#offline_pay_btn').hasClass('ui_selected') || $('#online_pay_btn').hasClass('ui_selected')){
+//
+//        }else{
+//            $('#confirm_order').attr("disabled","disabled");
+//        }
+    </script>
+</block>

@@ -1,0 +1,209 @@
+<extend name="Base/menu"/>
+<block name="style">
+    <style>
+        .pad{
+            padding: 10px;
+        }
+        .size{
+            font-size: 30px;
+            color: orangered;
+        }
+        .content-t{
+            margin-top: 15px; padding: 2px; width: 90%; margin-left: auto;margin-right: auto;
+        }
+        .content{
+            background-color: orangered;
+            border: 0 !important;
+            color: white;
+        }
+        .c-t{
+            border: 1px solid #dddddd;
+            margin-right: 3px;
+            border-radius: 0.3em;
+            margin-left: 3px;
+            height: 2em;
+        }
+        .f-co{
+            color: #808080;
+        }
+
+    </style>
+</block>
+<block name="body">
+    <div class="ub" style="border-bottom: 1px #dddddd solid;background-color: rgba(226, 220, 226, 0.55)">
+        <div class="ub-f1 fl pad">
+            <div class="size">{$list_store_all}</div>
+            <div class="f-co">总体评价</div>
+        </div>
+        <div style="height: 4em; border-right: 2px solid gainsboro; margin-top: 1.3em;"></div>
+        <div  class="ub-f1 fl pad">
+            <div  class="size">{$list_store_avg}</div>
+            <div class="f-co">菜品口味</div>
+        </div>
+        <div style="height: 4em; border-right: 2px solid gainsboro; margin-top: 1.3em;"></div>
+        <div  class="ub-f1 fl pad">
+            <div  class="size">{$list_store_ps}</div>
+            <div class="f-co">配送服务</div>
+        </div>
+    </div>
+    <div style="line-height: 2em;" class="ub content-t">
+        <div class="ub-f1 fl c-t content" id="all">全部({$count})</div>
+        <div class="ub-f1 fl c-t" id="good">好评({$four+$five})</div>
+        <div class="ub-f1 fl c-t" id="center">中评({$two+$three})</div>
+        <div class="ub-f1 fl c-t" id="bad">差评({$one})</div>
+    </div>
+    <div class="content-t" id="f-all">
+        <volist name="info" id="vo">
+            <div class="mui-slider-handle" style="border-bottom: 1px #dddddd solid; padding: 10px 5px 10px 5px">
+                <div class="ub"><div class="ub-f1"><empty name="vo.mobile">匿名用户<else/>{$vo.mobile|substr=0,3}****{$vo.mobile|substr=7,4}</empty></div><div class="ub-f1" style="text-align: right">{$vo.pj_time|date='Y-m-d h:i',###}</div></div>
+                <p style="font-size: 18px;color: red"><switch name="vo.pingfen">
+                    <case value="1">
+                        ★
+                    </case>
+                    <case value="2">
+                        ★★
+                    </case>
+                    <case value="3">
+                        ★★★
+                    </case>
+                    <case value="4">
+                        ★★★★
+                    </case>
+                    <case value="5">
+                        ★★★★★
+                    </case>
+                </switch></p>
+                <p>{$vo.content}</p>
+            </div>
+            <input type="hidden" class="pingfen" value="{$vo.pingfen}">
+        </volist>
+    </div>
+    <div class="content-t" id="f-good" style="display: none">
+        <volist name="info" id="vo">
+            <if condition="($vo.pingfen eq 4)or($vo.pingfen eq 5)">
+                <div class="mui-slider-handle" style="border-bottom: 1px #dddddd solid; padding: 10px 5px 10px 5px">
+                    <div class="ub"><div class="ub-f1"><empty name="vo.mobile">匿名用户<else/>{$vo.mobile|substr=0,3}****{$vo.mobile|substr=7,4}</empty></div><div class="ub-f1" style="text-align: right">{$vo.pj_time|date='Y-m-d h:i',###}</div></div>
+                    <p style="font-size: 18px;color: red"><switch name="vo.pingfen">
+                        <case value="1">
+                            ★
+                        </case>
+                        <case value="2">
+                            ★★
+                        </case>
+                        <case value="3">
+                            ★★★
+                        </case>
+                        <case value="4">
+                            ★★★★
+                        </case>
+                        <case value="5">
+                            ★★★★★
+                        </case>
+                    </switch></p>
+                    <p>{$vo.content}</p>
+                </div>
+                <input type="hidden" class="pingfen" value="{$vo.pingfen}">
+            </if>
+        </volist>
+    </div>
+    <div class="content-t" id="f-center" style="display: none">
+        <volist name="info" id="vo">
+            <if condition="($vo.pingfen eq 2) or ($vo.pingfen eq 3)">
+                <div class="mui-slider-handle" style="border-bottom: 1px #dddddd solid; padding: 10px 5px 10px 5px">
+                    <div class="ub"><div class="ub-f1"><empty name="vo.mobile">匿名用户<else/>{$vo.mobile|substr=0,3}****{$vo.mobile|substr=7,4}</empty></div><div class="ub-f1" style="text-align: right">{$vo.pj_time|date='Y-m-d h:i',###}</div></div>
+                    <p style="font-size: 18px;color: red"><switch name="vo.pingfen">
+                        <case value="1">
+                            ★
+                        </case>
+                        <case value="2">
+                            ★★
+                        </case>
+                        <case value="3">
+                            ★★★
+                        </case>
+                        <case value="4">
+                            ★★★★
+                        </case>
+                        <case value="5">
+                            ★★★★★
+                        </case>
+                    </switch></p>
+                    <p>{$vo.content}</p>
+                </div>
+                <input type="hidden" class="pingfen" value="{$vo.pingfen}">
+            </if>
+        </volist>
+    </div>
+    <div class="content-t" id="f-bad" style="display: none">
+        <volist name="info" id="vo">
+            <if condition="$vo.pingfen eq 1">
+                <div class="mui-slider-handle" style="border-bottom: 1px #dddddd solid; padding: 10px 5px 10px 5px">
+                    <div class="ub"><div class="ub-f1"><empty name="vo.mobile">匿名用户<else/>{$vo.mobile|substr=0,3}****{$vo.mobile|substr=7,4}</empty></div><div class="ub-f1" style="text-align: right">{$vo.pj_time|date='Y-m-d h:i',###}</div></div>
+                    <p style="font-size: 18px;color: red"><switch name="vo.pingfen">
+                        <case value="1">
+                            ★
+                        </case>
+                        <case value="2">
+                            ★★
+                        </case>
+                        <case value="3">
+                            ★★★
+                        </case>
+                        <case value="4">
+                            ★★★★
+                        </case>
+                        <case value="5">
+                            ★★★★★
+                        </case>
+                    </switch></p>
+                    <p>{$vo.content}</p>
+                </div>
+                <input type="hidden" class="pingfen" value="{$vo.pingfen}">
+            </if>
+        </volist>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#all').click(function(){
+                $('#f-all').show()
+                $('#all').addClass('content')
+                $('#f-good').hide()
+                $('#good').removeClass('content')
+                $('#f-center').hide()
+                $('#center').removeClass('content')
+                $('#f-bad').hide()
+                $('#bad').removeClass('content')
+            });
+            $('#good').click(function(){
+                $('#f-all').hide()
+                $('#all').removeClass('content')
+                $('#f-good').show()
+                $('#good').addClass('content')
+                $('#f-center').hide()
+                $('#center').removeClass('content')
+                $('#f-bad').hide()
+                $('#bad').removeClass('content')
+            });
+            $('#center').click(function(){
+                $('#f-all').hide()
+                $('#all').removeClass('content')
+                $('#f-good').hide()
+                $('#good').removeClass('content')
+                $('#f-center').show()
+                $('#center').addClass('content')
+                $('#f-bad').hide()
+                $('#bad').removeClass('content')
+            });
+            $('#bad').click(function(){
+                $('#f-all').hide()
+                $('#all').removeClass('content')
+                $('#f-good').hide()
+                $('#good').removeClass('content')
+                $('#f-center').hide()
+                $('#center').removeClass('content')
+                $('#f-bad').show()
+                $('#bad').addClass('content')
+            })
+        });
+    </script>
+</block>

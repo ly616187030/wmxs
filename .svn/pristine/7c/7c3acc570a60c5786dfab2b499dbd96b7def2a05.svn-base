@@ -1,0 +1,854 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <link href="/./Application/Receiveorder/View/Public/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/Public/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <style>
+        .tel-pop {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 10px;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            background-color: #fff;
+            min-width:300px;
+        }
+        .tel-pop dl dd{
+            padding:5px 0;
+            font-size:1em;
+            min-width:200px;
+        }
+        .tel-pop dl dd button{
+            margin-left: 10px;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+
+    <div class="clearfix full-container">
+        <embed type="application/ubox-plugin" width=0 height=0 id="Phonic_usb">
+
+        <div class="builder builder-list-box panel-body">
+            <?php if(empty($pd_dp)): ?><div class="main-title cf">
+                    <div class="col-sm-2">
+                        <form method="get" action="<?php echo U('index');?>" id="myForm">
+                            <input type="hidden" name="m" value="Fastfood" />
+                            <input type="hidden" name="c" value="Fastfood" />
+                            <input type="hidden" name="a" value="index" />
+
+                            <select class="form-control" id="store" name="store_id">
+                                <?php if(!empty($list_s)): if(is_array($list_s)): $i = 0; $__LIST__ = $list_s;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vo["store_id"]); ?>" <?php if(($vo["store_id"]) == $shop_id): ?>selected="selected"<?php endif; ?>><?php echo ($vo["store_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+                                    <?php else: ?>
+                                    <option value="">请联系管理员分配店铺</option><?php endif; ?>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" name="keyword" class="search-input form-control" placeholder="请输入菜品的首字母">
+                    </div>
+
+                    <legend>&nbsp;</legend>
+
+                    <script>
+                        $('#store').change(function(){
+                            $('#myForm').submit();
+
+                        });
+                        $(document).ready(function(){
+                            $('#subnav h3 i').removeClass('icon-fold');
+                            $('.side-sub-menu').show();
+                        });
+                    </script>
+                </div>
+                <!-- 标签页导航 -->
+                <div class="tab-wrap">
+                    <div style="width:416px;padding: 0 15px; float: left">
+                        <div class="FastfoodLeft">
+
+                            <div class="FastfoodLeftTitle">
+                                账单明细
+                            </div>
+
+                            <div class="FastfoodLeftBox">
+                                <div class="goodli">
+                                    <div class="xh">
+                                        <span>数量</span>
+                                    </div>
+                                    <div class="cm">
+                                        <span>菜名</span>
+                                    </div>
+                                    <div class="dj">
+                                        <span>单价</span>
+                                    </div>
+                                    <div class="je">
+                                        <span>金额</span>
+                                    </div>
+                                </div>
+                                <div class="MenugoodList">
+                                    <div class="MenugoodListBox" id="cartshow">
+
+                                    </div>
+                                </div>
+
+                                <div class="Both"></div>
+                            </div>
+
+                            <div class="FastfoodLeftSub">
+                                <div class="cdjs">
+                                    <!--<span class="span1">打包费:<font color="#ec7501" size="2" style="font-weight:bold;">¥<font id="bagcost">0</font></font></span>-->
+                                    <span class="span2" style="width: 100%;">小计：<font color="#ec7501" size="2" style="font-weight:bold;">¥<font id="sumcost">0</font></font></span>
+                                </div>
+                                <div class="cdjs" id="cdjs">
+                                    <span class="span1 select" style="border: none;">堂食</span>
+                                    <span class="span2">外卖</span>
+                                </div>
+                                <div class="test">
+                                    <div class="xxqq">
+                                        <form>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">桌台</div>
+                                                <div class="inputtext fl">
+                                                    <input type="hidden" name="seat_id" value="<?php echo ($seat_id); ?>">
+                                                    <div class="seat_name">
+                                                        <input type="text" name="seat_name" value="<?php echo ($seat_name); ?>">
+                                                        <div class="seat_count">
+                                                            <ul>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">备注</div>
+                                                <div class="inputtext fl">
+                                                    <input type="text" name="order_message_room" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="leftBot">
+                                        <div class="fl curbtn">
+                                            <input type="image" name="dayindata" src="/./Application/Receiveorder/View/Public/img/dayin.png" onclick="dayindata();" />
+                                        </div>
+                                        <div class="fr curbtn" onclick="clearcart();">
+                                            <img src="/./Application/Receiveorder/View/Public/img/qingkong.png">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="test" style="display: none;">
+                                    <div class="xxqq">
+                                        <form>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">姓名</div>
+                                                <div class="inputtext fl"><input type="text" name="username" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">性别</div>
+                                                <label><input type="radio" name="gender" value="1" class="newRadio" checked="checked">男</label>
+                                                <label><input type="radio" name="gender" value="2" class="newRadio">女</label>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">详细地址</div>
+                                                <div class="inputtext fl"><input type="text" name="address" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">手机号</div>
+                                                <div class="inputtext fl"><input type="text" name="phone" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">送达时间</div>
+                                                <div class="inputtext fl"><input type="text" class="runcode" name="send_time" value="立即送达" id="demo_inp1"></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">配送费</div>
+                                                <div class="inputtext fl"><input type="text" name="ps_cost" /></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">打包费</div>
+                                                <div class="inputtext fl"><input type="text" name="canju_total" value="" readonly="true"></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">备注</div>
+                                                <div class="inputtext fl">
+                                                    <input type="text" name="order_message" />
+
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="leftBot">
+                                        <div class="fl curbtn">
+                                            <input type="image" name="newdata" onclick="newdata();" src="/./Application/Receiveorder/View/Public/img/dayin.png" />
+                                        </div>
+                                        <div class="fr curbtn" onclick="clearcart();">
+                                            <img src="/./Application/Receiveorder/View/Public/img/qingkong.png">
+                                        </div>
+                                        <div class="cl"></div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7" style="padding:0 15px;float: left">
+                        <div class="FastfoodRight">
+                            <div class="fenlei">
+                                <div class="new_caidan" id="caidanlist">
+                                    <ul>
+                                        <li class="on" onclick="showtype(0,this);">全部</li>
+                                        <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li onclick="showtype('<?php echo ($vo["canpin_id"]); ?>',this);" ><?php echo ($vo["canpin_name"]); ?></li><?php endforeach; endif; else: echo "" ;endif; ?>
+                                    </ul>
+                                    <div class="Both"> </div>
+                                </div>
+                                <div class="Both"> </div>
+                            </div>
+                            <div class="caidanList">
+                                <div class="mealsList" id="goodslist">
+                                    <ul>
+                                        <?php if(is_array($list_cm)): $i = 0; $__LIST__ = $list_cm;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li onclick="addtocart('<?php echo ($vo["cm_id"]); ?>','<?php echo ($vo["now_price"]); ?>','<?php echo (round($vo[food_box_price]*$vo[food_box_number],2)); ?>','<?php echo ($vo["cm_name"]); ?>');" class="litype<?php echo ($vo["canping_id"]); ?>" id="goodsid_det<?php echo ($vo["cm_id"]); ?>" style="display: list-item;">
+                                                <p class="danjia">¥<span><?php echo ($vo["now_price"]); ?></span></p>
+                                                <p class="caidanName"><?php echo ($vo["cm_name"]); ?></p>
+                                                <div class="mealsok" ></div>
+                                            </li><?php endforeach; endif; else: echo "" ;endif; ?>
+                                    </ul>
+
+                                    <div class="Both"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Both"></div>
+                </div>
+                <?php else: ?>
+                <td colspan="6" class="text-center"><?php echo ($pd_dp); ?></td><?php endif; ?>
+
+        </div>
+
+        <div class="tel-pop">
+            <a class="close" href="javascript:void(0)"><i class="fa fa-close"></i></a>
+            <h3>客户信息记录</h3>
+            <dl>
+
+            </dl>
+        </div>
+
+    </div>
+
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+
+    <script type="text/javascript" src="/Public/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="/Public/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="/Public/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript" src="/Public/uboxweb.js"></script>
+
+    <script type="text/javascript">
+
+        //ubox
+        window.onload = function(){
+            function init()
+            {
+                Phonic_usb.OpenLogFile(0);
+                ubox_CloseDevice();
+                ubox_openDevice();
+            }
+            init();
+        };
+
+        var tel = $('div.tel-pop');
+        tel.find('.close').click(function(){
+            tel.hide();
+        });
+        tel.on('click','button',function(){
+            var xx = $('.xxqq');
+            xx.find('input[name="username"]').val(tel.find('.username').text());
+            xx.find('input[name="phone"]').val(tel.find('.telephone').text());
+            xx.find('input[name="address"]').val($(this).attr('title'));
+            if(tel.find('.gender').text() == '男'){
+                xx.find('.man').prop('checked',true);
+            }else if(tel.find('.gender').text() == '女'){
+                xx.find('.woman').prop('checked',true);
+            }
+        });
+
+        $(function(){
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+        });
+        $('input[name="keyword"]').keyup(function(){
+            var store_id = $('#store').val();
+            var keyword = $(this).val();
+            var aa = '';
+            if(store_id == ""){
+                $.alertMessager('请先选择店铺');
+                return false;
+            }
+            $.post("<?php echo U('findFood');?>",{keyword:keyword,store_id:store_id}).success(function(data){
+                $('#goodslist ul').empty();
+                for(var i=0;i<data.length;i++){
+                    aa = "" +
+                    "<li onclick=\"addtocart('"+data[i].cm_id+"','"+data[i].now_price+"','"+data[i].sp_danjia+"','"+data[i].cm_name+"');\" class=\"litype"+data[i].canping_id+"\" id=\"goodsid_det"+data[i].cm_id+"\" style=\"display: list-item;\">"+
+                    "<p class=\"danjia\">¥<span>"+data[i].now_price+"</span></p>"+
+                    "<p class=\"caidanName\">"+data[i].cm_name+"</p>"+
+                    "<div class=\"mealsok\"></div>"+
+                    "</li>";
+                    $('#goodslist ul').append(aa);
+                    $('#cartshow').find('.goodlist').each(function(){
+                        var value = $(this).attr('data');
+                        if(value == data[i].cm_id){
+                            $('#goodsid_det'+data[i].cm_id).find('div').attr("style","display:block");
+                        }
+                    });
+                }
+
+
+            });
+        });
+        $('#cdjs span').click(function(){
+            var index = $(this).index();
+            $('#cdjs span').removeClass('select');
+            $(this).addClass('select');
+            $('.test').hide();
+            $('.test').eq(index).show();
+        });
+        function showtype(typeid,obj){
+            if(typeid == 0){
+                $('#goodslist').find('li').show();
+
+            }else{
+                $('#goodslist').find('li').hide();
+                $('#goodslist').find('.litype'+typeid).show();
+            }
+            $(obj).addClass('on').siblings().removeClass('on');
+        }
+        var sumcost = 0;//总价等于0
+        var bagcost = 0;
+        var checkuser = true;
+        var new_bagcost = 0;
+
+        function addtocart(goodsid,goodscost,bagcost,goodsname){
+
+            var checkhtml = $('#cart_id'+goodsid).html();
+            if(checkhtml == undefined){
+                var newzongjiage = Number(goodscost)*1;
+                var htmls = '<div class="goodlist" id="cart_id'+goodsid+'" data="'+goodsid+'">';
+                htmls += '          <div class="goodnum">';
+                htmls += '             <div class="btniput">';
+                htmls += '            <span class="right_l_btn_left" onclick="deltocart(\''+goodsid+'\',\''+goodscost+'\',\''+bagcost+'\')"></span>';
+                htmls += '            <span class="right_l_btn_nub" id="gshu_'+goodsid+'">1</span>';
+                htmls += '            <span class="right_l_btn_right" onclick="addtocart(\''+goodsid+'\',\''+goodscost+'\',\''+bagcost+'\')"></span>	';
+                htmls += '           </div> ';
+                htmls += '         </div>';
+                htmls += '          <div class="goodname">';
+                htmls += '              <span>'+goodsname+'</span>';
+                htmls += '        </div>';
+                htmls += '        <div class="goodcost">';
+                htmls += '              <span id="gdj_'+goodsid+'">'+goodscost+'</span>';
+                htmls += '         </div>';
+                htmls += '         <div class="goodallcost">';
+                htmls += '              <span id="gzj_'+goodsid+'">'+newzongjiage+'</span>';
+                htmls += '          </div>';
+                htmls += '    </div>';
+                $('#cartshow').append(htmls);
+                $('#goodsid_det'+goodsid).find('.mealsok').show();
+            }else{
+                $('#gshu_'+goodsid).text(Number($('#gshu_'+goodsid).text())+1);
+                $('#gzj_'+goodsid).text((Number($('#gzj_'+goodsid).text())+Number(goodscost)).toFixed(2));
+            }
+
+            var new_bagcost = $('input[name="canju_total"]').val();
+            bagcost = (Number(bagcost) + Number(new_bagcost)).toFixed(2);
+            $('input[name="canju_total"]').val(bagcost);
+            var tempcost = Number(goodscost);
+            sumcost = (Number(sumcost)+Number(tempcost.toFixed(2))).toFixed(2);
+            $('#sumcost').text(sumcost);
+        }
+        function deltocart(goodsid,goodscost,bagcost){
+            var checkhtml = $('#cart_id'+goodsid).html();
+            if(checkhtml != undefined){
+                var shangpinzongshu = $('#gshu_'+goodsid).text();
+                if(shangpinzongshu == 1){
+                    $('#cart_id'+goodsid).remove();
+                    $('#goodsid_det'+goodsid).find('.mealsok').hide();
+                }else{
+                    $('#gshu_'+goodsid).text(Number($('#gshu_'+goodsid).text())-1);
+                    $('#gzj_'+goodsid).text(Number($('#gzj_'+goodsid).text())-Number(goodscost));
+                }
+
+                var new_bagcost = $('input[name="canju_total"]').val();
+                bagcost = (Number(new_bagcost)-Number(bagcost)).toFixed(2);
+                $('input[name="canju_total"]').val(bagcost);
+                var tempcost = Number(goodscost);
+                sumcost = Number(sumcost)-Number(tempcost.toFixed(2));
+                $('#sumcost').text(sumcost);
+            }
+        }
+        function clearcart(){
+            sumcost = 0;
+            bagcost = 0;
+            $('input[name="canju_total"]').val(0);
+            $('#sumcost').text(0);
+            $('#cartshow').html('');
+            $('.mealsok').hide();
+        }
+        //堂食下单
+        function dayindata(){
+            //在新仓库中打开网页
+            var shopid = '<?php echo ($shop_id); ?>';
+            var allobj = $('.goodlist');
+            if(allobj.length < 1){
+                $.alertMessager('购物车中无数据');
+                return false;
+            }
+            var seat_id = $('input[name="seat_id"]').val();
+            var seat_name = $('input[name="seat_name"]').val();
+            var order_message = $('input[name="order_message_room"]').val();
+
+            if(checkuser == true){
+                if(seat_name == ''){
+                    $.alertMessager('桌台不能为空');
+                    return false;
+                }
+                if(seat_id == ''){
+                    $.alertMessager('桌台不能为空');
+                    return false;
+                }
+            }
+
+            var newids = [];//存放ID
+            var newnum = [];//存放数量
+            var newdj = [];//存放单价
+            var newzj = [];//存放单个商品总价
+            var total = $('#sumcost').text();//总价
+
+            for(var i=0;i<$(allobj).length;i++){
+                var goodsid = $(allobj).eq(i).attr('data');
+                newids.push(goodsid);
+                newnum.push($('#gshu_'+goodsid).text());
+                newdj.push($('#gdj_'+goodsid).text());
+                newzj.push($('#gzj_'+goodsid).text());
+            }
+            //构造参数量
+
+            //window.open(checklingk);
+
+            $('input[name="dayindata"]').attr('disabled','disabled');
+            $.post('<?php echo U("setOrder");?>',{
+                ids:newids,
+                num:newnum,
+                store_id:shopid,
+                total:total,
+                newdj:newdj,
+                newzj:newzj,
+                seat_id:seat_id,
+                seat_name:seat_name,
+                order_message:order_message
+            }).success(function(data){
+                if(data>0){
+                    $.alertMessager('下单成功','success');
+                    setTimeout(function(){
+                        window.location.href="<?php echo U('selectSeat');?>";
+                    },2000);
+                }else{
+                    $.alertMessager('下单失败');
+                    $('input[name="dayindata"]').removeAttr('disabled');
+                }
+            });
+        }
+        //外卖下单
+        function newdata(){
+            //在新仓库中打开网页
+            var shopid = '<?php echo ($shop_id); ?>';
+            var allobj = $('.goodlist');
+            if(allobj.length < 1){
+                $.alertMessager('购物车中无数据');
+                return false;
+            }
+            var username =  $('input[name="username"]').val();
+            var gender = $('input[name="gender"]:checked').val();
+            var address = $('input[name="address"]').val();
+            var phone = $('input[name="phone"]').val();
+            var send_time = $('input[name="send_time"]').val();
+            var order_message = $('input[name="order_message"]').val();
+            var source = $('select[name="source"]').val();
+            var ps_cost = $('input[name="ps_cost"]').val();
+
+            var rex = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+            var rexnum = /^[0-9]*[1-9][0-9]*$/;
+            if(checkuser == true){
+                if(username == ''){
+                    $.alertMessager('姓名不能为空');
+                    return false;
+                }
+                if(address == ''){
+                    $.alertMessager('送餐地址不能为空');
+                    return false;
+                }
+                if(phone == ''){
+                    $.alertMessager('送餐电话不能为空');
+                    return false;
+                }
+                if(!(rexnum.test(phone))){
+                    $.alertMessager('送餐电话格式不正确');
+                    return false;
+                }
+                if(ps_cost == ''){
+                    $.alertMessager('配送费不能为空');
+                    return false;
+                }
+                if(!(rexnum.test(ps_cost))){
+                    $.alertMessager('配送费格式不正确');
+                    return false;
+                }
+
+                if(send_time == ""){
+                    send_time = "立即送达";
+                }
+            }
+
+            var newids = [];//存放ID
+            var newnum = [];//存放数量
+            var newdj = [];//存放单价
+            var newzj = [];//存放单个商品总价
+            var total = $('#sumcost').text();//总价
+            var canju_total = $('input[name="canju_total"]').val();//打包费
+
+
+            for(var i=0;i<$(allobj).length;i++){
+                var goodsid = $(allobj).eq(i).attr('data');
+                newids.push(goodsid);
+                newnum.push($('#gshu_'+goodsid).text());
+                newdj.push($('#gdj_'+goodsid).text());
+                newzj.push($('#gzj_'+goodsid).text());
+            }
+            //构造参数量
+
+            //window.open(checklingk);
+            $('input[name="newdata"]').attr('disabled','disabled');
+            $.post('<?php echo U("setUser");?>',{
+                ids:newids,
+                num:newnum,
+                store_id:shopid,
+                username:username,
+                gender:gender,
+                detail_address:address,
+                phone:phone,
+                total:total,
+                newdj:newdj,
+                newzj:newzj,
+                send_time:send_time,
+                canju_total:canju_total,
+                order_message:order_message,
+                ps_cost:ps_cost
+            }).success(function(data){
+                if(data>0){
+                    $.alertMessager('下单成功','success');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },2000);
+
+                }else{
+                    $.alertMessager('下单失败');
+                    $('input[name="dayindata"]').removeAttr('disabled');
+                }
+            });
+        }
+
+        $(document).click(function(){
+            $(".seat_count").hide();
+        });
+
+        function selectSeat(keyword){
+
+            $.post("<?php echo U('findSeat');?>",{keyword:keyword}).success(function(data){
+                var aa = '';
+                if(data != ""){
+                    for(var i=0;i<data.length;i++){
+                        aa += "<li data-id=\""+data[i]['id']+"\"><a href=\"javascript:;\">"+data[i]['name']+"</a></li>";
+                    }
+                }else{
+                    aa = "<li><a href=\"javascript:;\">没有找到符合条件的桌台</a></li>";
+                }
+                $('.seat_count ul').html(aa);
+                $('.seat_count').show();
+            });
+        }
+
+        $('input[name="seat_name"]').click(function(){
+            var keyword = $(this).val();
+            selectSeat(keyword);
+        });
+        $('input[name="seat_name"]').keyup(function(){
+            var keyword = $(this).val();
+            selectSeat(keyword);
+        });
+        $(document).on('click','.seat_count ul li',function(){
+            var id = $(this).data('id');
+            var name = $(this).text();
+            if(id != null){
+                $('input[name="seat_id"]').val(id);
+                $('input[name="seat_name"]').val(name);
+            }else{
+                $.alertMessager('没有找到符合条件的桌台');
+                $('input[name="seat_name"]').val('');
+            }
+        });
+        $('input[name="send_time"]').keyup(function(){
+            var value = $(this).val();
+            if(value == ""){
+                $(this).val("立即送达");
+            }
+        });
+        //cartshow   alert($('#goodlist').html());
+        //	var num=22.127456; alert( num.toFixed(2));
+    </script>
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>外卖先生于每月2号至5号进行结算，以下表格是您上月的订单统计，请您核对后支付！（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">上月有效订单</th>
+                          <th style="text-align: center;">上月全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥<?php echo ($settlement["price"]); ?>/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="<?php echo U('Contract/zhifu');?>" method="post">
+                    <input type="hidden" name="total_fee" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" id="zhifu">去支付</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+     $('#closed').click(function(){
+        $('#jiesuanModal').modal('hide');
+        riqi == '5' && location.reload();
+    });
+</script>
+</body>
+</html>

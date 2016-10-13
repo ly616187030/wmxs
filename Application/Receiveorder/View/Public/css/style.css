@@ -1,0 +1,98 @@
+*{margin: 0;padding: 0}
+ul{list-style: none;}
+
+.orderlist{float: left; height: 42px; line-height: 42px;}
+.storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+.storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+.storeList ul li:hover{background: #d2dcf8}
+
+.flr{float: right;}
+.FastfoodLeft, .FastfoodRight{border:1px solid #000000;height:auto; }
+.FastfoodLeft .FastfoodLeftTitle{width: 100%; line-height: 42px;font-size: 16px;font-weight: bold;text-align: center;border-bottom: 1px solid #000000}
+.FastfoodLeft .FastfoodLeftBox{width: 100%;max-height: 546px;min-height:80px;border-bottom: 1px solid #000000;overflow: auto;overflow-x:hidden;}
+.FastfoodLeft .FastfoodLeftSub{width: 100%}
+.FastfoodLeft .FastfoodLeftBox .goodli{width:100%; height: 39px;line-height: 39px; text-align: center;border-bottom:1px solid #000000 }
+.FastfoodLeft .FastfoodLeftBox .goodli div{border-right: 1px solid #000000}
+.FastfoodLeft .FastfoodLeftBox .goodli .xh , .dj{width: 20%;float: left;}
+.FastfoodLeft .FastfoodLeftBox .goodli .je{width: 20%;float: left;border-right: none;}
+.FastfoodLeft .FastfoodLeftBox .goodli .cm{width: 40%;float: left;border-right: 1px solid #000000}
+
+.FastfoodLeft .FastfoodLeftBox .MenugoodList{width: 100%;}
+.FastfoodLeft .FastfoodLeftBox .MenugoodList .goodlist{height: 39px;border-bottom: 1px solid #5c5b5a; text-align: center;}
+.btniput {  background: url(../img/righ_l_b_btn.png) no-repeat;  background-size: 58px 20px;height: 20px;margin:8px 10px;width: 100%  }
+.right_l_btn_left {width: 20px;  height: 20px;  display: block;  float: left;  }
+.right_l_btn_nub {  width: 18px;  height: 18px;  text-align: center;  float: left;  line-height: 18px;  color: #6e758a;  font-size: 10px;  }
+.right_l_btn_right {  width: 20px;  height: 20px;  display: block;  float: left;}
+.goodname {width:40%;  height: 39px;line-height: 39px; overflow: hidden;float:left;border-right:1px solid #5c5a59;}
+.goodnum{float: left;line-height: 39px;height: 39px;width: 20%;border-right:1px solid #5c5a59;}
+.goodcost{width:20%;border-right: 1px solid #5c5a59;line-height: 39px;float: left}
+.goodallcost {width: 20%;border-right:none;float: left;line-height: 39px;}
+#cdjs{font-size: 16px;font-weight: bold}
+#cdjs span{cursor: pointer}
+.cdjs {height: 40px;border-bottom: 1px solid #3d4041;}
+.cdjs span{display: block;float: left;line-height: 40px;text-align: center;}
+.cdjs span.select{background: #86db00;color: #fff;}
+.cdjs .span1 {width: 50%;  height: 39px;  border-right: 1px solid #3d4041;  font-weight: normal; }
+.cdjs .span2 {width:50%;  height: 39px;   border-left: none;  font-weight: normal;}
+.xxqq {background: #363a3e;border-bottom: 1px solid #2d3237;padding: 9px 48px;}
+.xxqq .xiangqing { height: 33px; margin-bottom: 7px;width: 288px;}
+.xxqq .xiangqing .xingming {width: 80px;height: 33px;line-height: 33px;background: #27a9e3;color: #ffffff;text-align: center;}
+.xxqq .xiangqing input , select{width: 208px;height: 33px;}
+.xxqq .xiangqing label{padding: 5px; color: #fff;}
+.xxqq .xiangqing .newRadio{width: 20px;height: auto;}
+.xxqq .xiangqing .inputtext{color: #000000}
+.xxqq .xiangqing .newInput{width: 90px;}
+.leftBot {height: 52px;  background: #363a3e; padding: 5px 0; border-top: 1px solid #363d43;text-align: center}
+.leftBot div{width: 50%;cursor: pointer}
+.curbtn{cursor: pointer}
+.fl {float: left;}
+.fr {float: right;}
+.fenlei {height: auto; padding: 10px 13px 0px 24px;border-bottom: 1px solid #000000}
+.fenlei .new_caidan ul li {cursor: pointer;height: 32px;font-size: 12px;font-family: "宋体";line-height: 32px;background: #9a9999;  padding: 0px 10px 0px 10px;  color: #f0f0f0;  margin-right: 11px;  margin-bottom: 11px;  float: left;  }
+.fenlei .new_caidan ul li.on {background: #ec7501;}
+.caidanList {padding: 25px 23px 25px 23px;height: auto;}
+.caidanList .mealsList ul li {  cursor: pointer;position: relative; float: left;  margin: 1px;  width: 96px;  height: 96px;  font-size: 14px;  font-family: "微软雅黑";  color: #ffffff;  background: #6dccf6;  }
+.caidanList .mealsList ul li .danjia {  height: 28px;  margin-top: 20px;  line-height: 48px;  text-align: center;  margin-bottom: 0px;  }
+.caidanList .mealsList ul li .danjia span {margin-left: 3px;font-size: 18px;}
+.caidanList .mealsList ul li .caidanName {  height: 48px;  margin-top: 5px;  text-align: center;  margin-bottom: 0px;}
+.mealsok {position: absolute;  width: 22px;  height: 23px;  top: 5px;  right: 5px;  background: url(../img/mealok.png) no-repeat;display: none;}
+.Both{clear: both}
+
+#zhuotai ul li{float:left;width: 80px;font-weight: bold;padding:15px 0;font-size: 16px; height: 80px; background: #5cb85c;color: #fff; text-align: center;margin:0 0 15px 13px;cursor: pointer}
+#zhuotai ul li.active{background:#d9534f}
+
+#total{ color: #FF0000; font-size: 16px}
+
+.total input{ border-radius: 4px; height: 25px; width: 100px;border: 1px solid #ddd; text-align: center;}
+.total input[name='give_money'],input[name='canju_total']{border: 1px solid #ddd;background:#ddd;}
+
+.seat_name{position: relative;}
+.seat_count{position: absolute;top:35px; background: #fff; border: 1px solid #cccccc; width: 100%; max-height: 250px; overflow-y: scroll; display: none;}
+.seat_count ul{margin:5px 0;}
+.seat_count ul li{ line-height: 25px;padding-left: 5px;}
+.seat_count ul li:hover{ background: #cccccc;}
+.seat_count ul li a:hover{ text-decoration: none;}
+
+.orderLeft{width: 100%;}
+.orderLeft ul{list-style: none;padding: 0;}
+.orderLeft ul li{height: 150px;padding: 5px 0;margin-top: 10px;border: 1px solid #E2E2E2;background: #ffffff;}
+.orderLeft ul li.active{background:#DCEFFD;}
+.orderLeft ul li:first-child{margin-top: 0;}
+.orderLeft ul li div{line-height: 25px; color:#666666;padding: 0 10px;}
+.orderLeft ul li div span{padding-right: 5px;}
+.orderLeft ul li div .total{color:#ff0000;}
+.orderLeft ul li .storeButton{float: right;padding-right: 20px;}
+.newOrderMore{width: 100%;border: 1px solid #E2E2E2}
+.newOrderMore .newOrderMoreTitle{line-height: 40px;border-bottom: 1px solid #E2E2E2}
+.newOrderMore .newOrderMoreTitle span{width: 25%;display: inline-block;text-align: center}
+.newOrderMore .newOrderMoreButton{padding: 15px 30px;}
+.newOrderMore .newOrderMoreMess{padding: 0 30px;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft, .newOrderMoreMessRight{width: 50%;float: left;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftUp div{padding: 5px 0;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftUp div:last-child{height: 40px;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftUp div span{padding-right: 5px;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftDown ul{padding: 0;margin: 0;list-style: none;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftDown ul li{line-height: 35px;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessLeft .newOrderMoreMessLeftDown ul li span{padding-right: 5px;width: 15px;text-align: center}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessTotal{border-top: 2px dashed #E2E2E2;padding: 10px;text-align: right;padding-right: 20px;}
+.newOrderMore .newOrderMoreMess .newOrderMoreMessTotal span{color: #ff0000;}

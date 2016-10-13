@@ -1,0 +1,69 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    <span style="font-size: 1em">{$name}的专属店铺</span>
+</block>
+<block name="right"></block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/myAddress_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/mui.min.css">
+</block>
+<block name="body">
+        <!--header结束-->
+        <!--content开始-->
+    <div style="background-color: #cc3030;color: #FFF;text-align: center;">将本页与好友分享可获现金券哦！</div>
+        <div id="content1" class="ub-f1 tx-l">
+            <div id="import">
+
+                <!-- 商品列表 -->
+                <div style="border-bottom: 0px;" class="lists" id="list">
+                    <volist name="canpin" id="vo">
+                        <ul id="OA_task_1" class="mui-table-view">
+                            <li class="mui-table-view-cell">
+                                <a href="{:U('menu/index?store_id='.$vo['store_id'])}">
+                                    <div style="height: 4em; float: left;" class="mui-slider-handle">
+                                        <div style="float: left;">
+                                            <img style="width: 5em; height: 3em;" src=".{$vo.big_img|get_cover='path'}" />
+                                            <div style="font-size: 0.9em;color:#9da0a4;width: 30px; ">{$vo.store_id|get_store}
+                                            <span style="font-size: 0.9em; margin-left: 1.5em; width: 16em;">
+                                 <span class="" style="border-right:1px solid #dcdcdc;">起送价￥
+                                   <font>{$vo.store_id|get_qisong}</font>
+                                 </span>
+										<span class="" style="border-right:1px solid #dcdcdc;">配送费￥
+                                   <font>{$vo.store_id|get_peisong}</font>
+                                 </span>
+										<span class="">
+                                   <font>{$vo.store_id|get_songda}</font>分钟送达<div style="clear:both;"></div>
+                                 </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div style="float: left;">
+                                            <p style="margin-left: 1.1em;color: #000">{$vo.cm_name}
+                                                <span style="font-size: 0.9em;color: red;">￥{$vo.now_price}/{$vo.danwei}</span>
+                                                <span style="font-size: 0.8em;color: red;text-decoration: line-through;">￥{$vo.original_price}</span>
+                                            </p>
+                                            <p class="">
+                                            <div class="" style="color:red;font-size:0.9em; margin-top: 0.3em; float: left; margin-left: 1em;">★★★★★</div>
+                                            <label style="font-size:0.8em; position: relative; left: 2em;">月销<span>{$vo.quantity}{$vo.danwei}<span></label>
+                                            <div style="clear:both;"></div>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="mui-slider-right mui-disabled">
+                                    <a href="{:U('del?cm_id='.$vo['cm_id'])}" class="mui-btn mui-btn-red">删除</a>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                        <div style="clear:both;"></div>
+                    </volist>
+                </div>
+            </div>
+        </div>
+        <!--content结束-->
+    </div>
+</block>

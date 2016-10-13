@@ -1,0 +1,206 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        span{padding:1em;}
+    </style>
+    <link href="__PUBLIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+</block>
+
+<block name="main">
+    <div class="main-title">
+        <h4>站点对账/锅具回收</h4>
+    </div>
+    <div style="padding:2em 3em;">
+        <form action="{:U('Settle/gjhs')}" method="get" >
+            <input type="hidden" name="m" value="Settle" />
+            <input type="hidden" name="c" value="Settle" />
+            <input type="hidden" name="a" value="gjhs" />
+            <div style="height:55px;line-height: 55px;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:3em;height:30px;line-height: 30px;">日期：</label>
+                <div class="col-sm-3" style="margin:0px;padding:0px;height:30px;line-height: 30px;width:25em;">
+                    <input name="date" type="radio" value="1" <eq name="date" value="1">checked=checked"</eq> /> 今天<span>|</span>
+                    <input name="date" type="radio" value="2" <eq name="date" value="2">checked=checked"</eq> /> 昨天<span>|</span>
+                    <input name="date" type="radio" value="3" <eq name="date" value="3">checked=checked"</eq> /> 近三天<span>|</span>
+                    <input name="date" type="radio" value="0" <eq name="date" value="0">checked=checked"</eq> /> 自定义时间
+                </div>
+                <div class="col-sm-2">
+                    <input readonly="readonly" type="text"  class="form-control date" name="definedStart" id="definedStart" <notempty name="definedStart">value="{$definedStart|date='Y-m-d',###}"</notempty>/>
+                </div>
+                <div class="col-sm-1" style="width:3em;height:30px;line-height: 30px;">至</div>
+                <div class="col-sm-2" >
+                    <input readonly="readonly" type="text"  class="form-control date" name="definedOver" id="definedOver" <notempty name="definedOver">value="{$definedOver|date='Y-m-d',###}"</notempty>/>
+                </div>
+                <input type="hidden" value="" name="datevalue" id="datevalue"/>
+                <input type="hidden" value="" name="startdate" id="startdate"/>
+                <input type="hidden" value="" name="overdate" id="overdate"/>
+
+                <label class="col-sm-1" style="margin-left:3em;padding:0px;width:5em;height:30px;line-height: 30px;">骑手姓名：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="deliver">
+                        <option value="">全部</option>
+                        <volist name="deliver" id="vod">
+                            <option value="{$vod.person_id}" <eq name="vod.person_id" value="$deliver_id">selected="selected"</eq>>{$vod.person_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <label class="col-sm-1" style="width:0em;margin:0px;padding:0px;"></label>
+            <div style="height:55px;line-height: 55px;" >
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:5em;height:30px;line-height: 30px;">订单ID：</label>
+                <div class="col-sm-2" >
+                    <input type="text"  class="form-control" name="orderId" value="{$orderId}"/>
+                </div>
+                <label class="col-sm-1" style="margin-left:1em;padding:0px;width:5em;height:30px;line-height: 30px;">订单类型：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="ordertype">
+                        <option value="">全部</option>
+                        <option value="0" <eq name="ordertype" value="0">selected="selected"</eq>>货到付款</option>
+                        <option value="1" <eq name="ordertype" value="1">selected="selected"</eq>>在线支付</option>
+                    </select>
+                </div>
+                <label class="col-sm-1" style="margin-left:1em;padding:0px;width:5em;height:30px;line-height: 30px;">商家类型：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="shoptype">
+                        <option value="">全部</option>
+                        <option></option>
+                    </select>
+                </div>
+                <label class="col-sm-1" style="margin-left:1em;padding:0px;width:5em;height:30px;line-height: 30px;">回收锅具：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="guoju">
+                        <option value="">全部</option>
+                        <option value="1" <eq name="guoju" value="1">selected="selected"</eq>>是</option>
+                        <option value="0" <eq name="guoju" value="0">selected="selected"</eq>>否</option>
+                        <option value="2" <eq name="guoju" value="2">selected="selected"</eq>>已回收</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cf">
+                <div class="fl">
+                    <button class="btn btn-success" type="submit">查询</button>
+                    <a href="{:U('gjhsexcel')}"><button class="btn btn-success" type="button">导出EXCEL</button></a>
+                </div>
+            </div>
+        </form>
+       </div>
+
+            <div class="data-table table-striped" style="overflow-x:auto;overflow-y:auto;">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">订单ID</th>
+                        <th style="text-align: center;">商家名称</th>
+                        <th style="text-align: center;">订单类型</th>
+                        <th style="text-align: center;">骑手姓名</th>
+                        <th style="text-align: center;">锅具数量</th>
+                        <th style="text-align: center;">应付客户金额</th>
+                        <th style="text-align: center;">备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <notempty name="info" id="vo">
+                    <tr>
+                        <td colspan="4" style="text-align: center">合计</td>
+                        <td style="text-align: center;">{$sumgjsl}</td>
+                        <td style="text-align: center;">{$sumyfkhze}</td>
+                        <td style="text-align: center;">&nbsp;</td>
+                    </tr>
+                    <volist name="info" id="vo">
+                    <tr>
+                        <td style="text-align: center">{$vo.order_sn}</td>
+                        <td style="text-align: center;">{$vo.store_name}</td>
+                        <td style="text-align: center;">
+                            <switch name="vo.pay_type" >
+                                <case value="0">货到付款</case>
+                                <case value="1">在线支付</case>
+                                <default />
+                            </switch>
+                        </td>
+                        <td style="text-align: center;">{$vo.person_name}</td>
+                        <td style="text-align: center;">{$vo.qiju_quantity}</td>
+                        <td style="text-align: center;">{$vo.yajin}</td>
+                        <td style="text-align: center;">&nbsp;</td>
+                    </tr>
+                    </volist>
+                    <else/>
+                    <tr><td colspan="7" class="text-center" style="text-align: center;"> aOh! 暂时还没有内容!</td></tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div class="page">{$page}</div>
+            </div>
+        </div>
+        </block>
+
+        <block name="script">
+            <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+            <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+            <script type="text/javascript">
+
+                $(function(){$("input[name='date']").change(function(){
+                    var date=$(this).val();
+                    if(date==1){
+                        $('#startdate').val('');
+                        $('#overdate').val('');
+                        $('#definedStart').val('');
+                        $('#definedOver').val('');
+                        var time = new Date();
+                        var year = time.getFullYear();
+                        var month = time.getMonth()+1;
+                        var day = time.getDate();
+                        var riqi=year+"-"+month+"-"+day;
+                        $('#datevalue').val(riqi);
+
+                    }else if(date==2){
+                        $('#startdate').val('');
+                        $('#overdate').val('');
+                        $('#definedStart').val('');
+                        $('#definedOver').val('');
+                        var time = new Date();
+                        var year = time.getFullYear();
+                        var month = time.getMonth()+1;
+                        var day = time.getDate()-1;
+                        var riqi=year+"-"+month+"-"+day;
+                        $('#datevalue').val(riqi);
+
+
+                    }else if(date==3){
+                        $('#datevalue').val('');
+                        $('#definedStart').val('');
+                        $('#definedOver').val('');
+                        var time = new Date();
+                        var year = time.getFullYear();
+                        var month = time.getMonth()+1;
+                        var startday = time.getDate()-2;
+                        var overday = time.getDate();
+                        var startriqi=year+"-"+month+"-"+startday;
+                        var overriqi=year+"-"+month+"-"+overday;
+                        $('#startdate').val(startriqi);
+                        $('#overdate').val(overriqi);
+
+                    }else if(date==0){
+                        $('#startdate').val('');
+                        $('#overdate').val('');
+                        $('#datevalue').val('');
+                    }else{}
+                })
+                })
+
+
+                $('.date').datetimepicker({
+
+                    format: 'yyyy-mm-dd',
+
+                    language:"zh-CN",
+
+                    minView:2,
+
+                    autoclose:true
+
+                });
+
+
+            </script>
+        </block>
+</block>

@@ -1,0 +1,206 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <link href="__CSS__/mui.min.css" rel="stylesheet"/>
+    <style>
+        .mui-bar{
+            height: 44px;
+        }
+        .mui-ellipsis{
+            font-size: 10px;
+            color: orangered;
+        }
+        .mui-segmented-control{
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+        .mui-segmented-control .mui-control-item{
+            color: #333;
+            border-color: #ddd;
+            border-left: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .mui-segmented-control .mui-control-item.aaa{
+            /*border-bottom: solid 3px #007aff;*/
+            color:red;
+        }
+        .istop{
+            position: absolute;
+            font-size: 12px;
+            font-weight:bold;
+            color: red;
+            transform: rotate(-40deg);
+            -ms-transform: rotate(-40deg);		/* IE 9 */
+            -webkit-transform: rotate(-40deg);	/* Safari and Chrome */
+            -o-transform: rotate(-40deg);		/* Opera */
+            -moz-transform: rotate(-40deg);		/* Firefox */
+        }
+    </style>
+</block>
+<block name="body">
+    <header class="mui-bar mui-bar-nav" style="background-color: #dd3131;">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left text-white" style="color:#fff;" href="{:U('index')}"></a>
+        <h1 class="mui-title" style="color:#fff;">{$tj_name}<a class="mui-icon mui-icon-arrowdown"></a></h1>
+        <a class="mui-icon mui-icon-right-nav mui-pull-right mui-icon-search" style="color:#fff;" href="{:U('Search/search','',false)}&cityName={$reinfo.cityName}&lng={$reinfo.lng}&lat={$reinfo.lat}"></a>
+    </header>
+    <div class="mui-content">
+        <div id="slider" class=" ">
+            <div class="mui-segmented-control" style="position: fixed;z-index: 10;top: 44px">
+                <div id="segmentedControl" class="mui-segmented-control">
+                    <a class="mui-control-item {$aaa}" href="{:U('specialarea','',false)}&num=4&cityName={$reinfo.cityName}&lng={$reinfo.lng}&lat={$reinfo.lat}&qy_id={$qy_id}&tj_id={$tj_id}&tj_name={$tj_name}">
+                        综合排序
+                    </a>
+                    <a class="mui-control-item {$aaa1}" href="{:U('specialarea','',false)}&num=1&cityName={$reinfo.cityName}&lng={$reinfo.lng}&lat={$reinfo.lat}&qy_id={$qy_id}&tj_id={$tj_id}&tj_name={$tj_name}">
+                        好评
+                    </a>
+                    <a class="mui-control-item {$aaa2}" href="{:U('specialarea','',false)}&num=2&cityName={$reinfo.cityName}&lng={$reinfo.lng}&lat={$reinfo.lat}&qy_id={$qy_id}&tj_id={$tj_id}&tj_name={$tj_name}">
+                        起送价最低
+                    </a>
+                    <a class="mui-control-item {$aaa3}" href="{:U('specialarea','',false)}&num=3&cityName={$reinfo.cityName}&lng={$reinfo.lng}&lat={$reinfo.lat}&qy_id={$qy_id}&tj_id={$tj_id}&tj_name={$tj_name}">
+                        配送速度最快
+                    </a>
+                </div>
+            </div>
+            <notempty name="store">
+                <ul class="mui-table-view " style="margin-top: 42px" id="store">
+                    <volist name="store" id="vo">
+                        <notempty name="vo.istop">
+                            <li class="mui-table-view-cell mui-media">
+                                <a href="{:U('Menu/index',array('store_id'=>$vo['store_id'],'peisongfei'=>$vo['peisongfei'],'is_open'=>$vo['is_open']))}">
+                                    <div class="istop" style="">推 荐</div>
+                                    <img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png"  data-original="{$vo.store_logo_id|get_cover='path'}" style="width: 5em;height: 4em">
+                                    <div class="mui-media-body">
+                                        {$vo.store_name}
+                                        <div style="font-size: 14px; color: #333" class="ub">
+                                            <input type="hidden" value="{$vo.is_open}">
+                                            <if condition="$vo.is_open eq 1">
+                                                <div class="ub-f1" style="color: grey;width: 50%">距离<span class="km">{$vo.juli}</span>km</div>
+                                                <else/>
+                                                <div class="ub-f1" style="color: green;width: 50%">商家休息中</div>
+                                            </if>
+                                        </div>
+                                        <div style="font-size: 12px;" class="ub">
+                                            <div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">起送价 ￥{$vo.qisong_price}</div>
+                                            <div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">人均消费 ￥{$vo.renjun}</div>
+                                        </div>
+                                        <div style="font-size: 12px;" class="ub">
+                                            <div class="ub-f1" style="color: #999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">配送费 ￥{$vo.peisongfei}</div>
+                                            <div class="ub-f1" style="color:#999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">约{$vo.sh_time}钟送达</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div style="font-size: 13px;color: #333;margin-left: 7em"  class="ub" onclick="youhui('{$vo.store_id}')">
+                                    <div class="ub-f1" style="color: blue">优惠详情</div>
+                                    <div class="ub-f1" style="text-align: right;font-size: 16px"><i class="fa fa-angle-down"></i></div>
+                                </div>
+                                <div style="font-size: 13px;color: #333;margin-left: 7em;display: none"  class="youhui_{$vo.store_id}">
+                                    <ul class="">
+                                        <volist name="vo.youhui" id="ro">
+                                            <ol style="color:#{$ro.color} ;border: 1px solid #{$ro.color};width: 20px;height: 20px;text-align: center;line-height:20px;float: left">{$ro.promotional_labels}</ol>
+                                            <ol class="" style="color: grey;white-space: pre-wrap">{$ro.promotion_name}</ol>
+                                        </volist>
+                                    </ul>
+                                </div>
+                            </li>
+                        </notempty>
+                    </volist>
+                    <volist name="store" id="vo">
+                        <li class="mui-table-view-cell mui-media">
+                            <a href="{:U('Menu/index',array('store_id'=>$vo['store_id'],'peisongfei'=>$vo['peisongfei'],'is_open'=>$vo['is_open']))}">
+                                <img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png"  data-original="{$vo.store_logo_id|get_cover='path'}" style="width: 5em;height: 4em">
+                                <div class="mui-media-body">
+                                    {$vo.store_name}
+                                    <div style="font-size: 14px; color: #333" class="ub">
+                                        <input type="hidden" value="{$vo.is_open}">
+                                        <if condition="$vo.is_open eq 1">
+                                            <div class="ub-f1" style="color: grey;width: 50%">距离<span class="km">{$vo.juli}</span>km</div>
+                                            <else/>
+                                            <div class="ub-f1" style="color: green;width: 50%">商家休息中</div>
+                                        </if>
+                                    </div>
+                                    <div style="font-size: 12px;" class="ub">
+                                        <div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">起送价 ￥{$vo.qisong_price}</div>
+                                        <!--<div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">人均消费 ￥{$vo.renjun}</div>-->
+                                    </div>
+                                    <div style="font-size: 12px;" class="ub">
+                                        <div class="ub-f1" style="color: #999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">配送费 ￥{$vo.peisongfei}</div>
+                                        <div class="ub-f1" style="color:#999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">约{$vo.sh_time}钟送达</div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div style="font-size: 13px;color: #333;margin-left: 7em"  class="ub" onclick="youhui('{$vo.store_id}')">
+                                <div class="ub-f1" style="color: blue">优惠详情</div>
+                                <div class="ub-f1" style="text-align: right;font-size: 16px"><i class="fa fa-angle-down"></i></div>
+                            </div>
+                            <div style="font-size: 13px;color: #333;margin-left: 7em;display:"  class="youhui_{$vo.store_id}">
+                                <ul class="">
+                                    <volist name="vo.youhui" id="ro">
+                                        <ol style="color:#{$ro.color} ;border: 1px solid #{$ro.color};width: 20px;height: 20px;text-align: center;line-height:20px;float: left">{$ro.promotional_labels}</ol>
+                                        <ol class="" style="color: grey;white-space: pre-wrap">{$ro.promotion_name}</ol>
+                                    </volist>
+                                </ul>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+                <div style="position: relative; text-align: center;bottom: 0px;color: orangered;display: none" id="tip">aOh! 没有更多商家了!</div>
+                <else/>
+                <div style="position: relative; text-align: center;z-index: 10;top: 50px;color: orangered;font-size: 16px;">aOh! 您所选区域暂时还没有商家!</div>
+            </notempty>
+        </div>
+    </div>
+    <div style="display: none;" id="allmap"></div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MqpoxhZcinOGfzZkZlG33PDM"></script>
+    <script src="__CUI__/js/jquery.lazyload.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            /*$('.mui-icon-search').click(function(){
+             location.href = "{:U('Search/search')}";
+             });*/
+            $.each($('#store input'),function(i){
+                var open = $(this).val();
+                if(open==0){
+                    $('#store li:eq('+i+')').css('background-color','#eee');
+                }
+            })
+
+            /*var numm=0;
+             var cityName = '{$reinfo.cityName}';
+             var lng = '{$reinfo.lng}';
+             var lat='{$reinfo.lat}'
+             $(window).scroll(function(){
+             if($(this).scrollTop()+$(this).height()+10 >=$(document).height()){
+             numm += 21;
+             $.get("{:U('store')}",{numm:numm,cityName:cityName,lng:lng,lat:lat},function(data){
+             var store = '';
+             if(data!==null){
+             for(var i=0;i<data.length;i++){
+             if(data[i]['juli']<5){
+             store +='<ul class="mui-table-view"><li class="mui-table-view-cell mui-media"> ' +
+             '<a href="{:U(\'Menu/index\',\'\',false)}/store_id/'+data[i]['store_id']+'"> ' +
+             '<img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png" data-original="'+data[i]['path']+'" style="width: 5em;height: 4em"> ' +
+             '<div class="mui-media-body">'+data[i]['store_name']+'<div style="font-size: 14px; color: #333" class="ub"> ' +
+             '<div class="ub-f1" style="color: red;width: 50%">配送费 ￥'+data[i]['peisong_price']+'起</div> ' +
+             '<div class="ub-f1" style="color: grey;width: 50%">距离<span class="km">'+data[i]['juli']+'</span>km</div> ' +
+             '</div> <div style="font-size: 14px; color: #333" class="ub"> <div class="ub-f1" style="color: red;width: 50%">起送价 ￥'+data[i]['qisong_price']+'</div> ' +
+             '<div class="ub-f1" style="width: 50%">约50分钟送达</div> </div> </div> </a> </li> '
+             }
+             }
+             $('#store').after(store);
+             $('img.lazy').lazyload({
+             effect:'fadeIn'
+             });
+             }else{
+             $('#tip').show();
+             }
+             })
+             }
+             });*/
+            $('img.lazy').lazyload({
+                effect:'fadeIn'
+            });
+        });
+        function youhui(storeid){
+            $('.youhui_'+storeid).slideToggle('');
+        }
+    </script>
+</block>

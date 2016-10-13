@@ -1,0 +1,25 @@
+<extend name="Base:common_main"/>
+<block name="body">
+    <include file="Public/Personal_Center"/>
+    <link href="__CSS__/Account.css" rel="stylesheet"/>
+    <div class="wm_right">
+        <div class="wm_right_top">账户设置</div>
+        <div id="combottom">
+            <div class="AccMenu1">
+                <ul>
+                    <li>更改账户设置</li>
+                    <li>登陆密码</li>
+                    <li>手机绑定</li>
+                </ul>
+            </div>
+            <div class="AccMenu2">
+                <ul>
+                    <li><a href="{:U('Account/SetAccount')}">修改</a></li>
+                    <li><a>修改</a></li>
+                    <li><a>修改</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</block>

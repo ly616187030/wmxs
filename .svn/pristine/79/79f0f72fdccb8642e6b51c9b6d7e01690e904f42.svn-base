@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head_waimai"/>
+</head>
+<body>
+<!-- 头部 -->
+<include file="Orderlist/head"/>
+<!-- /头部 -->
+
+<!-- 主体 -->
+<block name="body"></block>
+<!-- /主体 -->
+
+<!-- 底部 -->
+
+<!-- /底部 -->
+</body>
+</html>

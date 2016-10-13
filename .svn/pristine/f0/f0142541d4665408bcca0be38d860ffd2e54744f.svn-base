@@ -1,0 +1,204 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <div class="main-title cf">
+        <h2>新增菜品</h2>
+        <legend>&nbsp;</legend>
+    </div>
+    <form action="{:U('add')}" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 50px;">
+        <input type="hidden" name="cp_id" value="{$id}"/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜品名称：</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="cp_name" value="{$info.cp_name}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">餐品名称拼音简写</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="cp_name_pyjx" value="{$info.cp_name_pyjx}" placeholder="如：ABC"/>
+            </div>
+            <label class="control-label" style="margin:0px;padding:0px;"><button type="button" class="btn btn-primary" id="autopy">自动生成</button></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">餐品大图</label>
+
+            <div class="col-sm-2">
+
+                <div  id="_upload_box" class="wu-example">
+                    <!--用来存放文件信息-->
+                    <div id="_upload_list" class="uploader-list col-xs-12 img-box">
+                        <notempty name="info.cp_big_img">
+                            <div id="_upload_preview" class="col-md-4 file-item thumbnail">
+                                <i class="fa fa-times-circle remove-picture"></i>
+                                <img src="{$info.cp_big_img|get_new_cover='path'}" data-id="">
+                            </div>
+                            <else />
+                            <div id="_upload_preview" class="col-md-4 file-item thumbnail">
+                                <i class="fa fa-times-circle remove-picture"></i>
+                                <img src="" data-id="">
+                            </div>
+                        </notempty>
+                    </div>
+                    <div class="btns col-xs-12">
+                        <input type="hidden" id="_upload_input" name="cp_big_img" value="{$info.cp_big_img}"/>
+                        <div id="_upload">上传图片</div>
+                        <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                    </div>
+                </div>
+
+            </div>
+            <label style="padding-top:7px;font-weight:normal;">（320×240像素的图片）</label>
+            <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+            <script type="text/javascript">
+                $(function(){
+                    var uploader = WebUploader.create({
+                        auto: true,                                                                    // 选完文件后，是否自动上传
+                        duplicate: true,                                                               // 同一文件是否可以重复上传
+                        swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                        server: '{:U("Admin/Upload/Upload", array("dir" => "image"))}',    // 文件接收服务端
+                        pick: '#_upload',                                   							// 选择文件的按钮
+                        resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                        //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                        fileSingleSizeLimit:<php> echo C('UPLOAD_FILE_SIZE') ? : 2; </php>*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                    // 文件过滤
+                    accept: {
+                        title: 'Images',
+                                extensions: 'gif,jpg,jpeg,bmp,png',
+                                mimeTypes: 'image/*'
+                    }
+                });
+
+                // 文件上传过程中创建进度条实时显示。
+                uploader.on( 'uploadProgress', function( file, percentage ) {
+                    $( '#_upload_preview').removeClass('hidden');
+                    var $li = $( '#_upload_preview'),
+                            $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if ( !$percent.length ) {
+                        $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                .appendTo( $li )
+                                .find('.progress-bar');
+                    }
+                    $percent.css( 'width', percentage * 100 + '%' );
+                });
+
+                // 完成上传完了，成功或者失败，先删除进度条。
+                uploader.on( 'uploadComplete', function( file ) {
+                    $( '#_upload_preview' ).find('.progress').remove();
+                });
+
+                // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                uploader.on( 'uploadSuccess', function( file , response) {
+                    $( '#_upload_preview' ).addClass('upload-state-done');
+                    if(eval('response').status == 0){
+                        $.alertMessager(response.info);
+                    } else {
+                        $( '#_upload_input' ).attr('value', response.id);
+                        $( '#_upload_preview img').attr('src', response.url);
+                        $( '#_upload_preview img').attr('data-id', response.id);
+                    }
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader.on( 'uploadError', function( file ) {
+                    $.alertMessager('error');
+                    var $li = $( '_upload_preview'),
+                            $error = $li.find('div.error');
+                    // 避免重复创建
+                    if ( !$error.length ) {
+                        $error = $('<div class="error"></div>').appendTo( $li );
+                    }
+                    $error.text('上传失败');
+                });
+
+                // 删除图片
+                $(document).on('click', '#_upload_list .remove-picture', function() {
+                    $( '#_upload_input' ).val('') //删除后覆盖原input的值为空
+                    $( '#_upload_preview').addClass('hidden');
+                });
+                });
+            </script>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">原价：</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control" name="original_price" value="{$info.original_price}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">现价：</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control" name="now_price" value="{$info.now_price}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜品单位：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="danwei" value="{$info.danwei}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">销售时间(早)</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"  style="width:60px;float:left;" name="s_time[]"  placeholder="9" value="{$info.zao1}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                <input type="text" class="form-control" style="width:60px;float:left;" name="s_time[]"  placeholder="30" value="{$info.zao2}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">-</span>
+                <input type="text" class="form-control"  style="width:60px;float:left;" name="s_time[]"  placeholder="12" value="{$info.zao3}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                <input type="text" class="form-control" style="width:60px;float:left;" name="s_time[]"  placeholder="10" value="{$info.zao4}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">销售时间(晚)</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control"  style="width:60px;float:left;" name="e_time[]"  placeholder="14" value="{$info.wan1}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                <input type="text" class="form-control" style="width:60px;float:left;" name="e_time[]"  placeholder="20" value="{$info.wan2}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">-</span>
+                <input type="text" class="form-control"  style="width:60px;float:left;" name="e_time[]"  placeholder="21" value="{$info.wan3}"/>
+                <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                <input type="text" class="form-control" style="width:60px;float:left;" name="e_time[]"  placeholder="30" value="{$info.wan4}"/>
+            </div>
+            <label class="control-label" style="font-weight: normal">(不添加为24小时销售)</label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">餐品描述</label>
+            <div class="col-sm-3">
+                <textarea class="form-control" rows="3" name="cp_desc" maxlength="120" placeholder="最多只能输入120个字">{$info.cp_desc}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-4">
+                <button class="btn btn-success ajax-post"  type="submit" target-form="form-horizontal">确 定</button>
+                <button class="btn btn-return btn-info " onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        //自动生成拼音
+
+        $("#autopy").click(function () {
+
+            var $this = $(this);
+            var key = $("input[name='cp_name']").val();
+            if ($.trim(key) != '') {
+                $.get("{:U('Caipin/cu2py')}", "keys=" + key).success(function (data) {
+                    $this.closest("div").find("input").val(data);
+                });
+            } else {
+                alert("请输入店铺名称");
+            }
+        });
+    </script>
+</block>

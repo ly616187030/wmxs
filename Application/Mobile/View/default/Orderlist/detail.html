@@ -1,0 +1,1461 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <style>
+        html,body{
+            background-color: ghostwhite;
+        }
+        .ubbb {
+            width: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            color: #fe4d3d;
+            border-bottom: 1px solid #dddddd;
+            padding:10px 0;
+            line-height: 2em;
+            /*background-color: #dd3131;;*/
+        }
+
+        .fll {
+            text-align: center;
+        }
+
+        .size {
+            font-size: 20px;
+        }
+
+        .bottom-all {
+            color: orangered;
+            border-bottom: solid 2px orangered;
+        }
+
+        .nav {
+            padding: 5px;
+        }
+
+        .co {
+            text-align: center;
+        }
+        .co-r{
+            text-align: right;
+        }
+        .co-j{
+            -moz-box-pack: justify;
+            -webkit-box-pack: justify;
+        }
+
+        .co img {
+            width: 22px;
+        }
+
+        .mar {
+            top: 1.5em;
+        }
+
+        .ttop {
+            margin-top: 15px;
+            width: 100%;
+            min-height: 4em;
+        }
+
+        .bor {
+            border: 1px solid #dddddd;
+            line-height: 2em;
+            border-radius: 4px;
+            background-color: white;
+            width: 10em;
+        }
+
+
+        .bor span{
+            position: absolute;right: 1em;
+        }
+        .bor p{
+            margin-left: 1em;;
+        }
+
+        .bot {
+            width: 100%;
+            position: fixed;
+            height: 4em;
+            bottom: 0;
+            left: 0;
+            /*border-top: 1px solid #dddddd;*/
+            padding: 5px 0 5px 0;
+            line-height: 4em;
+            z-index: 20;
+        }
+
+        .borr {
+            border: 1px solid #fe4d3d;
+            min-width: 5em;
+            line-height: 3em;
+            height:3em;
+            border-radius: 4px;
+        }
+
+
+        .bor-t-b{
+            border-bottom: solid 1px #dddddd;
+            border-top: solid 1px #dddddd;
+            margin-top: 15px;
+            padding: 5px;
+            line-height: 2em;
+            min-height: 2em;
+        }
+        .talk{
+            color: #808080;
+        }
+        .small{
+            font-size: 12px;
+            line-height: 1.2em;
+            margin-top: 0.5em;
+            padding-bottom: 1em;
+            width: 18em;
+        }
+        .ma{
+            top: -1em;
+        }
+        .lefts{
+            margin-left: 1em;
+        }
+        .rights{
+            margin-right: 1em;
+        }
+    </style>
+</block>
+<block name="body">
+    <div style="width: 100%;height: 100%;background-color: #333;position: fixed;z-index: 5;display: none; opacity: 0.5" id="zhezao"></div>
+    <div class="ub-fh" style=" position: fixed; top: 0; background-color: white; z-index: 10;">
+        <div class="ub ubbb">
+            <div class="ub-f1 fll size" id="orderlist"><i class="fa fa-angle-left"></i></div>
+            <div class="ub-f2 fll" style="margin-top: 0.4em;">
+                <h4>订单详情</h4>
+            </div>
+            <div class="ub-f1 fll size">
+                <a style="display: block; color: orangered;" href="tel:" id="phone"><i class="fa fa-phone"></i></a>
+            </div>
+        </div>
+        <div class="ub" style="border-bottom: 2px solid #dddddd;height: 3em">
+            <div class="ub-f1 fll  bottom-all" id="zhuangtai" style="line-height: 3em;">订单状态</div>
+            <div class="ub-f1 fll " id="xiangq" style="line-height: 3em;">订单详情</div>
+        </div>
+    </div>
+    <div style="width: 100%; height: 3.5em;"></div>
+    <div id="left" style="padding: 10px; margin-top: 3em;">
+        <volist name="status" id="vo3">
+            <switch name="vo3.status">
+                <case value="1">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">待付款<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                    <div id="pay" style="background-color: white;" class="ub bot" >
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%;background-color: #fe4d3d;color:#fff;font-weight: bold;">确认付款</div>
+                    </div>
+                </case>
+                <case value="2">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">待付款<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co" style="position: absolute; top: -2.5em;left: 1em;"><img
+                                    src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+
+                        </div>
+                    </div>
+                    <div  data-status="8" style="background-color: #fff;" class="ub bot returnPayp" id="returnPay">
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%;background-color: #fe4d3d;color:#fff">取消订单</div>
+                    </div>
+                </case>
+                <case value="3">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <notempty name="vo3.accept_time">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>商家已接受预定<span>{$vo3.accept_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待您的美食</p>
+                            </div>
+                        </div>
+                    </notempty>
+                    <div  style="background-color: #fff;" class="ub bot" id="returnOrder">
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%;background-color: #fe4d3d;color:#fff">取消订单</div>
+                    </div>
+                </case>
+                <case value="4">
+                    <!--货到付款-->
+                    <if condition="$vo3.pay_type eq 0">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+                        <eq name="vo3.ord_peisong_status" value="3">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver mar ma">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <div><p>配送中<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                    <p class="talk small">请稍等片刻...</p>
+                                </div>
+                            </div>
+                        </eq>
+                        <eq name="vo3.ord_peisong_status" value="4">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver mar ma">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <div><p>配送中<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                    <p class="talk small">请稍等片刻...</p>
+                                </div>
+                            </div>
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver mar ma">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/d.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <div><p>已送达<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                    <p class="talk small">请确认收货...</p>
+                                </div>
+                            </div>
+                        </eq>
+                        <if condition="$vo3.ord_peisong_status eq 4 or $vo3.ord_peisong_status eq 3">
+                            <div  style="background-color: white;" class="ub bot">
+                                <div class="ub-f1 co borr queren" data-status="5" style="margin-left:10%;margin-right: 10%">确认收货</div>
+                            </div>
+                            <else/>
+                            <div  style="background-color: #fff;" class="ub bot">
+                                <div class="ub-f1 co borr returnPayp" data-status="13" style="margin-left:10%;margin-right: 10%;background-color: #fe4d3d;color:#fff">取消订单</div>
+                            </div>
+                        </if>
+                        <!--在线支付-->
+                        <else/>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+                        <div  style="background-color: #fff;" class="ub bot">
+                            <div class="ub-f1 co borr returnPayp" data-status="13" style="margin-left:10%;margin-right: 10%;background-color: #fe4d3d;color:#fff" >取消订单</div>
+                        </div>
+                    </if>
+
+                </case>
+                <case value="5">
+                    <eq name="vo3.sh_mode" value="2">
+                        <!--平台配送-->
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                                </div>
+                            </div>
+                        </if>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+
+                        <div class=" ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/bike.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>配送员到达餐厅<span>{$vo3.come_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">正在派送中...</p>
+                            </div>
+                        </div>
+                        <div class=" ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/bike.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>已送达<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">请确认收货</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/d.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单完成<span>{$vo3.complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                        <!--商家自己配送-->
+                        <else/>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <p>支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                                </div>
+                            </div>
+                        </if>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单完成<span>{$vo3.complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </eq>
+                    <if condition="$vo3.canju_status eq 0">
+                        <div  style="background-color: white;" class="ub bot">
+                            <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%" id="pingjia">评价</div>
+                        </div>
+                    </if>
+
+                </case>
+                <case value="6">
+                    <!--平台配送-->
+                    <eq name="vo3.sh_mode" value="2">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                                </div>
+                            </div>
+                        </if>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+                        <div class=" ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/bike.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>配送员到达餐厅<span>{$vo3.come_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">正在派送中...</p>
+                            </div>
+                        </div>
+                        <div class=" ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/bike.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>已送达<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">请确认收货</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/d.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单完成<span>{$vo3.complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">已评价<span>{$vo3.pingjia_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                        <else/>
+                        <!--商家自己配送-->
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <p>支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                                </div>
+                            </div>
+                        </if>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/d.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单完成<span>{$vo3.complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">已评价<span>{$vo3.pingjia_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </eq>
+                </case>
+                <case value="7">
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <!--在线支付-->
+                        <else/>
+                        <!--货到付款-->
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">订单已取消<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                </case>
+                <case value="8">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">已申请退款<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                        </div>
+                    </div>
+                    <!--<div id="qxMoney" style="background-color: white;" class="ub bot">
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%">取消退款</div>
+                    </div>-->
+                </case>
+                <case value="9">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p>商家拒接<span>{$vo3.reject_time|date='m-d H:i',###}</span></p></div>
+                            <p style=" position: absolute;" class="talk small">拒接原因：{$vo3.reject_reason}
+                            </p>
+                        </div>
+                    </div>
+                </case>
+                <case value="10">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p>商家拒接<span>{$vo3.reject_time|date='m-d H:i',###}</span></p></div>
+                            <p style=" position: absolute;" class="talk small">拒接原因：{$vo3.reject_reason}
+                            </p>
+                        </div>
+                    </div>
+                </case>
+                <case value="11">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p >已申请退款<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">商家已处理<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">退款在2-5个工作日内完成</p>
+                        </div>
+                    </div>
+                    <!--<div id="qxMoney" style="background-color: white;" class="ub bot">
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%">取消退款</div>
+                    </div>-->
+                </case>
+                <case value="12">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p >已申请退款<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">商家已处理<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">退款在2-5个工作日内完成</p>
+                        </div>
+                    </div>
+
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">退款已完成<span>{$vo3.complete_back_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                </case>
+                <case value="13">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                            <p class="talk small">餐品准备中</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 0) AND ($vo3.is_paied eq 0)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单已取消<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                        <else/>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p >已申请退款<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                            </div>
+                        </div>
+                    </if>
+
+                </case>
+                <case value="14">
+                    <!--平台配送，需要添加wm_delivery_detail 状态-->
+                    <if condition="$vo3.sh_mode eq 2">
+                        <div class="ub ttop" >
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                            <div class="ub ttop">
+                                <div class="ub ub-f1 ub-ver">
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                    <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                                </div>
+                                <div class="ub-f4 bor">
+                                    <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                                </div>
+                            </div>
+                        </if>
+
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+
+                        <!-- <div class="ub ttop">
+                             <div class="ub ub-f1 ub-ver mar ma">
+                                 <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                 <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                             </div>
+                             <div class="ub-f4 bor">
+                                 <div><p>餐品制作完成<span>{$vo3.making_time|date='m-d H:i',###}
+ </span></p></div>
+                                 <p class="talk small">等待配送员取餐</p>
+                             </div>
+                         </div>-->
+                        <switch name="vo3.d_status">
+                            <case value="3">
+                                <div class=" ub ttop">
+                                    <div class="ub ub-f1 ub-ver mar ma">
+                                        <div class="ub-f1 co"><img
+                                                src="__IMG__/orderlist/e.png"/></div>
+                                        <div class="ub-f1 co"><img
+                                                src="__IMG__/orderlist/bike.png"/></div>
+                                    </div>
+                                    <div class="ub-f4 bor">
+                                        <div><p>配送员到达餐厅<span>{$vo3.come_time|date='m-d H:i',###}</span></p></div>
+                                        <p class="talk small">正在派送中...</p>
+                                    </div>
+                                </div>
+                            </case>
+                            <case value="4">
+                                <div class=" ub ttop">
+                                    <div class="ub ub-f1 ub-ver mar ma">
+                                        <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                        <div class="ub-f1 co"><img
+                                                src="__IMG__/orderlist/bike.png"/></div>
+                                    </div>
+                                    <div class="ub-f4 bor">
+                                        <div><p>配送员到达餐厅<span>{$vo3.come_time|date='m-d H:i',###}</span></p></div>
+                                        <p class="talk small">正在派送中...</p>
+                                    </div>
+                                </div>
+                                <div class=" ub ttop">
+                                    <div class="ub ub-f1 ub-ver mar ma">
+                                        <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                        <div class="ub-f1 co"><img
+                                                src="__IMG__/orderlist/bike.png"/></div>
+                                    </div>
+                                    <div class="ub-f4 bor">
+                                        <div><p>已送达<span>{$vo3.delivery_time|date='m-d H:i',###}</span></p></div>
+                                        <p class="talk small">请确认收货</p>
+                                    </div>
+                                </div>
+                            </case>
+                        </switch>
+
+                        <eq name="vo3.d_status" value="4">
+                            <div  style="background-color: white;" class="ub bot">
+                                <div class="ub-f1 co borr getGoods" style="margin-left: 10%;margin-right:10%">确认收货</div>
+                            </div>
+                        </eq>
+
+                        <else/>
+                        <!--商家自己配送-->
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">请耐心等待商家确认</p>
+                            </div>
+                        </div>
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <div><p>商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                                <p class="talk small">餐品准备中</p>
+                            </div>
+                        </div>
+
+                        <div  style="background-color: white;" class="ub bot">
+                            <div class="ub-f1 co borr getGoods" style="margin-left: 10%;margin-right: 10%">确
+                                认送达</div>
+                        </div>
+                    </if>
+
+                </case>
+                <!--退款中（状态10转来）-->
+                <case value="15">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p>商家拒接<span>{$vo3.reject_time|date='m-d H:i',###}</span></p></div>
+                            <p class="talk small">拒接原因：{$vo3.reject_reason}</p>
+                        </div>
+                    </div>
+
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">商家已处理<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">退款在2-5个工作日内完成</p>
+                        </div>
+                    </div>
+                    <!--<div id="qxMoney" style="background-color: white;" class="ub bot">
+                        <div class="ub-f1 co borr" style="margin-left: 10%;margin-right: 10%">取消退款</div>
+                    </div>-->
+                </case>
+                <!--退款中（从状态13转来）-->
+                <case value="16">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p style="margin-top: 1em;">商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                        </div>
+                    </div>
+
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">已申请退款<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">商家已处理<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">退款在2-5个工作日内完成</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 0)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单已取消<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                </case>
+                <!--退款完成（15转来）-->
+                <case value="17">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p>商家拒接<span>{$vo3.reject_time|date='m-d H:i',###}</span></p></div>
+                            <p class="talk small">拒接原因：{$vo3.reject_reason}</p>
+                        </div>
+                    </div>
+
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">商家已处理<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">退款在2-5个工作日内完成</p>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">退款完成<span>{$vo3.complete_back_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                </case>
+                <case value="18">
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/a.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p>订单已提交<span>{$vo3.xd_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">请耐心等待商家确认</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">支付成功<span>{$vo3.pay_complete_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/b.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <div><p style="margin-top: 1em;">商家已接单<span>{$vo3.confirm_time|date='m-d H:i',###}</span></p></div>
+                        </div>
+                    </div>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">订单已取消<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            <p class="talk small">取消原因：{$vo3.cancel_ord_reason}</p>
+                        </div>
+                    </div>
+                    <if condition="($vo3.pay_type eq 1) AND ($vo3.is_paied eq 1)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">已申请退款<span>{$vo3.back_time|date='m-d H:i',###}</span></p>
+                                <p class="talk small">商家将在24小时内处理，逾期将自动确认</p>
+                            </div>
+                        </div>
+                    </if>
+                    <if condition="($vo3.pay_type eq 0)">
+                        <div class="ub ttop">
+                            <div class="ub ub-f1 ub-ver mar ma">
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                                <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                            </div>
+                            <div class="ub-f4 bor">
+                                <p style="margin-top: 1em;">订单已取消<span>{$vo3.cancel_ord_time|date='m-d H:i',###}</span></p>
+                            </div>
+                        </div>
+                    </if>
+                    <div class="ub ttop">
+                        <div class="ub ub-f1 ub-ver mar ma">
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/e.png"/></div>
+                            <div class="ub-f1 co"><img src="__IMG__/orderlist/c.png"/></div>
+                        </div>
+                        <div class="ub-f4 bor">
+                            <p style="margin-top: 1em;">退款完成<span>{$vo3.complete_back_time|date='m-d H:i',###}</span></p>
+                        </div>
+                    </div>
+                </case>
+            </switch>
+        </volist>
+    </div>
+    <div style="width: 100%; height: 2em;"></div>
+    <div style="display: none" id="right">
+        <div class="ub co-j bor-t-b nav" style="background-color: white">
+            <div class="ub-f1 ub lefts" id="store">
+                <div class=""><img src="__IMG__/orderlist/b.png" style="width: 20px;margin-right: 0.6em;"></div>
+                <div style="font-weight: bold;" class="ub-f1 ">
+                    <volist name="detail" id="vo">
+                    {$vo.store_name}
+                    </volist>
+                </div>
+            </div>
+            <div class="ub-f1 co-r rights"><i class="fa fa-angle-right"></i></div>
+        </div>
+        <volist name="goods" id="vo1">
+            <div style="border-bottom: 1px solid gainsboro; height: 2em; line-height: 2em; background-color:white" class="ub  nav">
+                <div class="ub-f4 lefts">{$vo1.cm_name}</div>
+                <div class="ub-f1 lefts co-r">*{$vo1.quantity}</div>
+                <div class="ub-f1 lefts co-r rights">￥{$vo1.total_money}</div>
+            </div>
+        </volist>
+        <div style="background-color: white;" class="bor-t-b nav">
+            <!--<div style="border-bottom: 1px solid gainsboro;" class="ub">-->
+            <!--<div class="ub-f1 lefts">首单立减</div>-->
+            <!--<div class="ub-f1 co-r rights">-￥10</div>-->
+            <!--</div>-->
+            <volist name="order" id="vo2">
+                <div style="border-bottom: 1px solid gainsboro;" class="ub">
+                    <div class="ub-f1 lefts">配送费</div>
+                    <div class="ub-f1 co-r rights">￥{$vo2.ps_cost}</div>
+                </div>
+                <div style="border-bottom: 1px solid gainsboro;"class="ub">
+                    <div  class="ub-f1 lefts">餐盒</div>
+                    <div class="ub-f1 co-r rights">￥{$vo2.canju_total}</div>
+                </div>
+                <div style="border-bottom: 1px solid gainsboro;" class="ub">
+                    <div class="ub-f1 lefts">优惠减</div>
+                    <div class="ub-f1 co-r rights">￥-{$vo2.yh_price}</div>
+                </div>
+                <div style="border-bottom: 1px solid gainsboro;" class="ub">
+                    <div class="ub-f1 lefts">优惠抵用券/代金券/红包</div>
+                    <div class="ub-f1 co-r rights">￥-{$vo2.juan_price}</div>
+                </div>
+                <div class="ub">
+                    <div class="ub-f1 lefts">合计</div>
+                    <div class="ub-f1 co-r rights total"></div>
+                </div>
+            </volist>
+        </div>
+        <volist name="pingjia" id="pj">
+            <div style="background-color: white;" class="bor-t-b nav">
+                <div class=" lefts" style="border-bottom: 1px solid #dddddd"><i class="fa fa-file"
+                                                                                style="color: #fe4d3d;"></i>我的评价</div>
+                <div class="lefts" >
+                    <div>菜品评价：<span class="ub-f1" style="font-size: 20px;font-weight: bold;color: red">
+                           <switch name="pj.pingfen">
+                               <case value="1">
+                                   ★
+                               </case>
+                               <case value="2">
+                                   ★★
+                               </case>
+                               <case value="3">
+                                   ★★★
+                               </case>
+                               <case value="4">
+                                   ★★★★
+                               </case>
+                               <case value="5">
+                                   ★★★★★
+                               </case>
+                           </switch>
+                       </span>
+                    </div>
+
+                    <div>送餐时间：<span class="ub-f1" style="font-size: 20px;font-weight: bold;color: red">
+                           <switch name="pj.pj_songda">
+                               <case value="1">
+                                   ★
+                               </case>
+                               <case value="2">
+                                   ★★
+                               </case>
+                               <case value="3">
+                                   ★★★
+                               </case>
+                               <case value="4">
+                                   ★★★★
+                               </case>
+                               <case value="5">
+                                   ★★★★★
+                               </case>
+                           </switch>
+                       </span></div>
+                    <div>服务质量：<span class="ub-f1" style="font-size: 20px;font-weight: bold;color: red">
+                           <switch name="pj.pj_service">
+                               <case value="1">
+                                   ★
+                               </case>
+                               <case value="2">
+                                   ★★
+                               </case>
+                               <case value="3">
+                                   ★★★
+                               </case>
+                               <case value="4">
+                                   ★★★★
+                               </case>
+                               <case value="5">
+                                   ★★★★★
+                               </case>
+                           </switch>
+                       </span></div>
+
+                </div>
+                <div class=" lefts">{$pj.content}</div>
+               <!-- <input type="hidden" id="songda_num" value="{$pj.pj_songda}">
+                <input type="hidden" id="caipin_num" value="{$pj.pingfen}">-->
+            </div>
+        </volist>
+        <volist name="order" id="vo2">
+            <div style="background-color: white;" class="bor-t-b nav">
+                <div style="border-bottom: 1px solid #dddddd"><span class="lefts"><i class="fa fa-file" style="color: #fe4d3d;margin-right: 0.6em;"></i>订单详情</span></div>
+                <div class=" lefts">
+                    <p>订单号：{$vo2.order_sn}</p>
+                    <p>下单时间：{$vo2.xd_time|date='Y-m-d H:i:s',###}</p>
+                    <p>支付方式：<if condition="$vo2.pay_type eq 0">货到付款<else/>在线支付</if> </p>
+                    <p>手机号：{$vo2.phone}</p>
+                    <p>地址：{$orders[0]}</p>
+                </div>
+            </div>
+        </volist>
+        <div style="width: 100%; height: 5em;"></div>
+        <a href="{:U('menu/index?store_id='.$vo1['store_id'].'&peisongfei='.$peisongfei)}"><div style="width: 100%; height: 3em; text-align: center; line-height: 3em; font-size: 16px; color: white; background-color: #fe4d3d; position: fixed;bottom: 0;">再来一单</div></a>
+    </div>
+
+    <script src='__JS__/socket.io.js'></script>
+    <script>
+
+        $(document).ready(function () {
+            var total=parseFloat('{$vo2.total}')+parseFloat('{$vo2.ps_cost}')+parseFloat('{$vo2.canju_total}')-parseFloat('{$vo2.yh_price}')-parseFloat('{$vo2.juan_price}');
+            total=Math.formatFloat(total,2);
+            $('.total').text('￥'+total);
+            //判断取消订单
+            var tel = '{$vo1.phone}';
+            $('#phone').attr('href','tel:'+tel);
+            var order_deft = '{$vo1.order_deft}';
+            if(order_deft==0){
+                $('.returnPayp').addClass('returnPay');
+                $('#returnOrder').addClass('returnOrder');
+            }else if(order_deft==1){
+                $('.returnPayp').click(function(){
+                    location.href="tel:"+tel+""
+                });
+                $('#returnOrder').click(function(){
+                    location.href="tel:"+tel+""
+                });
+            }else if(order_deft==2){
+                var time='{$vo1.xd_time}';
+                var order_dct = "{$vo1.order_dct}";
+                var now_time= Date.parse(new Date())/1000;
+                $('.returnPayp').addClass('returnPay');
+                $('#returnOrder').addClass('returnOrder');
+                if((now_time-time)/60>order_dct){
+                    $('.returnPayp').remove();
+                    $('#returnOrder').remove();
+                }
+            }
+            var uid='{:session("user_auth.push_msg_id")}';
+            // 连接服务端
+            var socket = io('http://'+document.domain+':2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                //$('#content').html('收到消息：'+msg);
+                msg=='success' && location.reload();
+            });
+            // 后端推送来在线数据时
+            /*socket.on('update_online_count', function(online_stat){
+                $('#online_box').html(online_stat);
+            });*/
+
+
+
+        //切换
+            //商家未接单取消订单
+            $('.returnOrder').click(function(){
+                var order_id = '{$vo2.order_id}';
+                var status = 7;
+                var url = "{:U('orderStatus')}";
+                $.get(url,{order_id:order_id,status:status},function(data){
+                    if(data == true){
+                        window.location.reload();
+                    }
+                })
+            })
+            //商家接单取消订单
+            $('.returnPay').click(function(){
+                var order_id = '{$vo2.order_id}';
+                var total='{$vo2.total}';
+                if('{$vo2.pay_type}'==1){
+                    var status=$(this).data('status');
+                    location.href='{:U("cancelOrder","",false)}/ordid/'+order_id+'/total/'+total +'/status/'+status;
+                }else{
+                    var url = "{:U('orderStatus')}";
+                    var status=7;
+                    $.get(url,{order_id:order_id,status:status},function(data){
+                        if(data == true){
+                            window.location.reload();
+                        }
+                    })
+                }
+
+            })
+
+
+            $('.getGoods').click(function(){
+                var order_id = '{$vo2.order_id}';
+                var status = 5;
+                var url = "{:U('orderStatus')}";
+                $.get(url,{order_id:order_id,status:status},function(data){
+                    if(data == true){
+                        window.location.reload();
+                    }
+                })
+            })
+            $('#qxMoney').click(function(){
+                var order_id = '{$vo2.order_id}';
+                var status1 = 2;
+                var res = 1
+                var url = "{:U('orderStatus')}";
+                $.get(url,{order_id:order_id,status1:status1,res:res},function(data){
+                    if(data == true){
+                        window.location.reload();
+                    }
+                })
+            })
+            $('#pay').click(function(){
+                var ordsn= '{$vo2.order_sn}';
+                var total='{$vo2.total}';
+                location.href="http://<?php echo $_SERVER['HTTP_HOST']?>/WeixinPay/pay/jsapi.php?ordsn="+ordsn
+                +"&total="+total;
+            })
+
+            $('#orderlist').click(function(){
+                window.location.href = "{:U('index')}";
+            })
+            $('#pingjia').click(function(){
+                window.location.href="{:U('pingjia?order_id='.$vo2['order_id'])}";
+            })
+            $('#zhuangtai').click(function(){
+                var url = "{:U('detail?order_id='.$vo2['order_id'])}";
+                window.location.href=url;
+            })
+            $('#xiangq').click(function(){
+                $('#xiangq').addClass('bottom-all')
+                $('#right').css('display','block')
+                $('#left').css('display','none')
+                $('#zhuangtai').removeClass('bottom-all')
+            })
+            $('#store').click(function(){
+                window.location.href="{:U('menu/index?store_id='.$vo1['store_id'])}";
+            })
+            $('.queren').click(function(){
+                if(confirm('是否确认收货？')){
+                    var url = "{:U('queren')}";
+                    var orderid = "{$vo3.order_id}"
+                    $.get(url,{orderid:orderid},function(data){
+                        if(data){
+                            window.location.reload();
+                        }
+                    })
+                }
+            });
+
+        });
+        Math.formatFloat = function(f, digit) {
+            var m = Math.pow(10, digit);
+            return parseInt(f * m, 10) / m;
+        }
+    </script>
+</block>

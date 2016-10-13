@@ -1,0 +1,86 @@
+
+    <extend name="./Application/Admin/View/Public/layout.html"/>
+
+    <block name="main">
+        <link rel="stylesheet" href="__PUBLIC__/libs/layer/skin/layer.css">
+        <link href="__PUBLIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+        <link href="__PUBLIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+
+        <div class="builder builder-list-box panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs">
+                        <li ><a href="{:U('indexqiyezong')}" style="color:#287DDE;">企业</a></li>
+                        <li class="active"><a href="{:U('indexdailizong')}">代理商</a></li>
+                    </ul>
+                </div>
+            </div>
+            <form class="form-inline" style="margin-bottom: 1em;margin-top: 0.5em" method="post" action="{:U('Settlement/indexdailizong')}">
+                <div class="form-group">
+                    <input type="text" name="stime" class="form-control date" placeholder="起" <notempty name="post.stime">value="{$post.stime}"</notempty>>
+                    - <input name="etime" type="text" class="form-control date" placeholder="止"<notempty name="post.etime">value="{$post.etime}"</notempty>>
+                </div>
+                    <div class="form-group dailishang">
+                        代理商：<select class="form-control"name="dailishang">
+                            <option <notempty name="post.dailishang">value="{$post.dailishang}"<else/>value=""</notempty>style="display: none;"><notempty name="post.dailishang">{$post.dailishang|get_agent_name}<else/>请选择代理商</notempty></option>
+                            <volist name="daili" id="vo">
+                                <option value="{$vo.id}">{$vo.nickname}</option>
+                            </volist>
+                        </select>
+                    </div>
+                <button type="submit" class="btn btn-default">查询</button>
+                <a href="{:U('indexdailizong')}" class="btn btn-default">重置</a>
+            </form>
+            <!-- 标签页导航 -->
+            <div class="tab-wrap">
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <table class="table table-bordered table-hove">
+                        <thead>
+                        <tr>
+                            <th>代理商名称</th>
+                            <th>企业名称</th>
+                            <th>有效订单</th>
+                            <th>全部订单</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <notempty name="qiye11">
+                        <volist name="qiye11" id="vo">
+                                <tr >
+                                    <td align="center"><if condition="$vo.from_agent_id eq 0">暂无<else/>{$vo.from_agent_id|get_agent_name}</if></td>
+                                    <td align="center">{$vo.c_name}</td>
+                                    <td align="center">{$vo.all_valid_order}</td>
+                                    <td align="center">{$vo.all_order}</td>
+                                </tr>
+                            </volist>
+                            <else/>
+                            <tr >
+                                <td align="center" colspan="9">没有检索到数据</td>
+                            </tr>
+                        </notempty>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="page">{$page}</div>
+    </div>
+
+    </block>
+    <block name="script">
+        <script type="text/javascript" src="__PUBLIC__/libs/layer/layer.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                startView:2,
+                autoclose:true,
+            });
+        </script>
+    </block>
+
+
+

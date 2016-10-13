@@ -1,0 +1,183 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+<div id="main-container">
+    <div>
+        <div class="span9 page_message">
+            <section id="contents">
+                <ul class="title row">
+                    <li class="col-md-1">
+                        <a href="{:U('Weixin/Website/websiteCategory')}">分类管理</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('Weixin/Website/websiteSlideshow')}">首页幻灯片</a>
+                    </li>
+                    <li class="title-current col-md-1">
+                        <a   style="color:#fff;" href="{:U('Weixin/Website/websiteFooter')}">底部导航</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('Weixin/Website/websiteReplyNews')}">文章管理</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('Weixin/Website/websiteModolIndex')}">模板管理</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <form id="form" action="{:U('Website/websiteFooterAdd')}" method="post" class="form-horizontal">
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                        <!-- 基础文档模型 -->
+                        <div id="tab1" class="tab-pane in tab1">
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">一级菜单<span style="color:#ccc;">（如果是一级菜单，选择“无”即可）</span></label>
+                            <div  class="col-sm-12" style="padding:0px;margin:0px;">
+                                <div class="col-sm-2" style="height:40px;line-height: 40px;">
+                                    <empty name="info.id">
+                                        <select name="pid" class="form-control">
+                                            <option value="0" class="toggle-data" toggle-data="" selected>无</option>
+                                            <volist name="data" id="vo">
+                                                <option value="{$vo.id}" class="toggle-data" toggle-data="">{$vo.title}</option>
+                                            </volist>
+                                        </select>
+                                        <else/>
+                                        <if condition="$info.pid eq 0" >
+                                            <select name="pid" class="form-control">
+                                                <option value="0" class="toggle-data" toggle-data="" selected>无</option>
+                                                <volist name="infos" id="vos">
+                                                    <if condition="$vos.id neq $info.id">
+                                                        <option value="{$vos.id}" class="toggle-data" toggle-data="">{$vos.title}</option>
+                                                    </if>
+                                                </volist>
+                                            </select>
+                                            <else/>
+                                            <select name="pid" class="form-control">
+                                                <option value="0" class="toggle-data" toggle-data="" selected>无</option>
+                                                <volist name="infos" id="vos">
+                                                    <option value="{$vos.id}" class="toggle-data" toggle-data="" <eq name="vos.id" value="$info.pid">selected="selected"</eq>>{$vos.title}</option>
+                                                </volist>
+                                            </select>
+                                        </if>
+                                    </empty>
+                                </div>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>菜单名<span style="color:#ccc;">（可创建最多 3 个一级菜单，每个一级菜单下可创建最多 5 个二级菜单。编辑中的菜单不会马上被用户看到，请放心调试。 )</span></label>
+                            <div class="col-sm-2" >
+                                <input type="text" name="title" value="{$info.title}" class="form-control"/>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">关联URL</label>
+                            <div class="col-sm-4" >
+                                <input type="text" name="url" value="{$info.url}" class="form-control"/>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">排序号<span style="color:#ccc;">（数值越小越靠前）</span> </label>
+                            <div class="col-sm-2" >
+                                <input type="number" name="sort" value="{$info.sort}" class="form-control"/>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">图标<span style="color:#ccc;">（根据选择的底部模板决定是否需要上传图标）</span></label>
+                            <div class="col-sm-3" title="点击修改图片">
+                                <input type="file" id="upload_picture_icon">
+                                <input type="hidden" name="icon" id="cover_id_icon" value="{$info.icon}"/>
+                                <notempty name="info">
+                                    <div><img src="{$info.icon|get_cover='path'}" height="100" width="180"/></div>
+                                </notempty>
+                                <script type="text/javascript">
+                                    //上传图片
+                                    /* 初始化上传插件 */
+                                    $("#upload_picture_icon").uploadify({
+                                        "height"          : 100,
+                                        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                                        "fileObjName"     : "download",
+                                        "buttonText"      : "上传图片",
+                                        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                                        "width"           : 180,
+                                        'removeTimeout'	  : 1,
+                                        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+                                        "onUploadSuccess" : uploadPictureicon							    });
+                                    function uploadPictureicon(file, data){
+                                        var data = $.parseJSON(data);
+                                        var src = '';
+                                        if(data.status){
+                                            $("#cover_id_icon").val(data.id);
+                                            src = data.url || '__ROOT__' + data.path;
+                                            $("#cover_id_icon").parent().find('.upload-img-box').html(
+                                                    '<div class="upload-pre-item2"><img width="180" height="100" src="' + src + '"/></div>'
+                                            );
+                                            $('.weixin-cover-pic').attr('src',src);
+                                        } else {
+                                            updateAlert(data.info);
+                                            setTimeout(function(){
+                                                $('#top-alert').find('button').click();
+                                                $(that).removeClass('disabled').prop('disabled',false);
+                                            },1500);
+                                        }
+                                    }
+                                </script>
+                            </div>
+                            <lable class="col-sm-12" style="height:40px;line-height: 40px;"></lable>
+                            <div class="col-sm-12">
+                                <button class="btn submit-btn ajax-post btn-success" style="width:12em;height:3em;" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                            </div>
+                    </form>
+                </div>
+                <!--通用的微信预览模板-->
+                <!--头部标题栏-->
+                <!--鉴于样式title放进具体每块模块-->
+                <!--CSS模块-->
+                <div class="weixin-preview">
+                    <p class="preview-tips">微信回复预览</p>
+                    <div class="weixin-box">
+                        <p class="weixin-title"></p>
+                        <div class="weixin-cover"><img class="weixin-cover-pic" src=""/></div>
+                        <p class="weixin-content">
+
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+                        $('.tab-content').addClass('has-weixinpreivew');
+                        if($('input[name="title"]').val()!=undefined){
+                            $('.weixin-title').html($('input[name="title"]').val());
+                        }else{
+                            $('.weixin-title').html($('input[name="config[title]"]').val());
+                        }
+                        if($('textarea[name="content"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="content"]').val());
+                        }else if($('textarea[name="intro"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="config[intro]"]').val());
+                        }else{
+                            $('.weixin-content').html($('textarea[name="config[info]"]').val());
+                        }
+                        var weixin_cover_picurl = $('#cover_id_picurl').next().find('img').attr('src');
+                        if(weixin_cover_picurl==undefined)weixin_cover_picurl=$('#cover_id_cover').next().find('img').attr('src');
+                        if($('#cover_id_cover').val()==undefined && $('#cover_id_picurl').val()==undefined){
+                            $('.weixin-preview').hide();
+                        }
+                        if(weixin_cover_picurl==undefined || weixin_cover_picurl==""){
+                            $('.weixin-cover-pic').attr('src',"/wp/Public/Home/images/no_cover.png");
+                        }else{
+                            $('.weixin-cover-pic').attr('src',weixin_cover_picurl);
+                        }
+                        $('input[name="title"]').keyup(function(){
+                            $('.weixin-title').html($(this).val());
+                        });
+                        $('textarea[name="content"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="info"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="intro"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                    </script>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!-- /主体 -->
+</block>

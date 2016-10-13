@@ -1,0 +1,470 @@
+<extend name="Public/base"/>
+<block name="style">
+    <style>
+        .orderlist{float: left; height: 42px; line-height: 42px;}
+        .storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+        .storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+        .storeList ul li:hover{background: #d2dcf8}
+        .red-star:before{
+            content:"*";
+            color:red;
+            font-weight: bold;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+        .main-title{
+            margin-bottom: 20px;
+        }
+        #my_define{
+            display: none;
+        }
+    </style>
+</block>
+<block name="body">
+
+    <div class="main-title cf">
+
+        <h3 class="m-b col-sm-8">添加菜品</h3>
+    </div>
+
+    <form action="{:U('add')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <input type="hidden" name="cp_id" value="{$info.cp_id}" />
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div>
+                    <div  id="_upload_box" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="_upload_list" class="uploader-list img-box">
+                            <notempty name="info.cp_big_img">
+                                <div id="_upload_preview" class=" file-item thumbnail">
+                                    <i class="fa fa-times-circle remove-picture"></i>
+                                    <img src="{$info.cp_big_img|get_cover='path'}" data-id="{$info.cp_big_img}">
+                                </div>
+                                <else />
+                                <div id="_upload_preview" class="file-item thumbnail hidden">
+                                    <i class="fa fa-times-circle remove-picture"></i>
+                                    <img>
+                                </div>
+                            </notempty>
+                        </div>
+                        <div class="btns col-xs-12">
+                            <input type="hidden" id="_upload_input" name="cp_big_img" value="{$info.cp_big_img}">
+                            <div id="_upload">上传图片</div>
+                            <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <label style="padding-top:7px;font-weight:normal;">尺寸不小于400×400或<a href="###">从图库中选取</a></label>
+                <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+                <script type="text/javascript">
+                    $(function(){
+                        var uploader = WebUploader.create({
+                            auto: true,                                                                    // 选完文件后，是否自动上传
+                            duplicate: true,                                                               // 同一文件是否可以重复上传
+                            swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                            server: '{:U("Admin/Upload/Upload", array("dir" => "image"))}',    // 文件接收服务端
+                            pick: '#_upload',                                   							// 选择文件的按钮
+                            resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                            //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                            fileSingleSizeLimit:<php> echo C('UPLOAD_FILE_SIZE') ? : 2; </php>*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                        // 文件过滤
+                        accept: {
+                            title: 'Images',
+                                    extensions: 'gif,jpg,jpeg,bmp,png',
+                                    mimeTypes: 'image/*'
+                        }
+                    });
+
+                    // 文件上传过程中创建进度条实时显示。
+                    uploader.on( 'uploadProgress', function( file, percentage ) {
+                        $( '#_upload_preview').removeClass('hidden');
+                        var $li = $( '#_upload_preview'),
+                                $percent = $li.find('.progress .progress-bar');
+                        // 避免重复创建
+                        if ( !$percent.length ) {
+                            $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                    .appendTo( $li )
+                                    .find('.progress-bar');
+                        }
+                        $percent.css( 'width', percentage * 100 + '%' );
+                    });
+
+                    // 完成上传完了，成功或者失败，先删除进度条。
+                    uploader.on( 'uploadComplete', function( file ) {
+                        $( '#_upload_preview' ).find('.progress').remove();
+                    });
+
+                    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                    uploader.on( 'uploadSuccess', function( file , response) {
+                        $( '#_upload_preview' ).addClass('upload-state-done');
+                        if(eval('response').status == 0){
+                            $.alertMessager(response.info);
+                        } else {
+                            $( '#_upload_input' ).attr('value', response.id);
+                            $( '#_upload_preview img').attr('src', response.url);
+                            $( '#_upload_preview img').attr('data-id', response.id);
+                        }
+                    });
+
+                    // 文件上传失败，显示上传出错。
+                    uploader.on( 'uploadError', function( file ) {
+                        $.alertMessager('error');
+                        var $li = $( '_upload_preview'),
+                                $error = $li.find('div.error');
+                        // 避免重复创建
+                        if ( !$error.length ) {
+                            $error = $('<div class="error"></div>').appendTo( $li );
+                        }
+                        $error.text('上传失败');
+                    });
+
+                    // 删除图片
+                    $(document).on('click', '#_upload_list .remove-picture', function() {
+                        $( '#_upload_input' ).val('') //删除后覆盖原input的值为空
+                        $( '#_upload_preview').addClass('hidden');
+                    });
+                    });
+                </script>
+
+
+
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="form-group">
+                <label class="col-sm-2 control-label red-star">菜品名称</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="cp_name" placeholder="必填" value="{$info.cp_name}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">菜品名称拼音简写</label>
+
+                <div class="col-sm-3">
+
+                    <input type="text" class="form-control" name="cp_name_pyjx" placeholder="如：ABC" value="{$info.cp_name_pyjx}"/>
+
+                </div>
+
+                <label style="font-weight:normal;">
+
+                    <button type="button" class="btn btn-success" id="autopy">自动生成</button>
+
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label red-star">价格</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="now_price" placeholder="必填" value="{$info.now_price}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">折扣</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" value="{$info.discount}" name="discount" placeholder="8折80"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">库存</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control"  value="{$info.storage_number}" name="storage_number" placeholder="整数"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">起订数</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" value="{$info.min_number}"  name="min_number" placeholder="整数"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">餐盒价格</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" value="{$info.food_box_price}"  name="food_box_price" placeholder="2.0,1.5"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">餐盒数</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" value="{$info.food_box_number}"  name="food_box_number" placeholder="整数"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">菜品单位</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="danwei" value="{$info.danwei}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">可售时间</label>
+                <div class="col-sm-3">
+                    <select class="form-control" id="saleTime" name="saletime_type">
+                        <option value="1" <eq name="info.saletime_type" value="1">selected="selected"</eq>>同接单时间</option>
+                        <option value="2" <eq name="info.saletime_type" value="2">selected="selected"</eq>>自定义时间</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="my_define">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-10 clearfix">
+                    <label class="col-sm-2 control-label">可售星期：</label>
+                    <div class="col-sm-10 m-b clearfix">
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="check-all" id="inlineCheckbox10" value="option1">全选
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="week[]" class="ids" id="inlineCheckbox11" value="1" <eq name="info.week" value="1">selected="selected"</eq>>星期一
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]"  id="inlineCheckbox12" value="2" <eq name="info.week" value="2">selected="selected"</eq>>星期二
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids" name="week[]"  id="inlineCheckbox13" value="3" <eq name="info.week" value="3">selected="selected"</eq>>星期三
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" id="inlineCheckbox14" value="4" <eq name="info.week" value="4">selected="selected"</eq>>星期四
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" id="inlineCheckbox15" value="5" <eq name="info.week" value="5">selected="selected"</eq>>星期五
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" id="inlineCheckbox16" value="6" <eq name="info.week" value="6">selected="selected"</eq>>星期六
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" id="inlineCheckbox17" value="7" <eq name="info.week" value="7">selected="selected"</eq>>星期日
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-sm-offset-3 m-b sale-time">
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[1][]"  placeholder="14"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[1][]"  placeholder="20"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">-</span>
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[1][]"  placeholder="21"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[1][]"  placeholder="30"/>
+                </div>
+                <div class="col-sm-4 col-sm-offset-3 m-b">
+                    <a href="javascript:void(0)" id="add_time"><i class="fa fa-plus"></i>时间段</a>
+                </div>
+            </div>
+            <?php if($info['saletime_type'] == 1):?>
+            <div class="form-group" id="my_define" style="display: none;">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-10 clearfix">
+                    <label class="col-sm-2 control-label">可售星期：</label>
+                    <div class="col-sm-10 m-b clearfix">
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="check-all" id="inlineCheckbox10" value="option1">全选
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="week[]" class="ids" id="inlineCheckbox11" value="1">星期一
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]"  id="inlineCheckbox12" value="2">星期二
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids" name="week[]"  id="inlineCheckbox13" value="3">星期三
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" id="inlineCheckbox14" value="4">星期四
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" id="inlineCheckbox15" value="5">星期五
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" id="inlineCheckbox16" value="6">星期六
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" id="inlineCheckbox17" value="7">星期日
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-sm-offset-3 m-b sale-time">
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[1][]"  placeholder="14"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[1][]"  placeholder="20"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">-</span>
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[1][]"  placeholder="21"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[1][]"  placeholder="30"/>
+                </div>
+                <div class="col-sm-4 col-sm-offset-3 m-b">
+                    <a href="javascript:void(0)" id="add_time"><i class="fa fa-plus"></i>时间段</a>
+                </div>
+            </div>
+            <?php endif;?>
+            <php>if($info['saletime_type'] == 2):$week = explode(',',$info['week'])</php>
+            <div class="form-group" id="my_define">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-10 clearfix">
+                    <label class="col-sm-2 control-label">可售星期：</label>
+                    <div class="col-sm-10 m-b clearfix">
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="check-all" <php>if(count($week) == 7):</php>checked<php>endif;</php> id="inlineCheckbox10" value="option1">全选
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="week[]" <php>if(in_array(1,$week)):</php>checked<php>endif;</php> class="ids" id="inlineCheckbox11" value="1">星期一
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" <php>if(in_array(2,$week)):</php>checked<php>endif;</php>   id="inlineCheckbox12" value="2">星期二
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids" name="week[]" <php>if(in_array(3,$week)):</php>checked<php>endif;</php>   id="inlineCheckbox13" value="3">星期三
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" <php>if(in_array(4,$week)):</php>checked<php>endif;</php>  id="inlineCheckbox14" value="4">星期四
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" <php>if(in_array(5,$week)):</php>checked<php>endif;</php>  id="inlineCheckbox15" value="5">星期五
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  class="ids" name="week[]" <php>if(in_array(6,$week)):</php>checked<php>endif;</php>  id="inlineCheckbox16" value="6">星期六
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="ids"  name="week[]" <php>if(in_array(7,$week)):</php>checked<php>endif;</php>  id="inlineCheckbox17" value="7">星期日
+                        </label>
+                    </div>
+                </div>
+                <?php if(!empty($info['sale_time'])): $str = explode('|',$info['sale_time']);?>
+                <?php foreach($str as $key=>$val):?>
+                <div class="col-sm-4 col-sm-offset-3 m-b sale-time">
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[<?php echo $key?>][]" value="<?php echo $val[0].$val[1]?>"  placeholder="14"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[<?php echo $key?>][]"  value="<?php echo $val[2].$val[3]?>"  placeholder="20"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">-</span>
+                    <input type="text" class="form-control"  style="width:60px;float:left;" name="sale_time[<?php echo $key?>][]"  value="<?php echo $val[4].$val[5]?>"  placeholder="21"/>
+                    <span style="display: inline-block;font-size: 1.5em;float: left">:</span>
+                    <input type="text" class="form-control" style="width:60px;float:left;" name="sale_time[<?php echo $key?>][]"  value="<?php echo $val[6].$val[7]?>"  placeholder="30"/>
+                </div>
+                <?php endforeach;?>
+                <?php endif;?>
+                <div class="col-sm-4 col-sm-offset-3 m-b">
+                    <a href="javascript:void(0)" id="add_time"><i class="fa fa-plus"></i>时间段</a>
+                </div>
+            </div>
+            <php>endif;</php>
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">排序</label>
+
+                <div class="col-sm-3">
+
+                    <input type="text" class="form-control" name="sort_order" value="{$info.sort_order}"/>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">菜品描述</label>
+
+                <div class="col-sm-3">
+
+                    <textarea class="form-control" rows="3" name="cp_desc" maxlength="120" placeholder="最多只能输入120个字">{$info.cp_desc}</textarea>
+
+                </div>
+
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">&nbsp;</label>
+
+                <div class="col-sm-4">
+
+                    <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                    <button class="btn btn-return " onclick="history.back(-1);return false;">返 回</button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+
+
+        //可售时间
+        $('#saleTime').change(function(){
+            var $this = $(this);
+            var val = $this.val();
+            var my = $('#my_define');
+            if(val == 1)
+                my.hide();
+            if(val == 2)
+                my.show();
+            $('.sale-time').each(function(i){
+                if(i!=0)
+                    $(this).remove();
+            });
+        });
+        //新增时间段
+        $('#add_time').click(function(){
+            var $this = $(this);
+            var j = $('.sale-time').length;
+            var c = $this.parent().prev().clone();
+            var inputs = c.find('input');
+            for(var i= 0,ln = inputs.length;i<ln;i++){
+                inputs.eq(i).attr('name','sale_time['+(j+1)+'][]');
+            }
+            $this.parent().prev().after(c);
+
+        });
+
+        //自动生成拼音
+
+        $("#autopy").click(function () {
+
+            var $this = $(this);
+
+            var key = $("input[name='cp_name']").val();
+
+            if ($.trim(key) != '') {
+
+                $.get("{:U('Store/cu2py')}", "keys=" + key).success(function (data) {
+
+                    $this.closest("div").find("input").val(data);
+
+                });
+
+            } else {
+
+                alert("请输入菜品名称");
+
+            }
+
+        });
+
+        //全选
+        $(".check-all").click(function(){
+            $(".ids").prop("checked", this.checked);
+        });
+        $(".ids").click(function(){
+            var option = $(".ids");
+            option.each(function(i){
+                if(!this.checked){
+                    $(".check-all").prop("checked", false);
+                    return false;
+                }else{
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+
+    </script>
+
+</block>
+

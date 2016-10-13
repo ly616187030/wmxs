@@ -1,0 +1,35 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    安全支付
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----支付安全------>
+        <div class="safety"><img src="__IMG__/tub/4.jpg"></div>
+        <div class="safety_1">
+             <p class="safety_font" >助友钱包 安全支付</p>
+             <p class="safety_size"><i>v3.5.1</i></p>
+             <p class="safety_3">为您提供完善的支付安全技术保障</p>
+             <p class="safety_3">手机支付密码，加强您的资金账户安全</p>
+        </div>
+        <div class="safety_wen">
+              <ul>
+                   <a href="{:U('open')}"><li><img src="__IMG__/tub/23706.png"><p>手机支付密码<a class="vvv">＞</a></p></li></a>
+                   <li><img src="__IMG__/tub/141322.png"><p>隐私安全保护<a class="vvv">＞</a></p></li>
+                   <li><img src="__IMG__/tub/60866.png"><p>安全提示<a class="vvv">＞</a></p></li>
+                   <li><img src="__IMG__/tub/87929.png"><p>常见问题<a class="vvv">＞</a></p></li>
+              </ul>
+        </div>
+
+
+        <div class="safety_bottom"><p>助友钱包客服竭诚为您服务：<a style="color:#3879d9">400-000-1111</a></p></div>
+        <!-----支付安全结束------>
+</block>

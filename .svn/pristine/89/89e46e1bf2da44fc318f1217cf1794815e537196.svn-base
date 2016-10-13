@@ -1,0 +1,131 @@
+<extend name="./Application/Home/View/Public/layout.html"/>
+
+<block name="main" >
+    <div class="login">
+
+        <div class="l-header">
+
+            <a href="{:U('Home/Index/index')}"><h1>找火锅外卖</h1></a>
+
+        </div>
+
+        <div class="l-content clearfix">
+
+            <div class="l-content-left col-sm-7"><img src="__HOME_IMAGES__/waimai/banner-app.png" /></div>
+            <form class="login-form" action="{:U()}" method="post">
+
+            <div class="l-content-right col-sm-5">
+
+                <h3>用户登录</h3>
+
+
+
+                    <div class="alert alert-danger" role="alert" style="display: none;">请输入手机号</div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                        <input type="text" class="form-control" placeholder="手机号" name="username">
+                    </div>
+
+                    <div class="input-group">
+
+                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+
+                        <input type="password" class="form-control" placeholder="请输入密码" name="password">
+
+                    </div>
+
+                    <div class="form-group" id="yzm" <if condition="$fail_counts gt 2"><else/>style="display:none;"</if>>
+
+                    <div class="col-sm-6" style="padding-left:0">
+
+                        <input type="text" name="verify" class="form-control" id="inputEmail1" placeholder="验证码">
+
+                    </div>
+
+                    <div class="col-sm-3 pd-l-0"> <img class="verifyimg reloadverify" alt="点击切换" src="{:U('verify')}" style="cursor:pointer;"></div>
+
+            </div>
+
+            <div class="form-group">
+
+                <div class="col-sm-12" style="padding-left:0;padding-right:0;margin-top:10px;">
+
+                    <button  type="submit" target-form="login-form" class="btn btn-success btn-block">登录</button>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <p class="col-sm-6"><a href="{:U('register')}">新用户注册</a></p><p class="col-sm-6 text-right"><a href="{:U('resetPassword')}">忘记密码</a></p>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        //登录提交
+
+        $('form').submit(function(){
+
+            var self = $(this);
+
+            $.post(self.attr("action"), self.serialize(), function(data){
+                //console.log(data.url);
+
+                if(data.status){
+
+                    window.location.href=data.url;
+
+                }else{
+
+                    var countcookie=getcookie('onethink_home_fail_counts');
+
+//                    window.location.reload();
+
+                    if(countcookie>2){
+
+                        $('#yzm').show();
+
+                    }else{
+
+                        $('#yzm').hide();
+
+                    }
+
+                    $('div.alert').show().text(data.info);
+
+                    //刷新验证码
+
+                    $(".reloadverify").click();
+
+                }
+
+            }, "json");
+
+            return false;
+
+        });
+
+        function getcookie(objname){
+
+            var arrstr = document.cookie.split("; ");
+
+            for(var i = 0;i < arrstr.length;i ++){
+
+                var temp = arrstr[i].split("=");
+
+                if(temp[0] == objname) return unescape(temp[1]);
+
+            }
+
+        }
+    </script>
+</block>

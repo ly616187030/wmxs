@@ -1,0 +1,45 @@
+<include file="Weixin/Mobilehead/mobile_head"/>
+<link href="__CSS__/big_background_V1.css" rel="stylesheet" type="text/css">
+<body id="weisite" style="background:#eee url({$config.background}) no-repeat; background-size:100% 100%">
+<div class="container">
+    <if condition="!empty($slideshow)">
+    <section class="banner">
+    	<ul>
+        <volist name="slideshow" id="vod">
+        	<li><a href="{$vod.url}"><img src="{$vod.img|get_cover='path'}"/></a></li>
+         </volist>
+        </ul>
+        <span class="identify">
+        <volist name="slideshow" id="vod">
+        	<em></em>
+         </volist>
+        </span>
+    </section>
+    </if>
+    <if condition="!empty($category)">
+        <section>
+            <ul class="icon_lists">
+                <volist name="category" id="vo">
+                    <li class="m_15">
+                        <if condition="empty($vo['url'])" >
+                            <a class="item p_10" href="{:U('Website/previeList',array('id'=>$vo['id']))}">
+                                <if condition="!empty($vo[icon])"><span class="icon"><img src="{$vo.icon|get_cover='path'}"/></span></if>
+                                <span class="click_item_txt">{$vo.title}</span>
+                            </a>
+                            <else/>
+                            <a class="item p_10" href="{$vo.url}">
+                                <if condition="!empty($vo[icon])"><span class="icon"><img src="{$vo.icon|get_cover='path'}"/></span></if>
+                                <span class="click_item_txt">{$vo.title}</span>
+                            </a>
+                        </if>
+                    </li>
+                </volist>
+            </ul>
+        </section>
+    </if>
+</div>
+<!-- 底部导航 -->
+<include file="$footer_path"/>
+</body>
+
+</html>

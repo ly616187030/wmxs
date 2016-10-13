@@ -1,0 +1,147 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <div class="main-title cf">
+        <h2>新增配置</h2>
+        <legend>&nbsp;</legend>
+    </div>
+    <div class="builder-container builder-form-container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="<?php echo U();?>" method="post" class="form-horizontal form builder-form">
+                    <input type="hidden" value="<?php echo ($id); ?>" name="id"/>
+                    <div class="form-group item_group ">
+                        <label class="left control-label col-sm-1">配置分组：</label>
+                        <div class="right col-sm-6">
+                            <select name="group" class="form-control custom-select select">
+                                <option value="">请选择：</option>
+                                <?php if(is_array($CONFIG_GROUP_LIST)): $i = 0; $__LIST__ = $CONFIG_GROUP_LIST;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><option value="<?php echo ($key); ?>" <?php if(($info["group"]) == $key): ?>selected="selected"<?php endif; ?>><?php echo ($vo); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group item_type ">
+                        <label class="left control-label col-sm-1">配置类型：</label>
+                        <div class="right col-sm-6">
+                            <select name="type" class="form-control custom-select select">
+                                <option value="">请选择：</option>
+                                <?php if(is_array($item_type)): $i = 0; $__LIST__ = $item_type;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$voa): $mod = ($i % 2 );++$i;?><option value="<?php echo ($key); ?>" <?php if(($info["type"]) == $key): ?>selected="selected"<?php endif; ?>><?php echo ($voa); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group item_name ">
+                        <label class="left control-label col-sm-1">配置名称：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input text " name="name" value="<?php echo ($info["name"]); ?>">
+                            <span class="check-tips text-muted small">配置名称</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_title ">
+                        <label class="left control-label col-sm-1">配置标题：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input text" name="title" value="<?php echo ($info["title"]); ?>">
+                            <span class="check-tips text-muted small">配置标题</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_value ">
+                        <label class="left control-label col-sm-1">配置值：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="value"><?php echo ($info["value"]); ?></textarea>
+                            <span class="check-tips text-muted small">配置值</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_options ">
+                        <label class="left control-label col-sm-1">配置项：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="options"><?php echo ($info["options"]); ?></textarea>
+                            <span class="check-tips text-muted small">如果是单选、多选、下拉等类型 需要配置该项</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_tip ">
+                        <label class="left control-label col-sm-1">配置说明：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="tip"><?php echo ($info["tip"]); ?></textarea>
+                            <span class="check-tips text-muted small">配置说明</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_sort ">
+                        <label class="left control-label col-sm-1">排序：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input num" name="sort" value="<?php echo ($info["sort"]); ?>">
+                            <span class="check-tips small">用于显示的顺序</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 15em;">
+                        <button class="btn btn-primary submit ajax-post visible-md-inline visible-lg-inline" type="submit" target-form="builder-form" style="width:12%;margin: 3em 5em 0em 0em;">确定</button>
+                        <button class="btn btn-default return visible-md-inline visible-lg-inline" onclick="javascript:history.back(-1);return false;" style="width:12%;margin: 3em 0em 0em 0em;">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            
+    <script type="text/javascript"></script>
+
+        </div>
+    </div>
+</body>
+</html>

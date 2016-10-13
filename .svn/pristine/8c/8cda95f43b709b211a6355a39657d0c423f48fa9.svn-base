@@ -1,0 +1,182 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <form action="{:U('add')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">仓库名称：</label>
+
+                                <div class="col-sm-2">
+
+                                    <select class="form-control" name="storage_id" id="cangku">
+                                        <volist name="ck" id="cks">
+                                            <option value="{$cks.storage_id}">{$cks.storage_name}</option>
+                                        </volist>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">商品名称：</label>
+
+                                <div class="col-sm-2">
+
+                                    <select class="form-control" name="sp_id" id="shangpin">
+                                        <volist name="sp" id="sps">
+                                            <option value="{$sps.sp_id}">{$sps.sp_name}</option>
+                                        </volist>
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">数量：</label>
+
+                                <div class="col-sm-1">
+
+                                    <input id="quantity" type="text" class="form-control" name="quantity">
+
+                                </div>
+                                <span id="ckname"></span>=><span id="spname"></span>=>库存<span id="shuliang"></span>
+                                <label class="control-label col-sm-offset-1" style="font-weight: normal">（数量必须填写）</label>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">发往商家名称：</label>
+
+                                <div class="col-sm-2">
+
+                                    <select class="form-control" name="store_id">
+                                        <volist name="st" id="sts">
+                                            <option value="{$sts.store_id}">{$sts.store_name}</option>
+                                        </volist>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">经办人：</label>
+
+                                <div class="col-sm-2">
+
+                                    <input type="text" class="form-control" name="person">
+
+                                </div>
+
+                                <label class="control-label" style="font-weight: normal">（经办人名称必须填写）</label>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">备注：</label>
+
+                                <div class="col-sm-3">
+
+                                    <textarea class="form-control" rows="3" name="beizhu" maxlength="120"></textarea>
+
+                                </div>
+
+                                <label class="control-label" style="font-weight: normal">（最多只能输入120个字）</label>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-2 control-label">&nbsp;</label>
+
+                                <div class="col-sm-4">
+
+                                    <button class="btn submit-btn btn-primary ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                                    <button class="btn btn-default" onclick="history.back(-1);return false;">返 回</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+
+</block>
+<block name="script">
+
+<script type="text/javascript" src="__JS__/jquery.dragsort-0.5.1.min.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var cangku = $('#cangku').val();
+		var shangpin = $('#shangpin').val();
+		var cname = $("#cangku").find("option:selected").text();
+		var sname = $("#shangpin").find("option:selected").text();  
+		$('#ckname').text(cname);$('#spname').text(sname);
+		ajaxpost(cangku,shangpin);
+		$('#cangku').change(function(){
+		var cangku = $('#cangku').val();
+		var shangpin = $('#shangpin').val();
+		var cname = $("#cangku").find("option:selected").text();
+		var sname = $("#shangpin").find("option:selected").text();  
+		$('#ckname').text(cname);$('#spname').text(sname);
+			ajaxpost(cangku,shangpin);
+		});
+		$('#shangpin').change(function(){
+		var cangku = $('#cangku').val();
+		var shangpin = $('#shangpin').val();
+		var cname = $("#cangku").find("option:selected").text();
+		var sname = $("#shangpin").find("option:selected").text();  
+		$('#ckname').text(cname);$('#spname').text(sname);
+			ajaxpost(cangku,shangpin);
+		});
+		$('#quantity').bind('input propertychange',function(){
+			var quantity = $('#quantity').val();
+			var shuzi = $('#shuliang').text();
+			if(Number(quantity) > Number(shuzi)){
+				$('#quantity').val(shuzi);
+				alert('所选仓库中对应商品库存不足，已为您自动填充最大库存。');
+			}
+		});
+		function ajaxpost(cid,sid){
+			$.post("{:U('quantity')}",{ck:cid,sp:sid}).success(function(data){
+				if(data!=null&&data!=0){
+					$('#shuliang').text(data);
+					$('#quantity').removeAttr("readonly","readonly");
+				}else{
+					$('#shuliang').text(0);
+					$('#quantity').attr("readonly","readonly");
+				}
+			})
+		}
+	})
+</script>
+
+</block>

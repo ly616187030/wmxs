@@ -1,0 +1,361 @@
+<extend name="Base/menu"/>
+<block name="style">
+    <style>
+        .none-padding {
+            padding: 0 !important;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 4em;
+            background-color: white;
+            border-top: 1px solid gainsboro;
+        }
+
+        .footer-left {
+            color: #808080;
+            margin-top: 0.5em;
+            width: 60%;
+            line-height: 3em;
+            text-align: center;
+        }
+
+        .footer-right {
+            color: white;
+            width: 5em;
+            height: 3em;
+            background-color: #808080;
+            text-align: center;
+            line-height: 3em;
+            border-radius: 0.3em;
+            margin-top: 0.5em;
+            margin-right: 0.5em;
+        }
+        .active-left{
+            background-color: orangered;
+            color: white;
+        }
+        .cartt{
+            background-color: red;
+            width: 1.5em; height: 1.5em;
+            line-height:1.7em; display: inline-block;
+            position: absolute; border-radius: 2em; left:2.9em; bottom: 0em;
+            color:white ;
+            z-index: 1000;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 none-padding menu-left" style="background-color: gainsboro;overflow-y: auto">
+                <ul class="list-group text-center list-unstyled">
+                    <volist name="list_canpin" id="vo">
+                        <li class="list-group-item" id="b{$vo.canpin_id}" data-id="{$vo.canpin_id}" onclick="abc('{$vo.canpin_id}')" style="padding-left: 0;padding-right: 0">{$vo.canpin_name}<span class="badge" style="position: absolute;right: 0;top: 0;background-color: white;color: orangered"></span></li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="col-xs-9 none-padding menu-right" style="overflow-y: auto">
+                <ul class="list-group">
+                    <div id="loading" style="width: 10em; font-size: 1em; height: 3em; line-height: 3em; text-align: center; color: white; border-radius: 0.5em;  background-color: #000000;
+filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7; position: fixed; top: 45%; left: 29%;z-index:20">餐品加载中...</div>
+                    <notempty name="list_canming">
+                        <volist name="list_canming" id="ro">
+                            <li class="list-group-item litype{$ro.canping_id} goods_list litype{$ro.cm_id}">
+                                <div class="row">
+                                    <img class="col-xs-4 lazy" src="__IMG__/u22_normal.png" data-original="{$ro.big_img|get_cover='path'}" style="height: 4em;">
+                                    <div class="col-xs-8" style="font-size: 12px">
+                                        <p><strong>{$ro.cm_name}</strong></p>
+                                        <p class="xiaoliang" data-quantity="{$ro.quantity|default=0}" data-cmid="{$ro.cm_id}">月售{$ro.quantity|default=0}份</p>
+                                        <p style="color: orangered;font-size: 14px;"><strong>￥{$ro.now_price}</strong></p>
+                                    </div>
+                                    <div class="text-right" id="a{$ro.cm_id}" style="position: absolute;right: 0;bottom: 0;">
+                                        <if condition="$is_open eq 0">
+                                            <span style="color:green;">商家休息中</span>
+                                            <else/>
+                                            <a href="#" class="btn pull-right" onclick="jia('{$ro.cm_id}','{$ro.cm_name}','{$ro.now_price}','{$ro.canping_id}',$(this))" role="button" style="color: orangered;padding: 0">
+                                                <i class="fa fa-plus-circle" style="font-size: 30px"></i>
+                                            </a>
+                                        </if>
+                                    </div>
+                                </div>
+                            </li>
+                            <div class="cm_detail" style="background-color: white;position: fixed;padding: 10px 10px;z-index:99;display: none;top: 20%;left: 5%;border-radius: 5px;width: 90%">
+                                <div style=""><strong>{$ro.cm_name}</strong><i class="end fa fa-times" style="float: right"></i></div>
+                                <div class=""><img class="" src="{$ro.big_img|get_cover='path'}" style="width: 100%;height: 200px;"/></div>
+                                <div style="max-height: 150px;overflow: auto">
+                                    <p style=""><strong>￥{$ro.now_price}</strong></p>
+                                    <p >{$ro.cm_desc}</p>
+                                </div>
+                                <if condition="$is_open eq 0">
+                                    <span style="float:right;background-color: green;font-weight: bold;padding: 5px 5px;color: white">商家休息中</span>
+                                    <else/>
+                                    <span style="float:right;background-color: orangered;font-weight: bold;padding: 5px 5px;color: white" onclick="jia('{$ro.cm_id}','{$ro.cm_name}','{$ro.now_price}','{$ro.canping_id}')">加入购物车</span>
+                                </if>
+                            </div>
+                        </volist>
+                    </notempty>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="rst_cart" class="ub-fh" style="display: none;position: fixed;bottom:4em; background-color: #ffffff;z-index: 99; border-top:1px solid #DDDDDD;overflow-y: auto;">
+        <div id="basket_view_6" class="">
+            <h4 class="text-center" style="height: 2em;line-height: 2em"><span class="pull-left" style="color: orangered"><i class="fa fa-shopping-cart"></i></span><i class="fa fa-navicon" onclick="javascript:$('#cart').click()"></i> <a class="basket_clear_btn pull-right"><i class="fa fa-trash"></i></a></h4>
+            <ul class=" basket_list list-group text-center" style="">
+
+            </ul>
+        </div>
+    </div>
+    <div style=" width:100%" id="kkk"></div>
+    <div class="ub footer ub-fh">
+        <div class="footer-left ub-f1 ub">
+            <div class="ub-f1" id="cart">
+                <i id="carts"
+                   style="font-size: 24px;margin-right: 40%; width: 2em; height: 2em; background-color: #808080; color: white; line-height:2em; border-radius: 1em; position: absolute; left: 0.5em; top: -0.5em;"
+                   class="fa fa-shopping-cart"></i>
+                <span class="basket_food_info"></span>
+            </div>
+            <div class="ub-f1">
+                <span class="total-bill" style="color:red; font-size: 1.5em; "></span>
+            </div>
+        </div>
+        <div class="footer-right ub-f1"><a style="display: inline-block; color: white; font-size: 1.1em;" class="check"
+                                           rel="{:U('Cart/index',array('peisongfei'=>$peisongfei))}" href="javascript:">篮子是空的哟</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var storeid = "{$list_store.store_id}";
+        var storename = "{$list_store.store_name}";
+        var qisong = "{$list_store.qisong_price}";
+        var cart_info = $(".basket_food_info");
+        var bill = $(".total-bill");
+        var cart_btn = $(".check");
+        var cartview = "{:U('Cart/cartView')}";
+        $(function(){
+            var height = $(window).height() - $('header').height()-$('marquee').height()- $('.footer').height();
+            $('.menu-left').css('height', height);
+            $('.menu-right').css('height', height);
+            $('#rst_cart').css('height',height);
+            $('.basket_list').css('max-height',height);
+            $('#kkk').css('height', $('.footer').height());
+            $('#cart').click(function () {
+                $('#rst_cart').slideToggle()
+            });
+            $('.lazy').click(function(){
+                var detail=$(this).parent().parent().next('.cm_detail').clone(true);
+                $('#zhezao').show();
+                $('#detail').html(detail).children().show()
+            })
+            $('#zhezao').click(function(){
+                $('#zhezao').hide();
+                $('#detail').children().remove()
+            })
+            $('.end').click(function(){
+                $('#zhezao').hide();
+                $('#detail').children().remove()
+            })
+            //初始化购物车
+            $.ajax({
+                type: "get",
+                data: {type:1},
+                dataType: "json",
+                timeout:10000,
+                url: cartview,
+                beforeSend: function () {
+                    //$("#loading").show();
+                },
+                success: function (data) {
+                    var temp = data;
+                    for (var item in temp[0]) {
+                        var id = temp[0][item];
+                        if(storeid!=data[4][id]){
+                            clear_cart();
+                        }
+                        var element = $("#basketfood_" + id);
+                        if(element.length==0){
+                            var cart_list=$('<li id="basketfood_'+id+'" class="list-group-item canpin_'+data[5][id]+'" style="padding-top:0;padding-bottom:0;line-height:3em">' +
+                                    '<div class="row">' +
+                                    '<div class="col-xs-3">'+data[1][id]+'</div>' +
+                                    '<div class="col-xs-2 none-padding">' + data[2][id] + '</div>' +
+                                    '<div class="col-xs-5 none-padding text-center"><a href="#" class="btn" onclick="jian(\''+id+'\',\''+data[5][id]+'\')" role="button" style="padding: 0"><i class="fa fa-minus-circle" style="font-size: 25px"></i></a>' +
+                                    '<input class="set_num_in_'+id+' text-center" type="text" value="'+data[3][id]+'" style="width:40px;border:none" readonly>' +
+                                    '<a href="#" class="btn" onclick="jia(\''+id+'\',\''+data[1][id]+'\',\''+data[2][id]+'\',\''+data[5][id]+'\')" role="button" style="color: orangered;padding: 0"><i class="fa fa-plus-circle" style="font-size: 25px"></i></a></div>' +
+                                    '<div class="col-xs-2 none-padding"><a class="rcart-d-del btn" onclick="deleteid('+id+','+data[5][id]+')"><i class="fa fa-trash"></i></a></div></div></li>');
+                            var a=$('<span class="pull-left">' +
+                                    '<a href="#" class="btn" onclick="jian(\''+id+'\',\''+data[5][id]+'\')" role="button" style="padding: 0"> ' +
+                                    '<i class="fa fa-minus-circle" style="font-size: 30px"></i> </a><input type="text" class="text-center set_num_in_'+id+'" value="'+data[3][id]+'" style="width: 35px;border: none" readonly/></span>');
+                            $('#a'+id).append(a);
+                            $('.basket_list').append(cart_list);
+                            $('#b'+data[5][id]).children('.badge').text($('.canpin_'+data[5][id]).length);
+                        }else{
+                            var num=$('.set_num_in_'+id).val();
+                            $('.set_num_in_'+id).val(++num);
+                            $('#b'+data[5][id]).children('.badge').text($('.canpin_'+data[5][id]).length);
+                        }
+                    }
+                    set_money();
+                },
+                complete: function () {
+
+                },
+                error: function (data) {
+                    console.info("error: " + data.responseText);
+                }
+            });
+            var canpinid=$('.list-unstyled').children('li').first().data('id');
+            abc(canpinid);
+        });
+        function abc(canpinid) {
+            $('.goods_list').hide();
+            $('.litype' + canpinid).show();
+            $('.menu-left li').removeClass('active-left');
+            $('.menu-left li').children('span').css('background-color','orangered').css('color','#fff');
+            $('#b' + canpinid).addClass('active-left');
+            $('#b' + canpinid).children('span').css('background-color','#fff').css('color','orangered');
+            $("#loading").hide();
+            $('img.lazy').lazyload({
+                effect: 'fadeIn'
+            });
+        }
+        function jia(id,name,price,canpin){
+            var element = $("#basketfood_" + id);
+            if(element.length==0){
+                var cart_list=$('<li id="basketfood_'+id+'" class="list-group-item canpin_'+canpin+'" style="padding-top:0;padding-bottom:0;line-height:3em">' +
+                        '<div class="row">' +
+                        '<div class="col-xs-3">'+name+'</div>' +
+                        '<div class="col-xs-2 none-padding">' + price + '</div>' +
+                        '<div class="col-xs-5 none-padding text-center"><a href="#" class="btn" onclick="jian(\''+id+'\',\''+canpin+'\')" role="button" style="padding: 0"><i class="fa fa-minus-circle" style="font-size: 25px"></i></a>' +
+                        '<input class="set_num_in_'+id+' text-center" type="text" value="1" style="width:40px;border:none" readonly>' +
+                        '<a href="#" class="btn" onclick="jia(\''+id+'\',\''+name+'\',\''+price+'\',\''+canpin+'\')" role="button" style="color: orangered;padding: 0"><i class="fa fa-plus-circle" style="font-size: 25px"></i></a></div>' +
+                        '<div class="col-xs-2 none-padding"><a class="rcart-d-del" onclick="deleteid('+id+','+canpin+')"><i class="fa fa-trash"></i></a></div></div></li>');
+                var a=$('<span class="pull-left">' +
+                        '<a href="#" class="btn" onclick="jian(\''+id+'\',\''+canpin+'\')" role="button" style="padding: 0"> ' +
+                        '<i class="fa fa-minus-circle" style="font-size: 30px"></i> </a><input type="text" class="text-center set_num_in_'+id+'" value="1" style="width: 35px;border: none" readonly/></span>');
+                $('#a'+id).append(a);
+                $('.basket_list').append(cart_list);
+                $('#b'+canpin).children('.badge').text($('.canpin_'+canpin).length);
+                addcart(id,name,price,canpin);
+            }else{
+                var num=$('.set_num_in_'+id).val();
+                $('.set_num_in_'+id).val(++num);
+                $('#b'+canpin).children('.badge').text($('.canpin_'+canpin).length);
+                addcart(id,name,price,canpin);
+            }
+        }
+        function addcart(id,name,price,canpin){
+            var url = "{:U('Cart/addCart')}";
+            $.post(url, {
+                id: id,
+                name: name,
+                price: price,
+                count: 1,
+                storeid: storeid,
+                canpin: canpin
+            }).success(function (data) {
+                if (data.status == 1) {
+                    $.alertMessager('购物车异常,将为您初始化~');
+                    clear_cart();
+                } else {
+                    set_money();
+                }
+            });
+        }
+        function jian(id, canpin) {
+            var num=$('.set_num_in_'+id).val();
+            if(num==1){
+                $("#basketfood_" + id).remove();
+                $("#a" + id).children('span').remove();
+                $('#carts').css('background-color', '#808080');
+                cart_info.removeClass('cartt');
+                $('.footer-right').css({backgroundColor: '#999'});
+            }
+            $('.set_num_in_'+id).val(--num);
+            var canpinnum=$('.canpin_'+canpin).length;
+            if(canpinnum==0){
+                canpinnum='';
+            }
+            $('#b'+canpin).children('.badge').text(canpinnum);
+            set_number(id, 1, 1);
+        }
+        //设置订餐数量和金额
+        function set_money() {
+            var url = "{:U('Cart/countPrice')}";
+            $.get(url).success(function (data) {
+                if (data == '') {
+                    $('#carts').css('background-color', '#808080');
+                    cart_info.removeClass('cartt');
+                    cart_info.html("");
+                    bill.html("");
+                    cart_btn.text('篮子是空的哟').addClass('disabled');
+                } else {
+                    $('#carts').css('background-color', 'orange');
+                    cart_info.html(data[1]).addClass('cartt');
+                    bill.html("¥" + data[0]);
+                    is_qisong(qisong, data[0]);
+                }
+            });
+        }
+        //判断是否达到起送价
+        function is_qisong(qisong, current) {
+            var res = (parseInt(qisong) - parseInt(current));
+            if (res > 0) {
+                cart_btn.text('还差¥' + res + '起送').addClass('disabled');
+                $('.footer-right').css('background-color', '#aaaaaa')
+            } else if (res <= 0) {
+                cart_btn.html('去买单' + '<i class="fa fa-chevron-right"></i>').removeClass('disabled');
+                $('.footer-right').css({backgroundColor: 'red'});
+                cart_btn.css('color', 'white');
+            }
+        }
+        function set_number(id, num, flag) {
+            var url = "{:U('Cart/modifyCart')}";
+            $.get(url, "id=" + id + "&count=" + num + "&flag=" + flag).success(function () {
+                set_money();
+            });
+        }
+        //清空篮子
+        $(".basket_clear_btn").click(function () {
+            clear_cart();
+        });
+        //删除单个商品
+        function deleteid(id,canpin){
+            var num=$('.set_num_in_'+id).val();
+            $("#basketfood_" + id).remove();
+            $("#a" + id).children('span').remove();
+            $('#carts').css('background-color', '#808080');
+            cart_info.removeClass('cartt');
+            $('.footer-right').css({backgroundColor: '#999'});
+            var canpinnum=$('.canpin_'+canpin).length;
+            if(canpinnum==0){
+                canpinnum='';
+            }
+            $('#b'+canpin).children('.badge').text(canpinnum);
+            set_number(id,num,1)
+        }
+        function clear_cart() {
+            var url = "{:U('Cart/removeAll')}";
+            $.get(url).success(function () {
+                $(".basket_list").find("li").remove();
+                cart_info.html("");
+                bill.html("");
+                $('.footer-right').css('background-color', '#aaaaaa');
+                show_empty();
+                // reset_basket();
+            });
+        }
+        //显示空篮子
+        function show_empty() {
+            cart_btn.text('篮子是空的哟').addClass('disabled');
+            window.location.reload();
+        }
+        //提交到结账
+        $(".check").click(function () {
+            if (!$('.check').hasClass("disabled")) {
+                window.location.href = $(this).attr("rel");
+            }
+        });
+    </script>
+</block>

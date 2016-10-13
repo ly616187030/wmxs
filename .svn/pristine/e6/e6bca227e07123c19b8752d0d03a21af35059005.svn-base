@@ -1,0 +1,146 @@
+<extend name="Public/layout"/>
+<block name="style">
+    <style type="text/css">
+        .title span{
+            margin:2%;
+            font-size: 22px;
+        }
+        .background {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            /*background: lightpink;*/
+            background:url(__IMG__/bg_img.jpg) no-repeat;
+            background-size:100% 100%;
+            overflow: hidden;
+        }
+    </style>
+</block>
+
+<block name="full-header">
+    <!-- 顶部导航 -->
+    <div class="main-nav navbar navbar-inverse navbar-fixed-top main-nav" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-top">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <php>if(C('WEB_SITE_LOGO')):</php>
+            <a class="navbar-brand" target="_blank" href="__ROOT__/">
+                <img class="logo img-responsive" src="{$Think.config.WEB_SITE_LOGO|get_cover='path'}">
+            </a>
+            <php>else:</php>
+            <a class="navbar-brand" target="_blank" href="__ROOT__/" style="display: inline-block;width:180px;height:50px;background: url(__HOME_IMG__/logo/index_logo.png)">
+                <!--<img class="logo img-responsive"  src="__HOME_IMG__/logo/logo_with_title.png">-->
+            </a>
+            <php>endif;</php>
+        </div>
+        <div class="collapse navbar-collapse navbar-collapse-top">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#admin-index" role="tab" data-toggle="tab">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                </li>
+                <!-- 主导航 -->
+                <volist name="_menu_list" id="vo">
+                    <li>
+                        <a href="#module{$vo.id}" role="tab" data-toggle="tab">
+                            <i class="fa {$vo.icon}"></i>
+                            <span>{$vo.name}</span>
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <?php if(is_administrator()):?>
+                <li><a href="{:U('Admin/Index/removeRuntime')}" class="ajax-get no-refresh"><i class="fa fa-trash"></i> 清空缓存</a></li>
+                <?php endif;?>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-comment"></i>消息 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">业务消息</a></li>
+                        <li><a href="#">系统公告</a></li>
+                        <li><a href="#">升级公告</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#"><i class="fa fa-cog"></i>设置 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a class="open-tab" tab-name="navside-collapse-account" aria-expanded="false" href="{:U('admin/user/index')}">员工账号</a></li>
+                        <li><a class="open-tab" tab-name="navside-collapse-information" aria-expanded="false" href="{:U('Business/Company/addedit')}">公司信息</a></li>
+                        <li><a  class="open-tab" tab-name="navside-collapse-department" aria-expanded="false" href="{:U('user/admin/department/index')}">部门与员工</a></li>
+                        <li><a href="#">系统设置</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-qq"></i>客服 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="open-tab" tab-name="navside-collapse-service" href="#">在线客户</a></li>
+                        <li><a href="#">4008-728-866</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user"></i> {$_user_auth.username} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{:U('password')}"><i class="fa fa-edit"></i>修改密码</a></li>
+                        <li><a href="{:U('Admin/Public/logout')}" class="ajax-get"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</block>
+
+<block name="main">
+    <input type="hidden" name="check_version_url" value="{:U('Admin/Update/checkVersion')}">
+    <div class="container-fluid with-top-navbar">
+        <div class="row">
+
+
+            <!-- 右侧内容 -->
+            <div id="main" class="col-xs-12 col-sm-10 main background" style="margin-left: -180px;" >
+                <div style="margin-top: 10%;margin-left:5%">
+                    <!-- 登陆框 -->
+                    <div style="width:35%;margin:2% auto;height:100%;">
+                        <a href="{:U('index')}" style="float: right;font-size: 28px;" title="退出修改"><i class="fa fa-reply" style="color: red"></i></a>
+                        <div class="brand" style="width:100%;height:20%;"></div>
+                            <div class="form-group">
+                                <a style="display:block;background:url(__IMG__/login_log.png) no-repeat  left 45%;width:100%;height:120px;" href="">
+                                </a>
+                            </div>
+                        <form class="login-form form" action="{:U('password')}" method="post">
+                            <div class="input-group" style="width:100%;">
+                                <input type="text" class="form-control " style="height:50px;line-height: 50px;width:70%" placeholder="请输入手机号/用户名" disabled="disabled" name="name" value="{$users.username}" readonly="readonly">
+                            </div>
+                            <div class="form-group" style="margin-top:4%;width:100%;float:left;">
+                                <div class="input-group" style="width:70%;border:none;float:left;">
+                                    <input type="text" class="form-control " style="height:50px;line-height: 50px;background-color: #fff;padding-left:13px;" placeholder="请输入新密码" name="password">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 50px;width:70%;">
+                                <button type="submit" style="border:none;width:100%;height:55px;line-height: 55px;background-color: deepskyblue;color:#fff;font-size: 20px;" class="ajax-post" target-form="login-form">修&nbsp;&nbsp;&nbsp;&nbsp;改</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+</block>
+<block name="script">
+    <script>
+       $(function(){
+
+       });
+    </script>
+</block>

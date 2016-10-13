@@ -1,0 +1,77 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+	<style>
+		body{
+			padding:20px;
+		}
+	</style>
+</block>
+<block name="main">
+
+	<div class="cf m-b">
+		<a class="btn btn-info" href="{:U('add')}">新 增</a>
+		<?php if(is_platform_manage()): ?><button class="btn ajax-post confirm btn-info" url="{:U('del')}" target-form="ids">删 除</button><?php endif; ?>
+	</div>
+
+	<div class="data-table table-striped">
+	<form class="ids">
+		<table class="table table-bordered text-center">
+			<thead>
+				<tr>
+					<th class="row-selected">
+						<input class="checkbox check-all" type="checkbox" style="margin: 0px auto">
+					</th>
+					<th>ID</th>
+					<th>店铺分类名称</th>
+					<th>分类图片</th>
+					<th>排序</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<notempty name="list">
+				<volist name="list" id="_data">
+					<tr>
+						<td><input class="ids row-selected" type="checkbox" name="store_c_id[]" value="{$_data.store_c_id}"></td>
+						<td>{$_data.store_c_id}</td>
+						<td>{$_data.store_c_name}</td>
+						<td><img style="width: 3em; height: 3em; border-radius: 50%;" src="{$_data.store_pic|get_new_cover='path'}"></td>
+						<td>{$_data.sort_order}</td>
+						
+						 <td>
+                            <a href="{:U('toogleHide',array('id'=>$_data['store_c_id'],'value'=>abs($_data['flag']-1)))}" class="ajax-get">
+                            <if condition="$_data.flag == 0 ">禁用    <else /> 启用</if>
+                            </a>
+                        </td>
+						
+						<td>
+                            <?php if(is_platform_manage()): ?>
+							<a title="编辑" href="{:U('edit?store_c_id='.$_data['store_c_id'])}">编辑</a>
+							<a class="confirm ajax-get" title="删除" href="{:U('del?store_c_id='.$_data['store_c_id'])}">删除</a>
+                            <?php endif; ?>
+						</td>
+					</tr>
+				</volist>
+				<else/>
+				<td colspan="6" class="text-center"> aOh! 暂时还没有内容! </td>
+				</notempty>
+			</tbody>
+		</table>
+	 </form>
+	
+	</div>
+		<!-- 分页 -->
+	    <div class="page">
+	        {$page}
+	    </div>
+<block name="script">
+<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript">
+
+
+    
+</script>
+	
+</block>
+

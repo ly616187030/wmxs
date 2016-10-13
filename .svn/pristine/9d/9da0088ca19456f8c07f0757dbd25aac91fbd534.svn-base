@@ -1,0 +1,435 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/base.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/common.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/module.css">
+    <style>
+        .orderlist{float: left; height: 42px; line-height: 42px;}
+        .storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+        .storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+        .storeList ul li:hover{background: #d2dcf8}
+    </style>
+    
+    <style>
+        .operation-button{
+            padding:10px 0;
+        }
+        .operation-button button{
+            padding:2px 3px;
+            background-color: inherit;
+            color:inherit;
+            border:1px solid #ddd;
+        }
+        .cp_title{
+            font-size: 1em;
+            color:darkgreen;
+            font-weight: bold;
+        }
+        .all-cp{
+            height: 600px;
+            overflow: auto;
+        }
+        .all-cp ul li{
+            border: 1px solid #ddd;
+            padding:3px 5px;
+            margin:5px 0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .all-cp ul li span{
+            margin-left:5px;
+
+        }
+        .caipinku{
+            position: fixed;
+            right: 0;
+        }
+        /**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+        ul[dnd-list],
+        ul[dnd-list] > li {
+            position: relative;
+        }
+
+        /**
+         * The dnd-list should always have a min-height,
+         * otherwise you can't drop to it once it's empty
+         */
+        ul[dnd-list] {
+            min-height: 42px;
+            padding-left: 0px;
+        }
+
+        /**
+         * The dndDraggingSource class will be applied to
+         * the source element of a drag operation. It makes
+         * sense to hide it to give the user the feeling
+         * that he's actually moving it.
+         */
+        ul[dnd-list] .dndDraggingSource {
+            display: none;
+        }
+
+        /**
+         * An element with .dndPlaceholder class will be
+         * added to the dnd-list while the user is dragging
+         * over it.
+         */
+        ul[dnd-list] .dndPlaceholder {
+            display: block;
+            background-color: #ddd;
+            min-height: 42px;
+        }
+
+        /**
+         * The dnd-lists's child elements currently MUST have
+         * position: relative. Otherwise we can not determine
+         * whether the mouse pointer is in the upper or lower
+         * half of the element we are dragging over. In other
+         * browsers we can use event.offsetY for this.
+         */
+        ul[dnd-list] li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: -1px;
+        }
+
+        /**
+         * Show selected elements in green
+         */
+        ul[dnd-list] li.selected {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .isshow{
+            display: block;
+        }
+        .ishide{
+            display:none;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+    <?php endif; ?>
+
+    <script type="text/javascript" src="/Public/libs/cui/js/common.js"></script>
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container" style="padding: 30px">
+        
+    <div class="angular-js" ng-app="Canpin"  ng-controller="operationCtrl">
+
+        <div class="col-sm-12">
+            <h3 class="m-b col-sm-8">批量添加菜品 <?php if(!empty($storename)): ?>/<span style="font-size: 0.6em;color:green;"><?php echo ($storename); ?></span><?php endif; ?></h3>
+            <a class="btn btn-success" id="canpin_add" data-toggle="modal" data-target="#myModal" href="javascript:void(0)">创建分类</a>
+        </div>
+        <div class="box-all clearfix">
+            <div class="col-lg-9 " >
+                <?php if(empty($canpin)): ?><div  class="alert alert-info" role="alert"> 请先添加菜品分类! &nbsp;&nbsp;<a href="<?php echo U('can_pin/add');?>">添加分类</a></div>
+                    <?php else: ?>
+                    <?php if(is_array($canpin)): $i = 0; $__LIST__ = $canpin;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><div class="panel panel-default" id="canpin_<?php echo ($vo["canpin_id"]); ?>">
+                            <div class="panel-heading clearfix">
+                                <div class="col-lg-6">
+                                    <span class="cp_title"><?php echo ($vo["canpin_name"]); ?></span><span style="margin-left: 10px;">数量：<?php echo ($vo["count"]); ?></span>
+                                </div>
+                                <div class="col-lg-6 right">
+                                    <a class="btn btn-info" href="javascript:void(0)" ng-click="addCanpin(<?php echo ($vo["canpin_id"]); ?>,<?php echo ($_storeid); ?>)">添加到该分类</a>
+                                    <a class="btn btn-primary canpin_edit" data-canpin_id="<?php echo ($vo["canpin_id"]); ?>" data-toggle="modal" data-target="#myModal" href="javascript:void(0)" >编辑分类</a>
+                                    <a class="btn btn-success ajax-get confirm" href="<?php echo U('can_pin/del?canpin_id='.$vo['canpin_id']);?>">删除分类</a>
+                                </div>
+                            </div>
+                            <?php if(empty($vo["_child"])): ?><div class="panel-body">
+                                    <div> aOh! 暂时还没有数据! </div>
+                                </div>
+                                <?php else: ?>
+                                <div class="panel-body">
+                                    <div class="col-lg-12">
+                                        <?php if(is_array($vo["_child"])): $i = 0; $__LIST__ = $vo["_child"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v_child): $mod = ($i % 2 );++$i;?><div class="col-lg-4 m-b clearfix" id="danpin_<?php echo ($v_child["cm_id"]); ?>">
+                                                <div class="col-lg-6">
+                                                    <img width="140" height="100" src="<?php echo ($v_child["path"]); ?>">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <p class="m-b"><?php echo ($v_child["cm_name"]); ?></p>
+                                                    <p>售价:<?php echo ($v_child["now_price"]); ?></p>
+                                                </div>
+                                                <div class="col-lg-12 clearfix operation-button">
+                                                    <button class="btn" ng-click="removecp(<?php echo ($v_child["cm_id"]); ?>)">移出该分类</button>
+                                                    <!--<button class="btn">暂停销售</button>
+                                                    <button class="btn">恢复销售</button>-->
+                                                    <?php if($v_child["flag"] == 1): ?><button class="btn" ng-click="dropcp(<?php echo ($v_child["cm_id"]); ?>,'forbid')">下架</button>
+                                                        <?php else: ?>
+                                                        <button class="btn" ng-click="dropcp(<?php echo ($v_child["cm_id"]); ?>,'resume')">上架</button><?php endif; ?>
+
+                                                </div>
+                                            </div><?php endforeach; endif; else: echo "" ;endif; ?>
+                                    </div>
+                                </div><?php endif; ?>
+                        </div><?php endforeach; endif; else: echo "" ;endif; endif; ?>
+            </div>
+            <div class="col-lg-3 caipinku">
+                <div class=" panel panel-default">
+                    <div class="panel-heading clearfix">
+                        单品
+                    </div>
+                    <div class="panel-body all-cp">
+                        <ul>
+                            <?php if(is_array($_all_cp)): $i = 0; $__LIST__ = $_all_cp;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li>
+                                    <input type="checkbox" ng-model="cp<?php echo ($vo["cp_id"]); ?>" name="allcp[]"  value="<?php echo ($vo["cp_id"]); ?>"/><span><label for="cp<?php echo ($vo["cp_id"]); ?>"><?php echo ($vo["cp_name"]); ?></label></span>
+                                </li><?php endforeach; endif; else: echo "" ;endif; ?>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div ng-hide="isshow"  id="alert_pop" style="position: absolute;left:40%;top:45%;background-color: #000;opacity: .7;padding:10px 20px;color:white;"><i  class=" fa fa-info-circle"></i><span ng-bind="showtext"></span></div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="<?php echo U('CanPin/add');?>" method="post" class="form-horizontal" id="myform">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center" id="my_title">创建分类</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-sm-offset-1">餐品分类名称</label>
+                            <div class="col-sm-4">
+                                <input type="hidden" name="store_id" value="<?php echo ($_storeid); ?>" />
+                                <input type="hidden" name="add_type" value="1" />
+                                <input type="hidden" name="canpin_id" value="" />
+                                <input type="text" class="form-control" name="canpin_name">
+                            </div>
+                            <label style="padding-top:7px;font-weight:normal;">（请输入餐品分类名称）</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-sm-offset-1">排序</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" name="sort_order" value="0">
+                            </div>
+                            <label class="col-sm-offset-3" style="padding-top:7px;font-weight:normal;">（用于餐品分类排序）</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-sm-offset-1">分类必须</label>
+                            <div class="col-sm-4">
+                                <div class="radio">
+                                    <label><input type="radio" class="" name="must" value="0" checked>非必点</label>
+                                    <label><input type="radio" class="" name="must" value="1">必点</label>
+                                    <label><input type="radio" class="" name="must" value="2">多选一</label>
+                                </div>
+                            </div>
+                            <label style="padding-top:7px;font-weight:normal;">（用于判断餐品分类是否必点）</label>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary ajax-post" id="submit" type="submit" target-form="form-horizontal">创建分类</button>
+                        <button type="button" class="btn " data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        <!--百度地图-->
+
+        <div id="bdmap" class="form-horizontal"  style="display:none;">
+
+            <div class="bdmap-header form-group">
+
+                <label for="inputEmail3" class="col-sm-3 control-label">地址:</label>
+
+                <div class="col-sm-6" >
+
+                    <input type="text" id="keyword" name="address"  class="form-control"  placeholder="输入餐厅地址">
+
+                    <div id="result1" name="result1" style="position: fixed;z-index: 999;background:#ffffff;width: 335px">
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2"><button id="doing" class="btn btn-primary">确定</button></div>
+
+                <div class="col-sm-1"><a href="javascript:;" id="closeBdmap"><span class="glyphicon glyphicon-remove"></span></a></div>
+
+
+
+                <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+            </div>
+
+            <div class="bdmap-body" >
+
+                <!--<div id="bdmapshow"></div>-->
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            
+    <!--<script src="/Public/angular-1.4.js"></script>-->
+    <script src="//cdn.bootcss.com/angular.js/1.4.3/angular.min.js"></script>
+    <script src="/Public/angular-drag-and-drop-lists.min.js"></script>
+    <script>
+        var list = '<?php echo ($_all_cp); ?>';
+        var myapp = angular.module('Canpin',['dndLists']);
+        myapp.factory('getData',function($http,$q){
+            return function(url,data){
+                var defer = $q.defer();
+                $http({
+                    method:'POST',
+                    url:url,
+                    data:data,
+                    headers: {
+                        'Content-Type':'application/x-www-form-urlencoded'
+                    }
+                }).success(function(data,status,headers,config){
+                    defer.resolve(data);
+                }).error(function(data,status,headers,config){
+                    defer.reject(data);
+                });
+                return defer.promise;
+            }
+        });
+        myapp.controller('operationCtrl',function($scope,getData,$timeout){
+            $scope.isshow = true;
+            $scope.addCanpin = function(cid,storeid){
+                if(confirm('确定执行此次操作吗?')){
+                    var len = angular.element('.all-cp').find(':checked').length;
+                    if(len >0){
+                        var query = angular.element('.all-cp').find('[type="checkbox"]').serialize();
+                        query+='&cid='+cid+'&storeid='+storeid;
+                        var url='<?php echo U("categoryList");?>';
+                        var promise = getData(url,query);
+                        promise.then(function(data){
+                            if(data.status){
+                                location.reload();
+                            }else{
+                                $scope.showalert('添加失败');
+                            }
+                        });
+                    }else{
+                        $scope.showalert('请选择菜品');
+                    }
+                }
+
+            }
+            $scope.showalert = function(text,time){
+                var time = time || 2000;
+                $scope.showtext = text;
+                $scope.isshow = false;
+                $timeout(function(){
+                    $scope.isshow = true;
+                },time);
+            }
+
+            $scope.removecp = function(id){
+                if(confirm('确定删除吗')){
+                    var url='<?php echo U("delCaipin");?>';
+                    var promise = getData(url,'id='+id);
+                    promise.then(function(data){
+                        if(data.status){
+                            location.reload();
+                        }else{
+                            $scope.showalert('删除失败');
+                        }
+                    });
+                }
+            }
+
+            $scope.dropcp = function(id,type){
+                var url="<?php echo U('changeCaipin');?>"
+                var promise = getData(url,'id='+id+'&status='+type);
+                promise.then(function(data){
+                    if(data.status){
+                        location.reload();
+                    }else{
+                        $scope.showalert('修改失败');
+                    }
+                });
+            }
+        });
+
+        $('.canpin_edit').click(function(){
+            var canpin_id = $(this).data('canpin_id');
+
+            $.get("<?php echo U('CanPin/edit');?>",{canpin_id:canpin_id,canpin_type:1}).success(function(data){
+
+                $('#my_title').text('编辑分类');
+                $('input[name="canpin_id"]').val(data.canpin_id);
+                $('input[name="canpin_name"]').val(data.canpin_name);
+                $('input[name="sort_order"]').val(data.sort_order);
+                $("input[name='must'][value='"+data.must+"']").prop("checked",true);
+                $('#myform').attr("action","<?php echo U('CanPin/edit');?>");
+                $('#submit').text('编辑分类');
+
+            });
+        });
+
+        $('#canpin_add').click(function(){
+            $('#my_title').text('创建分类');
+            $('input[name="canpin_id"]').val('');
+            $('input[name="canpin_name"]').val('');
+            $('input[name="sort_order"]').val('');
+            $("input[name='must'][value='0']").prop("checked",true);
+            $('#myform').attr("action","<?php echo U('CanPin/add');?>");
+            $('#submit').text('创建分类');
+        });
+    </script>
+
+        </div>
+    </div>
+</body>
+</html>

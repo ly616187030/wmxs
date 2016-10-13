@@ -1,0 +1,156 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <!-- 主体 -->
+    <div id="main-container">
+        <div>
+            <div class="span9 page_message">
+                <section id="contents">
+                    <ul class="title row">
+                        <li  class="title-current col-md-1">
+                            <a  style="color:#fff;" href="{:U('CustomReply/CustomReply_lists')}">图文回复</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('CustomReply/CustomReplyMult_lists')}">多图文设置</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('CustomReply/CustomReplyText_lists')}">文本回复</a>
+                        </li>
+                    </ul>
+
+                    <div class="table-bar" style="margin: 1em 0px;">
+                        <div class="fl">
+                            <div class="tools">
+                                <a class="btn btn-success" href="javascript:;" id="CustomReply_lists_new">新 增</a>
+                                <button class="btn ajax-post confirm btn-success" target-form="ids" url="{:U('del',array('m'=>'CustomReplyNews'))}">删 除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 数据列表 -->
+                    <div class="data-table">
+                        <div class="table-striped">
+                            <table cellspacing="1" class="table table-bordered text-center">
+                                <!-- 表头 -->
+                                <thead>
+                                <tr>
+                                    <th class="row-selected row-selected">
+                                        <input class="check-all" type="checkbox">
+                                    </th>
+                                    <th width="5%" >ID</th>
+                                    <th width="12%" >关键词</th>
+                                    <th width="20%" >关键词类型</th>
+                                    <th width="34%" >标题</th>
+                                    <th width="10%" >所属分类</th>
+                                    <th width="7%" >排序号</th>
+                                    <th width="12%" >操作---__WEIXIN__---</th>
+                                </tr>
+                                </thead>
+                                <!-- 列表 -->
+                                <tbody>
+                                <volist name="info" id="vo">
+                                    <tr>
+                                        <td>
+                                            <input class="ids" type="checkbox" value="{$vo.id}" name="id[]">
+                                        </td>
+                                        <td>{$vo.id}</td>
+                                        <td>{$vo.keyword}</td>
+                                        <td>
+                                            <switch name="vo.keyword_type">
+                                                <case value="0">完全匹配</case>
+                                                <case value="1">左边匹配</case>
+                                                <case value="2">右边匹配</case>
+                                                <case value="3">模糊匹配</case>
+                                                <default />
+                                            </switch>
+                                        </td>
+                                        <td>{$vo.title}</td>
+                                        <td>{$vo.category}</td>
+                                        <td>{$vo.sort}</td>
+                                        <td>
+                                            <a  href="{:U('CustomReply/CustomReply_lists_add',array('id'=>$vo['id']))}">编辑</a>
+                                            <a class="ajax-get confirm"   href="{:U('CustomReply/del',array('id'=>$vo['id'],'m'=>'CustomReplyNews'))}">删除</a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="page">  </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- /主体 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+    $(function(){
+        $('#CustomReply_lists_new').click(function(){
+            $.post('{:U("is_exit")}',function(data){
+                if(data.status){
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                        window.location.href = "{:U('CustomReply/CustomReply_lists_add',array('id'=>'0'))}";
+                    },1500);
+                }else{
+                    $.alertMessager(data.info, 'danger');
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }
+            });
+        })
+    })
+
+    $(function() {
+
+        //全选/反选/单选的实现
+        $(".check-all").click(function() {
+            $(".ids").prop("checked", this.checked);
+        });
+
+        $(".ids").click(function() {
+            var option = $(".ids");
+            option.each(function() {
+                if (!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+
+        //搜索功能
+        $('body').on('click', '#search', function() {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/(^&)|(\+)/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+
+        //回车搜索
+        $(".search-input").keyup(function(e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+    });
+
+    </script>
+</block>

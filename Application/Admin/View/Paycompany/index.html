@@ -1,0 +1,102 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:20px;
+        }
+        .menu_status{ width: 350px; float: left;}
+        .menu_status2{width: 490px; float: left;}
+        .listorder{ border-radius: 4px; border: 1px solid #c7c7cc;}
+        .modal-body img{ width: 100%; height: 100%;}
+    </style>
+</block>
+<block name="main">
+    <div class="data-table table-striped">
+        <form>
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th>公司名称</th>
+                    <th>签订时间</th>
+                    <th>到期时间</th>
+                    <th>使用年限(年)</th>
+                    <th>金额(元)</th>
+                    <th>软件版本</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="_data">
+                        <tr>
+                            <td>{$_data.c_name}</td>
+                            <td>{$_data.sign_time|date="Y-m-d H:i:s",###}</td>
+                            <td>{$_data.expire_time|date="Y-m-d H:i:s",###}</td>
+                            <td>{$_data.use_time}</td>
+                            <td>{$_data['total_fee']/100}</td>
+                            <td>{$_data.vip_name}</td>
+                            <td>
+                                <switch name="_data.status">
+                                    <case value="0">未审核</case>
+                                    <case value="1">审核通过</case>
+                                    <case value="2">审核不通过</case>
+                                </switch>
+                            </td>
+                            <td><a title="编辑" class="label label-primary" data-id="{$_data.id}" data-toggle="modal" data-target="#checkCompany">审核</a></td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="15" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+    <!-- 分页 -->
+    <div class="page">
+        {$page}
+    </div>
+    <div class="modal fade" id="checkCompany" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">审核</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{:U('checkCompany')}" method="post" class="form-horizontal">
+                        <input type="hidden" value="" name="id" />
+                        <div class="form-group" style="font-size: 14px;">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="1" checked="checked">审核通过
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="2">审核不通过
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary ajax-post" id="submit" type="submit" target-form="form-horizontal">审核</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        $('.label-primary').click(function(){
+            var id = $(this).data('id');
+            $('input[name="id"]').val(id);
+        });
+    </script>
+</block>

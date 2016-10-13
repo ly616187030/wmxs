@@ -1,0 +1,368 @@
+<extend name="Base/orderlist"/>
+<block name="title"><h3>评价</h3></block>
+<block name="style">
+    <link href="App/css/mui.min.css" rel="stylesheet"/>
+    <style>
+        .pad{
+            padding: 10px;
+        }
+        .pad span{
+            font-size: 18px;
+            color: orangered;
+            display: inline-block;
+            width: 10%;
+            text-align: center;
+        }
+        .mar{
+            margin-top: 20px;
+            border-bottom: solid 1px #dddddd;
+            border-top: solid 1px #dddddd;
+        }
+        .col{
+            color: #dd3030;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="pad" style="border-bottom: solid 1px #dddddd" id="cppj">菜品评价 &nbsp;
+        <span id="star1" class="mui-icon mui-icon-star"></span>
+        <span id="star2" class="mui-icon mui-icon-star"></span>
+        <span id="star3" class="mui-icon mui-icon-star"></span>
+        <span id="star4" class="mui-icon mui-icon-star"></span>
+        <span id="star5" class="mui-icon mui-icon-star"></span>
+
+        <span class="star mui-icon mui-icon-star-filled" id="stars1" style="position: fixed;  display: none;"></span>
+        <span class="star mui-icon mui-icon-star-filled" id="stars2" style="position: fixed;  display: none;"></span>
+        <span class="star mui-icon mui-icon-star-filled" id="stars3" style="position: fixed;  display: none;"></span>
+        <span class="star mui-icon mui-icon-star-filled" id="stars4" style="position: fixed;  display: none;"></span>
+        <span class="star mui-icon mui-icon-star-filled" id="stars5" style="position: fixed;  display: none;"></span>
+
+    </div>
+    <div class="pad" style="border-bottom: solid 1px #dddddd" id="shpj">送货评价 &nbsp;
+        <span id="star11" class="mui-icon mui-icon-star"></span>
+        <span id="star22" class="mui-icon mui-icon-star"></span>
+        <span id="star33" class="mui-icon mui-icon-star"></span>
+        <span id="star44" class="mui-icon mui-icon-star"></span>
+        <span id="star55" class="mui-icon mui-icon-star"></span>
+
+        <span class="stars mui-icon mui-icon-star-filled" id="stars11" style="position: fixed;  display: none;"></span>
+        <span class="stars mui-icon mui-icon-star-filled" id="stars22" style="position: fixed;  display: none;"></span>
+        <span class="stars mui-icon mui-icon-star-filled" id="stars33" style="position: fixed;  display: none;"></span>
+        <span class="stars mui-icon mui-icon-star-filled" id="stars44" style="position: fixed;  display: none;"></span>
+        <span class="stars mui-icon mui-icon-star-filled" id="stars55" style="position: fixed;  display: none;"></span>
+
+    </div>
+    <div class="pad" style="border-bottom: solid 1px #dddddd" id="fwpj">服务评价 &nbsp;
+        <span id="star111" class="mui-icon mui-icon-star"></span>
+        <span id="star222" class="mui-icon mui-icon-star"></span>
+        <span id="star333" class="mui-icon mui-icon-star"></span>
+        <span id="star444" class="mui-icon mui-icon-star"></span>
+        <span id="star555" class="mui-icon mui-icon-star"></span>
+
+        <span class="starss mui-icon mui-icon-star-filled" id="stars111" style="position: fixed;  display: none;"></span>
+        <span class="starss mui-icon mui-icon-star-filled" id="stars222" style="position: fixed;  display: none;"></span>
+        <span class="starss mui-icon mui-icon-star-filled" id="stars333" style="position: fixed;  display: none;"></span>
+        <span class="starss mui-icon mui-icon-star-filled" id="stars444" style="position: fixed;  display: none;"></span>
+        <span class="starss mui-icon mui-icon-star-filled" id="stars555" style="position: fixed;  display: none;"></span>
+    </div>
+
+    <div class="pad mar">
+        <textarea id="content" placeholder="请对本店进行评价吧~" style="width: 100%; border: none" rows="5"></textarea>
+    </div>
+       <input type="hidden" id="order_id" value="{$id.order_id}">
+        <input type="hidden" id="store_id" value="{$id.store_id}">
+    <div id="but" style="width: 100%; height: 3em; position: absolute; bottom: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 3em; font-size: 16px; color: white; ">提交评价</div>
+    <script>
+        $(function(){
+    /*        $.each($('#cppj .star'),function(i,d){
+                $(this).click(function(){
+                    var top = $(this).offset().top;
+                    var left = $(this).offset().left;
+                    var css = {'display':'block','top':top,'left':left}
+                        $('#cppj .stars:eq('+i+')').css(css)
+                })
+            })*/
+            var top1 = $('#star1').offset().top;
+            var top11=$('#star11').offset().top;
+            var top111=$('#star111').offset().top;
+            var left1 =$('#star1').offset().left;
+            var left2 =$('#star2').offset().left;
+            var left3 =$('#star3').offset().left;
+            var left4 =$('#star4').offset().left;
+            var left5 =$('#star5').offset().left;
+            var left11=$('#star11').offset().left;
+            var left22 =$('#star22').offset().left;
+            var left33 =$('#star33').offset().left;
+            var left44 =$('#star44').offset().left;
+            var left55 =$('#star55').offset().left;
+            var left111=$('#star111').offset().left;
+            var left222 =$('#star222').offset().left;
+            var left333 =$('#star333').offset().left;
+            var left444 =$('#star444').offset().left;
+            var left555 =$('#star555').offset().left;
+            $('#stars1').css('top',top1).css('left',left1);
+            $('#stars2').css('top',top1).css('left',left2);
+            $('#stars3').css('top',top1).css('left',left3);
+            $('#stars4').css('top',top1).css('left',left4);
+            $('#stars5').css('top',top1).css('left',left5);
+            $('#stars11').css('top',top11).css('left',left11);
+            $('#stars22').css('top',top11).css('left',left22);
+            $('#stars33').css('top',top11).css('left',left33);
+            $('#stars44').css('top',top11).css('left',left44);
+            $('#stars55').css('top',top11).css('left',left55);
+            $('#stars111').css('top',top111).css('left',left111);
+            $('#stars222').css('top',top111).css('left',left222);
+            $('#stars333').css('top',top111).css('left',left333);
+            $('#stars444').css('top',top111).css('left',left444);
+            $('#stars555').css('top',top111).css('left',left555);
+            //星星评分
+            $('#star1').click(function(){
+                $('#stars1').show();
+                $('#stars2').hide();
+                $('#stars3').hide();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#star2').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').hide();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#star3').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#star4').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').show();
+                $('#stars5').hide();
+            })
+            $('#star5').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').show();
+                $('#stars5').show();
+            })
+            $('#stars1').click(function(){
+                $('#stars1').show();
+                $('#stars2').hide();
+                $('#stars3').hide();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#stars2').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').hide();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#stars3').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').hide();
+                $('#stars5').hide();
+            })
+            $('#stars4').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').show();
+                $('#stars5').hide();
+            })
+            $('#stars5').click(function(){
+                $('#stars1').show();
+                $('#stars2').show();
+                $('#stars3').show();
+                $('#stars4').show();
+                $('#stars5').show();
+            })
+            $('#star11').click(function(){
+                $('#stars11').show();
+                $('#stars22').hide();
+                $('#stars33').hide();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#star22').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').hide();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#star33').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#star44').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').show();
+                $('#stars55').hide();
+            })
+            $('#star55').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').show();
+                $('#stars55').show();
+            })
+            $('#stars11').click(function(){
+                $('#stars11').show();
+                $('#stars22').hide();
+                $('#stars33').hide();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#stars22').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').hide();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#stars33').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').hide();
+                $('#stars55').hide();
+            })
+            $('#stars44').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').show();
+                $('#stars55').hide();
+            })
+            $('#stars55').click(function(){
+                $('#stars11').show();
+                $('#stars22').show();
+                $('#stars33').show();
+                $('#stars44').show();
+                $('#stars55').show();
+            })
+            $('#star111').click(function(){
+                $('#stars111').show();
+                $('#stars222').hide();
+                $('#stars333').hide();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#star222').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').hide();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#star333').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#star444').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').show();
+                $('#stars555').hide();
+            })
+            $('#star555').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').show();
+                $('#stars555').show();
+            })
+            $('#stars111').click(function(){
+                $('#stars111').show();
+                $('#stars222').hide();
+                $('#stars333').hide();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#stars222').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').hide();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#stars333').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').hide();
+                $('#stars555').hide();
+            })
+            $('#stars444').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').show();
+                $('#stars555').hide();
+            })
+            $('#stars555').click(function(){
+                $('#stars111').show();
+                $('#stars222').show();
+                $('#stars333').show();
+                $('#stars444').show();
+                $('#stars555').show();
+            })
+            //星星评分
+            $('#but').click(function(){
+               var url = "{:U('pingjia')}";
+                var info = 5 - $('.star:hidden').length;
+                var info1 = 5 - $('.stars:hidden').length;
+                var info11 = 5 - $('.starss:hidden').length;
+                var id = $('#order_id').val();
+                var store_id = $('#store_id').val();
+                var content = $('#content').val();
+                if(info==null){
+                    alert('至少添加一颗星')
+                    return;
+                }
+                if(info1==null){
+                    alert('至少添加一颗星')
+                    return;
+                }
+                if(info11==null){
+                    alert('至少添加一颗星')
+                    return;
+                }
+                $.post(url,{pingfen:info,pingfen1:info1,pingfen11:info11,content:content,order_id:id,store_id:store_id},function(data){
+                    if(data == true){
+                        alert("提交成功");
+                        window.location.href = "{:U('index')}";
+                    }else{
+                        alert(data);
+                    }
+                })
+
+
+
+
+            })
+
+
+        })
+    </script>
+
+</block>

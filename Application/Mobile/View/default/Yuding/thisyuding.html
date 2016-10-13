@@ -1,0 +1,145 @@
+<extend name="Base/orderlist" />
+<block name="right"><a style="color: white" href="{:U('ydlist')}">我的</a></block>
+<block name="style">
+	<link rel="stylesheet" href="App/css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/app.css" />
+	<link rel="stylesheet" type="text/css" href="App/css/mui.picker.min.css" />
+	<style>
+		html,body{
+			background-color: white;
+		}
+	</style>
+</block>
+<block name="body">
+	<div style="font-weight: bold; font-size: 1.3em; margin-top: 2em; margin-left: 0.5em;"><volist name="store" id="st">{$st.store_name}<input id="store_id" type="hidden" value="{$st.store_id}"></volist></div>
+	<div>
+		<div style="width: 60%;margin-left: auto;margin-right: auto;margin-top: 1em"><button id='demo1' style="width: 100%; height: 2em; background-color: #DD3030; color: white;" data-options='{"type":"date"}' class="btn mui-btn">选择日期</button></div>
+		<div style="width: 60%;margin-left: auto;margin-right: auto;margin-top: 1em;padding-left: 1%">
+			<span id="wucan" class="food" style="width: 46%; height: 2em; background-color: #DD3030;  color: white; text-align: center; line-height: 2em;display:inline-block;margin-right: 2%">午餐</span>
+			<span id="wancan" style="width: 46%; height: 2em; background-color: gainsboro;  text-align: center; line-height: 2em;display:inline-block;margin-left: 2%">晚餐</span>
+		</div>
+		<div style="width: 60%;margin-left: auto;margin-right: auto;margin-top: 1em;padding-left: 1%">
+			<span id="bao1" class="bao" style="width: 46%; height: 2em; background-color: #DD3030; color: white; text-align: center; line-height: 2em;display: inline-block;margin-right: 2%">只订包间</span>
+			<span id="bao2" style="width: 46%; height: 2em; background-color: gainsboro;text-align: center; line-height: 2em;display: inline-block;margin-left: 2%">包间优先</span>
+		</div>
+	</div>
+
+	<input id="people" style="width: 90%; height: 2em; margin-left: 1em; margin-top: 1em;" type="text" placeholder="就餐人数（必填：请输入整数）" />
+	<input id="tel" style="width: 90%; height: 2em; margin-left: 1em; margin-top: 0.5em;" type="text" placeholder="请输入11位手机号码" />
+	<input id="name" style="width: 40%; height: 2em; margin-left: 1em; margin-top: 0.5em;" type="text" placeholder="真实姓名" />
+	<input style="margin-left: 2em;" type="radio" checked="checked" name="sex" value="男" />男<input style="margin-left: 1em;" type="radio" name="sex" value="女" />女
+		<div id="btn" style="width: 90%; height: 3em; background-color: #DD3030; color: white; text-align: center; line-height: 3em; border-radius: 0.5em; margin-left: auto; margin-right: auto; margin-top: 1.2em; margin-bottom: 1em;">立即预定</div>
+	<div id="bg" style="background-color: black; display: none; width: 100%; height: 100%; position: fixed; top: 0;filter:alpha(opacity=50);-moz-opacity:0.5;opacity:0.5;"></div>
+	<div id="suss" style="width: 60%; height: 10em; display: none; border: 3px solid red; border-radius: 1em; position: absolute; top: 10em; left: 20%; background-color: white;">
+		<img style="width: 5em; height: 5em; margin-left: 4.5em; margin-top: 0.4em;" src="__IMG__/huoguo/ok_128px_29624_easyicon.net.ico" />
+		<div style="font-weight: bold; color: orangered; font-size: 2em; margin-left: 1.5em; margin-top: 0.5em;">预定成功</div>
+	</div>
+	<div id="over" style="width: 60%; height: 10em; display: none; border: 3px solid red; border-radius: 1em; position: absolute; top: 10em; left: 20%; background-color: white;">
+		<img style="width: 5em; height: 5em; margin-left: 4.5em; margin-top: 0.4em;" src="__IMG__/huoguo/exclamation_128px_526913_easyicon.net.ico" />
+		<div id="overs" style="font-weight: bold; color: orangered; font-size: 1.2em; text-align: center; margin-top: 0.5em;"></div>
+	</div>
+<script src="__JS__/mui.min.js"></script>
+<script src="__JS__/mui.picker.min.js"></script>
+<script>
+		(function($) {
+				$.init();
+				var result = $('#demo1')[0];
+				var btns = $('.btn');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+						var optionsJson = this.getAttribute('data-options') || '{}';
+						var options = JSON.parse(optionsJson);
+						var id = this.getAttribute('id');
+						/*
+						 * 首次显示时实例化组件
+						 * 示例为了简洁，将 options 放在了按钮的 dom 上
+						 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+						 */
+						var picker = new $.DtPicker(options);
+						picker.show(function(rs) {
+							/*
+							 * rs.value 拼合后的 value
+							 * rs.text 拼合后的 text
+							 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+							 * rs.m 月，用法同年
+							 * rs.d 日，用法同年
+							 * rs.h 时，用法同年
+							 * rs.i 分（minutes 的第二个字母），用法同年
+							 */
+							result.innerText = rs.text;
+							/* 
+							 * 返回 false 可以阻止选择框的关闭
+							 * return false;
+							 */
+							/*
+							 * 释放组件资源，释放后将将不能再操作组件
+							 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+							 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+							 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+							 */
+							picker.dispose();
+						});
+					}, false);
+				});
+			})(mui);
+	$(document).ready(function(){
+		//用餐按钮
+		$('#wucan').click(function(){
+			$('#wucan').css('background-color','#DD3030').css('color','white');
+			$('#wancan').css('background-color','gainsboro').css('color','black');
+			$('#wucan').addClass('food');
+			$('#wancan').removeClass('food');
+		});
+		$('#wancan').click(function(){
+			$('#wucan').css('background-color','gainsboro').css('color','black');
+			$('#wancan').css('background-color','#DD3030').css('color','white');
+			$('#wancan').addClass('food');
+			$('#wucan').removeClass('food');
+		});
+		//包间按钮
+		$('#bao1').click(function(){
+			$('#bao1').css('background-color','#DD3030').css('color','white');
+			$('#bao2').css('background-color','gainsboro').css('color','black');
+			$('#bao1').addClass('bao');
+			$('#bao2').removeClass('bao');
+		});
+		$('#bao2').click(function(){
+			$('#bao1').css('background-color','gainsboro').css('color','black');
+			$('#bao2').css('background-color','#DD3030').css('color','white');
+			$('#bao2').addClass('bao');
+			$('#bao1').removeClass('bao');
+		});
+
+		$('#btn').click(function(){
+			var time = $('#demo1').text();
+			var store_id = $('#store_id').val();
+			var food = $('.food').text();
+			var bao = $('.bao').text();
+			var people = $('#people').val();
+			var tel = $('#tel').val();
+			var name = $('#name').val();
+			var sex = $("input[name='sex']").val();
+			var url = "{:U('thisyuding')}";
+			$.post(url,{time:time,food:food,bao:bao,people:people,tel:tel,name:name,sex:sex,store_id:store_id},function(data){
+				if(data == true){
+					$('#bg').fadeIn(1000);
+					$('#suss').fadeIn(1000);
+					setTimeout(function(){
+						$('#bg').fadeOut(4000);
+						$('#suss').fadeOut(4000);
+						location.href ="{:U('ydlist')}"
+					},500);
+				}else{
+					$('#overs').text(data);
+					$('#bg').fadeIn(1000);
+					$('#over').fadeIn(1000);
+					setTimeout(function(){
+						$('#bg').fadeOut(4000);
+						$('#over').fadeOut(4000);
+					},500);
+				}
+			});
+		});
+	})
+</script>
+</block>

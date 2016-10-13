@@ -1,0 +1,9 @@
+<extend name="Base/common-1"/>
+<block name="body">
+    <div id="cart_wrap" class="ub ub-ver" style="width: 100%; height: 100%; text-align: center;">
+        <div class="ub-f1" style="font-size: 15em; color: orangered"><i class="fa fa-shopping-cart"></i></div>
+        <div class="ub-f1">
+            <p>美食篮子是空的，<a href="{:U('Menu/index',array('store_id'=>$storeid,'peisongfei'=>$Think.session('peisongfei'),'is_open'=>$Think.session('is_open')))}" style="color: orangered">继续挑选美食</a></p>
+        </div>
+    </div>
+</block>

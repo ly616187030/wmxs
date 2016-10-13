@@ -1,0 +1,353 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <link type="text/css" href="__STATIC__/ueditor/themes/default/css/ueditor.css?v=20141202">
+    <link type="text/css" href="__STATIC__/ueditor/themes/iframe.css?v=20141202">
+    <link type="text/css" href="__STATIC__/ueditor/themes/default/dialogbase.css?v=20141202">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/cui/css/cui.extend.min.css">
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+
+<block name="main">
+<div id="main-container">
+    <div>
+        <div class="span9 page_message">
+            <section id="contents">
+                <ul class="title row">
+                    <li  class="title-current col-md-1">
+                        <a  style="color:#fff;" href="{:U('CustomReply/CustomReply_lists')}">图文回复</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('CustomReply/CustomReplyMult_lists')}">多图文设置</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('CustomReply/CustomReplyText_lists')}">文本回复</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <form id="form" action="{:U('CustomReply_lists_add')}" method="post" class="form-horizontal">
+                        <input type="hidden" name="id" value="{$infos.id}"/>
+                        <!-- 基础文档模型 -->
+                        <div id="tab1" class="tab-pane in tab1">
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>关键词</label>
+                            <div class="col-sm-2" >
+                                <input type="text" name="keyword" value="{$infos.keyword}" class="form-control"/>
+                            </div>
+                            <div  class="col-sm-12" style="padding:0px;margin:0px;">
+                                <label class="col-sm-12" style="height:40px;line-height: 40px;">关键词类型</label>
+                                <div class="col-sm-2" style="height:40px;line-height: 40px;">
+                                    <empty name="infos.keyword_type">
+                                        <select name="keyword_type" class="form-control">
+                                            <option value="0" class="toggle-data" toggle-data="" selected>完全匹配</option>
+                                            <option value="1" class="toggle-data" toggle-data="">左边匹配</option>
+                                            <option value="2" class="toggle-data" toggle-data="">右边匹配</option>
+                                            <option value="3" class="toggle-data" toggle-data="">模糊匹配</option>
+                                        </select>
+                                        <else/>
+                                        <select name="keyword_type" class="form-control">
+                                            <option value="0" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="0">selected="selected"</eq>>完全匹配</option>
+                                            <option value="1" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="1">selected="selected"</eq>>左边匹配</option>
+                                            <option value="2" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="2">selected="selected"</eq>>右边匹配</option>
+                                            <option value="3" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="3">selected="selected"</eq>>模糊匹配</option>
+                                        </select>
+                                    </empty>
+                                </div>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>标题</label>
+                            <div class="col-sm-2" >
+                                <input type="text" name="title" value="{$infos.title}" class="form-control"/>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">简介</label>
+                            <div class="col-sm-3">
+                                <textarea name="intro" class="form-control ">{$infos.intro}</textarea>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">所属类别<span style="color:#ccc;">（要先在微官网分类里配置好分类才可选择）</span></label>
+                            <div class="col-sm-2">
+                                <select name="cate_id" class="form-control">
+                                    <option value="0" class="toggle-data" toggle-data="" selected>请选择分类</option>
+                                    <volist name="data" id="vo">
+                                        <empty name="infos.cate_id" class="form-control">
+                                            <option value="{$vo.id}" class="toggle-data" toggle-data="">{$vo.title}</option>
+                                            <else/>
+                                            <option value="{$vo.id}" class="toggle-data" toggle-data="" <if condition="$infos.cate_id eq $vo['id']">selected="selected"</if>>{$vo.title}</option>
+                                        </empty>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="right row">
+                                <div id="tab_1_upload_box_6" class="wu-example">
+                                    <!--用来存放文件信息-->
+                                    <div id="tab_1_upload_list_6" class="uploader-list col-xs-12 img-box">
+                                        <div id="tab_1_upload_preview_6" class="col-md-4 file-item thumbnail hidden">
+                                            <i class="fa fa-times-circle remove-picture"></i>
+                                            <img>
+                                        </div>                </div>
+                                    <div class="btns col-xs-12">
+                                        <input type="hidden" id="tab_1_upload_input_6" name="cover" value="0">
+                                        <div id="tab_1_upload_6" class="webuploader-container">
+                                            <div class="webuploader-pick">上传图片</div>
+                                            <div id="rt_rt_1a8g8n9uurtq5ahrca6cnpo41">
+                                                <input type="file" name="file"  multiple="multiple" accept="image/*">
+                                            </div>
+                                        <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                                        <span class="check-tips text-muted small">文档封面</span>                </div>
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function(){
+                                        var uploader_tab_1_upload_6 = WebUploader.create({
+                                            auto: true,                                                                    // 选完文件后，是否自动上传
+                                            duplicate: true,                                                               // 同一文件是否可以重复上传
+                                            swf: '/Public/libs/cui/swf/uploader.swf',                                               // swf文件路径
+                                            server: '/index.php?s=/admin/upload/upload/dir/image.html',    // 文件接收服务端
+                                            pick: '#tab_1_upload_6',                                   // 选择文件的按钮
+                                            resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                                            //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                                            fileSingleSizeLimit:10*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                                            // 文件过滤
+                                            accept: {
+                                                title: 'Images',
+                                                extensions: 'gif,jpg,jpeg,bmp,png',
+                                                mimeTypes: 'image/*'
+                                            }
+                                        });
+
+                                        // 文件上传过程中创建进度条实时显示。
+                                        uploader_tab_1_upload_6.on( 'uploadProgress', function( file, percentage ) {
+                                            $( '#tab_1_upload_preview_6').removeClass('hidden');
+                                            var $li = $( '#tab_1_upload_preview_6'),
+                                                    $percent = $li.find('.progress .progress-bar');
+                                            // 避免重复创建
+                                            if ( !$percent.length ) {
+                                                $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                                        .appendTo( $li )
+                                                        .find('.progress-bar');
+                                            }
+                                            $percent.css( 'width', percentage * 100 + '%' );
+                                        });
+
+                                        // 完成上传完了，成功或者失败，先删除进度条。
+                                        uploader_tab_1_upload_6.on( 'uploadComplete', function( file ) {
+                                            $( '#tab_1_upload_preview_6' ).find('.progress').remove();
+                                        });
+
+                                        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                                        uploader_tab_1_upload_6.on( 'uploadSuccess', function( file , response) {
+                                            $( '#tab_1_upload_preview_6' ).addClass('upload-state-done');
+                                            if(eval('response').status == 0){
+                                                $.alertMessager(response.info);
+                                            } else {
+                                                $( '#tab_1_upload_input_6' ).attr('value', response.id);
+                                                $( '#tab_1_upload_preview_6 img').attr('src', response.url);
+                                                $( '#tab_1_upload_preview_6 img').attr('data-id', response.id);
+                                            }
+                                        });
+
+                                        // 文件上传失败，显示上传出错。
+                                        uploader_tab_1_upload_6.on( 'uploadError', function( file ) {
+                                            $.alertMessager('error');
+                                            var $li = $( '#tab_1_upload_preview_6'),
+                                                    $error = $li.find('div.error');
+                                            // 避免重复创建
+                                            if ( !$error.length ) {
+                                                $error = $('<div class="error"></div>').appendTo( $li );
+                                            }
+                                            $error.text('上传失败');
+                                        });
+
+                                        // 删除图片
+                                        $(document).on('click', '#tab_1_upload_list_6 .remove-picture', function() {
+                                            $( '#tab_1_upload_input_6' ).val('') //删除后覆盖原input的值为空
+                                            $( '#tab_1_upload_preview_6').addClass('hidden');
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="right">
+                                <div class="ke-container ke-container-default" style="width: 100%;">
+                                    <div style="display:block;" class="ke-toolbar" unselectable="on">
+                                        <span class="ke-outline" data-name="source" title="HTML代码" unselectable="on">
+                                    <span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-source" unselectable="on"></span>
+                                        </span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="undo" title="后退(Ctrl+Z)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-undo" unselectable="on"></span></span><span class="ke-outline" data-name="redo" title="前进(Ctrl+Y)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-redo" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="preview" title="预览" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-preview" unselectable="on"></span></span><span class="ke-outline" data-name="print" title="打印(Ctrl+P)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-print" unselectable="on"></span></span><span class="ke-outline" data-name="template" title="插入模板" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-template" unselectable="on"></span></span><span class="ke-outline" data-name="code" title="插入程序代码" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-code" unselectable="on"></span></span><span class="ke-outline" data-name="cut" title="剪切(Ctrl+X)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-cut" unselectable="on"></span></span><span class="ke-outline" data-name="copy" title="复制(Ctrl+C)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-copy" unselectable="on"></span></span><span class="ke-outline" data-name="paste" title="粘贴(Ctrl+V)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-paste" unselectable="on"></span></span><span class="ke-outline" data-name="plainpaste" title="粘贴为无格式文本" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-plainpaste" unselectable="on"></span></span><span class="ke-outline" data-name="wordpaste" title="从Word粘贴" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-wordpaste" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline ke-selected" data-name="justifyleft" title="左对齐" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-justifyleft" unselectable="on"></span></span><span class="ke-outline" data-name="justifycenter" title="居中" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-justifycenter" unselectable="on"></span></span><span class="ke-outline" data-name="justifyright" title="右对齐" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-justifyright" unselectable="on"></span></span><span class="ke-outline" data-name="justifyfull" title="两端对齐" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-justifyfull" unselectable="on"></span></span><span class="ke-outline" data-name="insertorderedlist" title="编号" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-insertorderedlist" unselectable="on"></span></span><span class="ke-outline" data-name="insertunorderedlist" title="项目符号" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-insertunorderedlist" unselectable="on"></span></span><span class="ke-outline" data-name="indent" title="增加缩进" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-indent" unselectable="on"></span></span><span class="ke-outline" data-name="outdent" title="减少缩进" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-outdent" unselectable="on"></span></span><span class="ke-outline" data-name="subscript" title="下标" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-subscript" unselectable="on"></span></span><span class="ke-outline" data-name="superscript" title="上标" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-superscript" unselectable="on"></span></span><span class="ke-outline" data-name="clearhtml" title="清理HTML代码" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-clearhtml" unselectable="on"></span></span><span class="ke-outline" data-name="quickformat" title="一键排版" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-quickformat" unselectable="on"></span></span><span class="ke-outline" data-name="selectall" title="全选(Ctrl+A)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-selectall" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="fullscreen" title="全屏显示" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-fullscreen" unselectable="on"></span></span><div class="ke-hr"></div><span class="ke-outline" data-name="formatblock" title="段落" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-formatblock" unselectable="on"></span></span><span class="ke-outline" data-name="fontname" title="字体" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-fontname" unselectable="on"></span></span><span class="ke-outline" data-name="fontsize" title="文字大小" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-fontsize" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="forecolor" title="文字颜色" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-forecolor" unselectable="on"></span></span><span class="ke-outline" data-name="hilitecolor" title="文字背景" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-hilitecolor" unselectable="on"></span></span><span class="ke-outline" data-name="bold" title="粗体(Ctrl+B)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-bold" unselectable="on"></span></span><span class="ke-outline" data-name="italic" title="斜体(Ctrl+I)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-italic" unselectable="on"></span></span><span class="ke-outline" data-name="underline" title="下划线(Ctrl+U)" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-underline" unselectable="on"></span></span><span class="ke-outline" data-name="strikethrough" title="删除线" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-strikethrough" unselectable="on"></span></span><span class="ke-outline" data-name="lineheight" title="行距" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-lineheight" unselectable="on"></span></span><span class="ke-outline" data-name="removeformat" title="删除格式" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-removeformat" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="image" title="图片" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-image" unselectable="on"></span></span><span class="ke-outline" data-name="multiimage" title="批量图片上传" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-multiimage" unselectable="on"></span></span><span class="ke-outline" data-name="flash" title="Flash" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-flash" unselectable="on"></span></span><span class="ke-outline" data-name="media" title="视音频" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-media" unselectable="on"></span></span><span class="ke-outline" data-name="insertfile" title="插入文件" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-insertfile" unselectable="on"></span></span><span class="ke-outline" data-name="table" title="表格" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-table" unselectable="on"></span></span><span class="ke-outline" data-name="hr" title="插入横线" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-hr" unselectable="on"></span></span><span class="ke-outline" data-name="emoticons" title="插入表情" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-emoticons" unselectable="on"></span></span><span class="ke-outline" data-name="baidumap" title="百度地图" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-baidumap" unselectable="on"></span></span><span class="ke-outline" data-name="pagebreak" title="插入分页符" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-pagebreak" unselectable="on"></span></span><span class="ke-outline" data-name="anchor" title="锚点" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-anchor" unselectable="on"></span></span><span class="ke-outline" data-name="link" title="超级链接" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-link" unselectable="on"></span></span><span class="ke-outline" data-name="unlink" title="取消超级链接" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-unlink" unselectable="on"></span></span><span class="ke-inline-block ke-separator"></span><span class="ke-outline" data-name="about" title="关于" unselectable="on"><span class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-about" unselectable="on"></span></span></div><div style="display: block; height: 438px;" class="ke-edit"><iframe class="ke-edit-iframe" hidefocus="true" frameborder="0" tabindex="" style="width: 100%; height: 438px;"></iframe><textarea class="ke-edit-textarea" hidefocus="true" tabindex="" style="width: 100%; height: 438px; display: none;"></textarea></div><div class="ke-statusbar"><span class="ke-inline-block ke-statusbar-center-icon"></span><span class="ke-inline-block ke-statusbar-right-icon" style="visibility: hidden;"></span></div></div><textarea name="content" id="tab_1_kindeditor_4" class="form-control" style="display: none;">                            </textarea>
+                                <script type="text/javascript" src="/Public/libs/kindeditor/kindeditor-min.js" charset="utf-8"></script>
+                                <script type="text/javascript">
+                                    $(function(){
+                                        KindEditor.ready(function(K) {
+                                            kindeditor_4 = K.create('#tab_1_kindeditor_4', {
+                                                allowFileManager : true,
+                                                filePostName : 'file',
+                                                cssPath : [
+                                                    '__CUI__/css/cui.min.css',
+                                                    '__PUBLIC__/libs/kindeditor/plugins/code/prettify.css'
+                                                ],
+                                                width : '100%',
+                                                height : '500px',
+                                                resizeType: 1,
+                                                pasteType : 2,
+                                                urlType : 'absolute',
+                                                fileManagerJson : '/index.php?s=/admin/upload/filemanager.html',
+                                                uploadJson : '/index.php?s=/admin/upload/upload.html',
+                                                extraFileUploadParams: {
+                                                    session_id : 'o3uufbmappuf3vt5juos0h0k21'
+                                                },
+                                                afterBlur: function(){this.sync();}
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+
+
+
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">内容</label>
+                            <div class="col-sm-5" >
+                                <label class="textarea">
+                                    <textarea name="content">{$infos.content}</textarea>
+                                    <input type="hidden" name="parse" value="0">
+
+                                    <script type="text/javascript" charset="utf-8" src="/wp/Public/static/ueditor/ueditor.config.js?v=20141202"></script>
+                                    <script type="text/javascript" charset="utf-8" src="/wp/Public/static/ueditor/ueditor.all.js?v=20141202"></script>
+                                    <script type="text/javascript" charset="utf-8" src="/wp/Public/static/ueditor/lang/zh-cn/zh-cn.js?v=20141202"></script>
+
+                                    <script type="text/javascript">
+                                        $('textarea[name="content"]').attr('id', 'editor_id_content');
+                                        window.UEDITOR_HOME_URL = "/wp/Public/static/ueditor/";
+                                        window.UEDITOR_CONFIG.initialFrameHeight = parseInt('500px');
+                                        window.UEDITOR_CONFIG.scaleEnabled = true;
+                                        window.UEDITOR_CONFIG.imageUrl = 'http://localhost/wp/index.php?s=/addon/EditorForAdmin/Upload/ue_upimg.html';
+                                        window.UEDITOR_CONFIG.imagePath = '';
+                                        window.UEDITOR_CONFIG.imageFieldName = 'imgFile';
+                                        //在这里扫描图片
+                                        window.UEDITOR_CONFIG.imageManagerUrl='http://localhost/wp/index.php?s=/addon/EditorForAdmin/Upload/ue_mgimg.html';//图片在线管理的处理地址
+                                        window.UEDITOR_CONFIG.imageManagerPath='';
+                                        var imageEditor = UE.getEditor('editor_id_content');
+                                        //添加一下判断是否是单个按钮管理图片 需要执行一下代码
+                                    </script>
+                                </label>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">排序号<span style="color:#ccc">（数值越小越靠前）</span></label>
+                            <div class="col-sm-1" >
+                                <input type="number" name="sort" value="{$infos.sort}" class="form-control"/>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">外链<span style="color:#ccc">（如需跳转填写网址(记住必须有http://)如果填写了图文详细内容，这里请留空，不要设置！）</span></label>
+                            <div class="col-sm-4" >
+                                <input type="text" name="jump_url" value="{$infos.jump_url}" class="form-control"/>
+                            </div>
+
+                            <lable class="col-sm-12" style="height:40px;line-height: 40px;"></lable>
+                            <div class="col-sm-12">
+                                <button class="btn submit-btn ajax-post btn-success" style="width:12em;height:3em;" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                            </div>
+                    </form>
+                </div>
+                <!--通用的微信预览模板-->
+                <!--头部标题栏-->
+                <!--鉴于样式title放进具体每块模块-->
+                <!--CSS模块-->
+                <div class="col-sm-12">
+                <div class="weixin-preview">
+                    <p class="preview-tips">微信回复预览</p>
+                    <div class="weixin-box">
+                        <p class="weixin-title"></p>
+                        <div class="weixin-cover"><img class="weixin-cover-pic" src=""/></div>
+                        <p class="weixin-content">
+
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+                        $('.tab-content').addClass('has-weixinpreivew');
+                        if($('input[name="title"]').val()!=undefined){
+                            $('.weixin-title').html($('input[name="title"]').val());
+                        }else{
+                            $('.weixin-title').html($('input[name="config[title]"]').val());
+                        }
+                        if($('textarea[name="content"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="content"]').val());
+                        }else if($('textarea[name="intro"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="config[intro]"]').val());
+                        }else{
+                            $('.weixin-content').html($('textarea[name="config[info]"]').val());
+                        }
+                        var weixin_cover_picurl = $('#cover_id_picurl').next().find('img').attr('src');
+                        if(weixin_cover_picurl==undefined)weixin_cover_picurl=$('#cover_id_cover').next().find('img').attr('src');
+                        if($('#cover_id_cover').val()==undefined && $('#cover_id_picurl').val()==undefined){
+                            $('.weixin-preview').hide();
+                        }
+                        if(weixin_cover_picurl==undefined || weixin_cover_picurl==""){
+                            $('.weixin-cover-pic').attr('src',"/wp/Public/Home/images/no_cover.png");
+                        }else{
+                            $('.weixin-cover-pic').attr('src',weixin_cover_picurl);
+                        }
+                        $('input[name="title"]').keyup(function(){
+                            $('.weixin-title').html($(this).val());
+                        });
+                        $('textarea[name="content"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="info"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="intro"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                    </script>
+                </div>
+                    </div>
+            </section>
+        </div>
+
+    </div>
+</div>
+<!-- /主体 -->
+</block>
+<block name="script">
+
+<link href="/wp/Public/static/datetimepicker/css/datetimepicker.css?v=20141202" rel="stylesheet" type="text/css">
+<link href="/wp/Public/static/datetimepicker/css/dropdown.css?v=20141202" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/wp/Public/static/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/wp/Public/static/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=20141202" charset="UTF-8"></script>
+<script type="text/javascript">
+//alert("{$infos.id}");
+
+    $(function(){
+        $('.time').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            language:"zh-CN",
+            minView:0,
+            autoclose:true
+        });
+        $('.date').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language:"zh-CN",
+            minView:2,
+            autoclose:true
+        });
+        showTab();
+
+        $('.toggle-data').each(function(){
+            var data = $(this).attr('toggle-data');
+            if(data=='') return true;
+
+            if($(this).is(":selected") || $(this).is(":checked")){
+                change_event(this)
+            }
+        });
+
+        $('select[name=type]').change(function(){
+            $('.toggle-data').each(function(){
+                var data = $(this).attr('toggle-data');
+                if(data=='') return true;
+
+                if($(this).is(":selected") || $(this).is(":checked")){
+                    change_event(this)
+                }
+            });
+        });
+    });
+</script>
+</block>

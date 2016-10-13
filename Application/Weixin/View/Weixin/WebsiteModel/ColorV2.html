@@ -1,0 +1,58 @@
+<include file="Weixin/Mobilehead/mobile_head"/>
+<link href="__CSS__/colorV2.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+<body id="weisite" style="background:#eee url({$config.background}) no-repeat; background-size:100% 100%">
+<div class="container">
+    <if condition="!empty($slideshow)">
+        <section class="banner">
+            <ul>
+                <volist name="slideshow" id="vod">
+                    <li>
+                        <a href="{$vod.url}" title="{$vod.title}"><img src="{$vod.img|get_cover='path'}"/></a>
+                        <span class="title">{$vod.title}</span>
+                    </li>
+                </volist>
+            </ul>
+        <span class="identify">
+            <span class="pointer">
+            <volist name="slideshow" id="vod">
+                <em></em>
+            </volist>
+             </span>       
+        </span>
+        </section>
+    </if>
+    <if condition="!empty($category)">
+        <section>
+            <div class="icon_lists">
+                <volist name="category" id="vo">
+                    <if condition="empty($vo['url'])" >
+                        <a class="item" href="{:U('Website/previeList',array('id'=>$vo['id']))}">
+                        <span class="icon random_color">
+                            <img src="{$vo.icon|get_cover='path'}"/><br/>
+                            {$vo.title}
+                        </span>
+                        </a>
+                        <else/>
+                        <a class="item" href="{$vo.url}">
+                        <span class="icon random_color">
+                            <img src="{$vo.icon|get_cover='path'}"/><br/>
+                            {$vo.title}
+                        </span>
+                        </a>
+                    </if>
+                </volist>
+            </div>
+        </section>
+    </if>
+</div>
+<!-- 底部导航 -->
+<include file="$footer_path"/>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $.WeiPHP.initBanner(true,5000);
+        $.WeiPHP.setRandomColor('.random_color');
+    })
+
+</script>
+</html>

@@ -1,0 +1,75 @@
+
+<style>
+    .ubbb{
+        z-index: 9999;
+    }
+    .fl{
+        text-align: center;
+    }
+    .top-left{
+        font-size: 26px;
+        color: orangered;
+    }
+    .bottom-all{
+        color: orangered;
+        border-bottom: solid 2px orangered;
+    }
+    .wid{
+        width: 33.33333%;
+    }
+</style>
+<div style="width: 100%;height: 100%;background-color: #333;position: fixed;z-index: 10;display: none; opacity: 0.8" id="zhezao"></div>
+<div id="detail"></div>
+<header>
+    <div class="ub ub-fh ub-ver ubbb" style="position: fixed; background-color: white;">
+        <div class="ub ub-f1" style="border-bottom: 1px #dddddd solid;line-height: 3em;min-height: 3em">
+            <div class="ub-f1 fl top-left"><a class="fa fa-angle-left" href="javascript:history.back()"></a></div>
+            <div class="ub-f1 fl" style="font-weight: bold">{$list_store.store_name}</div>
+            <div style="font-size: 1.5em;" class="ub-f1 fl" id="shoucang">
+                <empty name="list_fav"><i class="fa fa-star-o"></i><else/><i class="fa fa-star-o" style="color: orangered"></i></empty>
+                <input type="hidden" value="{(:cookie('user_auth.uid'))?(:cookie('user_auth.uid')):(:session('user_auth.uid'))}" id="uid" />
+            </div>
+        </div>
+        <div class="ub ub-f1" style="border-bottom: 1px #dddddd solid; line-height:2.5em; min-height: 2.5em;">
+            <div id="menu"  class="ub-f1 fl {$menu} wid">点菜</div>
+            <div id="pingjia" class="ub-f1 fl {$menu1} wid">评价</div>
+            <div id="xiangq" class="ub-f1 fl {$menu2} wid">商家详情</div>
+        </div>
+    </div>
+    <div style="width: 1em;height:5.5em"></div>
+<script type="text/javascript">
+   $(function() {
+       $('#menu').click(function () {
+           window.location.href = "{:U('index?store_id='.$storeid)}"
+       })
+       $('#pingjia').click(function () {
+           window.location.href = "{:U('pingjia?store_id='.$storeid)}"
+       })
+       $('#xiangq').click(function () {
+           window.location.href = "{:U('xiangq?store_id='.$storeid)}"
+       })
+//       $('.top-left').click(function () {
+//           window.location.href = history.go(-1);
+//       })
+       $("#shoucang").click(function() {
+           var storeid = '{$storeid}';
+           var uid = $("#uid").val();
+           if (uid == "") {
+               window.location.href = "{:U('Users/login')}";
+           } else {
+               $.post("{:U('storeFav')}", {uid:uid,storeid: storeid}).success(function (data) {
+                   if (data == 1) {
+                       $('#shoucang').children('i').hide();
+                       $('#shoucang').append('<i class="fa fa-star-o"></i>')
+                       alert('取消成功')
+                   } else {
+                     $('#shoucang').children('i').hide();
+                       $('#shoucang').append('<i class="fa fa-star-o" style="color: orangered"></i>')
+                       alert('收藏成功')
+                   }
+               });
+           }
+       })
+       });
+</script>
+</header>

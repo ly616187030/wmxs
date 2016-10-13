@@ -1,0 +1,254 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:20px 0;
+        }
+    </style>
+    <notempty name="list">
+        <form action="{:U('addedit')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{$list.id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>名称：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="c_name" value="{$list.c_name}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">公司logo：</label>
+                <div class="col-sm-2">
+
+                    <div  id="_upload_box" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="_upload_list" class="uploader-list col-xs-12 img-box">
+                            <notempty name="list.c_logo">
+                                <div id="_upload_preview" class="col-md-4 file-item thumbnail">
+                                    <i class="fa fa-times-circle remove-picture"></i>
+                                    <img src="{$list.c_logo|get_new_cover='path'}" data-id="">
+                                </div>
+                                <else />
+                                <div id="_upload_preview" class="col-md-4 file-item thumbnail">
+                                    <i class="fa fa-times-circle remove-picture"></i>
+                                    <img src="" data-id="">
+                                </div>
+                            </notempty>
+                        </div>
+                        <div class="btns col-xs-12">
+                            <input type="hidden" id="_upload_input" name="c_logo" value="{$list.c_logo}"/>
+                            <div id="_upload">上传图片</div>
+                            <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                        </div>
+                    </div>
+
+                </div>
+                <label style="padding-top:7px;font-weight:normal;">（320×240像素的图片）</label>
+                <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+                <script type="text/javascript">
+                    $(function(){
+                        var uploader = WebUploader.create({
+                            auto: true,                                                                    // 选完文件后，是否自动上传
+                            duplicate: true,                                                               // 同一文件是否可以重复上传
+                            swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                            server: '{:U("Admin/Upload/Upload", array("dir" => "image"))}',    // 文件接收服务端
+                            pick: '#_upload',                                   							// 选择文件的按钮
+                            resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                            //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                            fileSingleSizeLimit:<php> echo C('UPLOAD_FILE_SIZE') ? : 2; </php>*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                        // 文件过滤
+                        accept: {
+                            title: 'Images',
+                                    extensions: 'gif,jpg,jpeg,bmp,png',
+                                    mimeTypes: 'image/*'
+                        }
+                    });
+
+                    // 文件上传过程中创建进度条实时显示。
+                    uploader.on( 'uploadProgress', function( file, percentage ) {
+                        $( '#_upload_preview').removeClass('hidden');
+                        var $li = $( '#_upload_preview'),
+                                $percent = $li.find('.progress .progress-bar');
+                        // 避免重复创建
+                        if ( !$percent.length ) {
+                            $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                    .appendTo( $li )
+                                    .find('.progress-bar');
+                        }
+                        $percent.css( 'width', percentage * 100 + '%' );
+                    });
+
+                    // 完成上传完了，成功或者失败，先删除进度条。
+                    uploader.on( 'uploadComplete', function( file ) {
+                        $( '#_upload_preview' ).find('.progress').remove();
+                    });
+
+                    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                    uploader.on( 'uploadSuccess', function( file , response) {
+                        $( '#_upload_preview' ).addClass('upload-state-done');
+                        if(eval('response').status == 0){
+                            $.alertMessager(response.info);
+                        } else {
+                            $( '#_upload_input' ).attr('value', response.id);
+                            $( '#_upload_preview img').attr('src', response.url);
+                            $( '#_upload_preview img').attr('data-id', response.id);
+                        }
+                    });
+
+                    // 文件上传失败，显示上传出错。
+                    uploader.on( 'uploadError', function( file ) {
+                        $.alertMessager('error');
+                        var $li = $( '_upload_preview'),
+                                $error = $li.find('div.error');
+                        // 避免重复创建
+                        if ( !$error.length ) {
+                            $error = $('<div class="error"></div>').appendTo( $li );
+                        }
+                        $error.text('上传失败');
+                    });
+
+                    // 删除图片
+                    $(document).on('click', '#_upload_list .remove-picture', function() {
+                        $( '#_upload_input' ).val('') //删除后覆盖原input的值为空
+                        $( '#_upload_preview').addClass('hidden');
+                    });
+                    });
+                </script>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">行业类别：</label>
+                <div class="col-sm-3">
+                    <select name="c_category" class="form-control">
+                        <option value="">请选择行业类别</option>
+                        <volist name="list_cc" id="vo">
+                            <option value="{$vo.id}" <eq name="list.c_category" value="$vo.id">selected="selected"</eq>>{$vo.title_prefix}{$vo.cy_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>所属地区</label>
+                <div class="col-sm-2">
+                    <select class="form-control"  id="province" name="province" >
+                        <option value="">省份</option>
+                        <volist name="_province" id="vo">
+                            <option value="{$vo.code}" <eq name="vo.code" value="$list.province">selected="selected"</eq> >{$vo.name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" name="city" id="city">
+                        <empty name="list.city">
+                            <option>地级市</option>
+                            <else/>
+                            <volist name="_city" id="vo">
+                                <option value="{$vo.code}" <eq name="vo.code" value="$list.city">selected="selected"</eq>>{$vo.name}</option>
+                            </volist>
+                        </empty>
+                    </select>
+                </div>
+                <div class="col-sm-2" >
+                    <select class="form-control" id="town" name="county">
+                        <empty name="list.county">
+                            <option>区、县</option>
+                            <else/>
+                            <volist name="_county" id="vo">
+                                <option value="{$vo.code}" <eq name="vo.code" value="$list.county">selected="selected"</eq>>{$vo.name}</option>
+                            </volist>
+                        </empty>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>详细地址：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="address" value="{$list.address}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">邮编：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="post_code" value="{$list.post_code}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">电话：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="landline" value="{$list.landline}"/>
+                </div>
+
+            </div>
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">传真：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="fax" value="{$list.fax}"/>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>联系人：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="username" value="{$list.username}"/>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">职位：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="job" value="{$list.job}"/>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>手机：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="tel" value="{$list.tel}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">QQ：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="qq" value="{$list.qq}"/>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Email：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="email" value="{$list.email}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">公司网址：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="c_website" value="{$list.c_website}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">公司简介：</label>
+                <div class="col-sm-4">
+                    <textarea rows="4" name="intro" class="form-control">{$list.intro}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-4">
+                    <button class="btn btn-success ajax-post" type="submit" target-form="form-horizontal">确 定</button>
+                </div>
+            </div>
+        </form>
+        <else />
+        <div id="empty_order"><h1 align="center"><span class="label label-default">当前登录帐号没有公司信息</span></h1></div>
+    </notempty>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script type="text/javascript">
+        //省市三级联动菜单获取
+        var url="{:U('MenuPct/getCity','',false)}";
+        var curl="{:U('MenuPct/getTown','',false)}";
+        ztools.getLianDong({"p_url": url, "c_url": curl});
+    </script>
+</block>

@@ -1,0 +1,47 @@
+<extend name="Base/orderlist" />
+<block name="right"><a href="{:U('ydlist')}" style="color: white">我的</a></block>
+<block name="style">
+	<style>
+		html,body{
+			background-color: gainsboro;
+		}
+		.text-c{
+			text-align: center;
+		}
+	</style>
+</block>
+<block name="body">
+	<div style="background-color: white; height: 11em; border-bottom: 1px solid gainsboro; padding: 0.5em 0.5em 0.5em 0.5em">
+		<div style="font-weight: bold; font-size: 1.4em;">
+			{$sp.store_name}
+		</div>
+		<div class="ub">
+			<div class="ub-f1">
+				<img style="width: 9em; height: 7em;" src="{$sp.store_logo_id|get_cover='path'}" />
+			</div>
+			<div style="" class="ub-f1">
+					<p>营业时间：</p>
+					<p>{$sp.timea.0}-{$sp.timeb.0}<notempty name="sp.timea.1">,{$sp.timea.1}-{$sp.timeb.1}</notempty></p>
+			</div>
+			<div class="ub-f1">
+				<a href="{:U('thisyuding?store_id='.$sp['store_id'])}" style="width: 5em; height: 2em; background-color: orange; color: white; text-align: center; line-height: 2em;display: block">我要预订</a>
+			</div>
+		</div>
+	</div>
+	<div style="background-color: white; height: 7em; margin-top: 1em; border-bottom: 1px solid gainsboro;">
+		<div style="margin-left: 1em; padding-top: 1em;">
+			电话：<a href="tel:{$sp.tel}">{$sp.tel}</a>
+		</div>
+		<div style="margin-left: 1em; margin-top: 0.5em; width: 19em;">
+			地址：{$sp.address_detail}
+		</div>
+	</div>
+	<div style="background-color: white; height: 10em; margin-top: 1em;overflow: auto">
+		<div style="padding: 1em 1em 1em 1em ; padding-top: 1em;">
+			<volist name="cm" id="vo">{$vo.cm_name}&nbsp;&nbsp;&nbsp;</volist>
+		</div>
+	</div>
+	<a href="{:U('thisyuding?store_id='.$sp['store_id'])}">
+		<div style="width: 90%; height: 3em; background-color: #DD3030; color: white; text-align: center; line-height: 3em; border-radius: 0.5em; margin-left: auto; margin-right: auto; margin-top: 1.2em; margin-bottom: 1em;">立即预定</div>
+	</a>
+</block>

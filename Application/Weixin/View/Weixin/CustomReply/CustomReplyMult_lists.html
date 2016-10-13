@@ -1,0 +1,97 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <!-- 主体 -->
+    <div id="main-container">
+        <div>
+            <div class="span9 page_message">
+                <section id="contents">
+                    <ul class="title row">
+                        <li  class="col-md-1">
+                            <a href="{:U('CustomReply/CustomReply_lists')}">图文回复</a>
+                        </li>
+                        <li class="title-current col-md-1">
+                            <a  style="color:#fff;" href="{:U('CustomReply/CustomReplyMult_lists')}">多图文设置</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('CustomReply/CustomReplyText_lists')}">文本回复</a>
+                        </li>
+                    </ul>
+
+                    <div class="table-bar" style="margin: 1em 0px;">
+                        <div class="fl">
+                            <div class="tools">
+                                <a class="btn btn-success" href="javascript:;" id="CustomReplyMult_lists_new">新 增</a>
+                                <button class="btn ajax-post confirm btn-success" target-form="ids" url="http://localhost/wp/index.php?s=/addon/CustomReply/CustomReply/del/model/64.html">删 除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 数据列表 -->
+                    <div class="data-table">
+                        <div class="table-striped">
+                            <table cellspacing="1" class="table table-bordered text-center">
+                                <!-- 表头 -->
+                                <thead>
+                                <tr>
+                                    <th class="row-selected row-selected">
+                                        <input type="checkbox" id="checkAll" class="check-all">
+                                    </th>
+                                    <th>关键词</th>
+                                    <th>关键词类型</th>
+                                    <th>图文列表</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <!-- 列表 -->
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input class="ids" type="checkbox" value="57" name="ids[]" id="check_57">
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <a  target="_self" href="http://localhost/wp/index.php?s=/addon/CustomReply/CustomReply/edit/id/57/model/64.html">编辑</a>
+                                            <a class="confirm"   href="http://localhost/wp/index.php?s=/addon/CustomReply/CustomReply/del/id/57/model/64.html">删除</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="page">  </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- /主体 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function(){
+            $('#CustomReplyMult_lists_new').click(function(){
+                $.post('{:U("is_exit")}',function(data){
+                    if(data.status){
+                        setTimeout(function(){
+                            $('#top-alert').slideUp();
+                            window.location.href = "{:U('CustomReply/CustomReplyMult_lists_add')}";
+                        },1500);
+                    }else{
+                        $('#top-alert').slideDown().text(data.info);
+                        setTimeout(function(){
+                            $('#top-alert').slideUp();
+                        },1500);
+                    }
+                });
+            })
+        })
+    </script>
+</block>

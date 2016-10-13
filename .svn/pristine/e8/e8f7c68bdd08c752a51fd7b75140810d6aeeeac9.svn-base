@@ -1,0 +1,545 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style type="text/css">
+        .title span{
+            margin:2%;
+            font-size: 22px;
+        }
+        .modal-open { overflow:hidden;overflow-y:scroll; }
+        .modal{ overflow:auto; }
+        .htzt:hover{
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="__PUBLIC__/libs/layer/skin/layer.css">
+</block>
+
+<block name="full-header">
+    <!-- 顶部导航 -->
+    <div class="main-nav navbar navbar-inverse navbar-fixed-top main-nav" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-top">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <php>if(C('WEB_SITE_LOGO')):</php>
+            <a class="navbar-brand" target="_blank" href="__ROOT__/">
+                <img class="logo img-responsive" src="{$Think.config.WEB_SITE_LOGO|get_cover='path'}">
+            </a>
+            <php>else:</php>
+            <a class="navbar-brand" target="_blank" href="__ROOT__/" style="display: inline-block;width:180px;height:50px;background: url(__HOME_IMG__/logo/index_logo.png) no-repeat">
+                <!--<img class="logo img-responsive"  src="__HOME_IMG__/logo/logo_with_title.png">-->
+            </a>
+            <php>endif;</php>
+        </div>
+        <div class="collapse navbar-collapse navbar-collapse-top">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#admin-index" role="tab" data-toggle="tab">
+                        <i class="fa fa-home"></i>
+                        <span>快捷菜单</span>
+                    </a>
+                </li>
+                <!-- 主导航 -->
+                <volist name="_menu_list" id="vo">
+                    <li>
+                        <a href="#module{$vo.id}" role="tab" data-toggle="tab">
+                            <i class="fa {$vo.icon}"></i>
+                            <span>{$vo.name}</span>
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <?php if(is_administrator()):?>
+                <li><a href="{:U('Admin/Index/removeRuntime')}" class="ajax-get no-refresh"><i class="fa fa-trash"></i> 清空缓存</a></li>
+                <?php endif;?>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-comment"></i>消息 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="open-tab" tab-name="navside-collapse-message" aria-expanded="false" href="{:U('user/admin/Message/yewumsg')}">业务消息 <if condition="$xiaoxi gt 0">(<span style="color: red;font-size: 10px;"> {$xiaoxi} </span>)</if></a></li>
+                        <li><a class="open-tab" tab-name="navside-collapse-sysgonggao" aria-expanded="false" href="{:U('user/admin/Message/sysmsg')}">系统公告 <if condition="$sysgg gt 0">(<span style="color: red;font-size: 10px;"> {$sysgg} </span>)</if></a></li>
+                        <li><a class="open-tab" tab-name="navside-collapse-updategonggao" aria-expanded="false" href="{:U('user/admin/Message/updatemsg')}">升级公告 <if condition="$upgg gt 0">(<span style="color: red;font-size: 10px;"> {$upgg} </span>)</if></a></li>
+                    </ul>
+                </li>
+                <?php if(is_company() || is_admin()):?>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#"><i class="fa fa-cog"></i>设置 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a class="open-tab" tab-name="navside-collapse-information" aria-expanded="false" href="{:U('Business/Company/addedit')}">公司信息</a></li>
+                        <li><a  class="open-tab" tab-name="navside-collapse-department" aria-expanded="false" href="{:U('user/admin/department/index')}">部门管理</a></li>
+                        <li><a class="open-tab" tab-name="navside-collapse-account" aria-expanded="false" href="{:U('admin/user/index')}">员工账号</a></li>
+                    </ul>
+                </li>
+                <?php endif;?>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-book"></i>帮助 <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="open-tab" tab-name="navside-collapse-service" href="{:U('admin/help/index')}">帮助文档</a></li>
+                        <li><a href="#">4008-725-866</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user"></i> {$_user_auth.username} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{:U('admin/user/password')}"  class="open-tab"  tab-name="navside-collapse-account" aria-expanded="false" ><i class="fa fa-edit"></i>修改密码</a></li>
+                        <li><a href="{:U('Admin/Public/logout')}" class="ajax-get"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</block>
+
+<block name="main">
+    <input type="hidden" name="check_version_url" value="{:U('Admin/Update/checkVersion')}">
+    <div class="container-fluid with-top-navbar">
+        <div class="row">
+            <!-- 后台左侧导航 -->
+            <div id="sidebar" class="col-xs-12 col-sm-2 sidebar tab-content">
+                <!-- 快捷链接 -->
+                <div role="tabpanel" class="tab-pane fade in active" id="admin-index">
+                    <nav class="navside navside-default" role="navigation">
+                        <ul class="nav navside-nav navside-first">
+                            <li>
+                                <a data-toggle="collapse" href="#navside-collapse-links">
+                                    <i class="fa fa-folder-open-o"></i>
+                                    <span class="nav-label">初始化帮助</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav navside-nav navside-second collapse in" id="navside-collapse-system">
+                                    <li>
+                                        <a href="{:U('admin/help/index')}" class="open-tab" tab-name="navside-collapse-system-1">
+                                            <i class="fa fa-book"></i>
+                                            <span class="nav-label">初始化帮助</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a data-toggle="collapse" href="#navside-collapse-links">
+                                    <i class="fa fa-folder-open-o"></i>
+                                    <span class="nav-label">快捷菜单</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav navside-nav navside-second collapse in" id="navside-collapse-links">
+                                    <li>
+                                        <a href="{:U('admin/link/index')}" class="open-tab" tab-name="navside-collapse-links-1">
+                                            <i class="fa fa-link"></i>
+                                            <span class="nav-label">设置链接</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <if condition="$eee eq 1">
+                                <ul class="nav navside-nav navside-second collapse in" style="display:none;">
+                                    <li>
+                                        <a href="{:U('admin/datamonitor/index')}" class="open-tab" tab-name="navside-collapseshujujiance">
+                                            <i class="fa fa-dashboard"></i>
+                                            <span class="nav-label">数据监测</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                </if>
+                            </li>
+
+                            <volist name="_link_list" id="lk" key="fkey">
+                                <li>
+                                    <if condition="$lk.parentid neq 0">
+                                    <a data-toggle="collapse" href="#navside-collapse-lk-{$lk.id}-{$fkey}">
+                                        <i class="fa {$lk.icon}"></i>
+                                        <span class="nav-label">{$lk.name}</span>
+                                        <span class="fa arrow"></span>
+                                    </a>
+                                    </if>
+                                    <notempty name="lk._child">
+                                        <ul class="nav navside-nav navside-second collapse in" id="navside-collapse-lk-{$lk.id}-{$fkey}">
+                                            <volist name="lk._child" id="_ns_second" key="skey">
+                                                <li>
+                                                    <a href="{$_ns_second['url']}" class="open-tab" tab-name="navside-collapse-{$_ns.id}-{$fkey}-{$skey}">
+                                                        <i class="fa {$_ns_second.icon}"></i>
+                                                        <span class="nav-label">{$_ns_second.name}</span>
+                                                    </a>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </notempty>
+                                </li>
+                            </volist>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- 模块菜单 -->
+                <volist name="_menu_list" id="_ns">
+                    <?php if($_ns['_child']): ?>
+                    <div role="tabpanel" class="tab-pane fade" id="module{$_ns.id}">
+                        <nav class="navside navside-default" role="navigation">
+                            <ul class="nav navside-nav navside-first">
+                                <notempty name="_ns._child">
+                                    <volist name="_ns._child" id="_ns_first" key="fkey">
+                                        <li>
+                                            <a data-toggle="collapse" href="#navside-collapse-{$_ns.id}-{$fkey}">
+                                                <i class="fa {$_ns_first.icon}"></i>
+                                                <span class="nav-label">{$_ns_first.name}</span>
+                                                <span class="fa arrow"></span>
+                                            </a>
+                                            <notempty name="_ns_first._child">
+                                                <ul class="nav navside-nav navside-second collapse in" id="navside-collapse-{$_ns.id}-{$fkey}">
+                                                    <volist name="_ns_first._child" id="_ns_second" key="skey">
+                                                        <li>
+                                                            <a href="{:U($_ns_second['url'])}" class="open-tab" tab-name="navside-collapse-{$_ns.id}-{$fkey}-{$skey}">
+                                                                <i class="fa {$_ns_second.icon}"></i>
+                                                                <span class="nav-label">{$_ns_second.name}</span>
+                                                            </a>
+                                                        </li>
+                                                    </volist>
+                                                </ul>
+                                            </notempty>
+                                        </li>
+                                    </volist>
+                                </notempty>
+                            </ul>
+                        </nav>
+                    </div>
+                    <?php endif; ?>
+                </volist>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div id="main" class="col-xs-12 col-sm-10 main">
+                <!-- 多标签后台 -->
+                <nav class="navbar navbar-default ct-tab-nav" role="navigation">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li><a href="#" id="tab-left"><i class="fa fa-caret-left"></i></a></li>
+                        </ul>
+                        <div class="ct-tab-wrap clearfix">
+                            <ul class="nav navbar-nav nav-close ct-tab">
+                                <li id="shouye" href="#home" role="tab" data-toggle="tab">
+                                    <a href="#"><i class="fa fa-home"></i> <span>首页</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#" id="tab-right"><i class="fa fa-caret-right"></i></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">关闭操作 <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="close-all">关闭所有</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- 多标签后台内容部分 -->
+                <div class="tab-content ct-tab-content">
+                    <!-- 首页 -->
+                    <div role="tabpanel" class="fade in active" id="home" style="padding:20px 40px;">
+                        <div class="clearfix col-sm-12" style="width:95%;background-color: #ddd;padding:1.2% 0 1% 4%">
+                            <div class="title col-sm-4" style="margin:0px;padding:0px;">
+                                <if condition="$user.user_type eq 'company'">
+                                    <span>{$user.nickname}</span>|<span>外卖订餐系统</span>
+                                    <elseif condition="$user.user_type eq 'company_member'"/>
+                                    <span>{$info.name}</span>|<span>外卖订餐系统</span>|<span>{$user.nickname}</span>
+                                </if>
+                            </div>
+                            <if condition="$user.user_type eq 'company'">
+                            <div  class="col-sm-3" style="padding:0px;color:red;">
+                                <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                    <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;"><a href="http://kf.qq.com/faq/120911VrYVrA151009eIrYvy.html" target="_black" style="font-size: 14px;">申请微信公众账号步骤</a></span>
+                                </div>
+                                <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                    <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;"><a href="https://mp.weixin.qq.com/cgi-bin/readtemplate?t=register/step1_tmpl&lang=zh_CN" target="_black" style="font-size: 14px;">申请微信公众账号</a></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="margin:0px;padding:0px;">
+                                <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                    <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">系统版本：{$info.vip_name}
+                                        <!--<a href="http://wmxs.me/index.php?m=content&c=index&a=lists&catid=1" target="_black" style="font-size: 14px;margin-left:2em;">版本说明</a>-->
+                                    </span>
+                                </div>
+                                <if condition="$info.auth_type eq 2">
+                                <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                    <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">合同状态：
+                                        <span class="htzt" style="color:#287DDE" >
+                                            <switch name="hetongzt">
+                                                <case value="1">已签</case>
+                                                <case value="2">未签</case>
+                                                <default />
+                                            </switch>
+                                        </span>
+                                    </span>
+                                </div>
+                                    <else/>
+                                    <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                        <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">
+                                            <a href="{:U('Admin/software/upgrade')}">升级购买</a>
+                                        </span>
+                                    </div>
+                                </if>
+                            </div>
+                                <if condition="$info.auth_type eq 2">
+                                    <div class="col-sm-2" style="margin:0px;padding:0px;">
+                                        <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                            <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">新用户免费试用<span style="color: red;">{$info.order_quantity}</span>条订单</span>
+                                        </div>
+                                        <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                            <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">试用剩余订单条数：<span style="color: red;">{$rest_dingdan}</span></span>
+                                        </div>
+                                        <div style="clear: both;"></div>
+                                    </div>
+                                    <else/>
+                                    <eq name="state" value="1">
+                                        <div class="col-sm-2" style="margin:0px;padding:0px;">
+                                            <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                                <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">到期时间：<span style="color: red;">{$info_bzb.expire_time|date='Y-m-d',###}</span></span>
+                                            </div>
+                                            <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                                <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">可建商铺数：<span style="color: red;">{$info.store_number}</span>个</span>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                        <else/>
+                                        <div class="col-sm-2" style="margin:0px;padding:0px;">
+                                            <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                                <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">新用户免费试用<span style="color: red;">{$info.order_quantity}</span>条订单</span>
+                                            </div>
+                                            <div class="col-sm-12" style="margin:0px;padding:0px;">
+                                                <span class="col-sm-12" style="font-size: 14px;margin:0px;padding:0px;">试用剩余订单条数：<span style="color: red;">{$rest_dingdan}</span></span>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </eq>
+                                </if>
+                            </if>
+                        </div>
+                        <div class="col-sm-12" style="width:95%;background-color: #ddd;margin: 1% auto 0 auto;">
+                            <div class="dashboard clearfix col-sm-12" style="width:100%;">
+                                <div class="table table-striped text-center col-sm-8" style="margin-bottom: 0px;">
+                                    <table class="table table-striped" style="width:100%;border:1px solid #ccc;">
+                                        <thead>
+                                        <tr style="background-color: #fff;font-size: 16px;">
+                                            <td style="color:deepskyblue;">近期简报<input type="hidden" value="{$eee}" id="eee"></td><td>订单总量</td><td>交易额</td><td>订单均价</td><td>取消订单</td><td>取消订单总价</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>今天</td><td>{$jin_num|default=0}笔</td><td>￥{$jin_jye|default=0}</td><td>￥{$jin_ddjj|default=0}</td><td>{$jin_qxdd|default=0}笔</td><td>￥{$jin_qxddzj|default=0}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本周</td><td>{$zhou_num|default=0}笔</td><td>￥{$zhou_jye|default=0}</td><td>￥{$zhou_ddjj|default=0}</td><td>{$zhou_qxdd|default=0}笔</td><td>￥{$zhou_qxddzj|default=0}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本月</td><td>{$yue_num|default=0}笔</td><td>￥{$yue_jye|default=0}</td><td>￥{$yue_ddjj|default=0}</td><td>{$yue_qxdd|default=0}笔</td><td>￥{$yue_qxddzj|default=0}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="table-responsive col-sm-4">
+                                    <table class="table table-striped" style="width:100%;border:1px solid #ccc;background-color: #fff;margin-bottom: 0px;">
+                                        <thead>
+                                        <tr style="background-color: #fff;">
+                                            <td style="color:deepskyblue;font-size: 16px;text-align: left;padding-left: 14%;" colspan="2">订单状态</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-left: 13%;width:60%">待处理订单</td><td>{$jin_wcl|default=0}&nbsp&nbsp&nbsp笔</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 13%;">未完成订单</td><td>{$jin_psz|default=0}&nbsp&nbsp&nbsp笔</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 13%;">已完成订单</td><td>{$jin_ycl|default=0}&nbsp&nbsp&nbsp笔</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom: 20px;">
+                                <div class="col-sm-8">
+                                    <div class="col-sm-12" style="width:100%;background-color: #fff;height:40px;line-height: 40px;border:1px solid #ccc;border-bottom: none;">
+                                        <span class="col-sm-9" style="padding-left: 3.5%;color:deepskyblue;font-size: 16px;">最新通知</span>
+                                    </div>
+                                    <div class="col-sm-3" style="width:100%;height:200px;border:1px solid #ccc;background-color: #fff;padding-top:10px;">
+                                        <volist name="msg" id="vo">
+                                            <div class="col-sm-12" style="height:30px;line-height: 30px;"><a href="javascript:void(0);" class="titlesi">{$vo.title}</a><span style="display:none;" class="msg_content">{$vo.content}</span></div>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <div class="table-responsive col-sm-4" style="height:100%;">
+                                    <div class="col-sm-12" style="width:100%;background-color: #fff;height:40px;line-height: 40px;border:1px solid #ccc;border-bottom: none;">
+                                        <span class="col-sm-8" style="padding-left: 11%;color:deepskyblue;font-size: 16px;">客户服务</span>
+                                    </div>
+                                    <div  class="col-sm-3" style="width:100%;height:200px;border:1px solid #ccc;background-color: #fff;">
+                                        <div class="col-sm-12" style="height:30px;line-height: 30px;margin-top: 10px;padding-left: 13%;"> 外卖先生QQ群：</div>
+                                        <div class="col-sm-12" style="height:30px;line-height: 30px;margin:0px;padding-left: 13%;"> 销售经理：{$info6.nickname}</div>
+                                        <div class="col-sm-12" style="height:30px;line-height: 30px;margin:0px;padding-left: 13%;"> 售后经理：{$info7.nickname}</div>
+                                        <div class="col-sm-12" style="height:30px;line-height: 30px;margin:0px;padding-left: 13%;"> 售后专员QQ：<a target="_blank" href="tencent://message/?uin={$info7.qq}&amp;Site=sc.chinaz.com&amp;Menu=yes"><img src="__IMG__/03_online.gif" align="absmiddle"></a></div>
+                                        <div class="col-sm-12" style="height:30px;line-height: 30px;margin:0px;padding-left: 13%;"> 客服电话：4008-725-866</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom: 20px;">
+                                <div class="col-sm-8">
+                                    <div class="col-sm-12" style="width:100%;background-color: #fff;height:40px;line-height: 40px;border:1px solid #ccc;">
+                                        <span class="col-sm-9" style="padding-left: 3.5%;color:deepskyblue;font-size: 16px;">业务简报</span>
+                                    <span class="col-sm-3">
+                                        <form action="{:U('')}" method="post" class="form1">
+                                            <input name="date" type="radio" value="1" checked=checked <eq name="datetime" value="1" >checked="checked"</eq>/>周
+                                            <input name="date" type="radio" value="2" style="margin-left: 1%" <eq name="datetime" value="2" >checked="checked"</eq>/>月
+                                            <input name="date" type="radio" value="3" style="margin-left: 1%" <eq name="datetime" value="3" >checked="checked"</eq>/>年
+                                        </form>
+                                    </span>
+                                    </div>
+                                    <div id="container" style="width:100%;height:200px;border:1px solid #ccc;"></div>
+                                </div>
+                                <div class="table-responsive col-sm-4" style="height:100%;">
+                                    <div class="col-sm-12" style="width:100%;background-color: #fff;height:40px;line-height: 40px;border:1px solid #ccc;border-bottom: none;">
+                                        <span class="col-sm-8" style="padding-left: 11%;color:deepskyblue;font-size: 16px;">常见问题</span>
+                                        <span class="col-sm-4">
+                                            <a href="" style="text-decoration: none;color:#000;">更多>></a>
+                                        </span>
+                                    </div>
+                                    <div  class="col-sm-3" style="width:100%;height:200px;border:1px solid #ccc;background-color: #fff;"></div>
+                                </div>
+                                <input class="agree" type="hidden">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix footer">
+                        <div class="navbar navbar-default" role="navigation">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <a class="navbar-brand" target="_blank" href="__ROOT__/">
+                                        <img class="logo" src="__HOME_IMG__/logo/logo_with_title.png">
+                                    </a>
+                                </div>
+                                <div class="collapse navbar-collapse navbar-collapse-bottom">
+                                    <ul class="nav navbar-nav">
+                                        <li>
+                                            <a href="{:C('WEBSITE_DOMAIN')}" class="text-muted" target="_blank">
+                                                <span>版权所有 © 2014-<php>echo date("Y",time());</php></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li><a class="text-muted pull-right">框架开发：{:C('COMPANY_NAME')}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="content" style="display:none;width:100%;height:100%; left:0;background:rgba(0,0,0,0.6);position: fixed; top: 0; z-index: 1000;">
+            <div class="col-sm-offset-3 col-sm-6 new_box" style="height:auto;overflow:auto;background:#fff; position:absolute; top:50%; left:50%; margin:-300px auto auto -400px; z-index:1001; word-wrap: break-word; padding:3px;border-radius: 5px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modaltitle" style="color:#287DDE"></h4>
+                    </div>
+                    <div class="modalbody" style="padding:1em 2em;">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary closetitle" data-dismiss="modal">关闭</button>
+                    </div>
+            </div>
+        </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__JS__/highcharts.js"></script>
+    <script type="text/javascript" src="__JS__/exporting.js"></script>
+    <script src="__PUBLIC__/ztools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/libs/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(function(){
+            $("input[name='date']").click(function(){
+                $('.form1').submit();
+            });
+            $('#container').highcharts({
+
+                title: {
+                    text: '数据监控',
+                    x: -20 //center
+                },
+                xAxis:{
+
+                    categories: [{$res}]
+                },
+                credits: {
+                    text: '',
+                    href: ''
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: '交易额',
+                    data: [{$str}],
+                    tooltip: {
+                        valueSuffix: '元'
+                    }
+                },{
+                    name: '订单总数',
+                    data: [{$order}],
+                    tooltip: {
+                        valueSuffix: '个'
+                    }
+                }]
+            });
+            var eee = $("#eee").val();
+            if(eee==1){
+                //加载层-风格4
+                layer.msg('加载中······', {icon: 16});
+                $('#shouye').remove();
+                $("a[tab-name='navside-collapseshujujiance']").click();
+                $(".close:first").remove();
+            }
+        });
+        $('.dropdown-menu a').click(function(){
+            var $this = $(this);
+            $this.closest('.dropdown').removeClass('open');
+        });
+
+        //最新通知模态框
+        $(document).on('click','.titlesi',function(){
+            $('.modaltitle').html($(this).html());
+            $('.modalbody').html($(this).next().html());
+            $('.content').show();
+        });
+
+        $(document).on('click', ".closetitle", function() {
+            $('.content').hide();
+        });
+
+        $(document).on('click', ".htzt", function() {
+            $('#agreeModal2').modal({backdrop:'static',keyboard:false});
+            $('.content').hide();
+        });
+
+    </script>
+</block>

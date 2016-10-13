@@ -1,0 +1,29 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    我的交易
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----账户余额明细--------->
+        <div class="yue" style=" width: 100%; height: 38.2em;"></div>
+        <div id="" class="123"></div>
+        <script type="text/javascript">
+            $(function(){
+                var detailed = $('.123').attr('id');
+                if(detailed == ''){
+                    $('.yue').html("<div class='detailed'><img src='__IMG__/123456.jpg'><p>暂无交易记录</p></div><input type='button' value='返回' class='input' onclick='javascript:history.back(-1);return false;'>")
+                }else{
+                    $('.yue').html('叔叔好好好说谁谁谁谁谁谁水水水水水水水水');
+                }
+            })
+        </script>
+        <!-----账户余额明细结束--------->
+</block>

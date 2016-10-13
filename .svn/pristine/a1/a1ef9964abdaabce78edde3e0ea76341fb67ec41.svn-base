@@ -1,0 +1,167 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="style">
+<style type="text/css">
+/*CSS jogger style pagination*/
+
+DIV.jogger {
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; MARGIN: 7px; PADDING-TOP: 2px;
+    text-align: center;
+}
+DIV.jogger A {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e; TEXT-DECORATION: none
+}
+}
+DIV.jogger A:hover {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger A:active {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger SPAN.current {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e
+}
+</style>
+</block>
+<block name="body_zhgIndex">
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main center-main">
+   <include file="Public/user_center_left_zhg"/>
+    <section class="usercenter-detail" id="usercenter-address">
+    <div class="uc-content">
+    <!-- 我的退款 -->
+<div class="content-box" id="MyOrderDiv">
+    <div class="curmenu">我的退款</div>
+    <div class="remide">
+        提醒：
+        <a class="linkTab" id="all" href="{:U('Orderlist/refund')}">全部<b>({$count})</b></a>
+    </div>
+    <div>
+        <table width="1043" border="0">
+            <tbody>
+                <tr class="col-name">
+                    <td>订单信息</td>
+                    <td>订餐人</td>
+                    <td>订单金额</td>
+                    <td>就餐时间</td>
+                    <td>订单状态</td>
+                    <td>操作</td>
+                </tr>
+                <volist name="list" id="vo">
+                    <tr class="col-item">
+                        <td valign="middle">订单编号：{$vo.order_sn}<br>
+                            {$vo.store_id|get_store_name}  </td>
+                        <td valign="middle">{$vo.address_id|get_user_address}</td>
+                        <td valign="middle">￥{$vo['total']+$vo['yajin']+$vo['ps_cost']+$vo['canju_total']-$vo['yh_price']}</td>
+                        <td valign="middle">{$vo.send_time|date="Y-m-d H:i:s",###}</td>
+                        <td valign="middle">
+<!-- 1.未支付订单(在线支付，未完成支付)
+2.已支付订单（在线支付，完成支付）
+3.餐到付款
+4.商家已确认（商家接单）
+5.完成订单（餐已送达，确认,等待评价）
+6.完成评价(彻底完成订单)
+7.取消订单（用户下单后，没有支付直接取消）
+-8.取消已付款订单（用户支付，顾客取消订单，转到退款）
+9.商家拒单（用户货到付款）
+-10.商家拒单（用户在线支付后，商家拒单，转到退款）
+-11.退款中（从状态8转来）
+-12.退款完成(从状态11转来)
+13.用户下单，商家接单，后用户取消订单
+//14.制作完成
+-15.退款中（从状态10转来）
+-16.退款中（从状态13转来）
+-17.退款完成（从状态15转来）
+-18.退款完成（从状态16转来）
+加“-”的为本页要显示的页面-->
+                            <switch name="vo.status" >
+                                <case value="1">待支付</case>
+                                <case value="2">支付完成</case>
+                                <case value="3">商家确认中</case>
+                                <case value="4">商家已确认</case>
+                                <case value="5">待评价</case>
+                                <case value="6">订单完成</case>
+                                <case value="7">已退单</case>
+                                <case value="8">支付完成<br>已退单</case>
+                                <case value="9">商家拒接<if condition="$list.reject_reason neq null">({$list.reject_reason})</if></case>
+                                <case value="10">支付完成<br>商家拒接
+                                <if condition="$list.reject_reason neq null">({$list.reject_reason})</if></case>
+                                <case value="11">支付完成<br>退款审核中</case>
+                                <case value="12">退款完成</case>
+                                <case value="13">已退单</case>
+                                <!--<case value="14">请耐心等待配送</case>-->
+                                <case value="15">退款审核中</case>
+                                <case value="16">退款审核中</case>
+                                <case value="17">退款完成</case>
+                                <case value="18">退款完成</case>
+                                <default />
+                            </switch>
+                        </td>
+                        <td class="operate" valign="middle" width="150">
+                            <a target="_self" href="{:U('Refund/detail?order_id='.$vo['order_id'])}">查看详情</a>
+                            <switch name="vo.status">
+                                <case value="1"><a href="" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">去支付</a><a content="{$vo.order_id}" href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiaodingdan">取消订单</a></case>
+                                <case value="2"><a href="{:U('Refund/refunds')}" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">申请退款</a></case>
+                                <case value="3"><a content="{$vo.order_id}" href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiaodingdan">取消订单</a></case>
+                                <case value="4"><a href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiao">取消订单</a></case>
+                                <case value="5"><a id="{$vo.order_id}" href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active pingjia">评价订单</a></case>
+                                <case value="8"><a href="{:U('Refund/refunds')}" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">申请退款</a></case>
+                                <case value="10"><a href="{:U('Refund/refunds')}" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">申请退款</a></case>
+                                <!--<case value="14"><a href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiao">取消订单</a></case>-->
+                                <default />
+                            </switch>
+                        </td>
+                    </tr> 
+                    </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="jogger">
+{$page}
+</div>
+<!-- <div id="qjBox" class="tool-box" style="display: none; height:auto;">
+    <div class="tool-header">
+        <a href="javascript:;" class="tool-close" onclick="closeFoodPasswordDiv()"></a>
+        <h1>您的美食密码</h1>
+    </div>
+    <div class="tool-bar">     
+        <div class="friendlink">
+            美食密码是：<span id="PCFoodPassword"></span>
+        </div>
+        <div class="tool-footer"><a href="#" onclick="sendFoodPassword()">发送到手机</a></div>
+        <input type="hidden" id="FoodOrderNumber">
+    </div>
+</div> -->
+</div>
+
+<script src="__STATIC__/socket.io.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+            //自动获取订单
+            var uid='{:session("user_auth.push_msg_id")}';
+            // 连接服务端
+            var socket = io('http://'+document.domain+':2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                //$('#content').html('收到消息：'+msg);
+                msg=='success' && location.reload();
+            });
+
+</script>
+</section>
+</div>
+
+</block>

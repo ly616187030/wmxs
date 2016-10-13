@@ -1,0 +1,46 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <div class="main-title cf">
+
+        <h2>新增档口</h2>
+
+        <legend>&nbsp;</legend>
+
+    </div>
+    <form action="{:U('add')}" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 50px;">
+        <input type="hidden" name="id" value="{$id}"/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span style="font-weight: normal;color:red;margin-right: 1em;">*</span>档口名称：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="name" value="{$info.name}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span style="font-weight: normal;color:red;margin-right: 1em;">*</span>打印机名称：</label>
+            <div class="col-sm-2">
+                <select class=" form-control" name="dayinji_id"	>
+                    <option value="">选择所需打印机</option>
+                    <volist name="dayinji" id="vo">
+                        <option value="{$vo.id}" <eq name="vo.id" value="$info.dayinji_id">selected=selected</eq>>{$vo.printer_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-4">
+                <button class="btn btn-success ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                <button class="btn btn-return btn-info " onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript"></script>
+</block>

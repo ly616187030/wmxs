@@ -1,0 +1,140 @@
+<extend name="Public/base" />
+<block name="body">
+	<empty name="pd_dp">
+		<div class="main-title cf">
+			<h2>新增分类</h2>
+			<legend>&nbsp;</legend>
+		</div>
+		<!-- 标签页导航 -->
+		<div class="tab-wrap">
+			<div class="tab-content">
+				<!-- 表单 -->
+				<form id="form" action="{:U('add')}" method="post" class="form-horizontal doc-modal-form">
+					<!-- 基础 -->
+					<!--<div class="form-group">
+						<label class="col-sm-2 control-label">所属店铺</label>
+						<div class="col-sm-3">
+							<p class="form-control-static" style="color: #997EFF;">{$list.store_name}</p>
+							<input type="hidden" name="store_id" value="{$list.store_id}" />
+						</div>
+
+					</div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属店铺</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="store_name" value="{$list.store_name}">
+                            <input type="hidden" name="store_id" value="{$list.store_id}" />
+                            <input type="hidden" name="add_type" value="0" />
+                            <div class="storeList">
+                                <ul>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <label style="padding-top:7px;font-weight:normal;">（请输入店铺字母简写）</label>
+                    </div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">餐品分类名称</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" name="canpin_name">
+						</div>
+						<label style="padding-top:7px;font-weight:normal;">（请输入餐品分类名称）</label>
+					</div>
+					<div class="form-group">
+	            		<label class="col-sm-2 control-label">排序</label>
+	            		<div class="col-sm-1">
+	               			 <input type="text" class="form-control" name="sort_order" value="0">
+	            		</div>
+	            		<label style="padding-top:7px;font-weight:normal;">（用于餐品分类排序）</label>
+	        		</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">分类必须</label>
+						<div class="col-sm-3">
+							<div class="radio">
+								<label><input type="radio" class="" name="must" value="0" checked>非必点</label>
+								<label><input type="radio" class="" name="must" value="1">必点</label>
+                                <label><input type="radio" class="" name="must" value="2">多选一</label>
+							</div>
+						</div>
+						<label style="padding-top:7px;font-weight:normal;">（用于判断餐品分类是否必点）</label>
+					</div>
+					<!-- 按钮 -->
+					<div class="form-group">
+						<label class="col-sm-2 control-label">&nbsp;</label>
+						<div class="col-sm-4">
+							<button class="btn submit-btn ajax-post" type="submit" target-form="form-horizontal">确定</button>
+							<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<else />
+		<td colspan="6" class="text-center">{$pd_dp}</td>
+	</empty>
+</block>
+<block name="script">
+	<script type="text/javascript">
+        $('input[name="store_name"]').keyup(function(){
+            var value = $(this).val();
+            var mess = $('.storeList ul');
+            $('input[name="store_id"]').val('');
+            mess.empty();
+            $.post("{:U('Storelist/listStore')}",{value:value}).success(function(data){
+                if(data != null){
+                    var aa = '';
+                    for(var i=0;i<data.length;i++){
+                        aa += "<li data-id='"+data[i].store_id+"'><a href='javascript:;'>"+data[i].store_name+"</a> </li>";
+                    }
+                    mess.html(aa);
+                    $('.storeList ul li').click(function(){
+                        var id = $(this).data('id');
+                        var text = $(this).find('a').text();
+                        $('input[name="store_id"]').val(id);
+                        $('input[name="store_name"]').val(text);
+                        $('.storeList').hide();
+                    });
+                }else{
+                    mess.html('<li><a href="javascript:;">没有找到店铺</a></li>');
+                    $('.storeList ul li').click(function(){
+                        $('.storeList').hide();
+                    });
+                    $('input[name="store_id"]').val('');
+                }
+
+            });
+            $('.storeList').show();
+        });
+        $('input[name="store_name"]').focus(function(){
+            var value = $(this).val();
+            var mess = $('.storeList ul');
+            if(value == ""){
+                $.post("{:U('Storelist/listStore')}",{value:value}).success(function(data){
+                    if(data != null){
+                        var aa = '';
+                        for(var i=0;i<data.length;i++){
+                            aa += "<li data-id='"+data[i].store_id+"'><a href='javascript:;'>"+data[i].store_name+"</a> </li>";
+                        }
+                        mess.html(aa);
+                        $('.storeList ul li').click(function(){
+                            var id = $(this).data('id');
+                            var text = $(this).find('a').text();
+                            $('input[name="store_id"]').val(id);
+                            $('input[name="store_name"]').val(text);
+                            $('.storeList').hide();
+                        });
+                    }else{
+                        mess.html('<li><a href="javascript:;">没有找到店铺</a></li>');
+                        $('.storeList ul li').click(function(){
+                            $('.storeList').hide();
+                        });
+                        $('input[name="store_id"]').val('');
+                    }
+                });
+                $('.storeList').show();
+            }
+        });
+
+    </script>
+</block>

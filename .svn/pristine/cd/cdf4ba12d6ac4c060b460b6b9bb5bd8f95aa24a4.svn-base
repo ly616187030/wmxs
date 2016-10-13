@@ -1,0 +1,141 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:20px;
+            font-family: "Microsoft Yahei";
+        }
+        .red{
+            color:red;
+        }
+    </style>
+</block>
+<block name="main">
+
+    <div class="bs-example" data-example-id="simple-table">
+        <table class="table table-bordered">
+            <caption><span class="left col-sm-2">打印机列表</span><a  href="{:U('clearPrinter',array('id'=>$userid))}" class="col-sm-1 col-sm-offset-9 right ajax-get confirm">清空打印机</a></caption>
+            <thead>
+            <tr>
+                <th>选择</th>
+                <th>打印机名称</th>
+                <th>打印机序号</th>
+                <th>设置</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+                <notempty name="list">
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td align="center" class="printer"><input type="radio" name="print" <eq name="vo.status" value="1">checked</eq>  value="{$vo.id}"/></td>
+                            <td>{$vo.printer_name}</td>
+                            <td>{$vo.printer_sn}</td>
+                            <td>
+                                <eq name="vo.printerto_local" value="1"><strong class="red">[本店留存]</strong></eq>
+                                <if condition="$vo.printer_local_num neq 0">×{$vo.printer_local_num}</if>
+                                <eq name="vo.printerto_gk" value="1"><strong class="red">[给顾客]</strong></eq>
+                                <eq name="vo.printerto_psy" value="1"><strong class="red">[给配送员]</strong></eq>
+                                <eq name="vo.printerto_hc" value="1"><strong class="red">[给后厨]</strong></eq>
+                            </td>
+                            <td><a data-id="{$vo.id}" class="printerset"  href="javascript:;">设置</a></td>
+                        </tr>
+                    </volist>
+                </notempty>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="setting">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设置</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">打印联数</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="ids" id="pid">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_local"  value="1" checked>
+                                    本店留存
+                                </label>×
+                                <select name="printer_local_num">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                           <!-- <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_gk"  value="1" checked>
+                                    给客户
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_psy"  value="1" checked>
+                                    给配送员
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_hc"  value="1" checked>
+                                    给后厨
+                                </label>
+                            </div>-->
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="saveset" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</block>
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/LodopFuncs.js"></script>
+    <script type="text/javascript">
+        (function(){
+            var lodop=getLodop();
+            var print_num=lodop.GET_PRINTER_COUNT();
+            var def=lodop.GET_PRINTER_NAME(-1);
+            var str='';
+            for(var i= 0;i<print_num;i++){
+                str+=i+'|'+lodop.GET_PRINTER_NAME(i)+':';
+            }
+            $.get('{:U("createPrint")}','prints='+str+'&def='+def).success(function(data){
+               data=='success' && location.reload();
+            });
+        })();
+        $('.printerset').click(function(){
+            $('#setting').modal('show');
+            $('#pid').val($(this).data('id'));
+        });
+        $('#saveset').click(function(){
+            var data=$('input,select').serialize();
+            $.get('{:U("printerSet")}',data).success(function(data){
+                if(data=='success') {$('#setting').modal('hide');location.reload()};
+            });
+        });
+        $('.printer').click(function(){
+            var $this=$(this).find('input');
+            $this.prop('checked',true);
+            var v=$this.val();
+            $.get('{:U("setPrintDef")}','v='+v).success(function(data){
+                if(data=='success'){
+                    $.alertMessager('设置当前打印机为默认','info');
+                }else{
+                    $.alertMessager('设置当前打印机失败');
+                }
+            });
+        });
+    </script>
+</block>

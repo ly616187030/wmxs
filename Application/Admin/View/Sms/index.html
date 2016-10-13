@@ -1,0 +1,191 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        .content{
+            padding:20px;
+        }
+        .tab-content{
+            padding:20px 0;
+        }
+        .required:before{
+            content:"*";
+            color:red;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="content ">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#permission" role="tab" data-toggle="tab">短信充值记录</a></li>
+            <li role="presentation"  ><a href="#base-form" role="tab"  data-toggle="tab">短信账号</a></li>
+
+        </ul>
+        <div class="tab-content">
+            <div id="base-form" role="tabpanel" class="tab-pane fade ">
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr><th>账号</th><th>企业名称</th><th>联系人</th><th>手机</th><th>短信签名</th><th>账号余额(元)</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <notempty name="list">
+                                <td class="text-center">{$list.uid}</td>
+                                <td class="text-center">{$list.co_name}</td>
+                                <td class="text-center">{$list.link_man}</td>
+                                <td class="text-center">{$list.mob}</td>
+                                <td class="text-center">{$list.sign}</td>
+                                <td class="text-center">{$list.remain}</td>
+                                <else/>
+                                <td class="text-center" colspan="6">暂时没有数据！</td>
+                            </notempty>
+                        </tr>
+                        </tbody>
+                    </table>
+                <empty name="list">
+                    <form class="form-horizontal"  method="post" action="{:U('add')}">
+                        <input type="hidden" name="agent_code" value="rundasoft"/>
+                        <div class="form-group">
+                            <label for="inputEmail30" class="col-sm-2 control-label required">账号</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="uid"  id="inputEmail30" placeholder="必填">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail31" class="col-sm-2 control-label required">密码</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="pwd"   class="form-control" id="inputEmail31" placeholder="必填">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail32" class="col-sm-2 control-label required">企业名称</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="co_name" class="form-control" id="inputEmail32" placeholder="必填">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail35" class="col-sm-2 control-label required">手机</label>
+                            <div class="col-sm-3">
+                                <input type="tel" name="mob"  class="form-control" id="inputEmail35" placeholder="必填">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail352" class="col-sm-2 control-label required">联系人</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="link_man"   class="form-control" id="inputEmail352" placeholder="必填">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail34" class="col-sm-2 control-label">短信签名</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="sign"  value="{$info.email}"  class="form-control" id="inputEmail34" placeholder="【外卖先生】">
+                            </div>
+                            <div class="col-sm-2" style="padding-top:7px;">(请将签名内容加在【】中)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">注册</button>
+                                <a class="btn btn-danger" href="javascript:history.back(-1)">返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </empty>
+
+
+            </div>
+            <div role="tabpanel"  id="permission" class="tab-pane fade active in">
+                <form class="form-horizontal recharge" action="{:U('recharge')}" method="post">
+                    <input type="hidden" name="smsid" value="{$list.id}" />
+                    <input type="hidden" name="smsuid" value="{$list.uid}" />
+                    <div class="form-group">
+                        <label for="inputEmail3"class="col-sm-1 control-label">充值金额</label>
+                        <div class="col-sm-2">
+                            <input type="email"  name="fee"  class="form-control" id="inputEmail3" placeholder="输入整数，最多5位数">
+                        </div>
+                        <div class="col-sm-1"><button type="submit" class="btn btn-success ajax-post" target-form="recharge">微信扫描支付</button></div>
+                    </div>
+                </form>
+               <table class="table table-bordered">
+                   <thead>
+                        <tr><th>ID</th><th>账号</th><th>下单时间</th><th>充值时间</th><th>充值金额</th><th>充值状态</th></tr>
+                   </thead>
+                   <tbody>
+                        <volist name="detail" id="vo">
+                            <tr>
+                                <td class="text-center">{$vo.id}</td>
+                                <td class="text-center">{$vo.uid}</td>
+                                <td class="text-center">{$vo.ctime|date='Y-m-d H:i:s',###}</td>
+                                <td class="text-center">{$vo.pay_time|date='Y-m-d H:i:s',###}</td>
+                                <td class="text-center">{$vo.fee}</td>
+                                <td class="text-center"><if condition="$vo.status eq 1">成功<else/>失败</if></td>
+
+                            </tr>
+                        </volist>
+
+                   </tbody>
+               </table>
+
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $('.nav-tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+        //全选/反选/单选的实现
+        $(".check-all").click(function() {
+            $(".ids").prop("checked", this.checked);
+        });
+
+        $(".ids").click(function() {
+            var option = $(".ids");
+            option.each(function() {
+                if (!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+        $('form').submit(function(){
+            var uid = $('input[name="uid"]').val();
+            var pwd = $('input[name="pwd"]').val();
+            var mob = $('input[name="mob"]').val();
+            var co_name = $('input[name="co_name"]').val();
+            var link_man = $('input[name="link_man"]').val();
+            if($.trim(uid)==''){
+                $.alertMessager('账号不能为空');
+                return false;
+            }
+            if($.trim(pwd)==''){
+                $.alertMessager('密码不能为空');
+                return false;
+            }
+            if($.trim(mob)==''){
+                $.alertMessager('手机不能为空');
+                return false;
+            }
+            if($.trim(co_name)==''){
+                $.alertMessager('企业名称不能为空');
+                return false;
+            }
+            if($.trim(link_man)==''){
+                $.alertMessager('联系人不能为空');
+                return false;
+            }
+
+        })
+    </script>
+</block>

@@ -1,0 +1,26 @@
+<include file="Weixin/Mobilehead/mobile_head"/>
+<style type="text/css">
+    .identify .fl{ float:left}
+    .identify .fr{ float:right}
+    .pic_list{ width:100%; text-align:center; margin:10px 0;}
+    .pic_list a{ display:inline-block;width:100px; height:100px; margin:2px;}
+    .pic_list a img{ width:100%; height:100px;}
+</style>
+<body id="weisite">
+<div class="container">
+    <div class="pic_list">
+        <volist name="ReplyNews" id="vo">
+            <a href="{:U('detail', 'id='.$vo[id])}">
+                <notempty name="vo.cover"><img src="{$vo.cover|get_cover='path'}"/></notempty>
+            </a>
+        </volist>
+    </div>
+    <!-- 分页 -->
+    <div class="page"> {$_page|default=''} </div>
+</div>
+<!-- 底部导航 -->
+<include file="$footer_path"/>
+
+</body>
+
+</html>

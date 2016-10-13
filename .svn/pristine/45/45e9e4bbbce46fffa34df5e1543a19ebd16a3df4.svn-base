@@ -1,0 +1,62 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <link href="__CSS__/mui.min.css" rel="stylesheet"/>
+    <style>
+        .mui-bar{
+            height: 44px;
+        }
+        .mui-segmented-control{
+            border: 1px solid #dd3030;
+            background-color: white;
+        }
+        .mui-segmented-control .mui-control-item{
+            color: #dd3030;
+            border-color: #ddd;
+            border-left: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .mui-segmented-control  .mui-control-item.mui-active{
+            background-color: #dd3030;
+        }
+    </style>
+</block>
+<block name="body">
+    <header class="mui-bar mui-bar-nav" style="position: fixed;z-index: 10;">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left text-white" href="javascript:history.back()" style="font-size: 16px;line-height: 24px;color: #dd3030">返回</a>
+        <a class="mui-action-back mui-icon mui-icon-right-nav mui-pull-right text-white" href="{:U('Index/index')}" style="font-size: 16px;line-height: 24px;color: #dd3030">首页</a>
+    </header>
+    <div class="mui-content">
+        <div id="slider" class=" ">
+            <div  class="mui-segmented-control" style="position: fixed;top: 44px;z-index: 10">
+                <div id="segmentedControl" class="mui-segmented-control">
+                    <a class="mui-control-item <if condition="$active eq 0">mui-active</if>" id="no" href="{:U('ydlist?flog=0')}">
+                        未到店预定
+                    </a>
+                    <a class="mui-control-item <if condition="$active eq 1">mui-active</if>" id="yes" href="{:U('ydlist?flog=1')}">
+                        已到店预定
+                    </a>
+                </div>
+            </div>
+            <notempty name="info">
+            <ul class="mui-table-view" style="margin-top: 43px">
+                <volist name="info" id="vt">
+                    <li class="mui-table-view-cell mui-media">
+                            <img class="mui-media-object mui-pull-left" src="{$vt.store_logo_id|get_cover='path'}" style="width: 5em;height: 4em">
+                            <div class="mui-media-body">
+                                {$vt.store_name}
+                                <div style="font-size: 10px; color: #333">
+                                    <span style="color: red">预定时间： {$vt.yd_time}</span>
+                                </div>
+                                <div style="font-size: 10px; color: #333">
+                                    <span style="color: red">预定电话： {$vt.yd_tel}</span>
+                                </div>
+                                <div style="font-size: 10px; color: #333">
+                                    <span>{$vt.address_detail}</span>
+                                </div>
+                            </div>
+                    </li>
+                </volist>
+            </ul></notempty>
+        </div>
+    </div>
+</block>

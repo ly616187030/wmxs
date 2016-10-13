@@ -1,0 +1,624 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <style>
+        .tel-pop {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 10px;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            background-color: #fff;
+            min-width:300px;
+        }
+        .tel-pop dl dd{
+            padding:5px 0;
+            font-size:1em;
+            min-width:200px;
+        }
+        .tel-pop dl dd button{
+            margin-left: 10px;
+        }
+    </style>
+</block>
+
+<block name="main">
+
+    <div class="clearfix full-container">
+        <!--<textarea id="StatusArea"></textarea>-->
+        <embed type="application/ubox-plugin" width=0 height=0 id="Phonic_usb">
+
+        <div class="builder builder-list-box panel-body">
+            <empty name="pd_dp">
+                <div class="main-title cf">
+                    <div class="col-sm-2">
+                        <form method="get" action="{:U('index')}" id="myForm">
+                            <input type="hidden" name="m" value="Fastfood" />
+                            <input type="hidden" name="c" value="Fastfood" />
+                            <input type="hidden" name="a" value="index" />
+
+                            <select class="form-control" id="store" name="store_id">
+                                <notempty name="list_s">
+                                    <volist name="list_s" id="vo">
+                                        <option value="{$vo.store_id}" <eq name="vo.store_id" value="$shop_id">selected="selected"</eq>>{$vo.store_name}</option>
+                                    </volist>
+                                    <else />
+                                    <option value="">请联系管理员分配店铺</option>
+                                </notempty>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" name="keyword" class="search-input form-control" placeholder="请输入菜品的首字母">
+                    </div>
+
+                    <legend>&nbsp;</legend>
+
+                    <script>
+                        $('#store').change(function(){
+                            $('#myForm').submit();
+
+                        });
+                        $(document).ready(function(){
+                            $('#subnav h3 i').removeClass('icon-fold');
+                            $('.side-sub-menu').show();
+                        });
+                    </script>
+                </div>
+                <!-- 标签页导航 -->
+                <div class="tab-wrap">
+                    <div style="width:416px;padding: 0 15px; float: left">
+                        <div class="FastfoodLeft">
+
+                            <div class="FastfoodLeftTitle">
+                                账单明细
+                            </div>
+
+                            <div class="FastfoodLeftBox">
+                                <div class="goodli">
+                                    <div class="xh">
+                                        <span>数量</span>
+                                    </div>
+                                    <div class="cm">
+                                        <span>菜名</span>
+                                    </div>
+                                    <div class="dj">
+                                        <span>单价</span>
+                                    </div>
+                                    <div class="je">
+                                        <span>金额</span>
+                                    </div>
+                                </div>
+                                <div class="MenugoodList">
+                                    <div class="MenugoodListBox" id="cartshow">
+
+                                    </div>
+                                </div>
+
+                                <div class="Both"></div>
+                            </div>
+
+                            <div class="FastfoodLeftSub">
+                                <div class="cdjs">
+                                    <!--<span class="span1">打包费:<font color="#ec7501" size="2" style="font-weight:bold;">¥<font id="bagcost">0</font></font></span>-->
+                                    <span class="span2" style="width: 100%;">小计：<font color="#ec7501" size="2" style="font-weight:bold;">¥<font id="sumcost">0</font></font></span>
+                                </div>
+                                <div class="cdjs" id="cdjs">
+                                    <span class="span1 select" style="border: none;">堂食</span>
+                                    <span class="span2">外卖</span>
+                                </div>
+                                <div class="test">
+                                    <div class="xxqq">
+                                        <form>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">桌台</div>
+                                                <div class="inputtext fl">
+                                                    <input type="hidden" name="seat_id" value="{$seat_id}">
+                                                    <div class="seat_name">
+                                                        <input type="text" name="seat_name" value="{$seat_name}">
+                                                        <div class="seat_count">
+                                                            <ul>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">备注</div>
+                                                <div class="inputtext fl">
+                                                    <select name="order_message_room">
+                                                        <volist name="remarks" id="vo">
+                                                            <option value="{$vo}">{$vo}</option>
+                                                        </volist>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="leftBot">
+                                        <div class="fl curbtn">
+                                            <input type="image" name="dayindata" src="__IMG__/dayin.png" onclick="dayindata();" />
+                                        </div>
+                                        <div class="fr curbtn" onclick="clearcart();">
+                                            <img src="__IMG__/qingkong.png">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="test" style="display: none;">
+                                    <div class="xxqq">
+                                        <form>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">姓名</div>
+                                                <div class="inputtext fl"><input type="text" name="username" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">性别</div>
+                                                <label><input type="radio" name="gender" value="1" class="newRadio" checked="checked">男</label>
+                                                <label><input type="radio" name="gender" value="2" class="newRadio">女</label>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">详细地址</div>
+                                                <div class="inputtext fl"><input type="text" name="address" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">手机号</div>
+                                                <div class="inputtext fl"><input type="text" name="phone" value=""></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">送达时间</div>
+                                                <div class="inputtext fl"><input type="text" class="runcode" name="send_time" value="{$time|date='Y-m-d H:i:s',###}" id="demo_inp1"></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">打包费</div>
+                                                <div class="inputtext fl"><input type="text" name="canju_total" value="" readonly="true"></div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">备注</div>
+                                                <div class="inputtext fl">
+                                                    <select name="order_message">
+                                                        <volist name="remarks" id="vo">
+                                                            <option value="{$vo}">{$vo}</option>
+                                                        </volist>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="xiangqing">
+                                                <div class="xingming fl">来源</div>
+                                                <div class="inputtext fl">
+                                                    <select name="source">
+                                                        <volist name="source" id="vo">
+                                                            <option value="{$key}">{$vo}</option>
+                                                        </volist>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="leftBot">
+                                        <div class="fl curbtn">
+                                            <input type="image" name="newdata" onclick="newdata();" src="__IMG__/dayin.png" />
+                                        </div>
+                                        <div class="fr curbtn" onclick="clearcart();">
+                                            <img src="__IMG__/qingkong.png">
+                                        </div>
+                                        <div class="cl"></div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7" style="padding:0 15px;float: left">
+                        <div class="FastfoodRight">
+                            <div class="fenlei">
+                                <div class="new_caidan" id="caidanlist">
+                                    <ul>
+                                        <li class="on" onclick="showtype(0,this);">全部</li>
+                                        <volist name="list" id="vo">
+                                            <li onclick="showtype('{$vo.canpin_id}',this);" >{$vo.canpin_name}</li>
+                                        </volist>
+                                    </ul>
+                                    <div class="Both"> </div>
+                                </div>
+                                <div class="Both"> </div>
+                            </div>
+                            <div class="caidanList">
+                                <div class="mealsList" id="goodslist">
+                                    <ul>
+                                        <volist name="list_cm" id="vo">
+                                            <li onclick="addtocart('{$vo.cm_id}','{$vo.now_price}','{$vo[food_box_price]*$vo[food_box_number]|round=2}','{$vo.cm_name}');" class="litype{$vo.canping_id}" id="goodsid_det{$vo.cm_id}" style="display: list-item;">
+                                                <p class="danjia">¥<span>{$vo.now_price}</span></p>
+                                                <p class="caidanName">{$vo.cm_name}</p>
+                                                <div class="mealsok" ></div>
+                                            </li>
+                                        </volist>
+                                    </ul>
+
+                                    <div class="Both"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Both"></div>
+                </div>
+                <else />
+                <td colspan="6" class="text-center">{$pd_dp}</td>
+            </empty>
+
+        </div>
+
+        <div class="tel-pop">
+            <a class="close" href="javascript:void(0)"><i class="fa fa-close"></i></a>
+            <h3>客户信息记录</h3>
+            <dl>
+
+            </dl>
+        </div>
+
+    </div>
+
+</block>
+
+
+
+
+<block name="script">
+
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/uboxweb.js?v=<?php echo time()?>"></script>
+
+    <script type="text/javascript">
+
+        //ubox
+        window.onload = function(){
+            function init()
+            {
+                Phonic_usb.OpenLogFile(0);
+                ubox_CloseDevice();
+                ubox_openDevice();
+            }
+            init();
+        }
+
+        var tel = $('div.tel-pop');
+        tel.find('.close').click(function(){
+            tel.hide();
+        });
+        tel.on('click','button',function(){
+            var xx = $('.xxqq');
+            xx.find('input[name="username"]').val(tel.find('.username').text());
+            xx.find('input[name="phone"]').val(tel.find('.telephone').text());
+            xx.find('input[name="address"]').val($(this).attr('title'));
+            if(tel.find('.gender').text() == '男'){
+                xx.find('.man').prop('checked',true);
+            }else if(tel.find('.gender').text() == '女'){
+                xx.find('.woman').prop('checked',true);
+            }
+        });
+
+        $(function(){
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+        });
+        $('input[name="keyword"]').keyup(function(){
+            var store_id = $('#store').val();
+            var keyword = $(this).val();
+            var aa = '';
+            if(store_id == ""){
+                $.alertMessager('请先选择店铺');
+                return false;
+            }
+            $.post("{:U('findFood')}",{keyword:keyword,store_id:store_id}).success(function(data){
+                $('#goodslist ul').empty();
+                for(var i=0;i<data.length;i++){
+                    aa = "" +
+                    "<li onclick=\"addtocart('"+data[i].cm_id+"','"+data[i].now_price+"','"+data[i].sp_danjia+"','"+data[i].cm_name+"');\" class=\"litype"+data[i].canping_id+"\" id=\"goodsid_det"+data[i].cm_id+"\" style=\"display: list-item;\">"+
+                    "<p class=\"danjia\">¥<span>"+data[i].now_price+"</span></p>"+
+                    "<p class=\"caidanName\">"+data[i].cm_name+"</p>"+
+                    "<div class=\"mealsok\"></div>"+
+                    "</li>";
+                    $('#goodslist ul').append(aa);
+                    $('#cartshow').find('.goodlist').each(function(){
+                        var value = $(this).attr('data');
+                        if(value == data[i].cm_id){
+                            $('#goodsid_det'+data[i].cm_id).find('div').attr("style","display:block");
+                        }
+                    });
+                }
+
+
+            });
+        });
+        $('#cdjs span').click(function(){
+            var index = $(this).index();
+            $('#cdjs span').removeClass('select');
+            $(this).addClass('select');
+            $('.test').hide();
+            $('.test').eq(index).show();
+        });
+        function showtype(typeid,obj){
+            if(typeid == 0){
+                $('#goodslist').find('li').show();
+
+            }else{
+                $('#goodslist').find('li').hide();
+                $('#goodslist').find('.litype'+typeid).show();
+            }
+            $(obj).addClass('on').siblings().removeClass('on');
+        }
+        var sumcost = 0;//总价等于0
+        var bagcost = 0;
+        var checkuser = true;
+        var new_bagcost = 0;
+
+        function addtocart(goodsid,goodscost,bagcost,goodsname){
+
+            var checkhtml = $('#cart_id'+goodsid).html();
+            if(checkhtml == undefined){
+                var newzongjiage = Number(goodscost)*1;
+                var htmls = '<div class="goodlist" id="cart_id'+goodsid+'" data="'+goodsid+'">';
+                htmls += '          <div class="goodnum">';
+                htmls += '             <div class="btniput">';
+                htmls += '            <span class="right_l_btn_left" onclick="deltocart(\''+goodsid+'\',\''+goodscost+'\',\''+bagcost+'\')"></span>';
+                htmls += '            <span class="right_l_btn_nub" id="gshu_'+goodsid+'">1</span>';
+                htmls += '            <span class="right_l_btn_right" onclick="addtocart(\''+goodsid+'\',\''+goodscost+'\',\''+bagcost+'\')"></span>	';
+                htmls += '           </div> ';
+                htmls += '         </div>';
+                htmls += '          <div class="goodname">';
+                htmls += '              <span>'+goodsname+'</span>';
+                htmls += '        </div>';
+                htmls += '        <div class="goodcost">';
+                htmls += '              <span id="gdj_'+goodsid+'">'+goodscost+'</span>';
+                htmls += '         </div>';
+                htmls += '         <div class="goodallcost">';
+                htmls += '              <span id="gzj_'+goodsid+'">'+newzongjiage+'</span>';
+                htmls += '          </div>';
+                htmls += '    </div>';
+                $('#cartshow').append(htmls);
+                $('#goodsid_det'+goodsid).find('.mealsok').show();
+            }else{
+                $('#gshu_'+goodsid).text(Number($('#gshu_'+goodsid).text())+1);
+                $('#gzj_'+goodsid).text(Number($('#gzj_'+goodsid).text())+Number(goodscost));
+            }
+
+            var new_bagcost = $('input[name="canju_total"]').val();
+            bagcost = (Number(bagcost) + Number(new_bagcost)).toFixed(2);
+            $('input[name="canju_total"]').val(bagcost);
+            var tempcost = Number(goodscost);
+            sumcost = Number(sumcost)+Number(tempcost.toFixed(2));
+            $('#sumcost').text(sumcost);
+        }
+        function deltocart(goodsid,goodscost,bagcost){
+            var checkhtml = $('#cart_id'+goodsid).html();
+            if(checkhtml != undefined){
+                var shangpinzongshu = $('#gshu_'+goodsid).text();
+                if(shangpinzongshu == 1){
+                    $('#cart_id'+goodsid).remove();
+                    $('#goodsid_det'+goodsid).find('.mealsok').hide();
+                }else{
+                    $('#gshu_'+goodsid).text(Number($('#gshu_'+goodsid).text())-1);
+                    $('#gzj_'+goodsid).text(Number($('#gzj_'+goodsid).text())-Number(goodscost));
+                }
+
+                var new_bagcost = $('input[name="canju_total"]').val();
+                bagcost = (Number(new_bagcost)-Number(bagcost)).toFixed(2);
+                $('input[name="canju_total"]').val(bagcost);
+                var tempcost = Number(goodscost);
+                sumcost = Number(sumcost)-Number(tempcost.toFixed(2));
+                $('#sumcost').text(sumcost);
+            }
+        }
+        function clearcart(){
+            sumcost = 0;
+            bagcost = 0;
+            $('input[name="canju_total"]').val(0);
+            $('#sumcost').text(0);
+            $('#cartshow').html('');
+            $('.mealsok').hide();
+        }
+        //堂食下单
+        function dayindata(){
+            //在新仓库中打开网页
+            var shopid = '{$shop_id}';
+            var allobj = $('.goodlist');
+            if(allobj.length < 1){
+                $.alertMessager('购物车中无数据');
+                return false;
+            }
+            var seat_id = $('input[name="seat_id"]').val();
+            var seat_name = $('input[name="seat_name"]').val();
+            var order_message = $('select[name="order_message_room"]').val();
+
+            if(checkuser == true){
+                if(seat_name == ''){
+                    $.alertMessager('桌台不能为空');
+                    return false;
+                }
+                if(seat_id == ''){
+                    $.alertMessager('桌台不能为空');
+                    return false;
+                }
+            }
+
+            var newids = new Array();//存放ID
+            var newnum = new Array();//存放数量
+            var newdj = new Array();//存放单价
+            var newzj = new Array();//存放单个商品总价
+            var total = $('#sumcost').text();//总价
+
+            for(var i=0;i<$(allobj).length;i++){
+                var goodsid = $(allobj).eq(i).attr('data');
+                newids.push(goodsid);
+                newnum.push($('#gshu_'+goodsid).text());
+                newdj.push($('#gdj_'+goodsid).text());
+                newzj.push($('#gzj_'+goodsid).text());
+            }
+            //构造参数量
+
+            //window.open(checklingk);
+
+            $('input[name="dayindata"]').attr('disabled','disabled');
+            $.post('{:U("setOrder")}',{
+                ids:newids,
+                num:newnum,
+                store_id:shopid,
+                total:total,
+                newdj:newdj,
+                newzj:newzj,
+                seat_id:seat_id,
+                seat_name:seat_name,
+                order_message:order_message
+            }).success(function(data){
+                if(data>0){
+                    $.alertMessager('下单成功','success');
+                    setTimeout(function(){
+                        window.location.href="{:U('selectSeat')}";
+                    },2000);
+                }else{
+                    $.alertMessager('下单失败');
+                    $('input[name="dayindata"]').removeAttr('disabled');
+                }
+            });
+        }
+        //外卖下单
+        function newdata(){
+            //在新仓库中打开网页
+            var shopid = '{$shop_id}';
+            var allobj = $('.goodlist');
+            if(allobj.length < 1){
+                $.alertMessager('购物车中无数据');
+                return false;
+            }
+            var username =  $('input[name="username"]').val();
+            var gender = $('input[name="gender"]:checked').val();
+            var address = $('input[name="address"]').val();
+            var phone = $('input[name="phone"]').val();
+            var send_time = $('input[name="send_time"]').val();
+            var order_message = $('select[name="order_message"]').val();
+            var source = $('select[name="source"]').val();
+
+
+            var rex = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+            var rexnum = /^[0-9]*[1-9][0-9]*$/;
+            if(checkuser == true){
+                if(username == ''){
+                    $.alertMessager('姓名不能为空');
+                    return false;
+                }
+                if(address == ''){
+                    $.alertMessager('送餐地址不能为空');
+                    return false;
+                }
+                if(phone == ''){
+                    $.alertMessager('送餐电话不能为空');
+                    return false;
+                }
+                if(!(rexnum.test(phone))){
+                    $.alertMessager('送餐电话格式不正确');
+                    return false;
+                }
+                if(source == ''){
+                    $.alertMessager('订单来源不能为空');
+                    return false;
+                }
+
+
+            }
+
+            var newids = new Array();//存放ID
+            var newnum = new Array();//存放数量
+            var newdj = new Array();//存放单价
+            var newzj = new Array();//存放单个商品总价
+            var total = $('#sumcost').text();//总价
+            var canju_total = $('input[name="canju_total"]').val();//打包费
+
+            for(var i=0;i<$(allobj).length;i++){
+                var goodsid = $(allobj).eq(i).attr('data');
+                newids.push(goodsid);
+                newnum.push($('#gshu_'+goodsid).text());
+                newdj.push($('#gdj_'+goodsid).text());
+                newzj.push($('#gzj_'+goodsid).text());
+            }
+            //构造参数量
+
+            //window.open(checklingk);
+            $('input[name="newdata"]').attr('disabled','disabled');
+            $.post('{:U("setUser")}',{
+                ids:newids,
+                num:newnum,
+                store_id:shopid,
+                username:username,
+                gender:gender,
+                detail_address:address,
+                phone:phone,
+                total:total,
+                newdj:newdj,
+                newzj:newzj,
+                send_time:send_time,
+                canju_total:canju_total,
+                order_message:order_message,
+                source:source,
+            }).success(function(data){
+                if(data>0){
+                    $.alertMessager('下单成功','success');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },2000);
+
+                }else{
+                    $.alertMessager('下单失败');
+                    $('input[name="dayindata"]').removeAttr('disabled');
+                }
+            });
+        }
+
+        $(document).click(function(){
+            $(".seat_count").hide();
+        });
+
+        function selectSeat(keyword){
+
+            $.post("{:U('findSeat')}",{keyword:keyword}).success(function(data){
+                var aa = '';
+                if(data != ""){
+                    for(var i=0;i<data.length;i++){
+                        aa += "<li data-id=\""+data[i]['id']+"\"><a href=\"javascript:;\">"+data[i]['name']+"</a></li>";
+                    }
+                }else{
+                    aa = "<li><a href=\"javascript:;\">没有找到符合条件的桌台</a></li>";
+                }
+                $('.seat_count ul').html(aa);
+                $('.seat_count').show();
+            });
+        }
+
+        $('input[name="seat_name"]').click(function(){
+            var keyword = $(this).val();
+            selectSeat(keyword);
+        });
+        $('input[name="seat_name"]').keyup(function(){
+            var keyword = $(this).val();
+            selectSeat(keyword);
+        });
+        $(document).on('click','.seat_count ul li',function(){
+            var id = $(this).data('id');
+            var name = $(this).text();
+            if(id != null){
+                $('input[name="seat_id"]').val(id);
+                $('input[name="seat_name"]').val(name);
+            }else{
+                $.alertMessager('没有找到符合条件的菜品');
+                $('input[name="seat_name"]').val('');
+            }
+        });
+        //cartshow   alert($('#goodlist').html());
+        //	var num=22.127456; alert( num.toFixed(2));
+    </script>
+</block>

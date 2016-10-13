@@ -1,0 +1,301 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        span{padding:1em;}
+        /*.scroll{height: 30em;width: 100%;}*/
+        /*.scroll thead{display: block;width: 100%;padding:0px;margin:0px;}*/
+        /*.scroll tbody{overflow:scroll;display: block;width: 100%;height: 30em;padding:0px;margin:0px;}*/
+        .scroll thead th{width: 6.8em;}
+        .scroll tbody .data td{width: 6.9em;}
+        .scroll thead th:first-child{width: 13em;}
+        .scroll tbody .data td:first-child{width: 13em;}
+        .scroll thead th:nth-child(2){width: 13em;}
+        .scroll tbody .data td:nth-child(2){width: 13em;}
+        .scroll thead th:nth-child(3){width: 13em;}
+        .scroll tbody .data td:nth-child(3){width: 13em;}
+        .scroll tbody .data td:nth-child(4){width: 6.1em;}
+        .scroll tbody .data td:nth-child(5){width: 6.3em;}
+        .scroll tbody .data td:nth-child(6){width: 6.5em;}
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+</block>
+<block name="main">
+        <div class="main-title">
+            <h4>站点对账/对账详单详情</h4>
+        </div>
+    <div style="padding:2em 3em;">
+        <form action="{:U('Settle/index')}" method="get" >
+            <input type="hidden" name="m" value="Settle" />
+            <input type="hidden" name="c" value="Settle" />
+            <input type="hidden" name="a" value="index" />
+            <div style="height:55px;line-height: 55px;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:3em;height:30px;line-height: 30px;">日期：</label>
+                <div class="col-sm-3" style="margin:0px;padding:0px;height:30px;line-height: 30px;width:25em;">
+                    <input name="date" type="radio" value="1" checked=checked" <eq name="date" value="1">checked=checked"</eq> /> 今天<span>|</span>
+                    <input name="date" type="radio" value="2" <eq name="date" value="2">checked=checked"</eq> /> 昨天<span>|</span>
+                    <input name="date" type="radio" value="3" <eq name="date" value="3">checked=checked"</eq> /> 近三天<span>|</span>
+                    <input name="date" type="radio" value="0" <eq name="date" value="0">checked=checked"</eq> /> 自定义时间
+                </div>
+                <div class="col-sm-2">
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedStart" id="demo_inp1" <notempty name="definedStart">value="{$definedStart|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <div class="col-sm-1" style="width:3em;height:30px;line-height: 30px;">至</div>
+                <div class="col-sm-2" >
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedOver" id="demo_inp2" <notempty name="definedOver">value="{$definedOver|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <input type="hidden" value="{$jintian}" name="datevalue" id="datevalue"/>
+                <input type="hidden" value="{$zt}" name="startdate" id="startdate"/>
+                <input type="hidden" value="{$jst}" name="overdate" id="overdate"/>
+                <label class="col-sm-1" style="padding:0px;width:5em;height:30px;line-height: 30px;">骑手姓名：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="deliver">
+                        <option value="">全部</option>
+                        <volist name="deliver" id="vod">
+                            <option value="{$vod.person_id}" <eq name="vod.person_id" value="$deliver_id">selected="selected"</eq>>{$vod.person_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div style="height:55px;line-height: 55px;" >
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:8em;height:30px;line-height: 30px;">当前登陆商家：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="store_id">
+                        <option value="">全部</option>
+                        <volist name="info" id="vov">
+                            <option value="{$vov.store_id}" <eq name="vov.store_id" value="$store_id">selected="selected"</eq>>{$vov.store_name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:5em;height:30px;line-height: 30px;">订单ID：</label>
+                    <div class="col-sm-2" >
+                        <input type="text"  class="form-control" name="orderId" value="{$orderId}"/>
+                    </div>
+                <label class="col-sm-1" style="margin-left:1em;padding:0px;width:5em;height:30px;line-height: 30px;">订单类型：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="ordertype">
+                        <option value="">全部</option>
+                        <option value="0" <eq name="ordertype" value="0">selected="selected"</eq>>货到付款</option>
+                        <option value="1" <eq name="ordertype" value="1">selected="selected"</eq>>在线支付</option>
+                        <option value="4" <eq name="ordertype" value="4">selected="selected"</eq>>快速下单</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cf">
+                <div class="fl">
+                    <button class="btn btn-primary" type="submit">查询</button>
+                    <a href="{:U('excel')}"><button class="btn btn-info" type="button">导出EXCEL</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="data-table table-striped" style="width: 100%;overflow: auto;">
+    <table class="table table-bordered scroll text-center" style="width: 100%;overflow-x: hidden;">
+        <thead>
+            <tr>
+                <th>订单显示ID</th>
+                <th>订单完成时间</th>
+                <th>商家名称</th>
+                <!--<th>商家结算方式</th>-->
+                <th>订单类型</th>
+                <th>骑手姓名</th>
+                <th>订单总价（元）</th>
+                <th>活动减免（元）</th>
+                <th>菜品原价（元）</th>
+                <th>打包费（元）</th>
+                <th>配送费（元）</th>
+                <th>抽成（元）</th>
+                <th>取餐应付（元）</th>
+                <th>送餐应收（元）</th>
+                <th>线上支付金额（元）</th>
+                <th>应上缴金额（元）</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+        <notempty name="infos" id="vo">
+            <tr>
+                <td colspan="5">合计</td>
+                <td>{$sumddjg}</td>
+                <td>{$sumyhze}</td>
+                <td>{$sumCpyj}</td>
+                <td>{$sumcjze}</td>
+                <td>{$sumPscost}</td>
+                <td>{$sumccje|round=###,2}</td>
+                <td>{$sumqcsf|round=###,2}</td>
+                <td>{$sumscss|round=###,2}</td>
+                <td>{$sumxszf}</td>
+                <td>{$sumyssje}</td>
+                <td>--</td>
+            </tr>
+            <style>
+
+            </style>
+            <volist name="infos" id="vo">
+                <tr class="data">
+                    <td><a class="order" data-id="{$vo.order_id}" data-toggle="modal" data-target="#myModal" >{$vo.order_sn}</a></td>
+                    <td>{$vo.complete_time|date='Y-m-d H:i:s',###}</td>
+                    <td>{$vo.store_name}</td>
+                    <!--<td>--</td>-->
+                    <td>
+                        <switch name="vo.pay_type" >
+                            <case value="0">货到付款</case>
+                            <case value="1">在线支付</case>
+                            <case value="4">快速下单</case>
+                            <default />
+                        </switch>
+                    </td>
+                    <td>
+                        <if condition="$vo.person_name eq ''" >
+                            --
+                            <else />
+                            {$vo.person_name}
+                        </if>
+                    </td>
+                    <td>{$vo.ddjg}</td>
+                    <td>{$vo.jmhd}</td>
+                    <td>{$vo.total}</td>
+                    <td>{$vo.canju_total}</td>
+                    <td>{$vo.ps_cost}</td>
+                    <td>{$vo.ccje}</td>
+                    <td>{$vo.qcsf|round=###,2}</td>
+                    <td>{$vo.scss|round=###,2}</td>
+                    <td>{$vo.xszf}</td>
+                    <td>{$vo.ysjje}</td>
+                    <td style="text-align: center;">
+                        <if condition="$vo.remark eq ''" >
+                            --
+                            <else />
+                            {$vo.remark}
+                        </if>
+                    </td>
+                </tr>
+            </volist>
+            <else/>
+                <tr><td colspan="23"> aOh! 暂时还没有内容!</td></tr>
+        </notempty>
+        <volist name="aaa" id="vo">{$vo.cm_id}</volist>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">订单详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div><span style="margin-right:17em;padding-left: 2em;">菜品名称</span><span style="margin-right:0.1em;">原价</span><span  style="margin-right:2em;">现价</span><span>下单时间</span></div>
+                        <div  id="content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </tbody>
+    </table>
+        <div class="page">{$page}</div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript">
+
+    $(function(){$("input[name='date']").change(function(){
+            var date=$(this).val();
+            if(date==1){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var day = time.getDate();
+                var riqi=year+"-"+month+"-"+day;
+                $('#datevalue').val(riqi);
+
+            }else if(date==2){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var day = time.getDate()-1;
+                var riqi=year+"-"+month+"-"+day;
+                $('#datevalue').val(riqi);
+
+
+            }else if(date==3){
+                $('#datevalue').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var startday = time.getDate()-2;
+                var overday = time.getDate();
+                var startriqi=year+"-"+month+"-"+startday;
+                var overriqi=year+"-"+month+"-"+overday;
+                $('#startdate').val(startriqi);
+                $('#overdate').val(overriqi);
+
+            }else if(date==0){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#datevalue').val('');
+            }
+        })
+        $('select[name="ordertype"]').click(function(){
+            if($('option[name="ordertype"]').val()==1) {
+
+            }
+        })
+    })
+
+
+    $(function(){
+        $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+        $('#demo_inp2').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+    });
+
+    $('.order').each(function(){
+        $(this).click(function(){
+            var id = $(this).data('id');
+            var url="{:U('orderdetail')}";
+            $.post(url,{dingdanId:id},function(data){
+                var str='';
+                for(var i= 0;i<data.length;i++){
+                    var time=Trans_php_time_to_str(data[i].xd_time,1);
+                    str+='<div class="caiming" style="border: 1px #eeeeee solid;width:100%;height:40px;line-height: 40px;padding-left:2em;"><div id="title" style="font-size: 1em;float:left;width:50%; text-overflow:ellipsis;overflow: hidden;">'+data[i].cm_name +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:10%">'+data[i].original_price +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:10%">'+data[i].now_price +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:30%">'+time+'</div></div>';
+                }
+                document.getElementById("content").innerHTML = str;
+            });
+        })
+    });
+
+    function Trans_php_time_to_str(timestamp,n){
+        var update = new Date(timestamp*1000);//戳要乘1000
+        var year   = update.getFullYear();
+        var month  = (update.getMonth()+1<10)?('0'+(update.getMonth()+1)):(update.getMonth()+1);
+        var day    = (update.getDate()<10)?('0'+update.getDate()):(update.getDate());
+        var hour   = (update.getHours()<10)?('0'+update.getHours()):(update.getHours());
+        var minute = (update.getMinutes()<10)?('0'+update.getMinutes()):(update.getMinutes());
+        var second = (update.getSeconds()<10)?('0'+update.getSeconds()):(update.getSeconds());
+        if(n==1){
+            return (year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second);
+        }else if(n==2){
+            return (year+'-'+month+'-'+day);
+        }else{
+            return 0;
+        }
+    }
+
+    </script>
+</block>
+</block>

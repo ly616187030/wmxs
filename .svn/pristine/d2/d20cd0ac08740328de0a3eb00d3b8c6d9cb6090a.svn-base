@@ -1,0 +1,696 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <style>
+        body{
+            padding:20px;
+            font-family: "Microsoft Yahei";
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+    <div class="main-title m-b">
+
+    </div>
+    <!-------查询按钮--------->
+    <?php if(!empty($store_id)): ?><div class="form-group" style="border-bottom: 1px solid #DDDCDC;border-top: 1px solid #DDDCDC;">
+        <div class="form-inline"  style="padding: 20px 0px 20px 0px;font-size: 14px;">
+            <div class="form-group"  style="width: 100%;">
+                <label  for="exampleInputEmail3">下单时间：</label>
+                <input type="text" readonly="readonly" class="form-control date" style="width:12.5%;"  id="exampleInputEmail3" name="stime"  placeholder="请选择日期" <?php if(!empty($stime)): ?>value="<?php echo (date('Y-m-d',$stime)); ?>"<?php endif; ?> >
+                <i class="fa fa-repeat" style="color: #0edd81;cursor: pointer;margin-left: -30px;"></i>&nbsp;&nbsp;
+                <label  for="exampleInputEmail3" style="margin-left:15px;">至</label>
+                <input type="text"  readonly="readonly"  class="form-control date" style="width:12.5%;margin-left:15px;" id="exampleInputEmail4" name="etime"  placeholder="请选择日期" <?php if(!empty($etime)): ?>value="<?php echo (date('Y-m-d',$etime)); ?>"<?php endif; ?> >
+                <i class="fa fa-repeat" style="color: #0edd81;cursor: pointer;margin-left: -30px;"></i>
+                <label  for="exampleInputEmail3" style="margin-left:30px;">关键字：</label>
+                <input type="text" class="form-control" id="order_sn" value="<?php echo ($order_sn); ?>" name="order_sn" placeholder="请输入订单编号" style="width:12.5%;">
+                <label  for="exampleInputEmail3" style="margin-left:30px;">桌台：</label>
+                <input type="text" class="form-control" id="seat_keyword" value="<?php echo ($seat_keyword); ?>" name="seat_keyword" placeholder="请输入桌台名称或编号" style="width:12.5%;">
+                <button class="btn btn-success btn-cha" type="button" style="margin-left: 30px;">查询</button>
+            </div>
+            <br/>
+            <div class="form-group" style="width:100%;margin-top:20px;">
+                <div style="width:260px; float: left">
+                    <label  for="exampleInputEmail3">订单状态：</label>
+                    <input type="radio" class="radio status" value="" name="status" id="status"  <?php if(($status) == ""): ?>checked="checked"<?php endif; ?>><label style="font-size: 13px;font-weight: 100"  for="status">全部</label>
+                    <input type="radio" class="radio status" value="3" name="status" id="status1" <?php if(($status) == "3"): ?>checked="checked"<?php endif; ?> style="margin-left: 10px;"><label style="font-size: 13px;font-weight: 100" for="status1">用餐中</label>
+                    <input type="radio" class="radio status" value="5" name="status" id="status2"<?php if(($status) == "5"): ?>checked="checked"<?php endif; ?> style="margin-left: 10px;"><label style="font-size: 13px;font-weight: 100" for="status2">已结账</label>
+                </div>
+                <div style="width:260px; float: left;">
+                    <label  for="exampleInputEmail3">订单类型：</label>
+                    <input type="radio" class="radio send_time" value="" name="send_time" id="send_time" <?php if(($send_time) == ""): ?>checked="checked"<?php endif; ?>><label style="font-size: 13px;font-weight: 100" for="send_time">全部</label>
+                    <input type="radio" class="radio send_time" value="1" name="send_time" id="send_time1" <?php if(($send_time) == "1"): ?>checked="checked"<?php endif; ?> style="margin-left: 10px;"><label style="font-size: 13px;font-weight: 100" for="send_time1">预约单</label>
+                    <input type="radio" class="radio send_time" value="2" name="send_time"  id="send_time2"<?php if(($send_time) == "2"): ?>checked="checked"<?php endif; ?> style="margin-left: 10px;"><label style="font-size: 13px;font-weight: 100" for="send_time2">即时单</label>
+                </div>
+            </div>
+            <br/>
+
+        </div>
+    </div>
+    <!-------查询按钮结束--------->
+    <style type="text/css">
+        .span{
+            float: left;
+            margin-left:40px;
+        }
+        table tbody tr td{
+            text-align: center;
+        }
+        .addCai{border: 1px solid #ccc; padding: 2px 5px;border-radius: 3px;}
+        .quantity input{height: 24px; width: 50px; border-radius: 2px; border: 1px solid #ccc; text-align:center;margin: 3px 0 0 0; line-height: 24px;}
+        .quantity span{border-radius: 2px; border: 1px solid #ccc;display:-moz-inline-box; display:inline-block; width: 50px;height: 24px;margin: 2px 0 0 0;line-height: 24px;}
+        .cm_name{position: relative;}
+        .cm_count{position: absolute; z-index:999;top:35px; background: #fff; display: none; border: 1px solid #cccccc; width: 100%; max-height: 250px; overflow-y: scroll;}
+        .cm_count ul{margin:5px 0; list-style: none; margin: 0; padding: 0;}
+        .cm_count ul li{ line-height: 25px;padding-left: 5px;}
+        .cm_count ul li:hover{ background: #cccccc;}
+        .cm_count ul li a:hover{ text-decoration: none;}
+    </style>
+    <div style="padding:10px">共有&nbsp;&nbsp;<a class="shuliang" style="color: red;"><?php echo ($count); ?></a>&nbsp;&nbsp;条订单记录   &nbsp;&nbsp;订单总金额&nbsp;&nbsp;<a class="sumt" style="color: red;"><?php echo ($sum_total); ?></a>&nbsp;&nbsp;元   &nbsp;&nbsp;</div>
+    <div class="order_id">
+        <div class="like">
+            <?php if(!empty($list)): if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$data): $mod = ($i % 2 );++$i;?><!-----输出菜品------>
+                    <div class="cf" style="border: 1px solid #dddddd;margin-bottom: 20px;height: auto;">
+                        <div style="width: 100%;height:43px;background-color:#f3f3f3;border-bottom: 1px solid #dddddd">
+                            <span class="span" style="line-height: 43px;color:#666">#<?php echo ($data["order_count"]); ?></span>
+                            <span class="span" style="line-height: 43px;">订单编号：<?php echo ($data["order_sn"]); ?></span>
+                            <span class="span" style="line-height: 43px;">桌台：<?php echo ($data["seat_name"]); ?></span>
+                            <span class="span" style="line-height: 43px;">下单时间：<?php echo (date('Y-m-d  H:i',$data["xd_time"])); ?></span>
+                            <span class="span" style="line-height: 43px;">订单金额：￥<span class="total_<?php echo ($data["order_id"]); ?>"><?php echo ($data['total']); ?></span></span>
+            <span style="line-height: 43px;float: right;margin-right: 80px;">订单状态：
+                <?php switch($data["status"]): case "3": ?>用餐中<?php break;?>
+                    <?php case "5": ?>已结账<?php break;?>
+                    <?php default: endswitch;?>
+            </span>
+                        </div>
+                        <div style="margin-top: 15px;padding:0px 30px 5px 30px;">
+                            <?php if(($qiantai) == "1"): ?><button type="submit" data-id="<?php echo ($data["order_id"]); ?>" class="btn btn-primary daying">打印</button><?php endif; ?>
+                            <?php if($data["status"] == 5): ?><button type="submit" class="btn btn-success" disabled="disabled" style=" margin-left:25px;">已结账</button><?php endif; ?>
+
+                            <p style="margin-top:20px;">订单备注：<?php echo ($data["order_message"]); ?></p>
+
+
+                        </div>
+                        <div style="margin-top: 15px;padding:0px 30px 5px 30px;height:auto;">
+                            <div style="width: 50%;height: auto;border: 1px solid #dddddd;float: left;">
+                                <table style="line-height:30px;width: 100%;height: 30px;">
+                                    <thead style="background-color: #F1F1F1;border-bottom: 1px solid #dddddd">
+                                    <th width="40%">菜品</th>
+                                    <th width="20%">单价</th>
+                                    <th width="20%">数量</th>
+                                    <th width="20%">金额</th>
+                                    </thead>
+                                    <tbody>
+                                    <?php if(is_array($data["child"])): $i = 0; $__LIST__ = $data["child"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr id="de_total_<?php echo ($data["order_id"]); ?>_<?php echo ($vo["cm_id"]); ?>">
+                                            <td><?php echo ($vo['cm_name']); ?></td>
+                                            <td><?php echo ($vo['price']); ?></td>
+                                            <td class="quantity" data-status="<?php echo ($data["status"]); ?>" data-price="<?php echo ($vo["price"]); ?>" data-order_id="<?php echo ($data["order_id"]); ?>" data-cm_id="<?php echo ($vo["cm_id"]); ?>"><span><?php echo ($vo['quantity']); ?></span></td>
+                                            <td id="total_money_<?php echo ($data["order_id"]); ?>_<?php echo ($vo["cm_id"]); ?>"><?php echo ($vo['total_money']); ?></td>
+                                        </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                                    <?php if(($data["status"]) == "3"): ?><tr id="addCaipin_<?php echo ($data["order_id"]); ?>">
+                                            <td colspan="3"></td>
+                                            <td><span class="fa fa-plus addCai" data-order_id="<?php echo ($data["order_id"]); ?>"></span></td>
+                                        </tr><?php endif; ?>
+                                    <tr style="border-top: 1px solid #dddddd;background-color:#F1F1F1; ">
+                                        <td>小计：</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="total_<?php echo ($data["order_id"]); ?>" width="150"><?php echo ($data["total"]); ?></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width: 34%;border: 1px solid #dddddd;height:auto;margin-left: 60%;">
+                                <table style="line-height:30px;width: 100%;">
+                                    <thead style="background-color: #F1F1F1;border-bottom: 1px solid #dddddd;">
+                                    <th>其它费用</th>
+                                    <th>金额</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>优惠</td>
+                                        <td><?php echo ($data["yh_price"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>实收</td>
+                                        <td><?php echo ($data["real_money"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>找零</td>
+                                        <td><?php echo ($data["zhaoling"]); ?></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="clear:both "></div>
+                        <div style="height: 40px;margin-right:10%;float: none;margin-top:50px;">
+                            <p style="float: right">&nbsp;&nbsp;总计：<span style="color: red;" class="total_<?php echo ($data["order_id"]); ?>"><?php echo ($data['total']); ?>元</span></p>
+                        </div>
+                        <!-- <div style="height: 50px;margin-top: 20px;border-top: 1px solid #dddddd;float: none;">
+                             <p style="line-height: 50px;margin-left: 40px;">第三方配送电话：1546461151656</p>
+                         </div>-->
+                    </div>
+                    <!-----输出菜品结束------><?php endforeach; endif; else: echo "" ;endif; ?>
+                <?php else: ?>
+                <div style="height: 50px;margin-top: 20px;border: 1px solid #dddddd;background-color: #f3f3f3"> <p style="line-height: 50px;text-align: center;">ON 今天暂时还没有订单</p> </div><?php endif; ?>
+        </div>
+        <div class="page"><?php echo ($page); ?></div>
+    </div>
+    <!--顾客小票start-->
+    <div class="ticketMain" style="display: none;">
+        <div id="order_count" style="font-size: 30px;font-weight: bold"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_message"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_sn"></div>
+        <div class="pdt5" id="customer_ticket_xd_time"></div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+            <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody id="good_detail">
+
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_store_name"></div>
+        <div class="pdt5" id="customer_ticket_tel"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_now_time" style="font-size: 10px;"></div>
+        <div class="Blank10">*****************************</div>
+    </div>
+    <!--顾客小票end-->
+        <?php else: ?>
+        <div style="height: 50px;margin-top: 20px;border: 1px solid #dddddd;background-color: #f3f3f3"> <p style="line-height: 50px;text-align: center;">当前帐号没有分配店铺</p> </div><?php endif; ?>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">添加菜品</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜品名称：</label>
+                            <div class="col-sm-7">
+                                <input type="hidden" name="order_id" value="" />
+                                <input type="hidden" name="cm_id" value="" />
+                                <input type="hidden" name="price" value="" />
+                                <div class="cm_name">
+                                    <input type="text" class="form-control" name="cm_name" value="" placeholder="请输入菜品拼音简写" />
+                                    <div class="cm_count">
+                                        <ul>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">菜品数量：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="quantity" value="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary" id="submit" type="button">确 定</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+    <link href="/Public/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/Public/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/Public/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/Public/LodopFuncs.js"></script>
+    <script type="text/javascript">
+        var LODOP=getLodop();
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            $('.btn-cha,input[type="radio"]').on('click',function(){
+                var stime = $('#exampleInputEmail3').val();
+                var etime = $('#exampleInputEmail4').val();
+                var order_sn = $("#order_sn").val();
+                var seat_keyword = $('#seat_keyword').val();
+                var status = $("input[name='status']:checked").val();
+                var pay_type = $("input[name='pay_type']:checked").val();
+                var send_time = $("input[name='send_time']:checked").val();
+                var store_id = '<?php echo ($store_id); ?>';
+                var url = "<?php echo U('Receiveorder/Order/roomrecord/stime/"+stime+"/etime/"+etime+"/order_sn/"+order_sn+"/status/"+status+"/pay_type/"+pay_type+"/send_time/"+send_time+"/store_id/"+store_id+"/seat_keyword/"+seat_keyword+"');?>";
+                window.location.href = url;
+
+            });
+
+            $('.fa-repeat').click(function(){
+                $(this).prev(".date").val("");
+            });
+        });
+        function test(data){
+
+            var bb = '';
+
+            //顾客小票信息写入
+            $('#order_count').html("堂食-"+data.seat_name+"-#"+data.order_count);
+            $('#customer_ticket_order_message').html("订单备注："+data.order_message);
+            $('#customer_ticket_order_sn').html("订单编号："+data.order_sn);
+            $('#customer_ticket_xd_time').html("下单时间："+data.xd_time);
+
+            for(var i=0;i<data.child.length;i++){
+                bb += "<tr>" +
+                " <td width=\"60%\" align=\"left\">"+data.child[i].cm_name+"</td> <td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                " <td width=\"20%\" align=\"right\">"+(data.child[i].price*data.child[i].quantity).toFixed(2)+"</td> </tr>";
+            }
+            bb += ""+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">总计：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.total+"</td>"+
+            "</tr>";
+            $('#good_detail').html(bb);
+
+            $('#customer_ticket_store_name').html(data.store_name);
+            $('#customer_ticket_tel').html(data.tel);
+            $('#customer_ticket_now_time').html("<em>"+data.ticket+" "+data.now_time+"</em>");
+
+        }
+
+        function printing(html,printsn,num){
+            var num=num || 1;
+            var printsn= printsn || 0;
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_HTM(10,5,"100%","100%",html);
+            LODOP.SET_PRINTER_INDEX(printsn);
+            LODOP.SET_PRINT_COPIES(num);
+            LODOP.PRINT();
+        }
+        function print_front(){
+            var htmls=$('.ticketMain').html();
+            $.get('<?php echo U("getLocalNum");?>').success(function(data){
+                printing(htmls,data.printer_sn,data.nums);
+            });
+        }
+        $('.daying').click(function(){
+            var id = $(this).data('id');
+            $(this).attr('disabled','disabled');
+            $.post("<?php echo U('orderMore');?>",{id:id}).success(function(data){
+                if(data != null){
+                    //右侧订单详情写入
+                    test(data);
+                    print_front();
+                    $(this).removeAttr('disabled');
+                }
+            });
+        });
+        $(document).on('click','.quantity',function(){
+            var td = $(this);
+            var order_id = td.data('order_id');
+            var cm_id = td.data('cm_id');
+            var price = td.data('price');
+            var status = td.data('status');
+            var txt = td.text();
+            var input = $("<input type='text' value='"+txt+"'/>");
+            if(status == 3){
+                $(this).html(input);
+                input.click(function(){return false;});
+                input.trigger("focus");
+                input.blur(function(){
+                    var newtxt = $(this).val();
+                    var res = /^[0-9]*[0-9][0-9]*$/;
+                    if(!res.test(newtxt)){
+                        $.alertMessager('菜品数量格式不正确');
+                        td.html("<span>"+txt+"</span>");
+                        return false;
+                    }
+                    if(newtxt != txt){
+                        $.post("<?php echo U('changeCai');?>",{cm_id:cm_id,order_id:order_id,quantity:newtxt,price:price,addType:2}).success(function(data){
+                            if(data.status == 1){
+                                $("#total_money_"+order_id+"_"+cm_id).html(data.total_money);
+                                $(".total_"+order_id).html(data.total);
+                                td.html("<span>"+newtxt+"</span>");
+                            }else if(data.status == -1){
+                                $("tbody").find("#de_total_"+order_id+"_"+cm_id).remove();
+                                $(".total_"+order_id).html(data.total);
+                            }else{
+                                $.alertMessager(data.text);
+                                td.html("<span>"+txt+"</span>");
+                            }
+                        });
+
+                    }else{
+                        td.html("<span>"+txt+"</span>");
+                    }
+
+                });
+            }
+        });
+
+        $('.addCai').click(function(){
+            var order_id = $(this).data('order_id');
+            $('input[name="order_id"]').val(order_id);
+            $('#myModal').modal('show');
+        });
+        function selectCai(keyword){
+            $.post("<?php echo U('selectCai');?>",{keyword:keyword}).success(function(data){
+                var aa = '';
+                if(data != ""){
+                    for(var i=0;i<data.length;i++){
+                        aa+="<li data-cm_id=\""+data[i]['cm_id']+"\" data-price=\""+data[i]['now_price']+"\"><a href=\"javascript:;\">"+data[i]['cm_name']+"</a></li>";
+                    }
+                }else{
+                    aa = "<li><a href=\"javascript:;\">没有找到符合条件的菜品</a></li>";
+                }
+                $('.cm_count ul').html(aa);
+                $('.cm_count').show();
+            });
+        }
+
+        $('input[name="cm_name"]').keyup(function(){
+            var keyword = $(this).val();
+            selectCai(keyword);
+        });
+        $('input[name="cm_name"]').click(function(){
+            var keyword = $(this).val();
+            selectCai(keyword);
+        });
+        $(document).on('click','.cm_count ul li',function(){
+            var cm_id = $(this).data('cm_id');
+            var cm_name = $(this).text();
+            var price = $(this).data('price');
+
+            if(cm_id != null){
+                $('input[name="cm_id"]').val(cm_id);
+                $('input[name="cm_name"]').val(cm_name);
+                $('input[name="price"]').val(price);
+            }else{
+                $.alertMessager('没有找到符合条件的菜品');
+                $('input[name="cm_id"]').val('');
+                $('input[name="cm_name"]').val('');
+                $('input[name="price"]').val('');
+            }
+        });
+        $(document).click(function(){
+            $(".cm_count").hide();
+        });
+        $('#submit').click(function(){
+            var cm_id = $('input[name="cm_id"]').val();
+            var price = $('input[name="price"]').val();
+            var order_id = $('input[name="order_id"]').val();
+            var quantity = $('input[name="quantity"]').val();
+            var res = /^[0-9]*[1-9][0-9]*$/;
+
+            if(cm_id == ""){
+                $.alertMessager('请输入菜品名称');
+                return false;
+            }
+            if(quantity == ""){
+                $.alertMessager('请输入菜品数量');
+                return false;
+            }
+            if(!(res.test(quantity))){
+                $.alertMessager('菜品数量格式不正确');
+                return false;
+            }
+
+            $.post("<?php echo U('changeCai');?>",{cm_id:cm_id,order_id:order_id,quantity:quantity,price:price,addType:1}).success(function(data){
+                if(data != ""){
+                    if($('#de_total_'+order_id+'_'+cm_id).length > 0){
+                        $.alertMessager('菜品已存在');
+                    }else{
+                        aa = "" +
+                        "<tr id=\"de_total_"+data.order_id+"_"+data.cm_id+"\">"+
+                        "<td>"+data.cm_name+"</td>"+
+                        "<td>"+data.price+"</td>"+
+                        "<td class=\"quantity\" data-status=\""+data.status+"\" data-price=\""+data.price+"\" data-order_id=\""+data.order_id+"\" data-cm_id=\""+data.cm_id+"\"><span>"+data.quantity+"</span></td>"+
+                        "<td id=\"total_money_"+data.order_id+"_"+data.cm_id+"\">"+data.total_money+"</td></tr>";
+
+                        $("#addCaipin_"+order_id).before(aa);
+                        $(".total_"+order_id).html(data.total);
+                        $('#myModal').modal('hide');
+                    }
+                }else{
+                    $.alertMessager(data.text);
+
+                }
+            });
+        });
+    </script>
+
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>外卖先生于每月2号至5号进行结算，以下表格是您上月的订单统计，请您核对后支付！（收费标准￥0.1/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">上月有效订单</th>
+                          <th style="text-align: center;">上月全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥0.1/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="<?php echo U('zhifu');?>" method="post">
+                    <input type="hidden" name="total_fee" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" id="zhifu">去支付</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+     $('#closed').click(function(){
+        $('#jiesuanModal').modal('hide');
+        riqi == '5' && location.reload();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    账户余额
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----余额开始--------->
+           <div class="balance">
+               <div class="balance-the">
+                   <h4>当前用户余额</h4>
+               </div>
+               <div class="balance-current">
+                    <p>0.00<a style="font-size: 0.4em;color: #ffffff">元</a></p>
+               </div>
+           </div>
+           <div class="balance-Recharge">
+                <div>
+                    <ul>
+                       <a href="{:U('recharge')}"> <li><div>余额充值<a class="aaa">＞</a></div></li></a>
+                             <li class="tixian" id="" value="您还没有绑定银行卡"><div>提现到银行卡<a class="aaa">＞</a></div></li>
+                        <script type="text/javascript">
+                              $(function(){
+                                  $('.tixian').click(function(){
+                                       var id = $(this).attr('id');
+                                       var val = $(this).attr('value');
+                                        if(id != ''){
+                                            location.href ="{:U('withdrawals')}"
+                                        }else{
+                                            alert(val);
+                                        }
+                                  })
+                              })
+                        </script>
+                        <a href="{:U('detailed')}"><li><div>余额收支明细<a class="aaa">＞</a></div></li></a>
+                        <a href="{:U('points')}"><li><div>百赚分<a class="aaa">＞</a></div></li></a>
+                    </ul>
+                </div>
+           </div>
+           <div class="balance-bottom">
+              <div class="balance-bottom-left">⊙</div>
+
+                <div class="balance-bottom-right"><label>您还没有设置六位支付密码，暂时不能使用余额支付，<a href="{:U('open')}">点我开启</a></label></div>
+           </div>
+        <div style="width: 13em;height: 7em;background-color: red;margin-top: -15em;margin-left: 3em;display: none;border-radius: 0.4em" class="11"></div>
+</block>

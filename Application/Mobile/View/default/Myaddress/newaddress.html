@@ -1,0 +1,129 @@
+<extend name="Base/common-1" />
+<block name="style">
+    <!--<link rel="stylesheet" href="__CSS__/add_address_content/css/main.css">-->
+    <link rel="stylesheet" href="__CSS__/add_address.css">
+</block>
+<block name="body">
+    <form id="new_address" method="post" action="{:U('newaddress')}">
+        <div id="page_0" class="up ub ub-ver bc-bg" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh bc-text-head ub bc-head">
+
+                <div class="nav-btn" id="nav-left">
+                    <a style="color: white;" href="{:U('index')}"><div class="fa fa-angle-left fa-2x"></div></a>
+                </div>
+
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">新增地址</h1>
+                <div class="nav-btn nav-bt" id="nav-right">
+                    <input id="btn" style="color: white; border: 0; background-color: #dd3131;" type="button" value="保存">
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l">
+
+                <div id="form">
+                    <div class="link">
+                        <font class="linkman">定位地址</font>
+                        <?php if($jd&&$wd): ?>
+                        <a href="{:U('map/index')}" class="btn" style="background-color: green;color: white">去定位</a>
+                        <span style="position: absolute;right: 15px;font-weight: bolder;color: green;">√</span>
+                        <?php else: ?>
+                        <a href="{:U('map/index')}" class="btn" style="background-color: red;color: white">去定位</a>
+                        <span style="position: absolute;right: 15px;font-weight: bolder;color: red;">×</span>
+                        <?php endif; ?>
+                    </div> <br/>
+                    <font class="linkman">联系人<font> <input type="text" onblur="sess()" value="{$username}" name="username" id="lianxiren" class="name" placeholder="您的姓名" /><br/>
+                    <if condition="$sexs eq null">
+                        <div class="ssex">
+                            <div class="checkbox umar-r check">
+                                <input type="radio" onblur="sess()" name="gender" class="name" id="men" value="1"/>
+                            </div>
+                            <font class="sex">男</font>
+                            <div class="checkbox umar-r check">
+                                <input type="radio" onblur="sess()" name="gender" class="name" id="women" value="2" >
+                            </div>
+                            <font class="sex">女 </font>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </if>
+                        <if condition="$sexs eq 1">
+                            <div class="ssex">
+                                <div class="checkbox umar-r check">
+                                    <input type="radio" onblur="sess()" name="gender" checked class="name" id="mens" value="1"/>
+                                </div>
+                                <font class="sex">男</font>
+                                <div class="checkbox umar-r check">
+                                    <input type="radio" onblur="sess()" name="gender" class="name" id="womens" value="2" >
+                                </div>
+                                <font class="sex">女 </font>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </if>
+                        <if condition="$sexs eq 2">
+                            <div class="ssex">
+                                <div class="checkbox umar-r check">
+                                    <input type="radio" onblur="sess()" name="gender" class="name" id="menss" value="1"/>
+                                </div>
+                                <font class="sex">男</font>
+                                <div class="checkbox umar-r check">
+                                    <input type="radio" onblur="sess()" name="gender" class="name" checked id="womenss" value="2" >
+                                </div>
+                                <font class="sex">女 </font>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </if>
+
+                        <div class="link">
+                            <font class="linkman">详细地址</font>
+                            <input type="text" onblur="sess()" name="detail_address" value="" id="menpai" class="name" placeholder="请输入送餐地址详细信息" maxlength="20"/>
+                        </div><br/>
+                        <div class="link">
+                            <font class="linkman">联系方式</font>
+                            <input type="text" onblur="sess()" name="phone" id="phonenum" value="" class="name" placeholder="配送人员联系您的方式"/>
+                        </div><br/>
+
+                </div>
+
+            </div>
+            <!--content结束-->
+
+        </div>
+    </form>
+    <script>
+
+        $(document).ready(function(){
+
+
+
+            //点击按钮新增
+            $('#btn').click(function(){
+                var url = $('#new_address').attr('action');
+                var info = $('#new_address').serialize();
+                $.post(url,info,function(data){
+                    if(data == true){
+                        alert('添加成功');
+                        window.location.href = "{:U('myaddress/index')}";
+                    }
+                    else{
+                        alert(data);
+                    }
+                });
+            })
+
+
+        })
+        //点击收餐地址
+        function sess(){
+            var user_name = $('#lianxiren').val();
+            var menpai = $('#menpai').val();
+            var phone = $('#phonenum').val();
+            var sex = $("input[name='gender']:checked").val();
+
+            var url = "{:U('se')}";
+            $.get(url,{user_name:user_name,menpai:menpai,phone:phone,sex:sex},function(data){
+
+            })
+
+        }
+    </script>
+</block>

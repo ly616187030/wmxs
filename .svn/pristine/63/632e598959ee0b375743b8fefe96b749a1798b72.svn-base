@@ -1,0 +1,36 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:20px;
+        }
+        .title{ font-size: 20px; font-family: "微软雅黑"; text-align: center; padding: 20px 0;}
+        .other{ text-align: center; color: #cccccc; padding:0 0 20px 0;}
+        .content{ font-size: 16px; line-height: 30px;min-height: 500px;}
+        .content img{ text-align: center;}
+        .prev{ float: left; padding-left: 20px; font-size: 14px;}
+        .next{ float: right; padding-right: 20px; font-size: 14px;}
+        .empty{ color: #c3c3c3;}
+        .back a{ border: 1px solid #ccc; padding: 10px 15px;border-radius: 4px; color: #333; text-decoration: none;}
+        .back a:hover{ background: #F8F8F8;}
+    </style>
+    <div class="builder builder-list-box panel-body">
+        <div class="builder-container builder-list-container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="builder-table">
+                        <div class="back"><a href="{:U('index')}">返回列表</a></div>
+                        <div class="title">{$list.title}</div>
+                        <div class="other">发布时间：{$list.create_time|date="Y-m-d H:i:s",###}</div>
+                        <div class="content">
+                            {$list.content}
+                        </div>
+                        <div class="prev"><empty name="prev"><span class="empty">已经是第一条</span><else />上一条：<a href="{:U('show?id='.$prev['id'])}">{$prev.title}</a></empty> </div>
+                        <div class="next"><empty name="next"><span class="empty">已经是最后一条</span><else />下一条：<a href="{:U('show?id='.$next['id'])}">{$next.title}</a></empty> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+

@@ -1,0 +1,62 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+	<empty name="pd_dp">
+		<div class="main-title cf" style="padding:20px;">
+			<h3>改派</h3>
+			<legend>&nbsp;</legend>
+		</div>
+		<!-- 标签页导航 -->
+		<div class="tab-wrap">
+			<div class="tab-content">
+				<!-- 表单 -->
+				<form id="form" action="{:U('gaipai')}" method="post" class="form-horizontal doc-modal-form">
+					<!-- 基础 -->
+					<div class="form-group">
+						<label class="col-sm-2 control-label">改派订单编号</label>
+						<div class="col-sm-3">
+							<volist name="order" id="ord"><p class="form-control-static" style="color: #997EFF;">{$ord.order_sn}</p></volist>
+						</div>
+
+					</div>
+					<input type="hidden" name="order_id" value="{$order_id}" />
+					<input type="hidden" name="person_yid" value="{$person_yid}" />
+					<div class="form-group">
+						<label class="col-sm-2 control-label">改派原配送员</label>
+						<div class="col-sm-3">
+							<volist name="yperson" id="yper"><p class="form-control-static" style="color: #997EFF;">{$yper.person_name}</p></volist>
+						</div>
+					</div>
+					<div class="form-group">
+	            		<label class="col-sm-2 control-label">改派现配送员</label>
+	            		<div class="col-sm-1">
+	               			 <select name="person_id">
+	               			 	<volist name="person" id="vo"><option value="{$vo.person_id}">{$vo.person_name}</option></volist>
+	               			 </select>
+	            		</div>
+	        		</div>
+	        		<div class="form-group">
+	            		<label class="col-sm-2 control-label">改派原因</label>
+	            		<div class="col-sm-1">
+	               			 <textarea name="gp_content" class="form-control" style="width: 270px;" rows="3" name="address" maxlength="120"></textarea>
+	            		</div>
+	        		</div>
+					<!-- 按钮 -->
+					<div class="form-group">
+						<label class="col-sm-2 control-label">&nbsp;</label>
+						<div class="col-sm-4">
+							<button class="btn submit-btn ajax-post no-refresh" type="submit" target-form="form-horizontal">确定</button>
+							<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<else />
+		<td colspan="6" class="text-center">{$pd_dp}</td>
+	</empty>
+</block>
+<block name="script">
+	<script type="text/javascript">
+	highlight_subnav("{:U('Dispatch/index')}");
+	</script>
+</block>

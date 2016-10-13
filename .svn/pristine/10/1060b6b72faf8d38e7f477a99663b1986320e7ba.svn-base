@@ -1,0 +1,193 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="style">
+    <style type="text/css">
+        .hongbaos {
+            height: 200px;
+            background: #888;
+            /*position: absolute;*/
+            width: 150px;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+
+        .hbbs {
+            width: 300px;
+            height: 202px;
+            border: solid 2px #888;
+            border-left: none;
+            border-radius: 12px;
+            float: left;
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+        .topcontents {
+            height: 100px;
+            border: 1px solid #888;
+            background-color: #999;
+            border-radius: 10px 10px 50% 50% / 10px 10px 15% 15%;
+            box-shadow: 0px 4px 0px -1px rgba(0, 0, 0, 0.2);
+        }
+        .avatars {
+            position: relative;
+        }
+
+        .avatars img {
+            border: 1px solid #333;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: 10%;
+            opacity: 0.3;
+        }
+
+        .topcontents h1 {
+            color: #fff;
+            margin: 75px 0;
+        }
+
+        .chais {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #888;
+            background-color: #888;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 20px;
+            display: inline-block;
+            margin-top: -30px;
+            box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+        .chais:hover{
+            width: 60px;
+            height: 60px;
+            border: 1px solid #777;
+            background-color: #777;
+            border-radius: 50%;
+            color: #FFF;
+            font-size: 20px;
+            display: inline-block;
+            margin-top: -30px;
+            box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+        .chais span {
+            margin-top: 20px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .descs{
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            color: #888;
+        }
+        /*CSS jogger style pagination*/
+        DIV.jogger {
+            PADDING-RIGHT: 2px;
+            PADDING-LEFT: 2px;
+            PADDING-BOTTOM: 2px;
+            MARGIN: 7px;
+            PADDING-TOP: 2px;
+            text-align: center;
+        }
+
+        DIV.jogger A {
+            PADDING-RIGHT: 0.64em;
+            PADDING-LEFT: 0.64em;
+            PADDING-BOTTOM: 0.43em;
+            MARGIN: 2px;
+            COLOR: #fff;
+            PADDING-TOP: 0.5em;
+            BACKGROUND-COLOR: #ee4e4e;
+            TEXT-DECORATION: none
+        }
+
+        }
+        DIV.jogger A:hover {
+            PADDING-RIGHT: 0.64em;
+            PADDING-LEFT: 0.64em;
+            PADDING-BOTTOM: 0.43em;
+            MARGIN: 2px;
+            COLOR: #fff;
+            PADDING-TOP: 0.5em;
+            BACKGROUND-COLOR: #de1818
+        }
+
+        DIV.jogger A:active {
+            PADDING-RIGHT: 0.64em;
+            PADDING-LEFT: 0.64em;
+            PADDING-BOTTOM: 0.43em;
+            MARGIN: 2px;
+            COLOR: #fff;
+            PADDING-TOP: 0.5em;
+            BACKGROUND-COLOR: #de1818
+        }
+
+        DIV.jogger SPAN.current {
+            PADDING-RIGHT: 0.64em;
+            PADDING-LEFT: 0.64em;
+            PADDING-BOTTOM: 0.43em;
+            MARGIN: 2px;
+            COLOR: #fff;
+            PADDING-TOP: 0.5em;
+            BACKGROUND-COLOR: #ee4e4e
+        }
+    </style>
+</block>
+<block name="body_zhgIndex">
+    <div class="main">
+        <div class="nav">
+            <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+            <div class="navR">
+                <div class="nav_list">
+                    <a href="{:U('Orderlist/index')}">个人中心</a>
+                    <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main center-main">
+        <include file="Public/user_center_left_zhg"/>
+        <section class="usercenter-detail" id="usercenter-address">
+            <div class="uc-content">
+                <div class="content-box" id="MyHongbaoDiv">
+                    <div class="curmenu">我的红包</div>
+                    <div class="remide">
+                        <a class="linkTab" id="all" href="{:U('Bao/index')}">全部<b>({$count})</b></a>
+                        <a class="linkTab" href="{:U('Bao/weishiyong')}">未使用<b>({$wei})</b></a>
+                        <a class="linkTab" href="{:U('Bao/yishiyong')}">已使用<b>({$yi})</b></a>
+                        <a class="linkTab" href="{:U('Bao/guoqi')}">已过期<b>({$guoqi})</b></a>
+                    </div>
+                    <input id="time" type="hidden" value="{$time}">
+                 <volist name="hongbao" id="vo">
+                    <div  class="hongbaodiv hbbs hhh">
+                    <div class="hongbaos hb" style="text-align: center;float: left;">
+                        <div class="topcontents hbtop">
+                            <div class="avatars hbava">
+                                <img src="__IMG__/zhgIndex/hongbao_logo.png" alt="" width="50" height="50">
+                            </div>
+                            <h1>￥{$vo.bao_price}</h1>
+                        </div>
+                        <a href="javascript:void(0)"><div class="chais hbchai">
+                            <span>已过期</span>
+                        </div></a>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 14px;font-weight: 600;margin-top: 10px;">有效期</div>
+                        <div style="color: #666;">{$vo.send_time|date="Y-m-d",###} 00:00至</div>
+                        <div class="end_time" data-time="{$vo['end_time']}" style="color: #666;">{$vo['end_time']-86400|date="Y-m-d",###} 23:59</div>
+                        <div class="descs hbdesc">{$vo.bao_condition_desc}</div>
+                        <div style="font-size: 12px;color:#999;margin-top: 8px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仅限找火锅点餐时使用,支持网页版、移动版、客户端平台</div>
+                    </div>
+                </div>
+              </volist>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="jogger">
+                    {$page}
+                </div>
+            </div>
+        </section>
+    </div>
+
+</block>

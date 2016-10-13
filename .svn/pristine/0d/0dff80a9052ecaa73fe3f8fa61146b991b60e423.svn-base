@@ -1,0 +1,41 @@
+<extend name="Base/orderlist" />
+<block name="title">订单支付</block>
+<block name="style">
+    <style>
+        html,body{
+            background-color: ghostwhite;
+        }
+
+    </style>
+</block>
+<block name="body">
+    <div style="width: 100%; background-color: white; height: 3em; line-height: 3em; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid gainsboro;">
+        <span style="margin-left: 1em;">{$store_name}</span>
+    </div>
+    <volist name="list" id="vo">
+    <div style="width: 100%; height: 3em; background-color: white; line-height: 3em; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid gainsboro;">
+        <span style="margin-left: 1em;">
+            <span>{$vo.cm_name}</span>
+            <span style="position: absolute; right: 1em;">{$vo.cm_num}份</span>
+        </span>
+    </div>
+    </volist>
+    <div style="width: 100%; height: 3em; background-color: white; line-height: 3em; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid gainsboro;">
+        <span style="margin-left: 1em;">
+            <span>支付金额</span>
+            <span style="position: absolute; right: 1em;">{$total}元</span>
+        </span>
+    </div>
+    <div style="margin-left: 1em; margin-top: 0.5em; color: grey; font-weight: bold;">支付方式</div>
+    <div class="" style="width: 100%; height: 3em; background-color: white; margin-top: 0.5em; line-height: 3em; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid gainsboro; border-top: 1px solid gainsboro;">
+        <span style="margin-left: 1em;">
+            <span><img style="width: 2.5em;margin-top:-0.4em" src="__IMG__/orderlist/weixin.jpg" /></span>
+            <span style="font-size: 0.9em;">微信支付</span>
+            <span style="font-size: 0.8em; color: grey;">推荐微信支付使用</span>
+            <span style="border: 2px solid red; border-radius: 1em; width: 1.2em; height: 1.2em; line-height: 1.2em; color: red; margin-top: 0.8em; text-align:center; position: absolute; right: 1em;"><i class="fa fa-check"></i></span>
+        </span>
+    </div>
+    <div style="position: absolute; background-color: white; bottom: 0; width: 100%; height: 5em; border-top: 1px solid gainsboro;">
+        <div style="width: 90%; height: 3em; color: white; font-weight: bold; line-height: 3em; text-align: center; border-radius: 0.2em; font-size: 1.2em; background-color: #dd3030; margin-left: 1em; margin-top: 0.5em;"><a style="color:#fff;display:block;width:100%;height:100%;" href="http://<?php echo $_SERVER['HTTP_HOST']?>/WeixinPay/pay/jsapi.php?ordsn={$ordsn}&total={$total}&pushid={$pushid}">确认支付</a></div>
+    </div>
+</block>

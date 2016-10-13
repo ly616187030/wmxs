@@ -1,0 +1,78 @@
+
+    <extend name="./Application/Admin/View/Public/layout.html"/>
+
+    <block name="main">
+        <div class="builder builder-list-box panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="{:U('index')}">角色管理</a></li>
+                        <li ><a href="{:U('add')}" style="color:#287DDE;">添加角色</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- 标签页导航 -->
+            <div class="tab-wrap" style="margin-top: 50px;">
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <table class="table table-bordered table-hove">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>角色名称</th>
+                            <th>角色描述</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                            <foreach name="roles" item="vo">
+                                <tr >
+                                    <td align="center" >{$vo.id}</td>
+                                    <td align="center" >{$vo.name}</td>
+                                    <td align="center" >{$vo.remark}</td>
+                                    <td align="center" >
+                                        <if condition="$vo['status'] eq 1">
+                                            <font color="red">√</font>
+                                            <else />
+                                            <font color="red">╳</font>
+                                        </if>
+                                    </td>
+                                    <td align="center">
+                                        <if condition="$vo['id'] eq 1">
+                                            <font color="#cccccc">权限设置</font>|<!-- <a href="javascript:open_iframe_dialog('{:U('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a> | -->
+                                            <font color="#cccccc">编辑</font> | <font color="#cccccc">删除</font>
+                                            <else />
+                                            <a href="{:U('Rbac/authorize',array('id'=>$vo['id']))}">权限设置</a>|
+                                            <a href="{:U('Rbac/edit',array('id'=>$vo['id']))}">编辑</a>|
+                                            <a class="ajax-get confirm" href="{:U('Rbac/delete',array('id'=>$vo['id']))}">删除</a>
+                                        </if>
+                                    </td>
+                                </tr>
+                            </foreach>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+    </div>
+
+
+
+    </block>
+    <block name="script">
+        <script>
+            $(document).ready(function() {
+
+            });
+
+        </script>
+
+    </block>
+
+
+

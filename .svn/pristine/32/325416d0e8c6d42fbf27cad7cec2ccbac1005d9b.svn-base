@@ -1,0 +1,14 @@
+<extend name="Base/orderlist"/>
+<block name="title"><h3>意见反馈</h3></block>
+<block name="style">
+    <style></style>
+</block>
+<block name="body">
+    <div style="padding: 10px">
+        <div>订单号：1360163529613615</div>
+        <div style="border: solid 1px #dddddd; border-radius: 5px;padding: 8px">
+            <textarea placeholder="请描述一下本次服务不满意的地方吧~" style="width: 100%; border: none"></textarea>
+        </div>
+        <div style="background-color: orangered; border-radius: 5px; margin-top: 15px; padding: 5px; text-align: center; color: white"><h3>发送反馈</h3></div>
+    </div>
+</block>

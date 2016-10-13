@@ -1,0 +1,131 @@
+<section class="order-menu">
+    <style type="text/css">
+a{text-decoration: none;color: black;}
+a:hover{text-decoration: none;color: orange;}
+</style>
+    <div class="uc-menu-tree">
+        <span class="uc-title">个人中心</span>
+        <div class="menu-item">
+            <span class="menu-bar"><em>-</em><a href="javascript:">订单管理</a></span>
+            <ul>
+                <a href="{:U('Orderlist/index')}"><li id="MyOrder">我的订单</li></a>
+                <a href="{:U('Favorite/index')}"><li id="MyFavorite">我的收藏</li></a>
+                 <a href="{:U('Refund/refund')}"><li id="MyRefund">我的退款</li></a>
+            </ul>
+        </div>
+        <div class="menu-item">
+            <span class="menu-bar"><em>-</em><a href="javascript:">账户管理</a></span>
+            <ul>
+                <a href="{:U('Account/index')}"><li id="MyInfo">账户设置</li></a>
+                
+                <!-- <li id="MyGold">账户余额</li> -->
+                <a href="{:U('Voucher/index')}"><li id="MyVoucher">我的优惠券</li></a>
+                <a href="{:U('Bao/index')}"><li id="MyHongbao">我的红包</li></a>
+                <a href="{:U('Address/address')}"><li id="MyAddress">地址管理</li></a>
+            </ul>
+        </div>
+        <div class="menu-item">
+            <span class="menu-bar"><em>-</em><a href="javascript:">点评管理</a></span>
+            <ul>
+                <a href="{:U('Orderlist/pingjia')}"><li id="MyCommentr">我的点评</li></a>       
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var oldname = 'MyOrder';
+    $(function() {
+        /*****左边栏目切换****/
+        $(".menu-bar").click(function() {
+            var ShowUi = $(this).siblings("ul");
+
+            if (ShowUi.is(":hidden")) {
+                $(this).find("em").html("-");
+            } else {
+                $(this).find("em").html("+");
+            }
+            ShowUi.slideToggle(300);
+        })
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {   /*******右边浮动框*******/
+        var url = window.location.pathname;
+        $(".nav_list a").each(function () {
+            if ($(this).attr('href') == url) {
+                $(this).attr("class", "nav-active");
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var timerapp = null;
+        $('#showAPP,#appDiv').mouseover(function () {
+            clearTimeout(timerapp);
+            setTimeout(function () {
+                $('#appDiv').show();
+                $("#showAPP").addClass("n_hover");
+            }, 50);
+        }).mouseout(function () {
+            clearTimeout(timerapp);
+            timerapp = setTimeout(function () {
+                $('#appDiv').hide();
+                $("#showAPP").removeClass("n_hover");
+            }, 50);
+        });
+        /*配送范围*/
+        $(".scope").click(function () {
+            $("body").append("<div class='backdrop'></div>");
+            $("#scope-box").show();
+        });
+        $("#btnClosesite").click(function () {
+            $(".backdrop").remove();
+            $("#scope-box").hide();
+        });
+        $(".psclose").click(function () {
+            $(".backdrop").remove();
+            $("#scope-box").hide();
+        })
+    });
+</script>
+    <script type="text/javascript">
+        $(function () {   /*******右边浮动框*******/
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 100) {
+                    $(".go-top").fadeIn(1000);
+                }
+                else {
+                    $(".go-top").fadeOut(1000);
+                }
+            });
+            $(".go-top").click(function () {
+                $('body,html').animate({ scrollTop: 0 }, 600);
+                return false;
+            });
+            $(".erweima").hover(function () {
+                $(".hidewm").fadeIn(300);
+            }, function () {
+                $(".hidewm").fadeOut(300);
+            })
+        });
+    </script>
+    <div class="scrollBtn">
+        <ul>
+            <li class="erweima"></li>
+            <li class="go-top" style="display: none"></li>
+        </ul>
+        <div class="hidewm" style="margin-top: -100px;">
+            <div>
+                <p>手机点餐请扫下方二维码</p>
+                <img width="100%" src="__IMG__/orderlist/waimai_icon_app.png" alt="手机点餐">
+            </div>
+            <div>
+                <p>微信点餐请扫下方二维码</p>
+                <img width="100%" src="__IMG__/orderlist/waimai_icon_weixin.jpg" alt="微信点餐">
+            </div>
+        </div>
+    </div>
+</section>

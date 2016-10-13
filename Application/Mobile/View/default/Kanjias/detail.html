@@ -1,0 +1,127 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <style>
+        html,body{
+            background-color: ghostwhite;
+        }
+        .ubbb {
+            width: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            color: #fff;
+            border-bottom: 1px solid #dddddd;
+            padding:10px 0;
+            line-height: 2em;
+        }
+
+        .fll {
+            text-align: center;
+        }
+
+        .size {
+            font-size: 20px;
+        }
+        .content{
+            margin-top: 5px;
+            border-top: 1px #dddddd solid;
+            border-bottom: 1px #dddddd solid ;
+            padding: 5px 10px 0px 10px;
+            background-color: white;
+        }
+        .tc{
+            margin-left: 2%;
+            margin-top: 0.5em;
+        }
+    </style>
+</block>
+<block name="body">
+    <div style="width: 100%;height: 100%;background-color: #333;position: fixed;z-index: 5;display: none; opacity: 0.5" id="zhezao"></div>
+    <div class="ub-fh" style=" position: fixed; top: 0; background-color: #dd3030; z-index: 10;">
+        <div class="ub ubbb">
+            <div class="ub-f1 fll size" id="orderlist"><i class="fa fa-angle-left"></i></div>
+            <div class="ub-f2 fll" style="color: #fff">
+                <h3>砍价详情</h3></div>
+            <div class="ub-f1 fll size">
+                <a style="display: block; color: #fff;" href="tel:4008-725-866"></a>
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%; height: 3.5em;"></div>
+    <volist name="tc" id="info">
+        <input type="hidden" id="kj_id" value="{$info.kj_id}" />
+        <div class="tc">套餐名：{$info.tc_name}</div>
+        <div style="float: left;" class="tc">套餐价格：{$info.total}</div><div class="tc" style="float: left;">砍价后价格：{$info.kanjia_total}</div>
+        <div style="clear: both;"></div>
+        <if condition="$shengyu eq 0">
+            <div class="tc" style="color: orangered;">您已达成下单条件</div>
+            <else />
+            <div class="tc" style="color: orangered;">您还剩{$shengyu}元可以下单，努力吧！</div>
+        </if>
+
+        <div class="tc">套餐详情：</div>
+        <div style="margin-left: 5%; margin-top: 0.5em;">
+            <table width="80%;" style="margin: 0 auto; border: grey;" border="1">
+                <thead>
+                    <tr>
+                        <th>餐名</th>
+                        <th>单价</th>
+                        <th>个数</th>
+                        <th>总价</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <volist name="info.child" id="infos">
+                    <tr>
+                        <td>{$infos.cm_name}</td>
+                        <td>{$infos.price}</td>
+                        <td>{$infos.quantity}</td>
+                        <td>{$infos.total_money}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </volist>
+    <div style="width: 100%; height: 16em; overflow: auto;">
+    <volist name="list" id="vo">
+        <volist name="vo.child" id="vos">
+        <div class="content">
+                <div  class="ub" style="">
+                    <div  class="ub-f1" style="text-align: center;width: 33.33%"><img src="{$vos.headimgurl}" style="width: 2em;height: 2em;"/></div>
+                    <div  class="ub-f1" style="text-align: center;width: 33.33%;line-height: 2em">
+                        <p><h4>{$vos.nickname}</h4></p>
+                    </div>
+                    <div class="ub-f1" style="text-align: center;width: 33.33%;line-height: 2em">￥{$vos.kanjia_price}</div>
+                </div>
+        </div>
+        </volist>
+    </volist>
+    </div>
+    <if condition="$kanjia_total eq $zuidi AND $us_id eq $user_id">
+        <div id="but" style="width: 100%; height: 3em; position: absolute; bottom: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 3em; font-size: 16px; color: white; ">支付订单</div>
+    <elseif condition="$kanjia_total neq $zuidi AND $us_id eq $user_id" />
+         <div class="guang" style="width: 100%; height: 3em; position: absolute; bottom: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 3em; font-size: 16px; color: white; ">逛一逛</div>
+    <else />
+        <div id="but2" style="width: 49.5%; height: 3em; position: absolute; bottom: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 3em; font-size: 16px; color: white; ">我也来砍</div>
+        <div class="guang" style="width: 49.5%; height: 3em; position: absolute; bottom: 0; right: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 3em; font-size: 16px; color: white; ">逛一逛</div>
+    </if>
+    <script>
+
+        $(document).ready(function (){
+            $('#orderlist').click(function(){
+                history.go(-1);
+            });
+            $('#but').click(function(){
+                var kj_id = $('#kj_id').val();
+               window.location.href = "{:U('Cart/index','',false)}/kanjia_id/"+kj_id+"";
+            });
+            $('.guang').click(function(){
+                window.location.href = "{:U('Index/index')}";
+            });
+            $('#but2').click(function(){
+               window.location.href = "{:U('Kanjias/index')}";
+            });
+        })
+    </script>
+</block>

@@ -1,0 +1,75 @@
+<extend name="Base/common-2" />
+<block name="style">
+    <style>
+        #list ul li{
+            height: 2em;
+            line-height: 2em;
+            font-size: 0.7em;
+            border-bottom: 1px solid darkred;
+            white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+        }
+
+    </style>
+</block>
+<block name="body">
+    <div id="div" style="background-image: url('__IMG__/img/kanjia.png'); position: absolute; width:100%;  background-repeat: no-repeat; background-size: 100% 100%;">
+        <div id="aaa" style=" width: 36%; height: 7.2%; font-size: 1.1em; top: 38%; position: absolute; left: 29%; text-align: center; background-size: 42% 8%; background-repeat: no-repeat;">
+            <div id="shop_name" style="top: 25%; position: relative;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">请选择店铺</div>
+        </div>
+        <div id="btn" style="width: 85%; height: 8.5%; position: absolute; top: 63%; left: 7.6%;"></div>
+        <input type="hidden" id="openid" value="{$openid}">
+        <div style="position: absolute; top:28em; left: 1em; color: darkred;">
+            <ul>
+                <li>活动规则</li>
+                <li>1、每次只能参加一个店铺活动</li>
+                <li>2、邀请的朋友越多，砍价越高</li>
+                <li>3、砍到最低价时，将不能再砍</li>
+            </ul>
+        </div>
+        <div id="list" style="width: 100%; height: 24%; display: none; overflow-y: auto; background-color: sandybrown; position: absolute; bottom: 0;">
+            <ul>
+                <volist name="order" id="vo"><li oid="{$vo.order_id}">店铺名：{$vo.store_name}订单号：{$vo.order_sn}</li></volist>
+            </ul>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#div').css('height', $(window).height()+'px');
+            $('#btn').click(function(){
+                var status = $('#shop_name').attr('status');
+                if(status == 1){
+                    var kj_price = $('#shop_name').attr('price');
+                    var price = "{$price}";
+                    var order_id = $('#shop_name').attr('order_id');
+                    if(kj_price == price){
+                        alert("您已砍过价了，请勿重复砍价");
+                    }else{
+                        var url = "{:U('add')}";
+                        var openid = $('#openid').val();
+                        var kj_price = $('#shop_name').attr('price');
+                        var order_id = $('#shop_name').attr('order_id');
+                        $.post(url,{order_id:order_id,kj_price:kj_price,openid:openid},function(data){
+                            if(data){
+
+                            }else{
+                                alert("参数错误");
+                            }
+                        })
+                        $('#shop_name').attr('price',price);
+                    }
+                }
+            })
+            $('#aaa').click(function(){
+                $('#list').slideToggle();
+            })
+            $('#list ul li').click(function(){
+                var shop = $(this).text();
+                var oid = $(this).attr('oid');
+                $('#shop_name').text(shop);
+                $('#shop_name').attr('order_id',oid);
+                $('#shop_name').attr('status',1);
+                $('#list').slideToggle();
+            })
+        })
+    </script>
+</block>

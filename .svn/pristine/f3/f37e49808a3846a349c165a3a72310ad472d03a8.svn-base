@@ -1,0 +1,174 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+    <block name="style">
+        <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+        <style type="text/css">
+            body{
+                padding:40px 20px;
+            }
+        </style>
+    </block>
+<block name="main">
+<div id="main-container">
+    <div>
+        <div class="span9 page_message">
+            <section id="contents">
+                <ul class="title row">
+                    <li  class="col-md-1">
+                        <a href="{:U('CustomReply/CustomReply_lists')}">图文回复</a>
+                    </li>
+                    <li class="col-md-1">
+                        <a href="{:U('CustomReply/CustomReplyMult_lists')}">多图文设置</a>
+                    </li>
+                    <li class="title-current col-md-1">
+                        <a  style="color:#fff;" href="{:U('CustomReply/CustomReplyText_lists')}">文本回复</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <form id="form" action="{:U('CustomReply/CustomReplyText_lists_add')}" method="post" class="form-horizontal">
+                        <input type="hidden" name="id" value="{$infos.id}"/>
+                        <!-- 基础文档模型 -->
+                        <div id="tab1" class="tab-pane in tab1">
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>关键词<span style="color:#ccc;">（多个关键词请用空格分开：例如: 高 富 帅）</span></label>
+                            <div class="col-sm-2" >
+                                <input type="text" name="keyword" value="{$infos.keyword}" class="form-control"/>
+                            </div>
+                            <div  class="col-sm-12" style="padding:0px;margin:0px;">
+                                <label class="col-sm-12" style="height:40px;line-height: 40px;">关键词类型</label>
+                                <div class="col-sm-2" style="height:40px;line-height: 40px;">
+                                    <empty name="infos.keyword_type">
+                                        <select name="keyword_type" class="form-control">
+                                            <option value="0" class="toggle-data" toggle-data="" selected>完全匹配</option>
+                                            <option value="1" class="toggle-data" toggle-data="">左边匹配</option>
+                                            <option value="2" class="toggle-data" toggle-data="">右边匹配</option>
+                                            <option value="3" class="toggle-data" toggle-data="">模糊匹配</option>
+                                        </select>
+                                        <else/>
+                                        <select name="keyword_type" class="form-control">
+                                            <option value="0" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="0">selected="selected"</eq>>完全匹配</option>
+                                            <option value="1" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="1">selected="selected"</eq>>左边匹配</option>
+                                            <option value="2" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="2">selected="selected"</eq>>右边匹配</option>
+                                            <option value="3" class="toggle-data" toggle-data="" <eq name="infos.keyword_type" value="3">selected="selected"</eq>>模糊匹配</option>
+                                        </select>
+                                    </empty>
+                                </div>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">回复内容<span style="color:#ccc;">（请不要多于1000字否则无法发送。支持加超链接，但URL必须带http://）</span></label>
+                            <div class="col-sm-5" >
+                                <label class="textarea input-large" style="border:1px solid #ccc;">
+                                    <textarea name="content" class="form-control ">{$infos.content}</textarea>
+                                </label>
+                            </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;">排序号<span style="color:#ccc">（数值越小越靠前）</span></label>
+                            <div class="col-sm-1" >
+                                <input type="number" name="sort" value="{$infos.sort}" class="form-control"/>
+                            </div>
+                            <lable class="col-sm-12" style="height:40px;line-height: 40px;"></lable>
+                            <div class="col-sm-12">
+                                <button class="btn submit-btn ajax-post btn-success" style="width:12em;height:3em;" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                            </div>
+                        </form>
+                </div>
+                <!--通用的微信预览模板-->
+                <!--头部标题栏-->
+                <!--鉴于样式title放进具体每块模块-->
+                <!--CSS模块-->
+                <div class="weixin-preview">
+                    <p class="preview-tips">微信回复预览</p>
+                    <div class="weixin-box">
+                        <p class="weixin-title"></p>
+                        <div class="weixin-cover"><img class="weixin-cover-pic" src=""/></div>
+                        <p class="weixin-content">
+
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+                        $('.tab-content').addClass('has-weixinpreivew');
+                        if($('input[name="title"]').val()!=undefined){
+                            $('.weixin-title').html($('input[name="title"]').val());
+                        }else{
+                            $('.weixin-title').html($('input[name="config[title]"]').val());
+                        }
+                        if($('textarea[name="content"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="content"]').val());
+                        }else if($('textarea[name="intro"]').val()!=undefined){
+                            $('.weixin-content').html($('textarea[name="config[intro]"]').val());
+                        }else{
+                            $('.weixin-content').html($('textarea[name="config[info]"]').val());
+                        }
+                        var weixin_cover_picurl = $('#cover_id_picurl').next().find('img').attr('src');
+                        if(weixin_cover_picurl==undefined)weixin_cover_picurl=$('#cover_id_cover').next().find('img').attr('src');
+                        if($('#cover_id_cover').val()==undefined && $('#cover_id_picurl').val()==undefined){
+                            $('.weixin-preview').hide();
+                        }
+                        if(weixin_cover_picurl==undefined || weixin_cover_picurl==""){
+                            $('.weixin-cover-pic').attr('src',"/wp/Public/Home/images/no_cover.png");
+                        }else{
+                            $('.weixin-cover-pic').attr('src',weixin_cover_picurl);
+                        }
+                        $('input[name="title"]').keyup(function(){
+                            $('.weixin-title').html($(this).val());
+                        });
+                        $('textarea[name="content"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="info"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                        $('textarea[name="intro"]').keyup(function(){
+                            $('.weixin-content').html($(this).val());
+                        });
+                    </script>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</div>
+<!-- /主体 -->
+</block>
+<block name="script">
+<link href="/wp/Public/static/datetimepicker/css/datetimepicker.css?v=20141202" rel="stylesheet" type="text/css">
+<link href="/wp/Public/static/datetimepicker/css/dropdown.css?v=20141202" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/wp/Public/static/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/wp/Public/static/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=20141202" charset="UTF-8"></script>
+<script type="text/javascript">
+
+
+    $(function(){
+        $('.time').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            language:"zh-CN",
+            minView:0,
+            autoclose:true
+        });
+        $('.date').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language:"zh-CN",
+            minView:2,
+            autoclose:true
+        });
+        showTab();
+
+        $('.toggle-data').each(function(){
+            var data = $(this).attr('toggle-data');
+            if(data=='') return true;
+
+            if($(this).is(":selected") || $(this).is(":checked")){
+                change_event(this)
+            }
+        });
+
+        $('select[name=type]').change(function(){
+            $('.toggle-data').each(function(){
+                var data = $(this).attr('toggle-data');
+                if(data=='') return true;
+
+                if($(this).is(":selected") || $(this).is(":checked")){
+                    change_event(this)
+                }
+            });
+        });
+    });
+</script>
+</block>

@@ -1,0 +1,79 @@
+<extend name="Base/common_zhgIndex"/>
+
+<block name="body_zhgIndex">
+    <div class="main">
+        <div class="nav">
+            <div class="home_nav"><a href="/"><i></i>首页</a></div>
+            <div class="navR">
+                <div class="nav_list"><a href="#" target="_blank">论坛</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="main comain">
+        <div class="colist-left" style="width: 718px">
+            <div class="colmenu">
+                <ul>
+                    <li class="coliActive">评价</li>
+                </ul>
+            </div>
+            <div class="colbox-wrap">
+                <div class="colbox" id="divComment">
+                    <volist name="list" id="vo">
+                        <div class="colitem">
+                            <div class="col-list">
+                                <div><span class="commicon" style="padding-right:0">评分：                        <for
+                                        start="0" end="$vo.pingfen"><a></a></for>&nbsp;&nbsp;消费：￥{$vo.count} </span><em>{$vo.nickname}：</em>
+                                </div>
+                                <div><em>{$vo.content}</em></div>
+                                <p>{$vo.pj_time|date='Y-m-d H:i:s',###}</p></div>
+                        </div>
+                    </volist>
+                </div>
+            </div>
+            <style>
+                .prev {
+                background: url(__HOME_IMAGES__/commbut_03.png) no-repeat -123px -82px;
+                width: 9px;
+                height: 13px;
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
+            .next {
+                background: url(__HOME_IMAGES__/commbut_03.png) no-repeat -146px -82px;
+                width: 9px;
+                height: 13px;
+                display: inline-block;
+                margin-left: 10px;
+                vertical-align: middle;
+            }
+            </style>
+            <empty name="list">
+                <div class="page col-page"><a class="page-start" href="#"></a><span>0/0页</span><a class="page-next"
+                     href="#"></a></div>
+                <else/>
+                <div class="page col-page"> {$page}</div>
+            </empty>
+        </div>
+        <div class="colist-right" style="width:400px;">
+            <div class="cologo"><img src="{$list_store.store_logo_id|get_cover=###,'path'}" width="100"
+             onerror="javascript:this.src='__HOME_IMAGES__/zhg_common_pic.jpg';" style="width:113px;"
+             alt="{$list_store.store_name}"></div>
+            <div class="comstore-info"><h1>{$list_store.store_name}</h1>
+                <p>赞：{$list_store.count}</p>
+                <p>人均消费：<b class="red">￥{$list_store['qisong_price']/2}</b></p>
+                <div>
+                    <a href="{:U('Stores/index?store_id='.$list_store[store_id].'&store_name='.$list_store[store_name])}">
+                        <img src="__HOME_IMAGES__/commbut_03.png" alt="{$list_store.store_name}">
+                    </a>
+                </div>
+                <p> 简介：<br> {$list_store.store_desc} </p>
+                <p>营业时间：{$list_store.open_time}</p>
+                <p>地址：{$list_store.address_detail}</p></div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script></script>
+</block>

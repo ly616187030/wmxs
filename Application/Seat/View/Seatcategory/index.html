@@ -1,0 +1,162 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        .top{
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            width: 100%;
+            height: 35px;
+            border-bottom: 1px solid #F3F3F3;
+        }
+        .ss{
+            width:100%;
+            height:auto;
+        }
+        dl{
+            float: left;
+            margin-left: 50px;
+            margin-top: 5px;
+        }
+        dd{
+            margin-top: 10px;
+        }
+        .input{
+            width: 223px;
+        }
+        .chax{
+            height: 55px;
+            width: 100%;
+        }
+        .chax p{
+            float: left;
+
+            margin-left: 50px;
+        }
+        a{
+            margin-left:5px;
+        }
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <div class="main-title cf">
+        <h2>桌台类别管理</h2>
+        <legend>&nbsp;</legend>
+    </div>
+    <div class="table-bar" style="margin: 1em 0em;">
+        <div class="fl">
+            <div class="tools">
+                <a class="btn btn-primary" href="{:U('add',array('id'=>0))}" id="websiteCategoryAdd">新 增</a>
+                <button class="btn ajax-post confirm btn-danger" target-form="ids" url="{:U('del',array('m'=>'seat_location'))}">删 除</button>
+            </div>
+        </div>
+    </div>
+    <!------搜索------------>
+    <div style="height: 15px;"></div>
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>桌台类别ID</th>
+                    <th>桌台类别名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="leibie">
+                    <volist name="leibie" id="_data">
+                        <tr>
+                            <td>
+                                <input class="ids" type="checkbox" value="{$_data.id}" name="id[]">
+                            </td>
+                            <td>{$_data.id}</td>
+                            <td>{$_data.name}</td>
+                            <td>
+                                <a href="{:U('add',array('id'=>$_data['id']))}" class="glyphicon glyphicon-edit">编辑</a>
+                                <a href="{:U('del',array('id'=>$_data['id'],'m'=>'seat_location'))}" class="glyphicon glyphicon-trash ajax-get confirm">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="13" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+        <div class="page">{$page}</div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;text-align: center;">
+                <div class="modal-content" >
+                    <div class="modal-header form-horizontal">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body" style="width: 100%;">
+                        <img src="" class="images"/>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+
+        $(function() {
+
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '#search', function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+
+            var btn=$('.sn');
+            btn.each(function(){
+                if($(this).val()==1){
+                    $(this).next().text('更新商家信息');
+                    $(this).next().css('color','orange');
+                }else if($(this).val()==0){
+                    $(this).next().show();
+                }
+            });
+        });
+    </script>
+</block>

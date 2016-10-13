@@ -1,0 +1,197 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    
+    <style>
+        body{
+            padding:20px;
+            font-family: "Microsoft Yahei";
+        }
+        .red{
+            color:red;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+
+    <div class="bs-example" data-example-id="simple-table">
+        <table class="table table-bordered">
+            <caption>打印机列表</caption>
+            <thead>
+            <tr>
+                <th>选择</th>
+                <th>打印机名称</th>
+                <th>打印机序号</th>
+                <th>设置</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+                <notempt name="list">
+                    <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr>
+                            <td align="center" class="printer"><input type="radio" name="print" <?php if(($vo["status"]) == "1"): ?>checked<?php endif; ?>  value="<?php echo ($vo["id"]); ?>"/></td>
+                            <td><?php echo ($vo["printer_name"]); ?></td>
+                            <td><?php echo ($vo["printer_sn"]); ?></td>
+                            <td>
+                                <?php if(($vo["printerto_local"]) == "1"): ?><strong class="red">[本店留存]</strong><?php endif; ?>
+                                <?php if($vo["printer_local_num"] != 0): ?>×<?php echo ($vo["printer_local_num"]); endif; ?>
+                                <?php if(($vo["printerto_gk"]) == "1"): ?><strong class="red">[给顾客]</strong><?php endif; ?>
+                                <?php if(($vo["printerto_psy"]) == "1"): ?><strong class="red">[给配送员]</strong><?php endif; ?>
+                                <?php if(($vo["printerto_hc"]) == "1"): ?><strong class="red">[给后厨]</strong><?php endif; ?>
+                            </td>
+                            <td><a data-id="<?php echo ($vo["id"]); ?>" class="printerset"  href="javascript:;">设置</a></td>
+                        </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                </notempt>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="setting">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">设置</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">打印联数</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="ids" id="pid">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_local"  value="1" checked>
+                                    本店留存
+                                </label>×
+                                <select name="printer_local_num">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                           <!-- <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_gk"  value="1" checked>
+                                    给客户
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_psy"  value="1" checked>
+                                    给配送员
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="printerto_hc"  value="1" checked>
+                                    给后厨
+                                </label>
+                            </div>-->
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="saveset" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            
+    <script type="text/javascript" src="/Public/LodopFuncs.js"></script>
+    <script type="text/javascript">
+        (function(){
+            var lodop=getLodop();
+            var print_num=lodop.GET_PRINTER_COUNT();
+            var def=lodop.GET_PRINTER_NAME(-1);
+            var str='';
+            for(var i= 0;i<print_num;i++){
+                str+=i+'|'+lodop.GET_PRINTER_NAME(i)+':';
+            }
+            $.get('<?php echo U("createPrint");?>','prints='+str+'&def='+def).success(function(data){
+               data=='success' && location.reload();
+            });
+        })();
+        $('.printerset').click(function(){
+            $('#setting').modal('show');
+            $('#pid').val($(this).data('id'));
+        });
+        $('#saveset').click(function(){
+            var data=$('input,select').serialize();
+            $.get('<?php echo U("printerSet");?>',data).success(function(data){
+                if(data=='success') {$('#setting').modal('hide');location.reload()};
+            });
+        });
+        $('.printer').click(function(){
+            var $this=$(this).find('input');
+            $this.prop('checked',true);
+            var v=$this.val();
+            $.get('<?php echo U("setPrintDef");?>','v='+v).success(function(data){
+                if(data=='success'){
+                    $.alertMessager('设置当前打印机为默认','info');
+                }else{
+                    $.alertMessager('设置当前打印机失败');
+                }
+            });
+        });
+    </script>
+
+        </div>
+    </div>
+</body>
+</html>

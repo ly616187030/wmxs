@@ -1,0 +1,33 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    百分赚
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----账户余额明细--------->
+        <div class="balance">
+            <div class="balance-the">
+                <h4>当前百分赚</h4>
+            </div>
+            <div class="points">
+                <p>0<a style="font-size: 0.4em;color: #ffffff">点</a></p>
+            </div>
+            <div class="points1">
+                <p>可折扣&nbsp;&nbsp;0.00&nbsp;&nbsp;<a style="font-size: 0.4em;color: #ffffff">元</a></p>
+            </div>
+        </div>
+        <div class="bai">
+           <p>百分赚就是您在任何地方使用助友钱包支付后，助友钱包可根据情况给予的奖励。</p>
+           <p>百分赚可累积，以后可在消费时直接抵扣现金使用。</p>
+           <p>多用多得，优惠不停！</p>
+        </div>
+        <!-----账户余额明细结束--------->
+</block>

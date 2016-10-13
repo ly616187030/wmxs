@@ -1,0 +1,98 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+
+<block name="main">
+
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+            <!-- Tab导航 -->
+            <div class="cf form-group form-horizontal">
+                <div class="fl">
+                    <a href="{:U('add')}">
+                        <button class="btn btn-primary" id="sqbtn">新 增</button>
+                    </a>
+                    <!--<button disabled="disabled" class="btn confirm ajax-post" target-form="ids" url="{:U('del')}">删 除</button>-->
+                </div>
+            </div>
+            <!-- 数据列表 -->
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <div class="builder-table">
+                            <div class="panel panel-default">
+                                <table class="table table-bordered table-responsive table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th><input class="check-all" type="checkbox"></th>
+                                        <th>入库ID</th>
+                                        <th>仓库</th>
+                                        <th>商品</th>
+                                        <th>经办人</th>
+                                        <th>单位</th>
+                                        <th>数量</th>
+                                        <th>备注</th>
+                                        <th>入库时间</th>
+                                        <th>操作</th>
+                                    </thead>
+                                    <tbody>
+                                    <notempty name="list">
+                                        <volist name="list" id="vo">
+                                            <tr>
+                                                <td><input class="ids" type="checkbox" value="{$vo.in_id}" name="in_id[]"></td>
+                                                <td>{$vo.in_id}</td>
+                                                <td>{$vo.storage_name}</td>
+                                                <td>{$vo.sp_id|get_sp_name}</td>
+                                                <td>
+                                                    {$vo.person}
+                                                </td>
+                                                <td>{$vo.sp_id|get_sp_danwei}</td>
+                                                <td>{$vo.quantity}</td>
+                                                <td>{$vo.beizhu}</td>
+                                                <td>{$vo.in_time|date="Y-m-d",###}</td>
+                                                <td>
+                                                    <a href="{:U('edit?in_id='.$vo['in_id'].'&quantity='.$vo['quantity'])}">编辑</a>
+                                                    <a href="{:U('del?in_id='.$vo['in_id'].'&st_id='.$vo['storage_id'].'&sp_id='.$vo['sp_id'].'&quantity='.$vo['quantity'])}" class="ajax-get">删除</a>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        <else/>
+                                        <td colspan="17" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </notempty>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="page">{$page}</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+    <!-- 分页 -->
+</block>
+<block name="script">
+    <script>
+        //全选/反选/单选的实现
+        $(".builder .check-all").click(function() {
+            $(".ids").prop("checked", this.checked);
+        });
+
+        $(".builder .ids").click(function() {
+            var option = $(".ids");
+            option.each(function() {
+                if (!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+    </script>
+</block>

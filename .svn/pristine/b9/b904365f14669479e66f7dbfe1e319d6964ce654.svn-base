@@ -1,0 +1,78 @@
+<extend name="Base/orderlist" />
+<block name="title">
+   我的钱包
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!--header结束--><!--content开始-->
+        <div id="content" class="ub-f1 tx-l">
+            <div class="ub ub-ver" style="background-color:#FFFFFF" >
+                <div class="ub-img1 accban uh-acc1 ub-fh ub ub-ver">
+                </div>
+                <div class="top"><h5 style="margin-left: 1em">我的钱包</h5></div>
+                <div class="ub-f1 ub ub-ver">
+                    <div class="ub bc-text">
+                        <a href="{:U('balance')}">
+                            <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-b umwa ttt" id="btn1" onclick="dianji('a','#btn1','yu_e.html')">
+                            <div class="ub-img uwh-acc2 accIcon1 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                账户余额
+                            </div>
+                            </div>
+                        </a>
+                        <a href="{:U('card')}">
+                        <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-bf umwa ttt" id="btn2" onclick="dianji('b','#btn2','mybank.html')">
+                            <div class="ub-img uwh-acc2 accIcon2 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                我的银行卡
+                            </div>
+                        </div>
+                        </a>
+                        <a href="{:U('coupons')}">
+                        <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-b umwa ttt" id="btn3" onclick="dianji('c','#btn3','mycoupon.html')">
+                            <div class="ub-img uwh-acc2 accIcon3 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                我的优惠券
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    <div class="ub bc-text">
+                        <a href="{:U('points')}">
+                        <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-b umwa ttt" id="btn4" onclick="dianji('a','#btn4','baifenzuan.html')">
+                            <div class="ub-img uwh-acc2 accIcon1 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                我的百赚分
+                            </div>
+                        </div>
+                        </a>
+                        <a href="{:U('trading')}">
+                        <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-bf umwa ttt" id="btn5" onclick="dianji('b','#btn5','deal.html')">
+                            <div class="ub-img uwh-acc2 accIcon2 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                我的交易
+                            </div>
+                        </div>
+                        </a>
+                        <a href="{:U('safety')}">
+                        <div class="btn ub-f1 ub ub-ver ub-ac ub-pc ub-b umwa ttt" id="btn6" onclick="dianji('c','#btn6','anquan.html')">
+                            <div class="ub-img uwh-acc2 accIcon3 umar-at1"></div>
+                            <div class="ulev-1 umar-t-acc1">
+                                支付安全
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--content结束-->
+        <!--footer-->
+</block>

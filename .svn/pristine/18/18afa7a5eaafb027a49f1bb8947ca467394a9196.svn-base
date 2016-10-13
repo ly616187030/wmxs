@@ -1,0 +1,234 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/base.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/common.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/module.css">
+    <style>
+        .orderlist{float: left; height: 42px; line-height: 42px;}
+        .storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+        .storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+        .storeList ul li:hover{background: #d2dcf8}
+    </style>
+    
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+    <?php endif; ?>
+
+    <script type="text/javascript" src="/Public/libs/cui/js/common.js"></script>
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container" style="padding: 30px">
+        
+    <link rel="stylesheet" type="text/css" href="/./Application/Storemanagement/View/Public/css/canming.css">
+    <div class="main-title cf">
+        <h3 class="m-b col-sm-8">菜品管理 <?php if(!empty($storename)): ?>/<span style="font-size: 0.6em;color:green;"><?php echo ($storename); ?></span><?php endif; ?></h3>
+    </div>
+	<div class="cf">
+		<div class="fl">
+			<a href="<?php echo U('canming/add',array('storeid'=>$store_id,'storename'=>$storename));?>">
+				<button class="btn" id="sqbtn" style="background-color:#0073dd;">新 增</button>
+			</a>
+			<!--<button class="btn ajax-post" target-form="ids" url="<?php echo U('setFlag?flag=1');?>" style="background-color:limegreen;">启 用</button>
+			<button class="btn ajax-post" target-form="ids" url="<?php echo U('setFlag?flag=0');?>" style="background-color:orange;">下 架</button>-->
+			<button class="btn confirm ajax-post" target-form="ids" url="<?php echo U('del');?>" style="background-color:#fa4c4c;">删 除</button>
+            <span id="modify" style="position:relative;">
+				<a class="btn btn-primary" style="background-color:#0073dd;">
+                    批量修改档口<span class="caret"></span>
+                </a>
+				<ul class="dropdown-menu" style="padding:3px 5px">
+                    <?php if(is_array($dangkou)): $i = 0; $__LIST__ = $dangkou;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li ><input type="radio" name="dangkou" id="dang_<?php echo ($vo["id"]); ?>" value="<?php echo ($vo["id"]); ?>" /><label for="dang_<?php echo ($vo["id"]); ?>"><?php echo ($vo["name"]); ?></label></li><?php endforeach; endif; else: echo "" ;endif; ?>
+                    <li><button class="btn btn-primary" style="background-color:#0073dd;">确定</button></li>
+                </ul>
+			</span>
+		</div>
+	</div>
+
+    <div class="Blank20"></div>
+	<div class="canpin">
+        <div class="canpin_title">单品</div>
+        <div class="canpin_box">
+            <ul>
+                <?php if(is_array($data)): $i = 0; $__LIST__ = $data;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li>
+                    <div class="canpin_box_left">
+                        <?php if(($vo["big_img"]) != "0"): ?><img src="<?php echo (get_cover($vo["big_img"],'path')); ?>" />
+                            <?php else: ?>
+                            <img src="/./Application/Storemanagement/View/Public/img/nopic.jpg" /><?php endif; ?>
+
+                        <input type="checkbox" name="cm_id[]" class="ids" value="<?php echo ($vo["cm_id"]); ?>" />
+                    </div>
+                    <div class="canpin_box_right">
+                        <div class="canming_title">
+                            <?php echo ($vo["cm_name"]); ?>
+                            <a href="<?php echo U('canming/del',array('cm_id'=>$vo['cm_id']));?>" class="fa fa-trash-o confirm ajax-get"></a>
+                            <a href="<?php echo U('canming/edit',array('cm_id'=>$vo['cm_id'],'storename'=>$storename));?>" class="fa fa-pencil-square-o"></a>
+                        </div>
+                        <div class="canming_box">
+                            <P>
+                            库存：<?php echo ($vo["storage_number"]); ?><span>￥<?php echo ($vo["now_price"]); ?></span><span><?php echo ($vo['discount']/10); ?>折</span>
+                            </P>
+                            <P>剩余库存：<?php echo ($vo["remain_storage_number"]); ?></P>
+                        </div>
+                        <div class="canming_footer">
+                            <span>单品</span>
+                        </div>
+                    </div>
+                </li><?php endforeach; endif; else: echo "" ;endif; ?>
+
+            </ul>
+            <div class="Both"></div>
+        </div>
+        <div class="Blank20"></div>
+	</div>
+	<!-- 分页 -->
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header form-horizontal">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title " id="myModalLabel">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">地址:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="suggestId" name="address" class="form-control" placeholder="地址">
+                            </div>
+                            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                            <div class="col-sm-2"><button class="btn btn-default btn-block">确定</button></div>
+                        </div>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!--百度地图-->
+
+        <div id="bdmap" class="form-horizontal"  style="display:none;">
+
+            <div class="bdmap-header form-group">
+
+                <label for="inputEmail3" class="col-sm-3 control-label">地址:</label>
+
+                <div class="col-sm-6" >
+
+                    <input type="text" id="keyword" name="address"  class="form-control"  placeholder="输入餐厅地址">
+
+                    <div id="result1" name="result1" style="position: fixed;z-index: 999;background:#ffffff;width: 335px">
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2"><button id="doing" class="btn btn-primary">确定</button></div>
+
+                <div class="col-sm-1"><a href="javascript:;" id="closeBdmap"><span class="glyphicon glyphicon-remove"></span></a></div>
+
+
+
+                <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+            </div>
+
+            <div class="bdmap-body" >
+
+                <!--<div id="bdmapshow"></div>-->
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            
+	<script>
+        $('#modify').click(function(e){
+            e.stopPropagation();
+            var $this = $(this);
+            $this.find('.dropdown-menu').show();
+        }).on('click','button',function(){
+            var $this = $(this);
+            var val = $this.closest('ul').find("input[type='radio']:checked").val();
+            var query = $('.canpin_box').find('input[type="checkbox"]').serialize();
+            $.get('<?php echo U("updateDangkou");?>',query+'&dk='+val).success(function(data){
+                if(data == 'success'){
+                    $.alertMessager('更新成功');
+                    location.reload();
+                }else if(data ==null){
+                    $.alertMessager('更新失败');
+                }
+            });
+        });
+        $(document).click(function(e){
+            var target = e.target;
+            var len = $(target).closest('#modify').length;
+            if(len==0){
+                $('#modify').find('.dropdown-menu').hide();
+            }
+        });
+		$(function() {
+
+			//全选/反选/单选的实现
+			$(".check-all").click(function() {
+				$(".ids").prop("checked", this.checked);
+			});
+
+			$(".ids").click(function() {
+				var option = $(".ids");
+				option.each(function() {
+					if (!this.checked) {
+						$(".check-all").prop("checked", false);
+						return false;
+					} else {
+						$(".check-all").prop("checked", true);
+					}
+				});
+			});
+		});
+	</script>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:20px;
+        }
+    </style>
+</block>
+<block name="main">
+
+    <div class="cf m-b">
+        <a class="btn btn-info" href="{:U('add')}">新 增</a>
+        <button class="btn ajax-post confirm btn-danger" url="{:U('del')}" target-form="ids">删 除</button>
+    </div>
+
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox" style="margin: 0px auto">
+                    </th>
+                    <th>ID</th>
+                    <th>特价专区名称</th>
+                    <th>特价专区描述</th>
+                    <th>专区背景图片</th>
+                    <th>分配商家</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="_data">
+                        <tr>
+                            <td><input class="ids row-selected" type="checkbox" name="tj_id[]" value="{$_data.tj_id}"></td>
+                            <td>{$_data.tj_id}</td>
+                            <td>{$_data.tj_name}</td>
+                            <td>{$_data.tj_remark}</td>
+                            <td><img style="width: 3em; height: 3em;" src="{$_data.tj_pic|get_new_cover='path'}"></td>
+                            <td>
+                                <volist name="_data['store']" id="store">
+                                    {$store.store_name}
+                                </volist>
+                            </td>
+
+                            <td>
+                                <a href="{:U('toogleHide',array('id'=>$_data['tj_id'],'value'=>abs($_data['flag']-1)))}" class="ajax-get">
+                                    <if condition="$_data.flag == 0 ">禁用    <else /> 启用</if>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a title="编辑" href="{:U('edit?tj_id='.$_data['tj_id'])}">编辑</a>
+                                <a class="confirm ajax-get" title="删除" href="{:U('del?tj_id='.$_data['tj_id'])}">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="7" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+    <!-- 分页 -->
+    <div class="page">
+        {$page}
+    </div>
+    <block name="script">
+        <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+        <script type="text/javascript">
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+        </script>
+    </block>
+

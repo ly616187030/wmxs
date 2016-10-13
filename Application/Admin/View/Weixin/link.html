@@ -1,0 +1,62 @@
+<extend name="Public/layout"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+
+    <style>
+        body{
+            padding:20px;
+        }
+
+    </style>
+</block>
+
+<block name="main">
+    <form class="form-horizontal" action="{:U()}" method="post">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">微信链接</label>
+            <div class="col-sm-5">
+                <input type="text" name="mchname" value="http://{:$_SERVER['SERVER_NAME']}/index.php?s=/index/getFollow/companyid/{$fid}" class="form-control" id="inputEmail3">
+            </div>
+            <button class="btn btn-primary" id="copy" type="button">复制</button>
+            <a  href="{:U('admin/help/show',array('id'=>26))}" class="btn btn-default">帮助文档</a>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-2">
+                <div>(拷贝该链接到微信公众号自定义菜单)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">网页授权获取用户基本信息</label>
+            <div class="col-sm-5">
+                <input type="text" name="username" value="{:$_SERVER['SERVER_NAME']}" class="form-control" id="inputEmail3">
+            </div>
+            <button class="btn btn-primary" id="copy2" type="button">复制</button>
+            <a  href="{:U('admin/help/show',array('id'=>28))}" class="btn btn-default">帮助文档</a>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-5 col-sm-offset-2">
+                <div>(拷贝此域名到->微信公众号->接口权限->网页授权获取用户基本信息)</div>
+            </div>
+        </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/jquery_zclip/jquery.zclip.min.js"></script>
+    <script>
+        $('#copy').zclip({
+            path:'__PUBLIC__/jquery_zclip/ZeroClipboard.swf',
+            copy:$('input[name="mchname"]').val(),
+            afterCopy:function() {
+                alert('已复制到剪贴板');
+            }
+        });
+        $('#copy2').zclip({
+            path:'__PUBLIC__/jquery_zclip/ZeroClipboard.swf',
+            copy:$('input[name="username"]').val(),
+            afterCopy:function() {
+                alert('已复制到剪贴板');
+            }
+        });
+    </script>
+</block>

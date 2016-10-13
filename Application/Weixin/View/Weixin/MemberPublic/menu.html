@@ -1,0 +1,132 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <style>
+        span{padding:1em;}
+        table td a{margin-right: 1em;}
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="main-title">
+        <h4>自定义菜单管理</h4>
+    </div>
+    <div class="">
+        <div class="cf">
+            <div class="fl">
+                <a href="javascript:;"><button class="btn btn-success" type="submit" id="addmenu">新增</button></a>
+                <button class="btn confirm ajax-post btn-success" target-form="ids" type="button" url="{:U('menudel')}">删除</button>
+                <a href="javascript:;"><button class="btn btn-success" type="button" id="buildMenulist">生成微信自定义菜单</button></a>
+                <a href="javascript:;"><button class="btn btn-success" type="button" id="delMenulist">删除微信自定义菜单</button></a>
+            </div>
+            <div class=" fr cf">
+                <div class="sleft">
+                    <a class="sch-btn" href="" id="rule"><i class="btn-search"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-table table-striped" style="overflow-x:auto;overflow-y:auto;width:100%;margin-top:2em;">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;"><input class="check-all" type="checkbox"></th>
+                    <th style="text-align: center;">菜单名</th>
+                    <th style="text-align: center;">类型</th>
+                    <th style="text-align: center;">关键关联词</th>
+                    <th style="text-align: center;">关联URL</th>
+                    <th style="text-align: center;">排序号</th>
+                    <th style="text-align: center;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="info" id="vo">
+                    <tr>
+                        <td style="text-align: center;"><input class="ids" type="checkbox" value="{$vo.id}" name="menuid[]"></td>
+                        <td style="text-align: center;">{$vo.title}</td>
+                        <td style="text-align: center;">
+                            <switch name="vo.type" >
+                                <case value="click">点击推事件</case>
+                                <case value="view">跳转URL</case>
+                                <case value="scancode_push">扫码推事件</case>
+                                <case value="scancode_waitmsg">扫码带提示</case>
+                                <case value="pic_sysphoto">弹出系统拍照发图</case>
+                                <case value="pic_photo_or_album">弹出拍照或者相册发图</case>
+                                <case value="pic_weixin">弹出微信相册发图器</case>
+                                <case value="location_select">弹出地理位置选择器</case>
+                                <case value="none">无事件的一级菜单</case>
+                                <default />
+                            </switch>
+                        </td>
+                        <td style="text-align: center;">{$vo.keyword}</td>
+                        <td style="text-align: center;">{$vo.url}</td>
+                        <td style="text-align: center;">{$vo.sort}</td>
+                        <td style="text-align: center;"><a href="{:U('MemberPublic/menuedit',array('id'=>$vo['id']))}">编辑</a><a href="{:U('MemberPublic/menudel',array('menuid'=>$vo['id']))}" class="ajax-get confirm">删除</a></td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+
+        $('#addmenu').click(function(){
+            $.post('{:U("is_exit")}',function(data){
+                if(data.status){
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                        window.location.href = "{:U('MemberPublic/addmenu')}";
+                    },1500);
+                }else{
+                    $.alertMessager(data.info, 'danger');
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }
+            });
+        });
+
+        $('#buildMenulist').click(function(){
+            $.post('{:U("send_menu")}',function(data){
+                if(data.status){
+                    $.alertMessager(data.info, 'danger');
+                    window.location.href=data.url;
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },2500);
+                }else{
+                    $.alertMessager(data.info, 'danger');
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },2500);
+                }
+            });
+        });
+
+        $('#delMenulist').click(function(){
+            $.post('{:U("delMenu")}',function(data){
+                if(data.status){
+                    $.alertMessager(data.info, 'danger');
+                    window.location.href=data.url;
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }else{
+                    $.alertMessager(data.info, 'danger');
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }
+            });
+        });
+
+    </script>
+</block>
+

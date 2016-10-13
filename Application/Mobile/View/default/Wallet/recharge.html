@@ -1,0 +1,38 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    余额充值
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----余额开始--------->
+        <div class=" recharge">
+            <ul>
+                <li class="recharge-1 rech">充值后，您可方便快捷的使用余额支付，百度钱包保障您的使用安全，请放心填写</li>
+                <li class="recharge-1 rech"><div class="text"><a>充值金额</a><input type="text" placeholder="请输入充值金额" class="box" name="text"></div></li>
+                <li class="recharge-1 rech "><input type="button"  value="立即充值" id="btn" disabled="disabled"></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $(function(){
+               $('.box').keyup(function(){
+                   var value = $(this).val();
+                  if(value !== ''){
+                      $('#btn').removeAttr("disabled").css('background-color','#0066cc');
+                  }
+               });
+               $('#btn').click(function(){
+                   var jine = $('.box').val();
+                   alert(jine)
+               });
+            })
+        </script>
+        <!-----余额开始--------->
+</block>

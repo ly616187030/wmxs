@@ -1,0 +1,138 @@
+<extend name="Public/base"/>
+
+    <block name="body">
+        <div class="cf form-group form-horizontal">
+            <form id="search_form" onsubmit="return false;">
+           <label class="control-label col-sm-1">请选择餐厅</label>
+            <div class="col-sm-2">
+                <select class="form-control" name="restaurant">
+                    <volist name="_store" id="vo" key="k">
+                        <option value="{$vo.store_id}" <eq name="k" value="1">selected="selected"</eq> >{$vo.store_name}</option>
+                    </volist>
+
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label col-sm-4">起始时间</label>
+                <div class="col-sm-7">
+                    <input type="text" name="stime" class="form-control date"/>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label col-sm-4">结束时间</label>
+                <div class="col-sm-7">
+                    <input type="text" name="etime" class="form-control date"/>
+                </div>
+            </div>
+            <div class="2">
+                <button type="submit"  class="btn btn-default" id="search"><span class="glyphicon glyphicon-search"></span>查询</button>
+            </div>
+            </form>
+        </div>
+        <div class="data-table table-striped">
+            <form class="ids">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="row-selected">
+                            <input class="checkbox check-all" type="checkbox">
+                        </th>
+                        <th>订单ID</th>
+                        <th>配送费</th>
+                        <th>优惠金额</th>
+                        <th>总金额</th>
+                        <th>订单完成时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                        <notempty name="_list">
+                            <volist name="_list" id="vo">
+                            <tr>
+                                <td>
+                                    <input class="ids row-selected" type="checkbox" name="store_id[]" value="{$vo.store_id}">
+                                </td>
+                                <td>{$vo.order_sn}</td>
+                                <td>{$vo.ps_cost}</td>
+                                <td>{$vo.yh_price}</td>
+                                <td>{$vo.total}</td>
+                                <td>{$vo.complete_time|date='Y-m-d',###}</td>
+                                <td>
+                                    <a href="{:U('toogleHide',array('id'=>$_data['store_id'],'value'=>abs($_data['status']-1)))}" class="ajax-get">
+                                        <if condition="$_data.status == 0 ">禁用
+                                            <else /> 启用</if>
+                                    </a>
+                                    |
+                                    <a class="confirm ajax-get" title="删除" href="{:U('del?store_id='.$_data['store_id'])}">删除</a>
+                                </td>
+
+                            </tr>
+                            </volist>
+                            <else/>
+                        <td colspan="7" class="text-center"> aOh! 暂时还没有内容!</td>
+                        </notempty>
+                    </tbody>
+                </table>
+            </form>
+            <div class="page">{$page}</div>
+        </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/angular-1.4.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('.date').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language:"zh-CN",
+            minView:2,
+            autoclose:true
+        });
+        $('#search').click(function() {
+            var query=$('#search_form').serialize();
+            $.get("{:U('Statistics/index')}",query,function(data){
+                if(data!==null){
+                var msg = '';
+                for(var i=0; i<data.length;i++){
+                    var ti = data[i]['complete_time'];
+                    var tii = Trans_php_time_to_str(ti,2);
+                    msg+='<tr>' +
+                            '<td><input class="ids row-selected" type="checkbox" name="store_id[]" value="'+data[i]['store_id']+'"></td>' +
+                            '<td>'+data[i]['order_sn']+'</td> ' +
+                            '<td>'+data[i]['ps_cost']+'</td> ' +
+                            '<td>'+data[i]['yh_price']+'</td> ' +
+                            '<td>'+data[i]['total']+'</td> ' +
+                            '<td>'+tii+'</td> ' +
+                            '<td> ' +
+                            '<a href="{:U(\'toogleHide',array('id\'=>$_data[\'store_id\'],\'value\'=>abs($_data[\'status\']-1)))}" class="ajax-get"> <if condition="$_data.status == 0 ">禁用 <else /> 启用</if> </a> |' +
+                            '<a class="confirm ajax-get" title="删除" href="{:U(\'del?store_id='.$_data['store_id\'])}">删除</a> ' +
+                            '</td> ' +
+                            '</tr>'
+                }
+                $('tbody').html(msg);
+                }else{
+                    $('tbody').html('<td colspan="7" class="text-center"> aOh! 暂时还没有内容!</td>')
+                }
+            });
+        });
+    });
+    function Trans_php_time_to_str(timestamp,n){
+        var update = new Date(timestamp*1000);//戳要乘1000
+        var year   = update.getFullYear();
+        var month  = (update.getMonth()+1<10)?('0'+(update.getMonth()+1)):(update.getMonth()+1);
+        var day    = (update.getDate()<10)?('0'+update.getDate()):(update.getDate());
+        var hour   = (update.getHours()<10)?('0'+update.getHours()):(update.getHours());
+        var minute = (update.getMinutes()<10)?('0'+update.getMinutes()):(update.getMinutes());
+        var second = (update.getSeconds()<10)?('0'+update.getSeconds()):(update.getSeconds());
+        if(n==1){
+            return (year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second);
+        }else if(n==2){
+            return (year+'-'+month+'-'+day);
+        }else{
+            return 0;
+        }
+    }
+    </script>
+</block>
+

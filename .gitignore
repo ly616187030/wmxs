@@ -1,0 +1,8 @@
+.idea
+*.log
+
+/Runtime/
+/Uploads/
+/node_modules/
+
+!*.md

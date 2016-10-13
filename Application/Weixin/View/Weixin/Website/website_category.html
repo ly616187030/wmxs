@@ -1,0 +1,176 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <style type="text/css">
+        .normal_tips {
+            background: #f4ffc1;
+            padding: 15px;
+            color: #da4224;
+            word-break: break-all;
+            margin: 10px 20px;
+        }
+        #contents .nav {
+            content: '';
+        }
+        .cf, #contents .nav {
+        }
+        .tab-nav {
+            border-bottom-color: #e0e0e0;
+        }
+        .tab-nav {
+            margin-bottom: 15px;
+            background: #eee;
+            padding: 0 10px;
+        }
+         body{
+             padding:40px 20px;
+         }
+
+    </style>
+</block>
+<block name="main">
+    <div id="main-container">
+        <div>
+            <div class="span9 page_message">
+                <section id="contents">
+                    <ul class="title row">
+                        <li class="title-current col-md-1">
+                            <a  style="color:#fff;" href="{:U('Weixin/Website/websiteCategory')}">分类管理</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Weixin/Website/websiteSlideshow')}">首页幻灯片</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Weixin/Website/websiteFooter')}">底部导航</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Weixin/Website/websiteReplyNews')}">文章管理</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Weixin/Website/websiteModolIndex')}">模板管理</a>
+                        </li>
+                    </ul>
+                    <p class="normal_tips"><b class="fa fa-info-circle"></b> 外链为空时默认跳转到该分类的文章列表页面</p>
+                    <div class="table-bar" style="margin-bottom: 1em;">
+                        <div class="fl">
+                            <div class="tools">
+                                <a class="btn btn-success" href="javascript:;" id="websiteCategoryAdd">新 增</a>
+                                <button class="btn ajax-post confirm btn-success" target-form="ids" url="{:U('del',array('m'=>'WeisiteCategory'))}">删 除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 数据列表 -->
+                    <div class="data-table">
+                        <div class="table-striped">
+                            <table cellspacing="1" class="table table-bordered text-center">
+                                <!-- 表头 -->
+                                <thead>
+                                    <tr>
+                                        <th class="row-selected row-selected">
+                                            <input class="check-all" type="checkbox">
+                                        </th>
+                                        <th width="15%" >分类标题</th>
+                                        <th  >分类图片</th>
+                                        <th width="30%" >外链</th>
+                                        <th width="10%" >排序号</th>
+                                        <th width="10%" >显示</th>
+                                        <th width="10%" >操作</th>
+                                    </tr>
+                                </thead>
+                                <!-- 列表 -->
+                                <tbody>
+                                    <volist name="info" id="vo">
+                                        <tr>
+                                            <td>
+                                                <input class="ids" type="checkbox" value="{$vo.id}" name="id[]">
+                                            </td>
+                                            <td>{$vo.title}</td>
+                                            <td>
+                                                <img class="list_img" src="{$vo.icon|get_cover='path'}" >
+                                            </td>
+                                            <td>{$vo.url}</td>
+                                            <td>{$vo.sort}</td>
+                                            <td>
+                                                <switch name="vo.is_show">
+                                                    <case value="0">不显示</case>
+                                                    <case value="1">显示</case>
+                                                    <default />
+                                                </switch>
+                                            </td>
+                                            <td>
+                                                <a  target="_self" href="{:U('Website/websiteCategoryAdd',array('id'=>$vo['id']))}">编辑</a>
+                                                <a class="confirm ajax-get"   href="{:U('Website/del',array('id'=>$vo['id'],'m'=>'WeisiteCategory'))}">删除</a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="page">  </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- /主体 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function(){
+            $('#websiteCategoryAdd').click(function(){
+                $.post('{:U("is_exit")}',function(data){
+                    if(data.status){
+                        setTimeout(function(){
+                            window.location.href = "{:U('Website/websiteCategoryAdd',array('id'=>0))}";
+                        },1500);
+                    }else{
+                        $.alertMessager(data.info, 'danger');
+                    }
+                });
+            })
+        })
+
+        $(function() {
+
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '#search', function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+
+    </script>
+</block>

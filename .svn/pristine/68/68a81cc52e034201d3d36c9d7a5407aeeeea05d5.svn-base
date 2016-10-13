@@ -1,0 +1,140 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+</block>
+<block name="main">
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+
+            <!-- 顶部工具栏按钮 -->
+            <div class="builder-toolbar builder-list-toolbar">
+                <div class="row">
+                    <!-- 工具栏按钮 -->
+                    <div class="col-xs-12 col-sm-9 button-list">
+                        <a title="新增" class="btn btn-primary" href="{:U('addStorage')}">新增</a>
+                        <a title="删除" target-form="ids" class="btn btn-danger ajax-post confirm" model="article_category" href="{:U('del')}">删除</a>
+                        <a title="全部" target-form="ids" class="btn btn-warning confirm" model="article_category" href="{:U('index')}">全部</a>
+                    </div>
+                    <!-- 搜索框 -->
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="input-group search-form">
+                            <input type="text" name="nickname" class="search-input form-control" value="{:I('nickname')}" placeholder="请输入ID/分类名称">
+                            <span class="input-group-btn"><a class="btn btn-default" href="javascript:;" id="search" url="{:U('index')}"><i class="fa fa-search"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据列表 -->
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <div class="builder-table">
+                            <div class="panel panel-default">
+                                <table class="table table-bordered table-responsive table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th><input class="check-all" type="checkbox"></th>
+                                        <th>仓库ID</th>
+                                        <th>名称</th>
+                                        <th>所在省</th>
+                                        <th>市</th>
+                                        <th>区/县</th>
+                                        <th>详细地址</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <notempty name="list">
+                                        <volist name="list" id="menu">
+                                            <tr>
+                                                <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$menu.storage_id}">
+                                                </td>
+                                                <td>{$menu.storage_id}</td>
+                                                <td>
+                                                    <a href="{:U('index?pid='.$menu['id'])}"  title="{$menu.storage_desc}">{$menu.storage_name}</a>
+                                                </td>
+                                                <td>{$menu.sheng}</td>
+                                                <td>{$menu.shi}</td>
+                                                <td>{$menu.qu}</td>
+                                                <td>{$menu.address}</td>
+                                                <td>
+                                                    <a title="编辑" href="{:U('editStorage?storage_id='.$menu['storage_id'])}">修改</a>
+                                                    <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$menu['storage_id'])}">删除</a>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        <else/>
+                                        <td colspan="10" class="text-center"> aOh! 暂时还没有内容!</td>
+                                    </notempty>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="page">
+                                {$page}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            if (!$('.builder')) {
+                return false;
+            }
+
+            //全选/反选/单选的实现
+            $(".builder .check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".builder .ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '.builder #search', function() {
+                var url = $(this).attr('url');
+                var query = $('.builder .search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".builder .search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+
+
+    </script>
+</block>

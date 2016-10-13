@@ -1,0 +1,259 @@
+<extend name="Base/orderlist"/>
+<block name="title">
+    我的代金券
+</block>
+<block name="style">
+    <style>
+        .bili {
+            width: 33.3333333%;
+
+            text-align: center;
+        }
+
+        .bottom-all {
+            color: orangered;
+            border-bottom: solid 2px orangered;
+        }
+
+        #bg {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=70);
+        }
+
+        .text-c {
+            text-align: center;
+        }
+    </style>
+</block>
+<block name="body">
+
+    <div id="bg" style="display: none"></div>
+
+    <div class="ub ub-fh" style="border-bottom: 1px solid #dddddd; padding: 5px 0 0 0; line-height: 2em">
+
+        <div id="keyong" class="bili bottom-all">可用代金券</div>
+
+        <div style="width: 2px; height: 1.5em;background-color: #dddddd; position: absolute"></div>
+
+        <div id="yiyong" class="bili">已用代金券</div>
+
+        <div style="width: 2px; height: 1.5em;background-color: #dddddd; position: absolute"></div>
+
+        <div id="guoqi" class="bili">过期代金券</div>
+
+    </div>
+
+    <div id="left">
+
+        <div style="padding: 5px;" id="left-content">
+            <notempty name="info">
+            <volist name="info" id="vo">
+                <if condition="$src eq 1">
+                    <div class="ub"
+                         style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;background-color: rgba(173, 255, 47, 0.29)">
+
+                        <div class="ub-f1 text-c" style="border-right: 1px dashed #000000">
+
+                            <p style="color: palevioletred">￥<span style="font-size: 24px">{$vo.user_bao_price}</span></p>
+
+                            <p>代金券</p>
+
+                        </div>
+
+                        <div class="ub-f4" style="padding-left:5%">
+
+                            <p><h4>{$vo.condition_desc}</h4></p>
+                            <p>仅在线支付可用</p>
+
+                            <p style="color: orangered">有效期至{$vo.expire_time|date='Y-m-d',###}</p>
+
+                        </div>
+
+                    </div>
+                    <else/>
+                <a href="{:U('Cart/index?user_bao_id='.$vo['user_bao_id'])}">
+                    <div class="ub"
+                         style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;background-color: rgba(173, 255, 47, 0.29)">
+
+                        <div class="ub-f1 text-c" style="border-right: 1px dashed #000000">
+
+                            <p style="color: palevioletred">￥<span style="font-size: 24px">{$vo.user_bao_price}</span></p>
+
+                            <p>代金券</p>
+
+                        </div>
+
+                        <div class="ub-f4" style="padding-left:5%">
+
+                            <p><h4>{$vo.condition_desc}</h4></p>
+                            <p>仅在线支付可用</p>
+
+                            <p style="color: orangered">有效期至{$vo.expire_time|date='Y-m-d',###}</p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+                </if>
+            </volist>
+                <else/>
+                <div style="text-align: center;color: orangered;">Oh,您还没有代金券！</div>
+            </notempty>
+        </div>
+
+        <div class="ub-fh" style="margin-top: 10px">
+
+            <div id="tianjia"
+
+                 style="width: 90%;border: 1px solid #dddddd; border-radius: 4px;margin-right: auto;margin-left: auto;text-align: center; padding: 10px; color: orangered">
+
+                <h4>+添加代金券</h4></div>
+
+        </div>
+
+
+        <div id="shuru"
+
+             style="text-align: center; position: absolute; top: 10em; left: 25%; padding: 10px; display: none;background-color: white ;z-index: 2222">
+
+            <h4>添加代金券</h4>
+
+            <input type="text" placeholder="输入代金券号码" style="line-height: 1.5em">
+
+
+            <div class="ub" style="margin-top: 5px">
+
+                <div id="quxiao" class="ub-f1" style="text-align: center;border: 1px solid #000000;">取消</div>
+
+                <div id="queding" class="ub-f1" style="text-align: center;border: 1px solid #000000;">确定</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        $(function () {
+            $('#keyong').click(function () {
+
+                $('#keyong').addClass('bottom-all');
+
+                $('#yiyong').removeClass('bottom-all');
+
+                $('#guoqi').removeClass('bottom-all');
+                info_bao(1, 'rgba(173, 255, 47, 0.29)');
+            })
+
+            $('#yiyong').click(function () {
+
+                $('#keyong').removeClass('bottom-all');
+
+                $('#yiyong').addClass('bottom-all');
+
+                $('#guoqi').removeClass('bottom-all');
+                info_bao(2, 'rgba(255, 165, 0, 0.29)');
+
+            })
+
+            $('#guoqi').click(function () {
+
+                $('#keyong').removeClass('bottom-all');
+
+                $('#yiyong').removeClass('bottom-all');
+
+                $('#guoqi').addClass('bottom-all');
+                info_bao(3, 'rgba(169, 169, 169, 0.29)')
+
+            })
+
+            $('#tianjia').click(function () {
+
+                $('#bg').show();
+
+                $('#shuru').show()
+
+            })
+
+            $('#quxiao').click(function () {
+
+                $('#bg').hide();
+
+                $('#shuru').hide()
+
+            })
+
+            $('#queding').click(function () {
+
+                $.post()
+
+            })
+        })
+        function info_bao(flag, color) {
+            var url = "{:U('Voucher/index')}"
+            $.get(url, 'flag=' + flag, function (data) {
+                if(data==null){
+                    $('#left-content').html('<div style="color: orangered;text-align: center">Oh,您还没有代金券！</div>');
+                    return;
+                }
+                var info = '';
+                $.each(data, function () {
+                    var time = Trans_php_time_to_str(this['expire_time'], 2)
+                    if (flag == 0&&'{$src}'!=1) {
+                        info += '<a href="{:U(\'Cart/index\',\'\',false)}/bao_id/' + this['bao_id'] + '"><div class="ub"style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;background-color: ' + color + '">'
+                                + '<div class="ub-f1 text-c" style="border-right: 1px dashed #000000"> ' +
+                                '<p style="color: palevioletred">￥<span style="font-size: 24px">' + this['user_bao_price'] + '</span></p>' +
+                                ' <p>代金券</p>' +
+                                '</div>' +
+                                ' <div class="ub-f4" style="padding-left:5%"> ' +
+                                '<p><h4>' + this['condition_desc'] + '</h4></p> ' +
+                                '<p>仅在线支付可用</p>' +
+                                ' <p style="color: orangered">有效期至' + time + '</p>' +
+                                ' </div> </div></a>';
+                    } else {
+                        info += '<div class="ub"style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;background-color: ' + color + '">'
+                                + '<div class="ub-f1 text-c" style="border-right: 1px dashed #000000"> ' +
+                                '<p style="color: palevioletred">￥<span style="font-size: 24px">' + this['user_bao_price'] + '</span></p>' +
+                                ' <p>代金券</p>' +
+                                '</div>' +
+                                ' <div class="ub-f4" style="padding-left:5%"> ' +
+                                '<p><h4>' + this['condition_desc'] + '</h4></p> ' +
+                                '<p>仅在线支付可用</p>' +
+                                ' <p style="color: orangered">有效期至' + time + '</p>' +
+                                ' </div> </div>';
+                    }
+                });
+                $('#left-content').html(info);
+            })
+        }
+        function Trans_php_time_to_str(timestamp, n) {
+            var update = new Date(timestamp * 1000);//戳要乘1000
+            var year = update.getFullYear();
+            var month = (update.getMonth() + 1 < 10) ? ('0' + (update.getMonth() + 1)) : (update.getMonth() + 1);
+            var day = (update.getDate() < 10) ? ('0' + update.getDate()) : (update.getDate());
+            var hour = (update.getHours() < 10) ? ('0' + update.getHours()) : (update.getHours());
+            var minute = (update.getMinutes() < 10) ? ('0' + update.getMinutes()) : (update.getMinutes());
+            var second = (update.getSeconds() < 10) ? ('0' + update.getSeconds()) : (update.getSeconds());
+            if (n == 1) {
+                return (year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second);
+            } else if (n == 2) {
+                return (year + '-' + month + '-' + day);
+            } else {
+                return 0;
+            }
+        }
+    </script>
+
+</block>

@@ -1,0 +1,170 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <style>
+        body{
+            padding:40px 20px;
+        }
+        span{padding:1em;}
+    </style>
+</block>
+
+<block name="main">
+    <div class="main-title">
+        <h4>结算对账/配送员结算报表</h4>
+    </div>
+    <div style="padding:2em 3em;">
+        <form action="{:U()}" method="get" >
+            <input type="hidden" name="m" value="Settle" />
+            <input type="hidden" name="c" value="Settle" />
+            <input type="hidden" name="a" value="deliversettlement" />
+            <div style="height:55px;line-height: 55px;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:3em;height:30px;line-height: 30px;">日期：</label>
+                <div class="col-sm-3" style="margin:0px;padding:0px;height:30px;line-height: 30px;width:25em;">
+                    <input name="date" type="radio" value="1" checked=checked" <eq name="date" value="1">checked=checked"</eq> /> 今天<span>|</span>
+                    <input name="date" type="radio" value="2" <eq name="date" value="2">checked=checked"</eq> /> 昨天<span>|</span>
+                    <input name="date" type="radio" value="3" <eq name="date" value="3">checked=checked"</eq> /> 近三天<span>|</span>
+                    <input name="date" type="radio" value="0" <eq name="date" value="0">checked=checked"</eq> /> 自定义时间
+                </div>
+                <div class="col-sm-2">
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedStart" id="demo_inp1" <notempty name="definedStart">value="{$definedStart|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <div class="col-sm-1" style="width:3em;height:30px;line-height: 30px;">至</div>
+                <div class="col-sm-2" >
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedOver" id="demo_inp2" <notempty name="definedOver">value="{$definedOver|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <input type="hidden" value="{$jintian}" name="datevalue" id="datevalue"/>
+                <input type="hidden" value="{$zt}" name="startdate" id="startdate"/>
+                <input type="hidden" value="{$jst}" name="overdate" id="overdate"/>
+                <label class="col-sm-1" style="margin-left:0px;padding:0px;width:6em;height:30px;line-height: 30px;">配送员名称：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="deliver">
+                        <option value="">全部</option>
+                        <volist name="deliverman" id="vod">
+                            <option value="{$vod.person_id}" <eq name="vod.person_id" value="$person_id">selected="selected"</eq>>{$vod.person_name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="cf">
+                <div class="fl">
+                    <button class="btn btn-primary" type="submit">查询</button>
+                    <a href="{:U('deliverexcel')}"><button class="btn btn-info" type="button">导出EXCEL</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h5 style="font-weight: bold;margin-bottom:1em;">查询结果</h5>
+    <div class="data-table table-striped" style="margin-top:1em;overflow-x:auto;overflow-y:auto;">
+        <table class="table table-bordered text-center">
+            <thead>
+            <tr>
+                <th>数据项</th>
+                <th>完成订单总量</th>
+                <th>线上支付总金额</th>
+                <th>应上缴总金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>总计</td>
+                <td>{$zongji.numtotal|default=0}</td>
+                <td>{$zongji.xszfze|default=0}</td>
+                <td>{$zongji.ysjjeze|default=0}</td>
+            </tbody>
+        </table>
+    </div>
+    <h5 style="font-weight: bold;margin:1em 0em;">结算明细</h5>
+    <div class="data-table table-striped">
+        <table class="table table-bordered text-center">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>完成订单量</th>
+                <th>线上支付金额</th>
+                <th>应上缴金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="deliver" id="vo">
+            <volist name="deliver" id="vo">
+                <tr>
+                    <td>{$vo.person_name}</td>
+                    <td>{$vo.num}</td>
+                    <td>{$vo.xszf|default=0}</td>
+                    <td>{$vo.ysjje|default=0}</td>
+                </tr>
+            </volist>
+            <else/>
+            <td colspan="8" class="text-center" style="text-align: center;"> aOh! 暂时还没有内容!</td>
+            </notempty>
+            </tbody>
+        </table>
+        <div class="page">{$page}</div>
+    </div>
+
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+            $('#demo_inp2').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+
+            $(function(){$("input[name='date']").change(function(){
+                var date=$(this).val();
+                if(date==1){
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#definedStart').val('');
+                    $('#definedOver').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth()+1;
+                    var day = time.getDate();
+                    var riqi=year+"-"+month+"-"+day;
+                    $('#datevalue').val(riqi);
+
+                }else if(date==2){
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#definedStart').val('');
+                    $('#definedOver').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth()+1;
+                    var day = time.getDate()-1;
+                    var riqi=year+"-"+month+"-"+day;
+                    $('#datevalue').val(riqi);
+
+
+                }else if(date==3){
+                    $('#datevalue').val('');
+                    $('#definedStart').val('');
+                    $('#definedOver').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth()+1;
+                    var startday = time.getDate()-2;
+                    var overday = time.getDate();
+                    var startriqi=year+"-"+month+"-"+startday;
+                    var overriqi=year+"-"+month+"-"+overday;
+                    $('#startdate').val(startriqi);
+                    $('#overdate').val(overriqi);
+
+                }else if(date==0){
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#datevalue').val('');
+                }
+            })
+            })
+        });
+    </script>
+
+</block>
+</block>

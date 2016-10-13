@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>{$meta_title}｜{:C('WEB_SITE_TITLE')}后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="description" content="{$meta_description}">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/base.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/common.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/module.css">
+    <style>
+        .orderlist{float: left; height: 42px; line-height: 42px;}
+        .storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+        .storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+        .storeList ul li:hover{background: #d2dcf8}
+    </style>
+    <block name="style"></block>
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        {:C('CDN_RESOURCE_LIST')}
+    <?php else: ?>
+        <script type="text/javascript" src="__PUBLIC__/libs/jquery/1.x/jquery.min.js"></script>
+    <?php endif; ?>
+
+    <script type="text/javascript" src="__CUI__/js/common.js"></script>
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        <block name="full-header"></block>
+    </div>
+
+    <div class="clearfix full-container" style="padding: 30px">
+        <block name="body">
+        </block>
+        <!--百度地图-->
+
+        <div id="bdmap" class="form-horizontal"  style="display:none;">
+
+            <div class="bdmap-header form-group">
+
+                <label for="inputEmail3" class="col-sm-3 control-label">地址:</label>
+
+                <div class="col-sm-6" >
+
+                    <input type="text" id="keyword" name="address"  class="form-control"  placeholder="输入餐厅地址">
+
+                    <div id="result1" name="result1" style="position: fixed;z-index: 999;background:#ffffff;width: 335px">
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2"><button id="doing" class="btn btn-primary">确定</button></div>
+
+                <div class="col-sm-1"><a href="javascript:;" id="closeBdmap"><span class="glyphicon glyphicon-remove"></span></a></div>
+
+
+
+                <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+            </div>
+
+            <div class="bdmap-body" >
+
+                <!--<div id="bdmapshow"></div>-->
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="clearfix full-footer">
+        <block name="full-footer"></block>
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="__HOME_IMG__">
+            <script type="text/javascript" src="__CUI__/js/cui.min.js"></script>
+            <script type="text/javascript" src="__ADMIN_JS__/admin.js?v={:C('STATIC_VERSION')}"></script>
+            <block name="script"></block>
+        </div>
+    </div>
+</body>
+</html>

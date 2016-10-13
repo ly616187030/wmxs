@@ -1,0 +1,660 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="header_zhgIndex"></block>
+<block name="style">
+    <style>
+        #page_navigation a{
+            padding:3px;
+            border:1px solid gray;
+            margin:2px;
+            color:black;
+            text-decoration:none
+        }
+        .active_page{
+            background:darkblue;
+            color:white !important;
+        }
+        .nav a:hover{
+            text-decoration: none;
+            color: #ffffff;
+
+        }
+    </style>
+</block>
+<block name="body_zhgIndex">
+    <div class="main">
+        <div class="nav">
+            <div class="home_nav"><a href="{:U('Index/index')}" class="nav-active"><i></i>首页</a></div>
+            <div class="navR">
+                <div class="nav_list">
+
+                    <a href="#" target="_blank">论坛</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="main">
+        <!--用餐时间与切换地址-->
+        <div class="searchTime">
+
+            <div class="addrSwitch" style="left:1%;">
+                <img src="__HOME_IMAGES__/zhgIndex/daohangIcon.png" style="position:relative; vertical-align:middle;margin-right:5px;">
+                <!--<a href="#" class="citySwitch"> <input type="text" value="成都"><img src="img/icon/arrowDown.png"></a>-->
+                <a href="#" class="citySwitch">
+                    <span class="dropdown" data-bind="click: ShowHotCity">
+                        <span data-toggle="dropdown" style="cursor:pointer;">{$cityName}</span>
+                    </span>
+                </a>
+                <p>{$content}</p>
+                <a class="btnAddress" href="{:U('Index/index')}"><img src="__HOME_IMAGES__/zhgIndex/btnAddress.png"></a>
+            </div>
+        </div>
+        <!--用餐时间与切换地址结束-->
+        <div class="step1" data-bind="visible: hasStore_byType() || hasStore_All()" style=""></div>
+        <div class="store-box" data-bind="visible: hasStore_byType() || hasStore_All()" style="">
+            <div class="filters">
+                <div class="conditions" id="rstSort">
+                    <a style="text-decoration: none;color: red" href="javascript:;" onclick="sort_run(1);" data-type="Distance" id="id_mrpx">默认距离<i></i></a>
+                    <a style="text-decoration: none;" href="javascript:;" onclick="sort_run(2);" data-type="Good" id="id_hp">好评<i></i></a>
+                    <a style="text-decoration: none;" href="javascript:;" onclick="sort_run(3);" data-type="Avgprice" id="id_rjxf">人均消费<i></i></a>
+                    <a style="text-decoration: none;" href="javascript:;" onclick="sort_run(4);" data-type="Price" id="id_qsj">起送价<i></i></a>
+                </div>
+                <div class="paging">
+                    <div class="group">
+                        <div class="search">
+                            <input class="search_key" id="txtSearch" name="Key" placeholder="门店名称" type="text" value="" style="font-size: 1em;line-height: 20px;">
+                            <input type="submit" class="search_btn" id="btnSearchStores" value="">
+                        </div></div> </div>
+            </div>
+            <div id="id_body">
+                <div class="store-content" style="min-height:200px;" id="content">
+
+                    <notempty name="store_list">
+                        <volist name="store_list" id="vo" key="key1">
+                            <a style="text-decoration: none;" target="_blank" href="{:U('Stores/index','',false)}/store_id/{$vo['store_id']}/store_name/{$vo['store_name']}">
+                                <div name="{$vo.store_name}" class="contentbox"  style="height:238px;" data-align="{$vo['store_id']}">
+                                        <div class="conwrap" onmouseover="user_mouseover(this,{$key1-1})" onmouseout="user_mouseout(this,{$key1-1})">
+                                            <div class="pic <empty name="vo.is_open">graying</empty>" data-id="{$vo.store_name}">
+                                            <img src="{$vo.store_logo_id|get_cover=###,'path'}" onerror="javascript:this.src='__HOME_IMAGES__/zhg_common_pic.jpg'" width="195" height="155" alt="{$vo.store_name}">
+                                        </div>
+                                </div>
+
+                                <div class="store-hover" style="display: none;">
+                                    <div style="font-size: 15px">{$vo.store_name}</div>
+                                    <!--优惠标签-->
+                                    <hr>
+                                    <notempty name="vo.cuxiao_data">
+                                        <volist name="vo.cuxiao_data" id="yh">
+                                            <if condition="$yh.promotion_type eq 0">
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                                <elseif condition="$yh.promotion_type eq 1"/>
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                                <elseif condition="$yh.promotion_type eq 2"/>
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                                <elseif condition="$yh.promotion_type eq 3"/>
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                                <elseif condition="$yh.promotion_type eq 4"/>
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                                <elseif condition="$yh.promotion_type eq 5"/>
+                                                <div style="margin-bottom:10px;">
+                                                    <span class="badge" style="background: #ff464c;">{$yh.promotional_labels}</span><span style="padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;">{$yh.promotion_name}</span>
+                                                </div>
+                                            </if>
+                                        </volist>
+                                    </notempty>
+
+
+                                    <hr>
+                                    <div>约{$vo.sh_time}分钟送达</div>
+                                    <div><b>人均消费：</b>￥{$vo['qisong_price']/2}</div>
+                                    <div><b>起送价格：</b>￥{$vo.qisong_price}</div>
+                                    <div><b>配送时间：</b>{$vo.yingye_time}</div>
+                                    <div><b>营业时间：</b>{$vo.store_open_time}</div>
+                                    <div><b>地址：</b>{$vo.address}</div>
+                                    <div class="sarr"></div>
+                                </div>
+                                <div class="store-name">
+                                    <p title="{$vo.store_name}" class="a">{$vo.store_name}</p>
+                                </div>
+                            </a>
+                            <div class="evaluate">
+                                <div class="praise" data-id="{$vo.store_id}"  style="margin-top:-7px; " onclick="dianzan(this)">
+                                    <a href="javascript:;" style="text-decoration: none">
+                                        <i style="background-position:-10px -498px"></i>
+                                        <span>赞</span>
+                                        (<label style="color: red">
+                                        <if condition="$vo.praise eq 0">
+                                            0
+                                            <else/>
+                                            {$vo.praise}
+                                        </if>
+                                    </label>)
+                                    </a>
+                                </div>
+                                <div class="evaluate-info">
+                                    <a href="{:U('rating?store_id='.$vo['store_id'])}" target="_blank">查看评论({$vo.pl_number})</a></div>
+                            </div>
+                            <div class="reserve">
+
+                                <eq name="vo.is_open" value="0">
+                                    <img src="__HOME_IMAGES__/zhgIndex/reserve.png" alt="">
+                                </eq>
+                            </div>
+                        </div>
+                     </volist>
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <div class="page">{$page}</div>
+    <!--        <div style="display:none; text-align:center;" data-bind="visible: hasStore_All() == false">
+                <img src="__HOME_IMAGES__/zhgIndex/beijing.png" style="margin:70px 0;" alt="配送范围" usemap="#Map">
+                <map name="Map">
+                    <area shape="rect" coords="-3,94,97,126" href="http://www.laiyihuo.com/Home/Index?modify=1">
+                    <area shape="rect" coords="282,96,444,122" href="tel:4008017975">
+                </map>
+            </div>-->
+
+    </div>
+    <style type="text/css">
+        .zan{
+            width: 300px;
+            height: 150px;
+            background-color:#ffffff;
+            border-radius: 5px;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-top: -90px;
+            margin-left: -150px;
+            padding: 20px;
+            text-align: center;
+            line-height: 25px;
+            font-size: 16px;
+        }
+        .SEF-bnt {
+            background: #f4f4f4 none repeat scroll 0% 0%;
+            height: 50px;
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 300px;
+        }
+    </style>
+    <div class="zan" style="display: none;z-index: 999;position: fixed;">
+        亲......
+        <br/>
+        登录后才能点赞哦
+        <div class="SEF-bnt">
+            <ul>
+                <li class="errorYes">好的，去登录</li>
+                <li class="errorNo">取消</li>
+            </ul>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+        $(function(){
+            $('.praise').each(function(){
+                var $this = $(this);
+                var uid = "{$is_login}";
+                var store_id = $this.data('id');
+                $.post("{:U('store_id')}",{sid:store_id,uid:uid},function(data) {
+                    if (data != null) {
+                        $this.find('i').removeAttr("style");
+                        $this.find('span').text('取消赞').addClass('oppo');
+                    }else{
+                        $this.find('i').css("background-position",'-10px -498px');
+                        $this.find('span').text('赞').removeClass('oppo');
+                    }
+                })
+            })
+
+        })
+        //点赞
+        function dianzan(e){
+            var uid = "{$is_login}";
+            var store_id = $(e).data('id');
+            pra0 = $(e).parent('div').find('a').find('label');
+            if(uid == 0){
+                ztools.maskshow(); //遮罩 显示
+                $('.zan').show();  //弹出框
+                $('.errorYes').click(function(){
+                    window.location.href = "{:U('User/user/login')}"
+                });
+                $('.errorNo').click(function(){
+                    ztools.maskhide();
+                    $('.zan').hide();
+                });
+            }else {
+                   if($(e).parent('div').find('a').find('span').hasClass('oppo')){
+                            $(e).parent('div').find('a').find('i').css("background-position",'-10px -498px');
+                            $(e).parent('div').find('a').find('span').text('赞').removeClass('oppo');
+                            $.post("{:U('del')}", {uid: uid, store_id: store_id}, function (data) {
+                            if(data != null){
+                                if(data == "noData"){
+                                    pra0.text(0);
+                                }else{
+                                    pra0.text(data);
+                                }
+                            }
+                           });
+
+                   }else {
+                            $(e).parent('div').find('a').find('i').removeAttr("style");
+                            $(e).parent('div').find('a').find('span').text('取消赞').addClass('oppo');
+                            $.post("{:U('praise')}", {uid: uid, store_id: store_id}, function (data) {
+                                if (data != null) {
+                                    pra0.text(data);
+                                }else{
+                                    pra0.text(0);
+                                }
+                            })
+                   }
+            }
+        }
+
+
+        //排序
+        function sort_run(id){
+            if(id == 1){
+                $("#id_mrpx").css("color","red");
+                $("#id_hp").css("color","#000000");
+                $("#id_rjxf").css("color","#000000");
+                $("#id_qsj").css("color","#000000");
+            }else if(id == 2){
+                $("#id_mrpx").css("color","#000000");
+                $("#id_hp").css("color","red");
+                $("#id_rjxf").css("color","#000000");
+                $("#id_qsj").css("color","#000000");
+            }else if(id == 3){
+                $("#id_mrpx").css("color","#000000");
+                $("#id_hp").css("color","#000000");
+                $("#id_rjxf").css("color","red");
+                $("#id_qsj").css("color","#000000");
+            }else if(id == 4){
+                $("#id_mrpx").css("color","#000000");
+                $("#id_hp").css("color","#000000");
+                $("#id_rjxf").css("color","#000000");
+                $("#id_qsj").css("color","red");
+            }
+
+            var so_id = id;
+            $.post("{:U('ajax_sort')}",{sort_id:so_id},function(data){
+                $("#content").remove();
+                var html = [];
+                html.push("<div class='store-content' style='min-height:200px;' id='content'>");
+
+                for(var i=0;i< obj_size(data);i++){
+                    var rjxf = data[i]['qisong_price']/2;
+                    var moreng_img;
+                    var graying = "";
+                    var img = "__HOME_IMAGES__/zhg_common_pic.jpg";
+                    var dyimg = "";
+                    var zhan_number;
+                    if(data[i]['is_open'] == ""){
+                        graying = "graying";
+                    }
+                    if(data[i]['is_open'] == 0){
+                        moreng_img = "__HOME_IMAGES__/zhgIndex/reserve.png";
+                        dyimg = "<img src="+moreng_img+">";
+                    }
+                    //增加优惠标签
+                    var arr_bq = [];
+                    for(var j=0;j< obj_size(data[i]['cuxiao_data']);j++){
+                        if(data[i]['cuxiao_data'][j]['promotion_type'] == 0){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span>" +
+                                    "</div>"
+                            );
+                        }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 1){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                    "</div>"
+                            );
+                        }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 2){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                    "</div>"
+                            );
+                        }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 3){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                    "</div>"
+                            );
+                        }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 4){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                    "</div>"
+                            );
+                        }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 5){
+                            arr_bq.push(
+                                    "<div style='margin-bottom:10px;'>"+
+                                    "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                    "</div>"
+                            );
+                        }
+
+
+                    }
+
+                    if(obj_size(data[i]['cuxiao_data'])>0){
+                        arr_bq.push(
+                                "<hr>"
+                        );
+                    }
+
+                    if(data[i]['praise'] == null){
+                        zhan_number = 0;
+                    }else{
+                        zhan_number = data[i]['praise'];
+                    }
+
+                    var pjnr =  "{:U('rating','',false)}/store_id/"+data[i]['store_id'];
+                    var bianqian = arr_bq.join("");
+                    html.push(
+                            "<div name="+data[i]['store_name']+" class='contentbox'  style='height:238px;' data-align="+data[i]['store_id']+">"+
+                            "<a style='text-decoration: none;' target='_blank' href="+"{:U('Stores/index','',false)}"+"/store_id/"+data[i]['store_id']+"/store_name/"+data[i]['store_name']+">"+
+                            "<div class='conwrap' onmouseover='user_mouseover(this,"+i+");' onmouseout='user_mouseout(this,"+i+");'>"+
+                            "<div class='pic "+graying+"' data-id="+data[i]['store_name']+">"+
+                            "<img src="+location.origin+data[i]['store_logo_add']['path']+" width='195' height='155' alt="+data[i]['store_name']+" onerror="+"javascript:this.src='"+img+"'>"+
+                            "</div>"+
+                            "</div>"+
+                            "<div class='store-hover' style='display: none;'>"+
+                            "<div style='font-size: 15px'>"+data[i]['store_name']+"</div>"+
+                            "<hr>"+
+                            bianqian+
+                            "<div>约"+data[i]['sh_time']+"分钟送达</div>"+
+                            "<div><b>人均消费：</b>￥"+rjxf+"</div>"+
+                            "<div><b>起送价格：</b>￥"+data[i]['qisong_price']+"</div>"+
+                            "<div><b>配送时间：</b>"+data[i]['yingye_time']+"</div>"+
+                            "<div><b>营业时间：</b>"+data[i]['store_open_time']+"</div>"+
+                            "<div><b>地址：</b>"+data[i]['address']+"</div>"+
+                            "<div class='sarr'></div>"+
+                            "</div>"+
+                            "<div class='store-name'>"+
+                            "<p title="+data[i]['store_name']+" class='a'>"+data[i]['store_name']+"</p>"+
+                            "</div>"+
+                            "</a>"+
+                            "<div class='evaluate'>"+
+                            "<div class='praise' data-id="+data[i]['store_id']+" style='margin-top:-7px;' onclick='dianzan(this)'>"+
+                            "<a href='javascript:;' style='text-decoration: none'>"+
+                            "<i style='background-position:-10px -498px'></i>"+
+                            "<text2>&nbsp;</text2>"+
+                            "<span>赞</span>&nbsp;("+
+                            "<label style='color: #FF0000'>"+zhan_number+"</label>)"+
+                            "</a>"+
+                            "</div>"+
+                            "<div class='evaluate-info'>"+
+                            "<a href="+pjnr+" target='_blank'>查看评论("+data[i]['pl_number']+")</a>" +
+                            "</div>"+
+                            "<div class='reserve'>" +
+                            dyimg+
+                            "</div>"+
+                            "</div>"+
+                            "</div>"
+                    );
+
+                }
+                html.push("</div>");
+                $("#id_body").append(html.join(""));
+                show_list();
+
+            })
+        };
+
+        //取对象长度
+        function obj_size(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
+
+        function show_list(){
+            $('.praise').each(function(){
+                var $this = $(this);
+                var uid = "{$is_login}";
+                var store_id = $this.data('id');
+                $.post("{:U('store_id')}",{sid:store_id,uid:uid},function(data) {
+                    if (data != null) {
+                        $this.find('i').removeAttr("style");
+                        $this.find('span').text('取消赞').addClass('oppo');
+                    }else{
+                        $this.find('i').css("background-position",'-10px -498px');
+                        $this.find('span').text('赞').removeClass('oppo');
+                    }
+                })
+            })
+        }
+
+
+
+        //搜索
+        $("#btnSearchStores").click(function(){
+            var number = $("#txtSearch").val();
+            $.post("{:U('ajax_search')}",{search_num:number},function(data){
+//                alert(JSON.stringify(data));
+                if(data.length <=0){
+                    $("#content").remove();
+                    var html = [];
+                    html.push("<div class='store-content' style='min-height:30px;' id='content'>");
+                    html.push("<div style='position: absolute;left: 50%;margin-left:-115px; '>");
+                    html.push("<div><img width='50px' height='30px' src="+"__HOME_IMAGES__/zhgIndex/login_logo.png"+"><span style='color: #F14041;text-align: center;font-size: 20px'>&nbsp;&nbsp;没有找到任何店铺!</span></div>");
+                    html.push("</div>");
+                    html.push("</div>");
+                    $("#id_body").append(html.join(""));
+                }else {
+                    $("#content").remove();
+                    var html = [];
+                    html.push("<div class='store-content' style='min-height:200px;' id='content'>");
+
+                    for(var i=0;i< obj_size(data);i++){
+                        var rjxf = data[i]['qisong_price']/2;
+                        var moreng_img;
+                        var graying = "";
+                        var img = "__HOME_IMAGES__/zhg_common_pic.jpg";
+                        var dyimg = "";
+                        var zhan_number;
+                        if(data[i]['is_open'] == ""){
+                            graying = "graying";
+                        }
+                        if(data[i]['is_open'] == 0){
+                            moreng_img ="__HOME_IMAGES__/zhgIndex/reserve.png";
+                            dyimg = "<img src="+moreng_img+">";
+                        }
+
+                        //增加促销标签
+                        var arr_bq = [];
+                        for(var j=0;j< obj_size(data[i]['cuxiao_data']);j++){
+                            if(data[i]['cuxiao_data'][j]['promotion_type'] == 0){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>" +
+                                        "</div>"
+                                );
+                            }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 1){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                        "</div>"
+                                );
+                            }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 2){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                        "</div>"
+                                );
+                            }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 3){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                        "</div>"
+                                );
+                            }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 4){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                        "</div>"
+                                );
+                            }else if(data[i]['cuxiao_data'][j]['promotion_type'] == 5){
+                                arr_bq.push(
+                                        "<div style='margin-bottom:10px;'>"+
+                                        "<span class='badge' style='background: #ff464c;'>"+data[i]['cuxiao_data'][j]['promotional_labels']+"</span><span style='padding-left:15px;white-space:normal;white-space:normal;word-break:break-all; word-wrap:break-word;'>"+data[i]['cuxiao_data'][j]['promotion_name']+"</span>"+
+                                        "</div>"
+                                );
+                            }
+                        }
+
+                        if(obj_size(data[i]['cuxiao_data'])>0){
+                            arr_bq.push(
+                                    "<hr>"
+                            );
+                        }
+
+                        if(data[i]['praise'] == 0){
+                            zhan_number = 0;
+                        }else{
+                            zhan_number = data[i]['praise'];
+                        }
+                        var pjnr =  "{:U('rating','',false)}/store_id/"+data[i]['store_id'];
+                        var bianqian = arr_bq.join("");
+
+                        html.push(
+                                "<div name="+data[i]['store_name']+" class='contentbox'  style='height:238px;' data-align="+data[i]['store_id']+">"+
+                                "<a style='text-decoration: none;' target='_blank' href="+"{:U('Stores/index','',false)}"+"/store_id/"+data[i]['store_id']+"/store_name/"+data[i]['store_name']+">"+
+                                "<div class='conwrap' onmouseover='user_mouseover(this,"+i+");' onmouseout='user_mouseout(this,"+i+");'>"+
+                                "<div class='pic "+graying+"' data-id="+data[i]['store_name']+">"+
+                                "<img src="+location.origin+data[i]['store_logo_add']['path']+" width='195' height='155' alt="+data[i]['store_name']+" onerror="+"javascript:this.src='"+img+"'>"+
+                                "</div>"+
+                                "</div>"+
+                                "<div class='store-hover' style='display: none;'>"+
+                                "<div style='font-size: 15px'>"+data[i]['store_name']+"</div>"+
+                                "<hr>"+
+                                bianqian+
+                                "<div>约"+data[i]['sh_time']+"分钟送达</div>"+
+                                "<div><b>人均消费：</b>￥"+rjxf+"</div>"+
+                                "<div><b>起送价格：</b>￥"+data[i]['qisong_price']+"</div>"+
+                                "<div><b>配送时间：</b>"+data[i]['yingye_time']+"</div>"+
+                                "<div><b>地址：</b>"+data[i]['address']+"</div>"+
+                                "<div class='sarr'></div>"+
+                                "</div>"+
+                                "<div class='store-name'>"+
+                                "<p title="+data[i]['store_name']+" class='a'>"+data[i]['store_name']+"</p>"+
+                                "</div>"+
+                                "</a>"+
+                                "<div class='evaluate'>"+
+                                "<div class='praise' data-id="+data[i]['store_id']+" style='margin-top:-7px;' onclick='dianzan(this)'>"+
+                                "<a href='javascript:;' style='text-decoration: none'>"+
+                                "<i style='background-position:-10px -498px'></i>"+
+                                "<label>&nbsp;</label>"+
+                                "<span>赞</span>&nbsp;("+
+                                "<b>"+zhan_number+"</b>)"+
+                                "</a>"+
+                                "</div>"+
+                                "<div class='evaluate-info'>"+
+                                "<a href="+pjnr+" target='_blank'>查看评论("+data[i]['pl_number']+")</a>" +
+                                "</div>"+
+                                "<div class='reserve'>" +
+                                dyimg+
+                                "</div>"+
+                                "</div>"+
+                                "</div>"
+                        );
+
+                    }
+                    html.push("</div>");
+                    $("#id_body").append(html.join(""));
+
+                }
+
+
+
+            })
+
+
+        })
+
+        function user_mousemove(){
+            var store_id = $(this).data('align');
+            $.post("{:U('index')}",{ids:store_id},function(data){
+            })
+        }
+
+        function user_mouseover($this,key){
+            $($this).siblings(".store-hover").show();
+            var diVwidth = $($this).siblings(".store-hover").outerWidth(true);
+            key++;
+            if(key%5 == 0){
+                var position = $($this).siblings(".store-hover").offset().left + diVwidth;
+                $($this).siblings(".store-hover").css({
+                    "top": "0px",
+                    "left": "-320px"
+
+                }).find(".sarr").addClass("larr");
+
+            }else{
+                var position = $($this).siblings(".store-hover").offset().left + diVwidth;
+                var pagewidth = $(window).width();
+                if (position > pagewidth) {
+                    $($this).siblings(".store-hover").css({
+                        "top": "0px",
+                        "left": "-170px"
+                    }).find(".sarr").addClass("larr");
+                }
+            }
+
+        }
+        function user_mouseout($this,key){
+            $($this).siblings(".store-hover").hide();
+        }
+
+        //日期处理
+        $("#tomorrow").html(dateFormat(nowAddDay(1))+"(明天)");
+        for(var i=1; i<5; i++) {
+            $('.time').find('li >div> a').each(function(i ,e){
+                $(this).text(dateFormat(nowAddDay(i)));
+            });
+        }
+
+        function nowAddDay(day) {
+            var a = new Date();
+            a = a.valueOf();
+            a = a + day * 24 * 60 * 60 * 1000;
+            return a;
+        }
+
+        function dateFormat(time) {
+            var myDate = new Date(time);
+            var year = myDate.getFullYear();
+            var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+            var day = ("0" + myDate.getDate()).slice(-2);
+            return year + "-" + month + "-" + day;
+        }
+
+    </script>
+</block>
+
+
+

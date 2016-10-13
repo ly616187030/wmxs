@@ -1,0 +1,1001 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <link href="/./Application/Receiveorder/View/Public/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/./Application/Receiveorder/View/Public/css/ticket.css" rel="stylesheet" type="text/css">
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+    <style>
+        .table-responsive tr td{text-align: center}
+    </style>
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+
+            <?php if(!empty($_storestr)): ?><div class="main-title cf" style="padding-left: 15px;height: 50px;">
+
+                    <button id="stop" class="btn btn-default glyphicon glyphicon-pause" type="button">停止提示铃声</button>
+                    <audio src="/Public/audio.mp3" preload="auto" id="audio"></audio>
+
+                </div>
+                <!-- 数据列表 -->
+
+                <div class="builder-container builder-list-container">
+
+                    <div id="display" <?php if(empty($list)): ?>style="display:none;"<?php endif; ?>>
+
+
+                    <div class="col-sm-3" style="padding-right: 0;">
+                        <div class="orderLeft">
+                            <ul>
+                                <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li data-id="<?php echo ($vo["order_id"]); ?>" <?php if(($i) == "1"): ?>class="active"<?php endif; ?>>
+                                    <div class="storeName">外卖-<?php echo ($vo["order_count"]); ?></div>
+                                    <div class="storeName"><span class="fa fa-home"></span><?php echo ($vo["store_name"]); ?></div>
+                                    <div class="storeName">
+                                        <span class="fa fa-user"></span><?php echo ($vo["username"]); ?>
+                                        <?php switch($vo["gender"]): case "1": ?>先生<?php break;?>
+                                            <?php case "2": ?>女士<?php break; endswitch;?>
+                                        <span class="fa fa-mobile" style="margin-left: 20px;font-size: 16px;"></span><?php echo ($vo["phone"]); ?></div>
+                                    <div class="storeName">订单总额：<span class="total">￥<?php echo ($vo['total']+$vo['ps_cost']+$vo['canju_total']-$vo['yh_price']); ?></span></div>
+                                    <div class="storeButton">
+                                        <button class="btn btn-primary jiedan" data-id="<?php echo ($vo["order_id"]); ?>" data-type="2" data-qiantai="<?php echo ($vo["is_qiantai_print"]); ?>" data-kitchen="<?php echo ($vo["is_kitchen_print"]); ?>" data-print_status="1">接单<?php if(($is_print) == "1"): ?>并打印<?php endif; ?></button>
+                                        <button class="btn btn-default judan" data-id="<?php echo ($vo["order_id"]); ?>" data-pay_type="<?php echo ($vo["pay_type"]); ?>">拒绝</button>
+                                    </div>
+                                    </li><?php endforeach; endif; else: echo "" ;endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8" style="padding: 0;" id="orderMore">
+                        <div class="newOrderMore">
+                            <div class="newOrderMoreTitle">
+                                <span id="order_sn">订单号：<?php echo ($list_first["order_sn"]); ?></span><span id="xd_time">下单时间：<?php echo (date("Y-m-d H:i",$list_first["xd_time"])); ?></span><span id="zongjia">订单金额：￥<?php echo ($list_first["zongjia"]); ?></span><span id="status">订单状态：<?php echo ($list_first["status"]); ?></span>
+                            </div>
+                            <div class="newOrderMoreButton" id="aa">
+                                <button class="btn btn-primary jiedan" data-id="<?php echo ($list_first["order_id"]); ?>" data-type="2" data-qiantai="<?php echo ($list_first["is_qiantai_print"]); ?>" data-kitchen="<?php echo ($vo["is_kitchen_print"]); ?>" data-print_status="2">接单</button>
+                                <!--<button class="btn btn-primary" id="" onclick="jiedan()" data-id="<?php echo ($list_first["order_id"]); ?>">接单</button>
+                                <button class="btn btn-primary" id="print" data-id="<?php echo ($list_first["order_id"]); ?>" onclick="orderPrint()">打印</button>-->
+                                <button class="btn btn-default judan" data-id="<?php echo ($list_first["order_id"]); ?>" data-pay_type="<?php echo ($list_first["pay_type"]); ?>">拒绝</button>
+                            </div>
+                            <div class="newOrderMoreMess">
+                                <div class="newOrderMoreMessLeft">
+                                    <div class="newOrderMoreMessLeftUp">
+                                        <div><span class="fa fa-clock-o"></span>期望时间：<span id="send_time"><?php if(empty($list_first["send_time"])): ?>立即送达<?php else: echo (date("Y-m-d H:i",$list_first["send_time"])); endif; ?></span></div>
+                                        <div><span class="fa fa-tag"></span>订单备注：<span id="order_message"><?php echo ($list_first["order_message"]); ?></span></div>
+                                    </div>
+                                    <div class="newOrderMoreMessLeftDown">
+                                        <ul>
+                                            <li><span class="fa fa-user"></span><span id="username"><?php echo ($list_first["username"]); ?></span><span id="gender"><?php echo ($list_first["gender"]); ?></span></li>
+                                            <li><span class="fa fa-mobile" style="font-size: 18px;"></span><span id="phone"><?php echo ($list_first["phone"]); ?></span></li>
+                                            <li><span class="fa fa-home"></span><span id="store_name"><?php echo ($list_first["store_name"]); ?></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="newOrderMoreMessRight">
+                                    <table class="table table-bordered table-responsive  table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>菜品</th>
+                                            <th>单价</th>
+                                            <th>数量</th>
+                                            <th>金额(元)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="caipin">
+                                        <?php if(is_array($list_first["child"])): $i = 0; $__LIST__ = $list_first["child"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$ro): $mod = ($i % 2 );++$i;?><tr>
+                                                <td><?php echo ($ro["cm_name"]); ?></td>
+                                                <td><?php echo ($ro["price"]); ?></td>
+                                                <td><?php echo ($ro["quantity"]); ?></td>
+                                                <td><?php echo ($ro["total_money"]); ?></td>
+                                            </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                                        <tr>
+                                            <td colspan="3" style="text-align: left">小计：</td>
+                                            <td><?php echo ($list_first["total"]); ?></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>其他费用</th>
+                                            <th>金额(元)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="75%">配送费</td>
+                                            <td align="center" id="ps_cost"><?php echo ($list_first["ps_cost"]); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="75%">餐盒费</td>
+                                            <td align="center" id="canju_total"><?php echo ($list_first["canju_total"]); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="75%">优惠</td>
+                                            <td align="center" id="yh_price"><?php echo ($list_first["yh_price"]); ?></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="newOrderMoreMessTotal">
+                                        合计：<span id="zongjia2"><?php echo ($list_first["zongjia"]); ?></span>
+                                    </div>
+                                </div>
+                                <div style="clear: both"></div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div id="empty_order" <?php if(!empty($list)): ?>style="display:none;"<?php endif; ?>><h1 align="center"><span class="label label-default"> 暂无订单</span></h1></div>
+
+        <?php else: ?>
+        <div ><h1 align="center"><span class="label label-default"> 暂无店铺</span></h1></div><?php endif; ?>
+
+
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="<?php echo U('judan');?>" method="post" class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">拒单理由</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" value="" name="order_id" />
+                    <input type="hidden" value="" name="pay_type" />
+                    <textarea class="form-control" rows="5" name="reject_reason"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--顾客小票start-->
+    <div class="ticketMain" style="display: none;">
+        <div id="order_count" style="font-size: 30px;font-weight: bold">外卖-#<?php echo ($list_first["order_count"]); ?></div>
+        <div class="Blank10">*****************************</div>
+        <div class="Title fw"><div class="pdt5" id="customer_ticket_pay_type">[<?php echo ($list_first["pay_type_text"]); ?>]</div></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_send_time"> 期望送达时间：<?php if(empty($list_first["send_time"])): ?>立即送达<?php else: echo (date("Y-m-d H:i",$list_first["send_time"])); endif; ?></div>
+        <div class="pdt5" id="customer_ticket_order_message">订单备注：<?php echo ($list_first["order_message"]); ?></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_sn"> 订单编号：<?php echo ($list_first["order_sn"]); ?></div>
+        <div class="pdt5" id="customer_ticket_xd_time">下单时间：<?php echo (date("Y-m-d H:i:s",$list_first["xd_time"])); ?></div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+            <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody id="good_detail">
+            <?php if(is_array($list_first["child"])): $i = 0; $__LIST__ = $list_first["child"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr>
+                    <td width="60%" align="left"><?php echo ($vo["cm_name"]); ?></td>
+                    <td width="20%" align="center"><?php echo ($vo["quantity"]); ?></td>
+                    <td width="20%" align="right"><?php echo (round($vo['price']*$vo['quantity'],2)); ?></td>
+                </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+            <tr>
+                <td width="80%" colspan="2" align="left">餐盒费：</td>
+                <td width="20%" align="right"><?php echo ($list_first["canju_total"]); ?></td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">配送费：</td>
+                <td width="20%" align="right"><?php echo ($list_first["ps_cost"]); ?></td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">优惠：</td>
+                <td width="20%" align="right"><?php echo ($list_first["yh_price"]); ?></td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">总计：</td>
+                <td width="20%" align="right"><?php echo ($list_first["zongjia"]); ?></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_username"> 姓名：<?php echo ($list_first["username"]); ?> <?php echo ($list_first["gender"]); ?></div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_detail_address"> 地址：<?php echo ($list_first["detail_address"]); ?></div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_phone"> 电话：<?php echo ($list_first["phone"]); ?></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_store_name"> <?php echo ($list_first["store_name"]); ?></div>
+        <div class="pdt5" id="customer_ticket_tel"> <?php echo ($list_first["tel"]); ?></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_now_time" style="font-size: 10px;"><em><?php echo C('TICKETNAME');?> <?php echo (date("m月d日 H:i:s",$time)); ?></em></div>
+        <div class="Blank10">*****************************</div>
+    </div>
+    <!--顾客小票end-->
+    <!--档口小票start-->
+    <div id="dangkou" style="display: none;">
+        <?php if(is_array($list_dangkou)): $i = 0; $__LIST__ = $list_dangkou;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><div id="dangkou<?php echo ($vo["id"]); ?>" data-dangkou="<?php echo ($vo["id"]); ?>" data-print="<?php echo ($vo["printer_sn"]); ?>">
+                <div style="font-size: 30px; font-weight: bold;">外卖-<?php echo ($list_first["order_count"]); ?></div>
+                <div style="line-height: 30px;" id="dangkou_order_sn">订单编号：<?php echo ($list_first["order_sn"]); ?></div>
+                <div style="line-height: 20px;"><?php echo ($vo["name"]); ?></div>
+                    <table width="100%">
+                        <thead>
+                        <th align="left" style="border-bottom: 1px solid #000;border-top: 1px solid #000;">菜品名称</th>
+                        <th align="center" style="border-bottom: 1px solid #000;border-top: 1px solid #000;">数量</th>
+                        </thead>
+                        <tbody>
+                        <?php if(!empty($vo["dangkou"])): if(is_array($vo["dangkou"])): $i = 0; $__LIST__ = $vo["dangkou"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$ro): $mod = ($i % 2 );++$i;?><tr>
+                                <td width="80%" align="left"><?php echo ($ro["cm_name"]); ?></td>
+                                <td width="20%" align="center"><?php echo ($ro["quantity"]); ?></td>
+                            </tr><?php endforeach; endif; else: echo "" ;endif; endif; ?>
+                        </tbody>
+                    </table>
+                <div style="border-top: 1px solid #000;line-height: 25px;"><?php echo (date("m月d日 H:i:s",$time)); ?></div>
+            </div><?php endforeach; endif; else: echo "" ;endif; ?>
+    </div>
+
+    <!--档口小票end-->
+    <style>
+        .page .current {height: auto;}
+    </style>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+
+    <?php if(($is_print) == "1"): ?><script type="text/javascript" src="/Public/LodopFuncs.js"></script><?php endif; ?>
+    <script src='/Public/socket.io.js'></script>
+    <script>
+        var is_print = "<?php echo ($is_print); ?>";
+        if(is_print == 1){
+            var LODOP=getLodop();
+        }
+
+
+        //打印功能
+        $(document).ready(function () {
+            var uid='<?php echo session("user_auth.push_msg_id");?>';
+            // 连接服务端
+            //var socket = io('http://'+document.domain+':2120');
+            var socket = io('http://zhg.zhuyousoft.com:2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                //$('#content').html('收到消息：'+msg);
+                msg=='success' && get_list();
+                playaudio();
+                //msg=='success' && location.reload();
+            });
+            // 推送信息响铃
+
+            //get_list();
+
+            var music=document.getElementById('audio');
+            var stop=document.getElementById('stop');
+            var timer;
+            function playaudio(){
+                timer=setInterval(function(){
+                    music.play();
+                },2000);
+            }
+
+            stop.onclick=function(){
+                music.pause();
+                clearInterval(timer);
+            }
+        });
+        function printing(html,printsn,num){
+            var num=num || 1;
+            var printsn= printsn || 0;
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_HTM(10,5,"100%","100%",html);
+            LODOP.SET_PRINTER_INDEX(printsn);
+            LODOP.SET_PRINT_COPIES(num);
+            LODOP.PRINT();
+        }
+        function print_front(){
+            var htmls=$('.ticketMain').html();
+            $.get('<?php echo U("getLocalNum");?>').success(function(data){
+                //console.log(data.nums);
+                printing(htmls,data.printer_sn,data.nums);
+            });
+
+        }
+        function print_backend(){
+            var div=$('#dangkou > div');
+            div.each(function(){
+                var $this=$(this);
+                printing($this.html(),$this.data('print'));
+            });
+        }
+        //接单功能
+        function jiedan(id,type,qiantan,kitchen,print_status){
+            if(print_status == 1){
+                if(qiantan == 1){
+                    print_front();//用户小票打印
+                }
+                if(kitchen == 1){
+                    print_backend();//后厨小票打印
+                }
+            }
+
+           $.post("<?php echo U('Order/pushOrder');?>",{id:id,type:type}).success(function(newdata){
+
+                if(newdata.value == 0){
+                    $.alertMessager(newdata.info);
+                    $('.jiedan').removeAttr('disabled');
+                }else{
+                    $.alertMessager(newdata.info,'success');
+                }
+                setTimeout(function(){
+                    window.location.reload();
+                },1500);
+
+            });
+
+        }
+
+        function judan(id,pay_type){
+            $('input[name="order_id"]').val(id);
+            $('input[name="pay_type"]').val(pay_type);
+            $('#myModal').modal('show');
+            $('#myModal').on('hidden.bs.modal', function (e) {
+                $('input[name="order_id"]').val("");
+                $('input[name="1"]').val("");
+            })
+        }
+
+        function test(data){
+            $('#order_count').html("外卖-#"+data.order_count);
+            $('#order_sn').html("订单号："+data.order_sn);
+            $('#xd_time').html("下单时间："+data.xd_time);
+            $('#zongjia').html("订单金额：￥"+data.zongjia);
+            $('#status').html("订单状态："+data.status);
+            $('#send_time').html(data.send_time);
+            $('#order_message').html(data.order_message);
+            $('#username').html(data.username);
+            $('#gender').html(data.gender);
+            $('#phone').html(data.phone);
+            $('#store_name').html(data.store_name);
+            var aa = '';
+            var bb = '';
+            var cc = '';
+            var dd = '';
+
+            for(var i=0;i<data.child.length;i++){
+                aa += "<tr><td>"+data.child[i].cm_name+"</td><td>"+data.child[i].price+"</td><td>"+data.child[i].quantity+"</td><td>"+data.child[i].total_money+"</td></tr>";
+            }
+            aa += "<tr><td colspan=\"3\" style=\"text-align: left\">小计：</td> <td>"+data.total+"</td> </tr>";
+            $('#caipin').html(aa);
+            $('#ps_cost').html(data.ps_cost);
+            $('#yh_price').html(data.yh_price);
+            $('#canju_total').html(data.canju_total);
+            $('#zongjia2').html(data.zongjia);
+            $('#aa').html("" +
+            "<button class=\"btn btn-primary jiedan\" data-id=\""+data.order_id+"\" data-type=\"2\" data-qiantai=\""+data.is_qiantai_print+"\" data-kitchen=\""+data.is_kitchen_print+"\">接单</button> " +
+            "<button class=\"btn btn-default judan\" data-id=\""+data.order_id+"\"  data-pay_type=\""+data.pay_type+"\">拒绝</button> ");
+
+            //顾客小票信息写入
+            $('#customer_ticket_pay_type').html("["+data.pay_type_text+"]");
+            $('#customer_ticket_send_time').html("期望送达时间："+data.send_time);
+            $('#customer_ticket_order_message').html("订单备注："+data.order_message);
+            $('#customer_ticket_order_sn').html("订单编号："+data.order_sn);
+            $('#customer_ticket_xd_time').html("下单时间："+data.xd_time);
+
+            for(var i=0;i<data.child.length;i++){
+                bb += "<tr>" +
+                " <td width=\"60%\" align=\"left\">"+data.child[i].cm_name+"</td> <td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                " <td width=\"20%\" align=\"right\">"+(data.child[i].price*data.child[i].quantity).toFixed(2)+"</td> </tr>";
+            }
+            bb += "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">餐盒费：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.canju_total+"</td>"+
+            "</tr>"+
+            " <tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">配送费：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.ps_cost+"</td>"+
+            "</tr>"+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">优惠：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.yh_price+"</td>"+
+            "</tr>"+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">总计：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.zongjia+"</td>"+
+            "</tr>";
+            $('#good_detail').html(bb);
+
+            $('#customer_ticket_username').html(" 姓名："+data.username+" "+data.gender);
+            $('#customer_ticket_detail_address').html(" 地址："+data.detail_address);
+            $('#customer_ticket_phone').html(" 电话："+data.phone);
+            $('#customer_ticket_store_name').html(data.store_name);
+            $('#customer_ticket_tel').html(data.tel);
+            $('#customer_ticket_now_time').html(data.ticket+" "+data.now_time);
+            if(data.dangkou != null){
+                for(var i=0;i<data.dangkou.length;i++){
+
+                    cc += "" +
+                    "<div id=\"dangkou"+data['dangkou'][i]['id']+"\" data-dangkou=\""+data['dangkou'][i]['id']+"\" data-print=\""+data['dangkou'][i]['printer_sn']+"\">" +
+                    "<div style=\"font-size: 30px; font-weight: bold;\">外卖-"+data.order_count+"</div>"+
+                    "<div style=\"line-height: 30px;\">订单编号："+data.order_sn+"</div>"+
+                    "<div style=\"line-height: 20px;\">"+data['dangkou'][i]['name']+"</div>"+
+                    "<table width='100%'>"+
+                    "<thead>"+
+                    "<th align=\"left\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">菜品名称</th>"+
+                    "<th align=\"center\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">数量</th>"+
+                    "</thead>"+
+                    "<tbody>"+
+                    "</tbody>"+
+                    "</table>" +
+                    "<div style=\"border-top: 1px solid #000;line-height: 25px;\" >"+data.now_time+"</div></div>";
+
+
+                }
+                $('#dangkou').html(cc);
+                for(var i=0;i<data.child.length;i++){
+                    dd = "<tr>"+
+                    "<td width=\"80%\" align=\"left\">"+data.child[i].cm_name+"</td>"+
+                    "<td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                    "</tr>";
+                    $('#dangkou'+data.child[i]['dangkou_id']).find('tbody').append(dd);
+                }
+            }
+
+        }
+        $('.orderLeft').find('li').click(function(){
+            var id = $(this).data('id');
+            $('.orderLeft').find('li').removeClass('active');
+            $(this).addClass('active');
+            $.post("<?php echo U('orderMore');?>",{id:id}).success(function(data2){
+                if(data2 != null){
+                    //右侧订单详情写入
+                    test(data2);
+
+                }
+            });
+        });
+        /*$('#stop').click(function(){
+            get_list();
+
+        });*/
+
+
+        function get_list(){
+
+            $.post("<?php echo U('neworder');?>",{type:1}).success(function(data){
+                var htmls = '';
+                for(var i=0;i<data[0].length;i++){
+                    if(data[0][i].gender == 1){
+                        data[0][i].gender = "先生";
+                    }else{
+                        data[0][i].gender = "女士";
+                    }
+                    if(is_print == 1){
+                        htmls += "<li data-id=\""+data[0][i].order_id+"\">"+
+                        "<div class=\"storeName\">外卖-"+data[0][i].order_count+"</div>"+
+                        "<div class=\"storeName\"><span class=\"fa fa-home\"></span>"+data[0][i].store_name+"</div>"+
+                        "<div class=\"storeName\">"+
+                        "<span class=\"fa fa-user\"></span>"+data[0][i].username+" "+data[0][i].gender+" "+
+                        "<span class=\"fa fa-mobile\" style=\"margin-left: 20px;font-size: 16px;\"></span>"+data[0][i].phone+"</div>"+
+                        "<div class=\"storeName\">订单总额：<span class=\"total\">￥"+data[0][i].zongjia+"</span></div>"+
+                        "<div class=\"storeButton\">"+
+                        "<button class=\"btn btn-primary jiedan\" data-id=\""+data[0][i].order_id+"\" data-type=\"2\" data-qiantai=\""+data[0][i].is_qiantai_print+"\" data-kitchen=\""+data[0][i].is_kitchen_print+"\">接单并打印</button> "+
+                        "<button class=\"btn btn-default judan\" data-id=\""+data[0][i].order_id+"\" data-pay_type=\""+data[0][i].pay_type+"\">拒绝</button>"+
+                        "</div></li>";
+                    }else{
+                        htmls += "<li data-id=\""+data[0][i].order_id+"\">"+
+                        "<div class=\"storeName\">外卖-"+data[0][i].order_count+"</div>"+
+                        "<div class=\"storeName\"><span class=\"fa fa-home\"></span>"+data[0][i].store_name+"</div>"+
+                        "<div class=\"storeName\">"+
+                        "<span class=\"fa fa-user\"></span>"+data[0][i].username+" "+data[0][i].gender+" "+
+                        "<span class=\"fa fa-mobile\" style=\"margin-left: 20px;font-size: 16px;\"></span>"+data[0][i].phone+"</div>"+
+                        "<div class=\"storeName\">订单总额：<span class=\"total\">￥"+data[0][i].zongjia+"</span></div>"+
+                        "<div class=\"storeButton\">"+
+                        "<button class=\"btn btn-primary jiedan\" data-id=\""+data[0][i].order_id+"\" data-type=\"2\" data-qiantai=\""+data[0][i].is_qiantai_print+"\" data-kitchen=\""+data[0][i].is_kitchen_print+"\">接单</button> "+
+                        "<button class=\"btn btn-default judan\" data-id=\""+data[0][i].order_id+"\" data-pay_type=\""+data[0][i].pay_type+"\">拒绝</button>"+
+                        "</div></li>";
+                    }
+
+
+                }
+
+                $('.orderLeft ul').html(htmls);
+                $('.orderLeft ul li').eq(0).addClass('active');
+                $('.orderLeft').find('li').click(function(){
+                    var id = $(this).data('id');
+                    $('.orderLeft').find('li').removeClass('active');
+                    $(this).addClass('active');
+                    $.post("<?php echo U('orderMore');?>",{id:id}).success(function(data2){
+                        if(data2 != null){
+                            //右侧订单详情写入
+                            test(data2);
+
+                        }
+                    });
+                });
+
+                test(data[1]);
+                $('#display').show();
+                $('#empty_order').hide();
+            });
+        }
+        $(document).on('click','.jiedan',function(){
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            var qiantan = $(this).data('qiantai');
+            var kitchen = $(this).data('kitchen');
+            var print_status = $(this).data('print_status');
+
+            $(this).attr('disabled','disabled');
+            $.post("<?php echo U('orderMore');?>",{id:id}).success(function(data2){
+                if(data2 != null){
+                    //右侧订单详情写入
+                    test(data2);
+                    jiedan(id,type,qiantan,kitchen,print_status);
+                }
+            });
+
+        });
+        $(document).on('click','.judan',function(){
+            var id = $(this).data('id');
+            var pay_type = $(this).data('pay_type');
+            judan(id,pay_type);
+        });
+    </script>
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree2):?>
+    <div class="modal fade" id="agreeModal2" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel3">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                            <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td width="50%" colspan="2" class="a1">甲方：<?php echo ($info9["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                            <tr><td colspan="2">地址：<?php echo ($info9["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                            <tr><td>邮编：<?php echo ($info9["post_code"]); ?></td><td>传真：<?php echo ($info9["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                            <tr><td>联系人：<?php echo ($info9["username"]); ?></td><td>电话：<?php echo ($info9["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                            <tr><td>EMAIL：<?php echo ($info9["email"]); ?></td><td>网站：<?php echo ($info9["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                            <tr>
+                                <td colspan="4">
+                                    <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                    <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                    <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                </td>
+                            </tr>
+                            <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                            <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td>功能模块</td><td>功能说明</td></tr>
+                            <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                            <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                            <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                            <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($info9["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                    <?php if(($hetongzt) == "1"): ?><button type="button" class="btn btn-info" id="noread5">关闭</button>
+                        <?php else: ?>
+                        <button type="button"  class="btn btn-primary" data-founder_id="<?php echo ($founder_id); ?>" id="read1">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread3">暂不签订</button><?php endif; ?>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread4">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">未结有效订单</th>
+                          <th style="text-align: center;">未结全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥0.10/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-default" id="closeds">关闭</button>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan1):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuan1Modal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                        <tr class="active">
+                            <th style="text-align: center;">企业名称</th>
+                            <th style="text-align: center;">未结有效订单</th>
+                            <th style="text-align: center;">未结全部订单</th>
+                            <th style="text-align: center;">收费标准</th>
+                            <th style="text-align: center;">收费金额</th>
+                            <th style="text-align: center;">结算状态</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;"><?php echo ($name); ?></td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                            <td style="text-align: center;">￥0.10/单</td>
+                            <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                            <td style="text-align: center;">
+                                <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                                    <?php else: ?>
+                                    <span style="color: red">未结算</span><?php endif; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu1">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var jiesuan1 = '<?php echo ($jiesuan1); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan1) && $('#jiesuan1Modal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' &&  location.reload();
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#read1').on('click',function(e){
+        var founder_id = $(e.target).data('founder_id');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+founder_id+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+    $('#noread3,#noread4,#noread5').click(function(){
+        $('#agreeModal2').modal('hide');
+    });
+     $('#closed,#closeds').click(function(){
+        $('#jiesuanModal').modal('hide');
+        //riqi !='' && location.reload();
+    });
+</script>
+</body>
+</html>
+<style>
+    .wyq{
+        width:180px;
+        height:400px;
+        position: absolute;top:45%;right: 0%;
+    }
+    .wyu{
+        text-decoration: none;
+        color: #000;
+        padding:10px 20px 10px 20px;
+        border:1px solid deepskyblue;
+        border-radius: 5px;
+        display: none;
+    }
+    .wyu:hover{
+        background-color: #00a73c;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        border:1px solid white;
+    }
+</style>
+<?php if($downloadapp):?>
+<div style="position: absolute;top:94%;right: 0%;">
+    <a class="wyu">App下载</a>
+</div>
+<div class="wyq" style="display: none">
+    <p class="apps" style="width: 100%;height:190px;text-align: center;background-color: #ddd;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Receiveorder/View/Public/img/Appa.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">商家端手机App</span>
+    </p>
+    <p class="appp"  style="width: 100%;height: 190px;;text-align: center;background-color: #ddd;margin-top: 20px;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Receiveorder/View/Public/img/Appp.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">配送端手机App</span>
+    </p>
+</div>
+<?php endif;?>
+<script>
+    $(document).ready(function(){
+        $('.wyu').click(function(){
+            $(".wyq").toggle(1000);
+        });
+        var aaa = "<?php echo session('user_auth.uid');?>";
+        if(aaa){
+            $('.wyu').show();
+        }
+    });
+</script>

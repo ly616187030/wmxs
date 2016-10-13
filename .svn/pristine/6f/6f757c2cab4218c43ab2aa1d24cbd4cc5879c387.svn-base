@@ -1,0 +1,6 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div style="font-size:1.2em;font-weight:bold;color:#999">超级管理不可以添加餐厅！</div>
+</block>
+

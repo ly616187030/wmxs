@@ -1,0 +1,194 @@
+<extend name="Public/base"/>
+<block name="style">
+    <style>
+        .orderlist{float: left; height: 42px; line-height: 42px;}
+        .storeList{position: absolute;top: 34px;z-index: 999;border: 1px solid #DDDDDD;width: 93%;max-height:350px;background: #fff;display: none;overflow-y: scroll}
+        .storeList ul li{padding: 0 10px; line-height: 25px;cursor: pointer;}
+        .storeList ul li:hover{background: #d2dcf8}
+    </style>
+</block>
+<block name="body">
+
+    <empty name="pd_dp">
+        <div class="main-title cf">
+            <h2>批量导入</h2>
+            <legend>&nbsp;</legend>
+        </div>
+        <div class="cf">
+            <div class="fl">
+                <a href="{:U('download')}" class="btn <if condition='$info eq null'>disabled</if>" style="background-color:limegreen;line-height: 31px">下载模版</a>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <div  id="tab_1_upload_box_7" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="tab_1_upload_list_7" class="uploader-list col-xs-12">
+                            <div id="tab_1_upload_preview_7" class="hidden">
+                                <ul class="list-group file-box">
+                                    <li class="list-group-item file-item" data-id="0">
+                                        <i class="fa fa-file"></i>
+                                        <span></span>
+                                        <i class="fa fa-times-circle pull-right remove-file"></i>
+                                    </li>
+                                </ul>
+                            </div>                </div>
+                        <div class="btns col-xs-12">
+                            <input type="hidden" id="tab_1_upload_input_7" name="file" value="0">
+                            <div id="tab_1_upload_7">上传文件</div>
+                            <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                        </div>
+                    </div>
+                    <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+                    <script type="text/javascript">
+                        $(function(){
+                            var uploader_tab_1_upload_7 = WebUploader.create({
+                                auto: true,                                                                    // 选完文件后，是否自动上传
+                                duplicate: true,                                                               // 同一文件是否可以重复上传
+                                swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                                server: '{:U("Admin/Upload/Upload", array("dir" => "file"))}',      // 文件接收服务端
+                                pick: '#tab_1_upload_7',                                   // 选择文件的按钮
+                                resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                                //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                                fileSingleSizeLimit:10*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                                // 文件过滤
+                                accept: {
+                                    title: 'Files',
+                                    extensions: 'doc,docx,xls,xlsx,ppt,pptx,pdf,wps,txt,zip,rar,gz,bz2,7z'
+                                }
+                            });
+
+                            // 文件上传过程中创建进度条实时显示。
+                            uploader_tab_1_upload_7.on( 'uploadProgress', function( file, percentage ) {
+                                $( '#tab_1_upload_preview_7').removeClass('hidden');
+                                var $li = $( '#tab_1_upload_preview_7'),
+                                        $percent = $li.find('.progress .progress-bar');
+                                // 避免重复创建
+                                if ( !$percent.length ) {
+                                    $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                            .appendTo( $li )
+                                            .find('.progress-bar');
+                                }
+                                $percent.css( 'width', percentage * 100 + '%' );
+                            });
+
+                            // 完成上传完了，成功或者失败，先删除进度条。
+                            uploader_tab_1_upload_7.on( 'uploadComplete', function( file ) {
+                                $( '#tab_1_upload_preview_7' ).find('.progress').remove();
+                            });
+
+                            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                            uploader_tab_1_upload_7.on( 'uploadSuccess', function( file , response) {
+                                $( '#tab_1_upload_preview_7').addClass('upload-state-done');
+                                if(eval('response').status == 0){
+                                    $.alertMessager(response.info);
+                                } else {
+                                    $( '#tab_1_upload_input_7' ).attr('value', response.url);
+                                    $.post("{:U('upload')}",{url:response.url},function(data){
+                                       //alert(JSON.stringify(data));
+                                        $.alertMessager('成功添加'+data.smsg+'条'+'失败'+data.emsg+'条','success',3000);
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        },3000)
+
+                                    })
+                                    $( '#tab_1_upload_preview_7 span').text(response.name);
+                                }
+                            });
+
+                            // 文件上传失败，显示上传出错。
+                            uploader_tab_1_upload_7.on( 'uploadError', function( file ) {
+                                $.alertMessager('error');
+                                var $li = $( '#tab_1_upload_preview_7'),
+                                        $error = $li.find('div.error');
+                                // 避免重复创建
+                                if ( !$error.length ) {
+                                    $error = $('<div class="error"></div>').appendTo( $li );
+                                }
+                                $error.text('上传失败');
+                            });
+
+                            // 删除文件
+                            $(document).on('click', '#tab_1_upload_list_7 .remove-file', function() {
+                                $( '#tab_1_upload_input_7' ).val('') //删除后覆盖原input的值为空
+                                $( '#tab_1_upload_preview_7').addClass('hidden');
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <form action="{:U('index')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属店铺</label>
+                <div class="col-sm-3">
+                    <select class="form-control" name="store_id" id="store">
+                        <option value="">请选择店铺</option>
+                        <volist name="slist" id="vo">
+                            <option value="{$vo.store_id}">{$vo.store_name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <label style="padding-top:7px;font-weight:normal;">（请输入店铺字母简写）</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">餐品分类</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="canping_id" id="canpin">
+
+                    </select>
+                </div>
+                <label class="control-label" style="font-weight: normal">（餐品分类必须填写）</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">盛用器具</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="sp_id">
+                        <option value="" style="display: none;">请选择器具分类</option>
+                        <volist name="shangpin" id="vo">
+                            <option value="{$vo.sp_id}">{$vo.sp_name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <label class="control-label" style="font-weight: normal">（盛用器具必须填写）</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属档口</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="dangkou_id">
+                        <option value="" style="display: none;">请选择所属档口</option>
+                        <volist name="dangkou" id="vo">
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <label class="control-label" style="font-weight: normal">（所属档口必须填写）</label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-4">
+                    <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                    <button class="btn btn-return " onclick="history.back(-1);return false;">返 回</button>
+                </div>
+            </div>
+        </form>
+        <else />
+        <td colspan="6" class="text-center">{$pd_dp}</td>
+    </empty>
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+        $('#store').change(function(){
+            $.get("{:U('canpin')}",{store_id:$(this).val()},function(data){
+                $('#canpin').text('');
+                if(data){
+                    $.each(data,function(){
+                        $('#canpin').append('<option value="'+this.canpin_id+'">'+this.canpin_name+'</option>')
+                    })
+                }
+            })
+        })
+    </script>
+
+</block>

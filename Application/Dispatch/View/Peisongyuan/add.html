@@ -1,0 +1,133 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:20px 20px;
+        }
+        .required:before{
+            content:'*';
+            color:red;
+            font-size:1.2em;
+        }
+    </style>
+    <div class="main-title cf">
+        <h4>添加配送员</h4>
+    </div>
+    <form action="{:U('add')}" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 50px;">
+        <!--<input type="hidden" name="uid" value="{:session('user_auth.uid')}" />-->
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">配送员姓名：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="person_name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">配送员编号：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="person_bianhao">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">地址：</label>
+            <div class="col-sm-2">
+                <select class=" form-control" id="province" name="province">
+                    <option value="">省份</option>
+                    <volist name="_province" id="vo">
+                        <option value="{$vo.code}">{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <select class=" form-control" name="city" id="city">
+                    <option>地级市</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <select class="form-control" id="town" name="town">
+                    <option>区、县</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">性别：</label>
+            <div class=" radio">
+                <label><input type="radio"  name="gender" value="0" checked="checked">男</label>
+                <label><input type="radio"  name="gender" value="1">女</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">密码：</label>
+            <div class="col-sm-2">
+                <input type="password" class="form-control" name="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">确认密码：</label>
+            <div class="col-sm-2">
+                <input type="password" class="form-control" name="repassword">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="identity">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">电话：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="phone">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">所属调度账号：</label>
+            <div class="col-sm-2">
+                <select class="form-control" name="uid">
+                    <option>请选择</option>
+                    <volist name="info" id="vo">
+                        <option value="{$vo.id}">{$vo.nickname}</option>
+                    </volist>
+                </select>
+            </div>
+            <label class="control-label" style="font-weight: normal;color: red;">(分配到所选账号，该调度账号可以看到此配送员)</label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">员工类型：</label>
+            <div class=" radio">
+                <label><input type="radio"  name="yglx" value="0" checked="checked">全职</label>
+                <label><input type="radio"  name="yglx" value="1">兼职</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">员工状态：</label>
+            <div class=" radio">
+                <label><input type="radio"  name="ygzt" value="0" checked="checked">在职</label>
+                <label><input type="radio"  name="ygzt" value="1">离职</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">家庭住址：</label>
+            <div class="col-sm-2">
+                <textarea class="form-control" rows="3" name="address" maxlength="120"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">&nbsp;</label>
+            <div class="col-sm-4">
+                <button class="btn btn-success ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                <button class="btn btn-return btn-danger " onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ztools.js"></script>
+    <script type="text/javascript">
+        //省市商圈四级联动菜单获取
+        var url = "{:U('MenuPct1/getCity','',false)}";
+        var curl = "{:U('MenuPct1/getTown','',false)}";
+        ztools.getLianDong({"p_url": url, "c_url": curl});
+    </script>
+</block>

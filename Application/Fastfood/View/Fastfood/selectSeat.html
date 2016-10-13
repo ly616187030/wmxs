@@ -1,0 +1,285 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+</block>
+
+<block name="main">
+
+    <div class="builder builder-list-box panel-body">
+        <div class="builder-tabs builder-form-tabs">
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="showType(0,this)"><a href="javascript:;">全部</a></li>
+                <volist name="list_location" id="vo">
+                    <li onclick="showType({$vo.id},this)"><a href="javascript:;">{$vo.name}</a></li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12" id="zhuotai">
+        <ul>
+            <volist name="list_num" id="ro">
+                <eq name="ro.status" value="1">
+                    <li class="list_type{$ro.f_id} active" data-seat_id="{$ro.id}" data-seat_name="{$ro.name}"><div>{$ro.name}</div><div>已占用</div></li>
+                    <else />
+                    <li class="list_type{$ro.f_id}" data-seat_id="{$ro.id}" data-seat_name="{$ro.name}"><div>{$ro.name}</div><div>未占用</div></li>
+                </eq>
+            </volist>
+        </ul>
+    </div>
+    <div class="Both"></div>
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="{:U('checkOut')}" method="post" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center">菜单详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="col-sm-4">订单编号：<span id="order_sn_seat"></span></div>
+                            <div class="col-sm-4">桌台名：<span id="seat_name"></span></div>
+                            <div class="col-sm-4">下单时间：<span id="xd_time_seat"></span></div>
+                            <input type="hidden" name="order_id" value="" />
+                            <input type="hidden" name="seat_id" value="" />
+                            <input type="hidden" name="total" value="" />
+                            <input type="hidden" name="is_qiantai_print" value="" />
+                            <input type="hidden" name="is_kitchen_print" value="" />
+                            <div style="clear:both;height:15px;"></div>
+                            <table class="table table-bordered table-responsive table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th>菜品</th>
+                                    <th>单价(元)</th>
+                                    <th>数量</th>
+                                    <th>金额(元)</th>
+                                </tr>
+                                </thead>
+                                <tbody id="caipin">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary submit-btn ajax-post confirm" id="submit" type="submit" target-form="form-horizontal">&nbsp;结&nbsp;&nbsp;&nbsp;&nbsp;账&nbsp;</button>
+                        <button class="btn btn-primary submit-btn ajax-post confirm" id="print" type="button">&nbsp;打&nbsp;&nbsp;&nbsp;&nbsp;印&nbsp;</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--顾客小票start-->
+    <div class="ticketMain" style="display: none;">
+        <div id="order_count" style="font-size: 30px;font-weight: bold"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="Title fw"><div class="pdt5">{:C('TICKETNAME')}</div></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_message"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_sn"></div>
+        <div class="pdt5" id="customer_ticket_xd_time"></div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+            <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody id="good_detail">
+            <volist name="list_first.child" id="vo">
+                <tr>
+                    <td width="60%" align="left">{$vo.cm_name}</td>
+                    <td width="20%" align="center">{$vo.quantity}</td>
+                    <td width="20%" align="right">{$vo['price']*$vo['quantity']|round=2}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_store_name"></div>
+        <div class="pdt5" id="customer_ticket_tel"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_now_time"></div>
+    </div>
+    <!--顾客小票end-->
+    <!--档口小票start-->
+    <div id="dangkou" style="display: none;">
+
+    </div>
+</block>
+
+
+
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/LodopFuncs.js"></script>
+    <script src='__PUBLIC__/socket.io.js'></script>
+    <script>
+        var LODOP=getLodop();
+
+        //打印功能
+
+        function printing(html,printsn,num){
+            var num=num || 1;
+            var printsn= printsn || 0;
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_HTM(10,5,"100%","100%",html);
+            LODOP.SET_PRINTER_INDEX(printsn);
+            LODOP.SET_PRINT_COPIES(num);
+            LODOP.PRINT();
+        }
+        function print_front(){
+            var htmls=$('.ticketMain').html();
+            $.get('{:U("getLocalNum")}').success(function(data){
+                //console.log(data.nums);
+                printing(htmls,data.printer_sn,data.nums);
+            });
+
+        }
+        function print_backend(){
+            var div=$('#dangkou > div');
+            div.each(function(){
+                var $this=$(this);
+                printing($this.html(),$this.data('print'));
+            });
+        }
+        function showType(type_id,obj){
+            if(type_id == 0){
+                $('#zhuotai').find('li').show();
+            }else{
+                $('#zhuotai').find('li').hide();
+                $('#zhuotai').find('.list_type'+type_id).show();
+            }
+            $(obj).addClass('active').siblings().removeClass('active');
+        }
+        function test(data){
+
+            var bb = '';
+            var cc = '';
+            var dd = '';
+
+            //顾客小票信息写入
+            $('#order_count').html("堂食-"+data.order_count+"-"+data.seat_name);
+            $('#customer_ticket_order_message').html("订单备注："+data.order_message);
+            $('#customer_ticket_order_sn').html("订单编号："+data.order_sn);
+            $('#customer_ticket_xd_time').html("下单时间："+data.xd_time);
+
+            for(var i=0;i<data.child.length;i++){
+                bb += "<tr>" +
+                " <td width=\"60%\" align=\"left\">"+data.child[i].cm_name+"</td> <td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                " <td width=\"20%\" align=\"right\">"+(data.child[i].price*data.child[i].quantity).toFixed(2)+"</td> </tr>";
+            }
+            bb += ""+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">总计：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.zongjia+"</td>"+
+            "</tr>";
+            $('#good_detail').html(bb);
+
+            $('#customer_ticket_store_name').html(data.store_name);
+            $('#customer_ticket_tel').html(data.tel);
+            $('#customer_ticket_now_time').html(data.ticket+" "+data.now_time);
+            if(data.dangkou != null){
+                for(var i=0;i<data.dangkou.length;i++){
+
+                    cc += "" +
+                    "<div id=\"dangkou"+data['dangkou'][i]['id']+"\" data-dangkou=\""+data['dangkou'][i]['id']+"\" data-print=\""+data['dangkou'][i]['printer_sn']+"\">" +
+                    "<div style=\"font-size: 30px; font-weight: bold;\">堂食-"+data.order_count+"-"+data.seat_name+"</div>"+
+                    "<div style=\"line-height: 30px;\">订单编号："+data.order_sn+"</div>"+
+                    "<div style=\"line-height: 20px;\">"+data['dangkou'][i]['name']+"</div>"+
+                    "<table width='100%'>"+
+                    "<thead>"+
+                    "<th align=\"left\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">菜品名称</th>"+
+                    "<th align=\"center\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">数量</th>"+
+                    "</thead>"+
+                    "<tbody>"+
+                    "</tbody>"+
+                    "</table>" +
+                    "<div style=\"border-top: 1px solid #000;line-height: 25px;\" >"+data.now_time+"</div></div>";
+
+                }
+                $('#dangkou').html(cc);
+                for(var i=0;i<data.child.length;i++){
+                    dd = "<tr>"+
+                    "<td width=\"80%\" align=\"left\">"+data.child[i].cm_name+"</td>"+
+                    "<td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                    "</tr>";
+                    $('#dangkou'+data.child[i]['dangkou_id']).find('tbody').append(dd);
+                }
+            }
+
+        }
+        $(document).on('click','#zhuotai ul li',function(){
+            var aa = "";
+            var seat_id = $(this).data('seat_id');
+            var seat_name = $(this).data('seat_name');
+            if($(this).hasClass('active')){
+                $.post('{:U("orderMore")}',{seat_id:seat_id,seat_name:seat_name}).success(function(data){
+
+                    if(data != null){
+                        $('#order_sn_seat').text(data['order_sn']);
+                        $('#seat_name').text(data['seat_name']);
+                        $('#xd_time_seat').text(data['xd_time']);
+                        $('input[name="order_id"]').val(data['order_id']);
+                        $('input[name="seat_id"]').val(seat_id);
+                        $('input[name="total"]').val(data['total']);
+                        $('input[name="is_qiantai_print"]').val(data['is_qiantai_print']);
+                        $('input[name="is_kitchen_print"]').val(data['is_kitchen_print']);
+
+                        for(var i=0;i<data['child'].length;i++){
+                            aa += "<tr><td>"+data['child'][i]['cm_name']+"</td><td>"+data['child'][i]['price']+"</td><td>"+data['child'][i]['quantity']+"</td><td>"+data['child'][i]['total_money']+"</td></tr>";
+                        }
+                        aa +=""+
+                        "<tr><td>备注：</td><td colspan=\"3\">"+data['order_message']+"</td></tr>"+
+                        "<tr><td>应收：</td><td colspan=\"3\"><span id=\"total\">"+data['total']+"</span> 元</td></tr>"+
+                        "<tr><td>减免：</td><td colspan=\"3\" class='total'><input type='text' name='yh_price' value='0' /> 元</td></tr>"+
+                        "<tr><td>实收：</td><td colspan=\"3\" class='total'><input type='text' name='real_money_customer' value='0' /> 元</td></tr>"+
+                        "<tr><td>找零：</td><td colspan=\"3\" class='total'><input type='text' name='give_money' readonly=\"true\" /> 元</td></tr>";
+
+                        test(data);
+                        $('#caipin').html(aa);
+
+                        $('#myModal').modal('show');
+                    }else{
+                        $.alertMessager('当前桌台没有订单');
+                    }
+                });
+
+            }else{
+                window.location.href="{:U('Fastfood/Fastfood/index/seat_id/"+seat_id+"/seat_name/"+seat_name+"')}";
+            }
+        });
+        $('#print').click(function(){
+            var qiantai = $('input[name="is_qiantai_print"]').val();
+            var kitchen = $('input[name="is_kitchen_print"]').val();
+            if(qiantai == 1){
+                print_front();//用户小票打印
+            }
+            if(kitchen == 1){
+                print_backend();//后厨小票打印
+            }
+        });
+        $(document).on('focusout','input[name="real_money_customer"],input[name="yh_price"]',function(){
+            var real_money_customer = $('input[name="real_money_customer"]').val();
+            var yh_price = $('input[name="yh_price"]').val();
+            var rexnum = /^[0-9]+(\.[0-9]{1,2})*$/;
+
+            var total = parseFloat($('#total').text());
+                if(rexnum.test(real_money_customer) && rexnum.test(yh_price)){
+                    if(real_money_customer != 0){
+                        if(real_money_customer >= (total-yh_price)){
+                            $('input[name="give_money"]').val((real_money_customer-(total-yh_price)).toFixed(2));
+                        }else{
+                            $.alertMessager('实收饭钱不能小于总价');
+                        }
+                    }
+                }else{
+                    $.alertMessager('输入的价钱格式不正确');
+                }
+        });
+
+    </script>
+</block>

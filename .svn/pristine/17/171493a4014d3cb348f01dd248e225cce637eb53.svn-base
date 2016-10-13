@@ -1,0 +1,292 @@
+<extend name="Base/common_zhgIndex" />
+
+<block name="body_zhgIndex">
+
+    <div style="min-height: 653px;" id="content" class="clearfix">
+
+        <div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main center-main">
+
+            <!-- 个人中心菜单 -->
+
+            <include file="Public/user_center_left_zhg"/>
+
+            <!-- /个人中心菜单 -->
+
+            <!--个人中心右侧-->
+
+            <section class="usercenter-detail" id="usercenter-address" style="margin-left: 5%;margin-top: -1.5%;">
+
+                <div class="summary">
+
+                    <h3 class="summary-header">编辑送餐地址</h3>
+
+                </div>
+
+                <div class="content">
+
+                    <form action="{:U('')}" class="form-horizontal" method="post" id="myform">
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">&nbsp;</label>
+
+                            <div class="col-sm-3">
+
+                                <div class="alert alert-danger" role="alert" style="display: none;">请输入手机号</div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">姓名：</label>
+
+                            <div class="col-sm-5">
+
+                                <input type="text" name="username" class="form-control" value="{$elist.username}" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">性别：</label>
+
+                            <div class="col-sm-5 radio">
+
+                                <label><input type="radio"  name="gender" value="1" <eq name="elist.gender" value="1">checked="checked"</eq> >男</label>
+
+                                <label><input type="radio"  name="gender" value="2" <eq name="elist.gender" value="2">checked="checked"</eq>>女</label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">电话：</label>
+
+                            <div class="col-sm-5">
+
+                                <input type="hidden" name="address_id" value="{$elist.address_id}">
+
+                                <input type="text" name="phone" class="form-control" value="{$elist.phone}"  />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">备用电话：</label>
+
+                            <div class="col-sm-5">
+
+                                <input type="text" name="phone_bak" class="form-control" value="{$elist.phone_bak}" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">位置：</label>
+
+                            <div class="landing-search col-sm-5">
+
+                                <input type="text" class="form-control" id="suggestId" placeholder="请输入小区、大厦或学校等" >
+
+                            </div>
+
+                            <input name="lng" type="hidden" id="bdlng" value="{$elist.lng}"/>
+
+                            <input type="hidden" name="lat" id="bdlat" value="{$elist.lat}"/>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">详细地址：</label>
+
+                            <div class="col-sm-5">
+
+                                <input type="text" name="detail_address" class="form-control" value="{$elist.detail_address}" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label">&nbsp;</label>
+
+                            <div class="col-sm-4">
+
+                                <button type="submit" class="btn btn-primary ">保存</button>
+
+                                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+            <!--//个人中心右侧-->
+
+
+
+            <div class="clearfix" style="_height:0px;_overflow:hidden;"></div>
+
+        </div>
+
+        <div class="knightCover hide" data-node="knightCover"></div>
+
+    </div>
+
+
+
+</block>
+
+<block name="script">
+
+    <script type='text/javascript' src="http://api.map.baidu.com/api?v=1.5&ak=A8773a52f6d9bc0ecaea7f15acdd13e0"></script>
+
+    <script type="text/javascript" src="__STATIC__/ztools.js" charset="utf-8"></script>
+
+    <script>
+
+        $(document).ready(function (){
+
+
+
+            //百度地图获取位置
+
+            var cookie_city=ztools.getCookie('cityname');
+
+            if(cookie_city!=''){
+
+                var ac = new BMap.Autocomplete({"input" :"suggestId", "location" : cookie_city});
+
+                ac.addEventListener("onconfirm", function(e) {
+
+                    var _value = e.item.value;
+
+                    var myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+
+                    $("input[name='detail_address']").val(myValue);
+
+                    var local = new BMap.LocalSearch(cookie_city, { //智能搜索
+
+                        onSearchComplete: function(){
+
+                            var pp = local.getResults().getPoi(0).point;
+
+                            $("#bdlng").val(pp.lng);
+
+                            $("#bdlat").val(pp.lat);
+
+                        }
+
+                    });
+
+                    local.search(myValue);
+
+                });
+
+            }else{
+
+                var mycity=new BMap.LocalCity();
+
+                mycity.get(function(result){
+
+                    var city=result.name;
+
+                    var ac = new BMap.Autocomplete({"input" :"suggestId", "location" : city});
+
+                    ac.addEventListener("onconfirm", function(e) {
+
+                        var _value = e.item.value;
+
+                        var myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+
+                        var local = new BMap.LocalSearch(city, { //智能搜索
+
+                            onSearchComplete: function(){
+
+                                var pp = local.getResults().getPoi(0).point;
+
+                                $("#bdlng").val(pp.lng);
+
+                                $("#bdlat").val(pp.lat);
+
+                            }
+
+                        });
+
+                        local.search(myValue);
+
+                    });
+
+                });
+
+            }
+
+
+
+            $('form').submit(function(){
+
+                var self = $(this);
+
+                $.post(self.attr("action"), self.serialize(), function(data){
+
+                    if(data.status){
+
+                        window.location.href=data.url;
+
+                        alert("更新成功");
+
+                    }else{
+
+                        $('div.alert').show().text(data.info);
+
+                    }
+
+                }, "json");
+
+                return false;
+
+            });
+
+        });
+
+    </script>
+
+</block>
+
+
+
+<block name="footer_wm"></block>
+
+
+
+</body>
+
+</html>

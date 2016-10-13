@@ -1,0 +1,165 @@
+
+    <extend name="./Application/Admin/View/Public/layout.html"/>
+
+    <block name="main">
+        <link rel="stylesheet" href="__PUBLIC__/libs/layer/skin/layer.css">
+        <link href="__PUBLIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+        <link href="__PUBLIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+
+        <div class="builder builder-list-box panel-body">
+            <form class="form-inline" style="margin-bottom: 1em;" method="post" action="{:U('Settlement/index')}">
+                <div class="form-group">
+                    结算月份：<input type="text" name="stime" class="form-control date" placeholder="起" <notempty name="post.stime">value="{$post.stime}"</notempty>>
+                    - <input name="etime" type="text" class="form-control date" placeholder="止"<notempty name="post.etime">value="{$post.etime}"</notempty>>
+                </div>
+                <if condition="$uid eq 1">
+                    <div class="form-group">
+                        <select class="form-control" id="dailishang" name="xuanxiang">
+                            <option value="0" <eq name="post.xuanxiang" value="0">selected</eq>>代理商</option>
+                            <option value="1" <eq name="post.xuanxiang" value="1">selected</eq>>企业</option>
+                        </select>
+                    </div>
+                    <div class="form-group dailishang">
+                        <select class="form-control"name="dailishang">
+                            <option <notempty name="post.dailishang">value="{$post.dailishang}"<else/>value=""</notempty>style="display: none;"><notempty name="post.dailishang">{$post.dailishang|get_agent_name}<else/>请选择代理商</notempty></option>
+                            <volist name="daili" id="vo">
+                                <option value="{$vo.id}">{$vo.nickname}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <div class="form-group qiye" style="display:none;">
+                        <select class="form-control"name="qiye">
+                            <option <notempty name="post.qiye">value="{$post.qiye}"<else/>value=""</notempty>style="display: none;"><notempty name="post.qiye">{$post.qiye|get_founder_name}<else/>请选择企业</notempty></option>
+                            <volist name="qiye" id="vs">
+                                <option value="{$vs.id}">{$vs.c_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <else/>
+                    <div class="form-group qiye">
+                        企业名称：<select class="form-control"name="qiye">
+                        <option  <notempty name="post.qiye">value="{$post.qiye}"<else/>value=""</notempty>style="display: none;"><notempty name="post.qiye">{$post.qiye|get_founder_name}<else/>请选择企业</notempty></option>
+                            <volist name="qiye" id="v">
+                                <option value="{$v.id}">{$v.c_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </if>
+                <div class="form-group">
+                    结算状态：<select class="form-control" name="jiesuan">
+                                        <option value="" <eq name="post.jiesuan" value="">selected</eq>>全部</option>
+                                        <option value="0" <eq name="post.jiesuan" value="0">selected</eq>>未结算</option>
+                                        <option value="1" <eq name="post.jiesuan" value="1">selected</eq>>已结算</option>
+                                    </select>
+                </div>
+                <button type="submit" class="btn btn-default">查询</button>
+                <a href="{:U('index')}" class="btn btn-default">重置</a>
+            </form>
+            <!-- 标签页导航 -->
+            <div class="tab-wrap">
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <table class="table table-bordered table-hove">
+                        <thead>
+                        <tr>
+                            <th>企业名称</th>
+                            <th>结算月份</th>
+                            <th>生成时间</th>
+                            <th>上月有效订单</th>
+                            <th>上月全部订单</th>
+                            <!--<th>上月有效订单</th>-->
+                            <!--<th>上月全部订单</th>-->
+                            <th>全部有效订单</th>
+                            <th>全部订单</th>
+                            <th>应结金额</th>
+                            <th>结算状态</th>
+                            <!--<th>结算详情</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <notempty name="settlement">
+                                <tr>
+                                    <td align="center" colspan="3">共计</td>
+                                    <td align="center">{$shangyueyouxiao}</td>
+                                    <td align="center">{$shangyuequanbu}</td>
+                                    <td align="center">{$quanbuyouxiao}</td>
+                                    <td align="center">{$quanbu}</td>
+                                    <td align="center">￥{$total}</td>
+                                    <td align="center">--</td>
+                                </tr>
+                        <volist name="settlement" id="vo">
+                                <tr >
+                                    <td align="center">{$vo.c_name}</td>
+                                    <td align="center">{$vo.dtime|date="Y-m",###}</td>
+                                    <td align="center">{$vo.ctime|date="Y-m-d",###}</td>
+                                    <td align="center">{$vo.this_valid_order}</td>
+                                    <td align="center">{$vo.this_all_valid_order}</td>
+                                    <!--<td align="center">{$vo.last_valid_order}</td>-->
+                                    <!--<td align="center">{$vo.last_all_valid_order}</td>-->
+                                    <td align="center">{$vo.all_valid_order}</td>
+                                    <td align="center">{$vo.all_order}</td>
+                                    <td align="center">￥{$vo.total_fee}</td>
+                                    <td align="center">
+                                        <if condition="$vo.sett_status eq 0">
+                                            <span style="color: red;">未结算</span>
+                                            <else/>
+                                            <span style="color: green;">已结算</span>
+                                        </if>
+                                    </td>
+                                        <!--<td align="center">
+                                            <a style="color: #777;" class="detail" href="javascript:void(0)" data-id="{$vo.founder_id}">
+                                            <i class="fa fa-exclamation-circle"></i>
+                                            </a>
+                                        </td>-->
+                                </tr>
+                            </volist>
+                            <else/>
+                            <tr >
+                                <td align="center" colspan="9">没有检索到数据</td>
+                            </tr>
+                        </notempty>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="page">{$page}</div>
+    </div>
+
+    </block>
+    <block name="script">
+        <script type="text/javascript" src="__PUBLIC__/libs/layer/layer.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+            $(function(){
+                var cc = $('#dailishang').val();
+                if(cc==0){
+                    $('.qiye').hide();
+                    $('.dailishang').show();
+                }else{
+                    $('.dailishang').hide();
+                    $('.qiye').show();
+                }
+                $('#dailishang').change(function(){
+                    var dd = $('#dailishang').val();
+                    if(dd==0){
+                        $('.qiye').hide();
+                        $('.dailishang').show();
+                    }else{
+                        $('.dailishang').hide();
+                        $('.qiye').show();
+                    }
+                })
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm',
+                language:"zh-CN",
+                minView:3,
+                startView:3,
+                autoclose:true,
+            });
+        </script>
+    </block>
+
+
+

@@ -1,0 +1,172 @@
+<extend name="Base/common-1" />
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/add_address.css">
+</block>
+<block name="body">
+    <form id="save_address" method="post" action="{:U('save')}">
+        <div id="page_0" class="up ub ub-ver bc-bg" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh bc-text-head ub bc-head">
+
+                <div class="nav-btn" id="nav-left">
+                    <a style="color: white;" href="{:U('index')}"><div class="fa fa-angle-left fa-2x"></div></a>
+                </div>
+
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">修改地址</h1>
+                <div onclick="subto()" class="nav-btn nav-bt" id="nav-right">
+                    <input id="btn" style="color: white; border: 0; background-color: #dd3131;" type="button" value="修改">
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l">
+                <volist name="address" id="vo">
+                    <div id="form">
+                        <a href="{:U('map/index')}"> <div class="link">
+                            <font class="linkman">定位地址</font>
+                            <?php if($jd&&$wd): ?>
+                            <a href="{:U('map/index')}" class="btn" style="background-color: green;color: white">去定位</a>
+                            <span style="position: absolute;right: 15px;font-weight: bolder;color: green;">√</span>
+                            <?php else: ?>
+                            <a href="{:U('map/index')}" class="btn" style="background-color: red;color: white">去定位</a>
+                            <span style="position: absolute;right: 15px;font-weight: bolder;color: red;">×</span>
+                            <?php endif; ?>
+                        </div></a> <br/>
+                        <input type="hidden" name="address_id" value="{$vo.address_id}">
+                        <font class="linkman">联系人<font>
+                            <if condition="$name neq null">
+                                <input type="text" onblur="sess()" name="username" id="lianxiren" class="name" value="{$name}" placeholder="您的姓名" /><br/>
+                            <else />
+                            <input type="text" onblur="sess()" name="username" id="lianxiren" class="name" value="{$vo.username}" placeholder="您的姓名" /><br/>
+                            </if>
+                                <if condition="$sexs neq null">
+                                <if condition="$sexs eq 1">
+                                    <div class="ssex">
+                                        <div class="checkbox umar-r check">
+                                            <input type="radio" onblur="sess()" class="name" checked name="gender" value="1"/>
+                                        </div>
+                                        <font class="sex">男</font>
+                                        <div class="checkbox umar-r check">
+                                            <input type="radio" onblur="sess()" class="name" name="gender" value="2" >
+                                        </div>
+                                        <font class="sex">女 </font>
+                                        <div style="clear:both;"></div>
+                                    </div>
+                                    <else />
+                                    <div class="ssex1">
+                                        <div class="checkbox umar-r check">
+                                            <input type="radio" onblur="sess()" class="name" name="gender" value="1"/>
+                                        </div>
+                                        <font class="sex">男</font>
+                                        <div class="checkbox umar-r check">
+                                            <input type="radio" onblur="sess()" class="name" checked  name="gender" value="2" >
+                                        </div>
+                                        <font class="sex">女 </font>
+                                        <div style="clear:both;"></div>
+                                    </div></if>
+                            <else />
+                            <if condition="$vo.gender eq 1">
+                                <div class="ssex">
+                                    <div class="checkbox umar-r check">
+                                        <input type="radio" onblur="sess()" class="name" checked name="gender" value="1"/>
+                                    </div>
+                                    <font class="sex">男</font>
+                                    <div class="checkbox umar-r check">
+                                        <input type="radio" onblur="sess()" class="name" name="gender" value="2" >
+                                    </div>
+                                    <font class="sex">女 </font>
+                                    <div style="clear:both;"></div>
+                                </div>
+                                <else />
+                                <div class="ssex1">
+                                    <div class="checkbox umar-r check">
+                                        <input type="radio" onblur="sess()" class="name" name="gender" value="1"/>
+                                    </div>
+                                    <font class="sex">男</font>
+                                    <div class="checkbox umar-r check">
+                                        <input type="radio" onblur="sess()" class="name" checked  name="gender" value="2" >
+                                    </div>
+                                    <font class="sex">女 </font>
+                                    <div style="clear:both;"></div>
+                                </div></if>
+                                </if>
+                            <div class="link">
+                                <font class="linkman">详细地址</font>
+                                <if condition="$pai neq null">
+                                    <input type="text" onblur="sess()" name="detail_address" value="{$pai}" id="menpai" class="name" placeholder="请输入送餐地址详细信息" maxlength="20"/>
+                                <else />
+                                <input type="text" onkeyup="sess()" name="detail_address" value="{$vo.detail_address}" id="menpai" class="name" placeholder="请输入送餐地址详细信息" maxlength="20"/>
+                                </if>
+                            </div><br/>
+
+
+                            <div class="link">
+                                <font class="linkman">联系方式</font>
+                                <if condition="$phones neq null">
+                                    <input type="text" onblur="sess()" name="phone" id="phonenum" class="name" value="{$phones}" placeholder="配送人员联系您的方式"/>
+                                <else />
+                                <input type="text" name="phone" onblur="sess()" id="phonenum" class="name" value="{$vo.phone}" placeholder="配送人员联系您的方式"/>
+                                </if>
+                            </div><br/>
+
+
+                            <input id="people" type="hidden" value="{$vo.gender}">
+                    </div>
+
+                </volist>
+
+                <div class="select" style="height: 3.5em;color: red; background-color: #E8E8E8">删除该地址</div>
+            </div>
+            <!--content结束-->
+
+        </div>
+    </form>
+    <script>
+        $(document).ready(function(){
+            //点击修改按钮，进行修改
+            $('#btn').click(function(){
+                var url = $('#save_address').attr('action');
+                var info = $('#save_address').serialize();
+                $.post(url,info,function(data){
+                    if(data == true){
+                        alert('修改成功');
+                        window.location.href = "{:U('myaddress/index')}";
+                    }
+                    else{
+                        alert(data);
+                    }
+                })
+            });
+            //点击删除按钮，进行删除
+            $('.select').click(function(){
+                if(confirm('是否删除该地址？此删除不可逆转！')){
+                    var url = "{:U('del?address_id='.$vo['address_id'])}";
+                    $.get(url,function(data){
+                        if(data == true){
+                            alert('删除成功');
+                            window.location.href = "{:U('myaddress/index')}";
+                        }
+                        else{
+                            alert(data);
+                        }
+                    })
+                }
+
+            })
+
+
+        })
+        //获取文本框信息，传到session
+        function sess(){
+            var user_name = $('#lianxiren').val();
+            var menpai = $('#menpai').val();
+            var phone = $('#phonenum').val();
+            var sex = $("input[name='gender']:checked").val();
+
+            var url = "{:U('se')}";
+            $.get(url,{user_name:user_name,menpai:menpai,phone:phone,sex:sex},function(data){
+
+            })
+
+        }
+    </script>
+</block>

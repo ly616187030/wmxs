@@ -1,0 +1,741 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <style>
+        span{padding:1em;}
+        /*.scroll{height: 30em;width: 100%;}*/
+        /*.scroll thead{display: block;width: 100%;padding:0px;margin:0px;}*/
+        /*.scroll tbody{overflow:scroll;display: block;width: 100%;height: 30em;padding:0px;margin:0px;}*/
+        .scroll thead th{width: 6.8em;}
+        .scroll tbody .data td{width: 6.9em;}
+        .scroll thead th:first-child{width: 13em;}
+        .scroll tbody .data td:first-child{width: 13em;}
+        .scroll thead th:nth-child(2){width: 13em;}
+        .scroll tbody .data td:nth-child(2){width: 13em;}
+        .scroll thead th:nth-child(3){width: 13em;}
+        .scroll tbody .data td:nth-child(3){width: 13em;}
+        .scroll tbody .data td:nth-child(4){width: 6.1em;}
+        .scroll tbody .data td:nth-child(5){width: 6.3em;}
+        .scroll tbody .data td:nth-child(6){width: 6.5em;}
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <link href="/Public/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+        <div class="main-title">
+            <h4>站点对账/对账详单详情</h4>
+        </div>
+    <div style="padding:2em 3em;">
+        <form action="<?php echo U('Settle/index');?>" method="get" >
+            <input type="hidden" name="m" value="Settle" />
+            <input type="hidden" name="c" value="Settle" />
+            <input type="hidden" name="a" value="index" />
+            <div style="height:55px;line-height: 55px;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:3em;height:30px;line-height: 30px;">日期：</label>
+                <div class="col-sm-3" style="margin:0px;padding:0px;height:30px;line-height: 30px;width:25em;">
+                    <input name="date" type="radio" value="1" checked=checked" <?php if(($date) == "1"): ?>checked=checked"<?php endif; ?> /> 今天<span>|</span>
+                    <input name="date" type="radio" value="2" <?php if(($date) == "2"): ?>checked=checked"<?php endif; ?> /> 昨天<span>|</span>
+                    <input name="date" type="radio" value="3" <?php if(($date) == "3"): ?>checked=checked"<?php endif; ?> /> 近三天<span>|</span>
+                    <input name="date" type="radio" value="0" <?php if(($date) == "0"): ?>checked=checked"<?php endif; ?> /> 自定义时间
+                </div>
+                <div class="col-sm-2">
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedStart" id="demo_inp1" <?php if(!empty($definedStart)): ?>value="<?php echo (date('Y-m-d H:i:s',$definedStart)); ?>"<?php endif; ?>/>
+                </div>
+                <div class="col-sm-1" style="width:3em;height:30px;line-height: 30px;">至</div>
+                <div class="col-sm-2" >
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedOver" id="demo_inp2" <?php if(!empty($definedOver)): ?>value="<?php echo (date('Y-m-d H:i:s',$definedOver)); ?>"<?php endif; ?>/>
+                </div>
+                <input type="hidden" value="<?php echo ($jintian); ?>" name="datevalue" id="datevalue"/>
+                <input type="hidden" value="<?php echo ($zt); ?>" name="startdate" id="startdate"/>
+                <input type="hidden" value="<?php echo ($jst); ?>" name="overdate" id="overdate"/>
+                <label class="col-sm-1" style="padding:0px;width:5em;height:30px;line-height: 30px;">骑手姓名：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="deliver">
+                        <option value="">全部</option>
+                        <?php if(is_array($deliver)): $i = 0; $__LIST__ = $deliver;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vod): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vod["person_id"]); ?>" <?php if(($vod["person_id"]) == $deliver_id): ?>selected="selected"<?php endif; ?>><?php echo ($vod["person_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+                    </select>
+                </div>
+            </div>
+            <div style="height:55px;line-height: 55px;" >
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:8em;height:30px;line-height: 30px;">当前登陆商家：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="store_id">
+                        <option value="">全部</option>
+                        <?php if(is_array($info)): $i = 0; $__LIST__ = $info;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vov): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vov["store_id"]); ?>" <?php if(($vov["store_id"]) == $store_id): ?>selected="selected"<?php endif; ?>><?php echo ($vov["store_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+                    </select>
+                </div>
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:5em;height:30px;line-height: 30px;">订单ID：</label>
+                    <div class="col-sm-2" >
+                        <input type="text"  class="form-control" name="orderId" value="<?php echo ($orderId); ?>"/>
+                    </div>
+                <label class="col-sm-1" style="margin-left:1em;padding:0px;width:5em;height:30px;line-height: 30px;">订单类型：</label>
+                <div class="col-sm-2">
+                    <select class="form-control" name="ordertype">
+                        <option value="">全部</option>
+                        <option value="0" <?php if(($ordertype) == "0"): ?>selected="selected"<?php endif; ?>>货到付款</option>
+                        <option value="1" <?php if(($ordertype) == "1"): ?>selected="selected"<?php endif; ?>>在线支付</option>
+                        <option value="4" <?php if(($ordertype) == "4"): ?>selected="selected"<?php endif; ?>>快速下单</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cf">
+                <div class="fl">
+                    <button class="btn btn-primary" type="submit">查询</button>
+                    <a href="<?php echo U('excel');?>"><button class="btn btn-info" type="button">导出EXCEL</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="data-table table-striped" style="width: 100%;overflow: auto;">
+    <table class="table table-bordered scroll text-center" style="width: 100%;overflow-x: hidden;">
+        <thead>
+            <tr>
+                <th>订单显示ID</th>
+                <th>订单完成时间</th>
+                <th>商家名称</th>
+                <!--<th>商家结算方式</th>-->
+                <th>订单类型</th>
+                <th>骑手姓名</th>
+                <th>订单总价（元）</th>
+                <th>活动减免（元）</th>
+                <th>菜品原价（元）</th>
+                <th>打包费（元）</th>
+                <th>配送费（元）</th>
+                <th>抽成（元）</th>
+                <th>取餐应付（元）</th>
+                <th>送餐应收（元）</th>
+                <th>线上支付金额（元）</th>
+                <th>应上缴金额（元）</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($infos)): ?><tr>
+                <td colspan="5">合计</td>
+                <td><?php echo ($sumddjg); ?></td>
+                <td><?php echo ($sumyhze); ?></td>
+                <td><?php echo ($sumCpyj); ?></td>
+                <td><?php echo ($sumcjze); ?></td>
+                <td><?php echo ($sumPscost); ?></td>
+                <td><?php echo (round($sumccje,2)); ?></td>
+                <td><?php echo (round($sumqcsf,2)); ?></td>
+                <td><?php echo (round($sumscss,2)); ?></td>
+                <td><?php echo ($sumxszf); ?></td>
+                <td><?php echo ($sumyssje); ?></td>
+                <td>--</td>
+            </tr>
+            <style>
+
+            </style>
+            <?php if(is_array($infos)): $i = 0; $__LIST__ = $infos;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr class="data">
+                    <td><a class="order" data-id="<?php echo ($vo["order_id"]); ?>" data-toggle="modal" data-target="#myModal" ><?php echo ($vo["order_sn"]); ?></a></td>
+                    <td><?php echo (date('Y-m-d H:i:s',$vo["complete_time"])); ?></td>
+                    <td><?php echo ($vo["store_name"]); ?></td>
+                    <!--<td>--</td>-->
+                    <td>
+                        <?php switch($vo["pay_type"]): case "0": ?>货到付款<?php break;?>
+                            <?php case "1": ?>在线支付<?php break;?>
+                            <?php case "4": ?>快速下单<?php break;?>
+                            <?php default: endswitch;?>
+                    </td>
+                    <td>
+                        <?php if($vo["person_name"] == ''): ?>--
+                            <?php else: ?>
+                            <?php echo ($vo["person_name"]); endif; ?>
+                    </td>
+                    <td><?php echo ($vo["ddjg"]); ?></td>
+                    <td><?php echo ($vo["jmhd"]); ?></td>
+                    <td><?php echo ($vo["total"]); ?></td>
+                    <td><?php echo ($vo["canju_total"]); ?></td>
+                    <td><?php echo ($vo["ps_cost"]); ?></td>
+                    <td><?php echo ($vo["ccje"]); ?></td>
+                    <td><?php echo (round($vo["qcsf"],2)); ?></td>
+                    <td><?php echo (round($vo["scss"],2)); ?></td>
+                    <td><?php echo ($vo["xszf"]); ?></td>
+                    <td><?php echo ($vo["ysjje"]); ?></td>
+                    <td style="text-align: center;">
+                        <?php if($vo["remark"] == ''): ?>--
+                            <?php else: ?>
+                            <?php echo ($vo["remark"]); endif; ?>
+                    </td>
+                </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+            <?php else: ?>
+                <tr><td colspan="23"> aOh! 暂时还没有内容!</td></tr><?php endif; ?>
+        <?php if(is_array($aaa)): $i = 0; $__LIST__ = $aaa;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i; echo ($vo["cm_id"]); endforeach; endif; else: echo "" ;endif; ?>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">订单详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div><span style="margin-right:17em;padding-left: 2em;">菜品名称</span><span style="margin-right:0.1em;">原价</span><span  style="margin-right:2em;">现价</span><span>下单时间</span></div>
+                        <div  id="content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </tbody>
+    </table>
+        <div class="page"><?php echo ($page); ?></div>
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+    <script type="text/javascript" src="/Public/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="/Public/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="/Public/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript">
+
+    $(function(){$("input[name='date']").change(function(){
+            var date=$(this).val();
+            if(date==1){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var day = time.getDate();
+                var riqi=year+"-"+month+"-"+day;
+                $('#datevalue').val(riqi);
+
+            }else if(date==2){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var day = time.getDate()-1;
+                var riqi=year+"-"+month+"-"+day;
+                $('#datevalue').val(riqi);
+
+
+            }else if(date==3){
+                $('#datevalue').val('');
+                $('#definedStart').val('');
+                $('#definedOver').val('');
+                var time = new Date();
+                var year = time.getFullYear();
+                var month = time.getMonth()+1;
+                var startday = time.getDate()-2;
+                var overday = time.getDate();
+                var startriqi=year+"-"+month+"-"+startday;
+                var overriqi=year+"-"+month+"-"+overday;
+                $('#startdate').val(startriqi);
+                $('#overdate').val(overriqi);
+
+            }else if(date==0){
+                $('#startdate').val('');
+                $('#overdate').val('');
+                $('#datevalue').val('');
+            }
+        });
+        $('select[name="ordertype"]').click(function(){
+            if($('option[name="ordertype"]').val()==1) {
+
+            }
+        })
+    });
+
+
+    $(function(){
+        $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+        $('#demo_inp2').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+    });
+
+    $('.order').each(function(){
+        $(this).click(function(){
+            var id = $(this).data('id');
+            var url="<?php echo U('orderdetail');?>";
+            $.post(url,{dingdanId:id},function(data){
+                var str='';
+                for(var i= 0;i<data.length;i++){
+                    var time=Trans_php_time_to_str(data[i].xd_time,1);
+                    str+='<div class="caiming" style="border: 1px #eeeeee solid;width:100%;height:40px;line-height: 40px;padding-left:2em;"><div id="title" style="font-size: 1em;float:left;width:50%; text-overflow:ellipsis;overflow: hidden;">'+data[i].cm_name +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:10%">'+data[i].original_price +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:10%">'+data[i].now_price +'</div>'+'<div id="title" style="font-size: 1em;float:left;width:30%">'+time+'</div></div>';
+                }
+                document.getElementById("content").innerHTML = str;
+            });
+        })
+    });
+
+    function Trans_php_time_to_str(timestamp,n){
+        var update = new Date(timestamp*1000);//戳要乘1000
+        var year   = update.getFullYear();
+        var month  = (update.getMonth()+1<10)?('0'+(update.getMonth()+1)):(update.getMonth()+1);
+        var day    = (update.getDate()<10)?('0'+update.getDate()):(update.getDate());
+        var hour   = (update.getHours()<10)?('0'+update.getHours()):(update.getHours());
+        var minute = (update.getMinutes()<10)?('0'+update.getMinutes()):(update.getMinutes());
+        var second = (update.getSeconds()<10)?('0'+update.getSeconds()):(update.getSeconds());
+        if(n==1){
+            return (year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second);
+        }else if(n==2){
+            return (year+'-'+month+'-'+day);
+        }else{
+            return 0;
+        }
+    }
+
+    </script>
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree2):?>
+    <div class="modal fade" id="agreeModal2" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel3">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                            <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td width="50%" colspan="2" class="a1">甲方：<?php echo ($info9["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                            <tr><td colspan="2">地址：<?php echo ($info9["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                            <tr><td>邮编：<?php echo ($info9["post_code"]); ?></td><td>传真：<?php echo ($info9["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                            <tr><td>联系人：<?php echo ($info9["username"]); ?></td><td>电话：<?php echo ($info9["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                            <tr><td>EMAIL：<?php echo ($info9["email"]); ?></td><td>网站：<?php echo ($info9["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                            <tr>
+                                <td colspan="4">
+                                    <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                    <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                    <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                </td>
+                            </tr>
+                            <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                            <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td>功能模块</td><td>功能说明</td></tr>
+                            <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                            <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                            <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                            <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($info9["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                    <?php if(($hetongzt) == "1"): ?><button type="button" class="btn btn-info" id="noread5">关闭</button>
+                        <?php else: ?>
+                        <button type="button"  class="btn btn-primary" data-founder_id="<?php echo ($founder_id); ?>" id="read1">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread3">暂不签订</button><?php endif; ?>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread4">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">未结有效订单</th>
+                          <th style="text-align: center;">未结全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥0.10/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-default" id="closeds">关闭</button>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan1):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuan1Modal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                        <tr class="active">
+                            <th style="text-align: center;">企业名称</th>
+                            <th style="text-align: center;">未结有效订单</th>
+                            <th style="text-align: center;">未结全部订单</th>
+                            <th style="text-align: center;">收费标准</th>
+                            <th style="text-align: center;">收费金额</th>
+                            <th style="text-align: center;">结算状态</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;"><?php echo ($name); ?></td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                            <td style="text-align: center;">￥0.10/单</td>
+                            <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                            <td style="text-align: center;">
+                                <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                                    <?php else: ?>
+                                    <span style="color: red">未结算</span><?php endif; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu1">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var jiesuan1 = '<?php echo ($jiesuan1); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan1) && $('#jiesuan1Modal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' &&  location.reload();
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#read1').on('click',function(e){
+        var founder_id = $(e.target).data('founder_id');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+founder_id+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+    $('#noread3,#noread4,#noread5').click(function(){
+        $('#agreeModal2').modal('hide');
+    });
+     $('#closed,#closeds').click(function(){
+        $('#jiesuanModal').modal('hide');
+        //riqi !='' && location.reload();
+    });
+</script>
+</body>
+</html>
+<style>
+    .wyq{
+        width:180px;
+        height:400px;
+        position: absolute;top:45%;right: 0%;
+    }
+    .wyu{
+        text-decoration: none;
+        color: #000;
+        padding:10px 20px 10px 20px;
+        border:1px solid deepskyblue;
+        border-radius: 5px;
+        display: none;
+    }
+    .wyu:hover{
+        background-color: #00a73c;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        border:1px solid white;
+    }
+</style>
+<?php if($downloadapp):?>
+<div style="position: absolute;top:94%;right: 0%;">
+    <a class="wyu">App下载</a>
+</div>
+<div class="wyq" style="display: none">
+    <p class="apps" style="width: 100%;height:190px;text-align: center;background-color: #ddd;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Settle/View/Public/img/Appa.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">商家端手机App</span>
+    </p>
+    <p class="appp"  style="width: 100%;height: 190px;;text-align: center;background-color: #ddd;margin-top: 20px;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Settle/View/Public/img/Appp.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">配送端手机App</span>
+    </p>
+</div>
+<?php endif;?>
+<script>
+    $(document).ready(function(){
+        $('.wyu').click(function(){
+            $(".wyq").toggle(1000);
+        });
+        var aaa = "<?php echo session('user_auth.uid');?>";
+        if(aaa){
+            $('.wyu').show();
+        }
+    });
+</script>

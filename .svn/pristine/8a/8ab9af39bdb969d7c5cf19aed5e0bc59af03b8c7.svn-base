@@ -1,0 +1,50 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+    <div class="row">
+        <div class="col-sm-2" style="margin-top: 20px;margin-left:50px;width: auto;padding: 6px 35px 6px 35px;font-size:16px;">站点管理</div>
+    </div>
+    <div class="data-table" style="margin-top: 20px;padding:0px 15px 0px 15px ;">
+
+
+          <form class="ids">
+               <table class="table table-bordered text-center">
+                   <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>站点名称</th>
+                            <th>负责人名称</th>
+                            <th>联系电话</th>
+                            <th>所属省</th>
+                            <th>所属市</th>
+                            <th>所属区、县</th>
+                            <th>操作</th>
+                        </tr>
+                   </thead>
+                   <notempty name="list">
+                       <volist name="list" id="_data">
+                              <tr>
+                                  <td>{$_data.range_id}</td>
+                                  <td>{$_data.range_name}</td>
+                                  <td>{$_data.charge}</td>
+                                  <td>{$_data.phone}</td>
+                                  <td>{$_data.namea}</td>
+                                  <td>{$_data.nameb}</td>
+                                  <td>{$_data.namec}</td>
+                                  <td>
+                                      <a href="{:U('edit?id='.$_data['range_id'])}">
+                                          编辑
+                                      </a>
+                                      <a href="{:U('del?id='.$_data['range_id'])}" class="ajax-get">
+                                          删除
+                                      </a>
+                                  </td>
+                              </tr>
+                       </volist>
+                                <else/>
+                                    <td colspan="17" class="text-center"> aOh! 暂时还没有内容! </td>
+                   </notempty>
+               </table>
+          </form>
+    </div>
+</block>

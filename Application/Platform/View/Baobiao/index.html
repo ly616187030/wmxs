@@ -1,0 +1,79 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+</block>
+<block name="main">
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+            <div class="main-title">
+                <h4>平台库存报表（截至{$time}）</h4>
+            </div>
+            <!-- 顶部工具栏按钮 -->
+            <div class="builder-toolbar builder-list-toolbar">
+                    <!-- 工具栏按钮 -->
+                    <form action="{:U('index')}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="row">
+                            <label class="col-sm-1">请选择仓库：</label>
+                            <div class="col-sm-2">
+                                <select name="storage_id" class="form-control">
+                                    <option style="display: none;" value="{$titleid}">{$title}</option>
+                                    <volist name="storage" id="storage">
+                                        <option value="{$storage.storage_id}">{$storage.storage_name}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-success" id="submit" type="submit" target-form="form-horizontal">搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+
+            <!-- 数据列表 -->
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <div class="builder-table">
+                            <div class="panel panel-default">
+                                <table class="table table-bordered table-responsive table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>库存ID</th>
+                                        <th>仓库名称</th>
+                                        <th>商品名称</th>
+                                        <th>库存数量</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                    <notempty name="list">
+                                        <volist name="list" id="vo">
+                                            <tr>
+                                                <td>{$vo.kc_id}</td>
+                                                <td>{$vo.storage_id|get_storage_name}</td>
+                                                <td>{$vo.sp_id|get_sp_name}</td>
+                                                <td>{$vo.quantity}{$vo.sp_id|get_sp_danwei}</td>
+                                            </tr>
+                                        </volist>
+                                        <else/>
+                                        <td colspan="7" class="text-center"> aOh! 该仓库没有库存哦！ </td>
+                                    </notempty>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="page">
+                                {$page}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+
+</block>
+

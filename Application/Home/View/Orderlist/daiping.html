@@ -1,0 +1,689 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="style">
+<style type="text/css">
+/*CSS jogger style pagination*/
+
+DIV.jogger {
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; MARGIN: 7px; PADDING-TOP: 2px;
+    text-align: center;
+}
+DIV.jogger A {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e; TEXT-DECORATION: none
+}
+
+DIV.jogger A:hover {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger A:active {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger SPAN.current {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e
+}
+</style>
+</block>
+<block name="body_zhgIndex">
+<!doctype html>
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main center-main">
+   <include file="Public/user_center_left_zhg"/>
+    <section class="usercenter-detail" id="usercenter-address">
+    <div class="uc-content">
+    <!-- 我的订单 -->
+<div class="content-box" id="MyOrderDiv">
+    <div class="curmenu">我的订单</div>
+    <div class="remide">
+        提醒：
+        <a class="linkTab" id="all" href="{:U('Orderlist/index')}">全部<b>({$countquan})</b></a>
+        <a class="linkTab" id="payFailNo" href="{:U('Orderlist/daifu')}">待付款<b>({$daifu})</b></a>
+        <a class="linkTab" id="commentNo" href="{:U('Orderlist/daiping')}">待评价<b>({$pingjia})</b></a>
+    </div>
+    <div>
+        <table width="1043" border="0">
+            <tbody>
+                <tr class="col-name">
+                    <td>订单信息</td>
+                    <td>订餐人</td>
+                    <td>订单金额</td>
+                    <td>就餐时间</td>
+                    <td>订单状态</td>
+                    <td>操作</td>
+                </tr>
+                <volist name="list" id="vo">                                                                                                 
+                    <tr class="col-item">
+                        <td valign="middle">订单编号：{$vo.order_sn}<br>
+                            {$vo.store_id|get_store_name}  </td>
+                        <td valign="middle">{$vo.address_id|get_user_address}</td>
+                        <td valign="middle">￥{$vo['total']+$vo['yajin']+$vo['ps_cost']+$vo['canju_total']-$vo['yh_price']}</td>
+                        <td valign="middle">{$vo.send_time|date="Y-m-d H:i:s",###}</td>
+                        <td valign="middle">
+ <!--                       
+// 1.未支付订单(在线支付，未完成支付)
+// 2.已支付订单（在线支付，完成支付）
+// 3.餐到付款
+// 4.商家已确认（商家接单）
+// 5.完成订单（餐已送达，确认,等待评价）
+// 6.完成评价(彻底完成订单)
+// 7.取消订单（用户下单后，没有支付直接取消）
+// 8.取消已付款订单（用户支付，顾客取消订单，转到退款）
+// 9.商家拒单（用户货到付款）
+// 10.商家拒单（用户在线支付后，商家拒单，转到退款）
+// 11.退款审核中
+// 12.完成退款，此单已完成
+// 13.用户下单，商家接单，后用户取消订单
+// 14.制作完成 -->
+                        	<switch name="vo.status" >
+                        	    <case value="1">待支付</case>
+                        	    <case value="2">支付完成</case>
+                                <case value="3">商家确认中</case>
+                                <case value="4">商家已确认</case>
+                                <case value="5">待评价</case>
+                                <case value="6">订单完成</case>
+                                <case value="7">已退单</case>
+                                <case value="8">支付完成<br>已退单</case>
+                                <case value="9">商家拒接</case>
+                                <case value="10">支付完成<br>商家拒接</case>
+                                <case value="11">支付完成<br>退款审核中</case>
+                                <case value="12">退款完成</case>
+                                <case value="13">已退单</case>
+                                <!--<case value="14">请耐心等待配送</case>-->
+                        	    <default />
+                        	</switch>
+                        </td>
+                        <td class="operate" valign="middle" width="150">
+                            <a target="_blank" href="{:U('Orderlist/detail?order_id='.$vo['order_id'])}">查看详情</a>
+                            <switch name="vo.status">
+                                <case value="1"><a href="" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">去支付</a></case>
+                                <case value="2"><a href="{:U('Refund/refunds')}" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">申请退款</a></case>
+                                <case value="3"><a href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiao">取消订单</a></case>
+                                <case value="4"><a href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active quxiao">取消订单</a></case>
+                                <case value="5"><a id="{$vo.order_id}" href="javascript:void(0)" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active pingjia">评价订单</a></case>
+                                <case value="10"><a href="{:U('Refund/refunds')}" style="width:50%;margin-left:25%;text-decoration:none;color:#fb4b4d;" class="btn btn-link btn-xs active">申请退款</a></case>
+                                <default />
+                            </switch>
+                        </td>
+                    </tr> 
+                    </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="jogger">
+{$page}
+</div>
+<!-- <div id="qjBox" class="tool-box" style="display: none; height:auto;">
+    <div class="tool-header">
+        <a href="javascript:;" class="tool-close" onclick="closeFoodPasswordDiv()"></a>
+        <h1>您的美食密码</h1>
+    </div>
+    <div class="tool-bar">     
+        <div class="friendlink">
+            美食密码是：<span id="PCFoodPassword"></span>
+        </div>
+        <div class="tool-footer"><a href="#" onclick="sendFoodPassword()">发送到手机</a></div>
+        <input type="hidden" id="FoodOrderNumber">
+    </div>
+</div> -->
+</div>
+
+        <!--弹出框开始-->
+        <!--评价框中的内容开始-->
+        <style>
+            .comment-dialog {
+                z-index: 1000;
+                color: #333
+            }
+            .comment-dialog .comment-text-notice {
+                text-align: right;
+                display: block;
+                padding: 5px 0;
+                color: #999
+            }
+            .comment-dialog .dialog-wrapper {
+                margin: auto;
+                width: 580px;
+                background: #fff;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                padding-bottom: 30px
+            }
+            .comment-dialog .dialog-header {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                background: #fafafa;
+                line-height: 50px;
+                height: 50px;
+                padding: 0 10px
+            }
+            .comment-dialog .dialog-header .header-title {
+                font-size: 1.4em;
+                font-weight: 400;
+                text-indent: .8em;
+                display: inline-block;
+                *display: inline;
+                *zoom: 1
+            }
+            .comment-dialog .dialog-header .close-btn {
+                font-size: 2em;
+                border: 0;
+                background: 0 0;
+                outline: 0;
+                float: right;
+                line-height: 50px;
+                height: 50px;
+                color: #ccc
+            }
+            .comment-dialog .dialog-header .closebtn {
+                font-size: 2em;
+                border: 0;
+                background: 0 0;
+                outline: 0;
+                float: right;
+                line-height: 50px;
+                height: 50px;
+                color: #ccc;
+                margin-right: 10px;
+            }
+            .comment-dialog .dialog-row {
+                padding: 0 4%;
+                line-height: 50px
+            }
+            .comment-dialog .dialog-row i {
+                position: absolute;
+                width: 200px;
+                height: 200px;
+                left: 30%;
+                background: url(http://webmap2.map.bdimg.com/static/waimai/images/wm_landing-code_7cd2eaf.png) center no-repeat
+            }
+            .comment-dialog .dialog-row .dialog-label {
+                font-size: 1.0em;
+                display: inline-block;
+                *display: inline;
+                *zoom: 1;
+                text-align: right;
+                width: 12%;
+                vertical-align: top
+            }
+            .comment-dialog .dialog-row .dialog-label.lh-normal {
+                line-height: normal
+            }
+            .comment-dialog .dialog-row .vt-top {
+                vertical-align: top;
+                line-height: normal
+            }
+            .comment-dialog .dialog-row .dailog-content {
+                width: 82%;
+                display: inline-block;
+                *display: inline;
+                *zoom: 1;
+                padding: 0 0 0 4%;
+                margin: 0 0 20px;
+                line-height: normal
+            }
+            .comment-dialog .dialog-row .dailog-content button {
+                display: inline-block;
+                width: 120px;
+                height: 40px;
+                padding: 0;
+                border: 0;
+                text-align: center;
+                zoom: 1;
+                *display: inline;
+                -webkit-transition: background-color .2s ease-in 0s;
+                -moz-transition: background-color .2s ease-in 0s;
+                -o-transition: background-color .2s ease-in 0s;
+                transition: background-color .2s ease-in 0s;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                font-size: 1em;
+                color: #fff;
+                background-color: #fd4b4d;
+                cursor: pointer
+            }
+            .comment-dialog .dialog-row .dailog-content button.versa {
+                background-color: #666
+            }
+            .comment-dialog .dialog-row .dailog-content button.versa:hover {
+                background-color: #5c5c5c
+            }
+            .comment-dialog .dialog-row .dailog-content button:hover {
+                background-color: #a60f0e
+            }
+            .comment-dialog .dialog-row .dailog-content button.disable,
+            .comment-dialog .dialog-row .dailog-content button.disabled {
+                background-color: #888;
+                cursor: default
+            }
+            .comment-dialog .dialog-row .dailog-content .dialog-recomm {
+                background: #f7f7f7;
+                margin: 0 5px 0 0;
+                color: #999;
+                text-decoration: none;
+                display: inline-block;
+                *display: inline;
+                *zoom: 1;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 5px;
+                margin: 0 5px 5px 0
+            }
+            .comment-dialog .dialog-row .dailog-content .dialog-recomm.select-dish {
+                outline: 1px solid #1e89e0;
+                background-color: #fff
+            }
+            .comment-dialog .dialog-row .dailog-content .comment-text {
+                border: 1px solid #e8e8e8;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                width: 100%;
+                height: 90px;
+                resize: none;
+                font-size: 1em
+            }
+            .comment-dialog .dialog-row .dailog-content select {
+                border: 1px solid #e8e8e8;
+            }
+            .comment-dialog .dialog-row .dailog-content input {
+                margin-left: 10px;
+            }
+            .msg-dialog {
+                margin-top: -20px;
+                z-index: 1005;
+                font-size: 16px
+            }
+            .msg-dialog .msg-bd {
+                min-width: 400px;
+                padding: 25px
+            }
+            .msg-dialog .actions {
+                height: 40px;
+                margin: 0 auto 30px;
+                text-align: center
+            }
+            .msg-dialog button.cancel {
+                display: none
+            }
+            .msg-dialog button {
+                display: inline-block;
+                width: 100px;
+                height: 30px;
+                padding: 0;
+                border: 0;
+                text-align: center;
+                zoom: 1;
+                *display: inline;
+                -webkit-transition: background-color .2s ease-in 0s;
+                -moz-transition: background-color .2s ease-in 0s;
+                -o-transition: background-color .2s ease-in 0s;
+                transition: background-color .2s ease-in 0s;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                font-size: 1em;
+                color: #fff;
+                background-color: #1e89e0;
+                cursor: pointer
+            }
+            .msg-dialog button.versa {
+                background-color: #666
+            }
+            .msg-dialog button.versa:hover {
+                background-color: #5c5c5c
+            }
+            .msg-dialog button:hover {
+                background-color: #1662a0
+            }
+            .msg-dialog button.disable,
+            .msg-dialog button.disabled {
+                background-color: #888;
+                cursor: default
+            }
+            .msg-dialog.confirm button {
+                display: inline-block;
+                width: 90px;
+                height: 40px;
+                padding: 0;
+                border: 0;
+                text-align: center;
+                zoom: 1;
+                *display: inline;
+                -webkit-transition: background-color .2s ease-in 0s;
+                -moz-transition: background-color .2s ease-in 0s;
+                -o-transition: background-color .2s ease-in 0s;
+                transition: background-color .2s ease-in 0s;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                font-size: 1em;
+                color: #fff;
+                background-color: #1e89e0;
+                cursor: pointer;
+                margin-right: 10px
+            }
+            .msg-dialog.confirm button.versa {
+                background-color: #666
+            }
+            .msg-dialog.confirm button.versa:hover {
+                background-color: #5c5c5c
+            }
+            .msg-dialog.confirm button:hover {
+                background-color: #1662a0
+            }
+            .msg-dialog.confirm button.disable,
+            .msg-dialog.confirm button.disabled {
+                background-color: #888;
+                cursor: default
+            }
+            .msg-dialog .contact {
+                width: 350px;
+                margin-bottom: 20px;
+                padding: 20px 0 0 88px;
+                background: url(__IMG__/orderlist/tele.png) no-repeat 25px 43px
+            }
+            .msg-dialog .contact .tp {
+                font-size: 16px;
+                font-weight: 700;
+                margin: 20px 0 40px
+            }
+            .msg-dialog .contact .candidate {
+                font-size: 12px;
+                color: #999
+            }
+            #rating-star {
+                margin: 10px;
+            }
+            #rating-star a {
+                background: url(__IMG__/orderlist/commentstar.png) no-repeat 0 -90px;
+                display: inline-block;
+                height: 23px;
+                text-indent: -999em;
+                width: 23px;
+                cursor: pointer;
+            }
+            #rating-star1 {
+                margin: 10px;
+            }
+            #rating-star1 a {
+                background: url(__IMG__/orderlist/commentstar.png) no-repeat 0 -90px;
+                display: inline-block;
+                height: 23px;
+                text-indent: -999em;
+                width: 23px;
+                cursor: pointer;
+            }
+            #rating-star2 {
+                margin: 10px;
+            }
+            #rating-star2 a {
+                background: url(__IMG__/orderlist/commentstar.png) no-repeat 0 -90px;
+                display: inline-block;
+                height: 23px;
+                text-indent: -999em;
+                width: 23px;
+                cursor: pointer;
+            }
+
+            .star-notice {
+                font-size: 1em;
+                color: #9d9d9d;
+            }
+        </style>
+        <div class="mod-dialog-frame">
+            <div style="display:none;overflow: hidden; position: fixed; top: 50%; left: 50%;z-index: 1004; background-color: rgb(255, 255, 255);margin:-165px 0px 0px -300px;width:600px;height:390px;border-radius:10px;" class="mod-dialog-wrap" id="dialog">
+                <div class="comment-dialog">
+                    <div class="dialog-wrapper">
+                        <div class="dialog-header">
+                            <h1 class="header-title">评价订单</h1>
+                            <button class="close-btn" id="close-btn">╳</button>
+                        </div>
+                        <div class="dialog-row">
+
+                            <div class="dialog-label">评分:</div>
+                            <div class="dailog-content" style="margin-top:1%">
+                                <!--隐藏域-->
+                                <input type="hidden" id="orderid" value="" />
+                                <input type="hidden" id="stars" value="" />
+                                <input type="hidden" id="stars1" value="" />
+                                <input type="hidden" id="stars2" value="" />
+                                <!--隐藏域-->
+                                <div id="rating-star">
+                                    口味如何：
+                                    <a onclick="$('#stars').val(parseInt($(this).text())+1)">0</a>
+                                    <a onclick="$('#stars').val(parseInt($(this).text())+1)">1</a>
+                                    <a onclick="$('#stars').val(parseInt($(this).text())+1)">2</a>
+                                    <a onclick="$('#stars').val(parseInt($(this).text())+1)">3</a>
+                                    <a onclick="$('#stars').val(parseInt($(this).text())+1)">4</a>
+                                    <span class="star-notice" style="margin-left: 50px;" id="points"></span>
+                                </div>
+                                <div id="rating-star1">
+                                    送货时间：
+                                    <a onclick="$('#stars1').val(parseInt($(this).text())+1)">0</a>
+                                    <a onclick="$('#stars1').val(parseInt($(this).text())+1)">1</a>
+                                    <a onclick="$('#stars1').val(parseInt($(this).text())+1)">2</a>
+                                    <a onclick="$('#stars1').val(parseInt($(this).text())+1)">3</a>
+                                    <a onclick="$('#stars1').val(parseInt($(this).text())+1)">4</a>
+                                    <span class="star-notice" style="margin-left: 50px;" id="points1"></span>
+                                </div>
+                                <div id="rating-star2">
+                                    服务态度：
+                                    <a onclick="$('#stars2').val(parseInt($(this).text())+1)">0</a>
+                                    <a onclick="$('#stars2').val(parseInt($(this).text())+1)">1</a>
+                                    <a onclick="$('#stars2').val(parseInt($(this).text())+1)">2</a>
+                                    <a onclick="$('#stars2').val(parseInt($(this).text())+1)">3</a>
+                                    <a onclick="$('#stars2').val(parseInt($(this).text())+1)">4</a>
+                                    <span class="star-notice" style="margin-left: 50px;" id="points2"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $('#rating-star').on('click', 'a', function() {
+                            $('#rating-star').data('star', this.innerHTML);
+                        }).on('mouseenter', 'a', function() {
+                            setStar(this);
+                        }).on('mouseleave', 'a', function() {
+                            var $r_star = $('#rating-star');
+                            var level = $r_star.data('star');
+                            var $stars = $r_star.find('a');
+                            if (level) {
+                                setStar($stars[level]);
+                            } else {
+                                $stars.css('background-position', '0 -90px');
+                                $('#points').text('点击星星打分')
+                            }
+                        });
+                        $('#rating-star1').on('click', 'a', function() {
+                            $('#rating-star1').data('star', this.innerHTML);
+                        }).on('mouseenter', 'a', function() {
+                            setStar1(this);
+                        }).on('mouseleave', 'a', function() {
+                            var $r_star = $('#rating-star1');
+                            var level = $r_star.data('star');
+                            var $stars = $r_star.find('a');
+                            if (level) {
+                                setStar1($stars[level]);
+                            } else {
+                                $stars.css('background-position', '0 -90px');
+                                $('#points1').text('点击星星打分')
+                            }
+                        });
+                        $('#rating-star2').on('click', 'a', function() {
+                            $('#rating-star2').data('star', this.innerHTML);
+                        }).on('mouseenter', 'a', function() {
+                            setStar2(this);
+                        }).on('mouseleave', 'a', function() {
+                            var $r_star = $('#rating-star2');
+                            var level = $r_star.data('star');
+                            var $stars = $r_star.find('a');
+                            if (level) {
+                                setStar2($stars[level]);
+                            } else {
+                                $stars.css('background-position', '0 -90px');
+                                $('#points2').text('点击星星打分')
+                            }
+                        });
+
+                        function setStar(star) {
+                            var $this = $(star);
+                            var level = $this.text();
+                            var n;
+                            if (level == '1' || level == '2') {
+                                n = '0 -30px';
+                            } else if (level == '3' || level == '4') {
+                                n = '0 0';
+                            } else {
+                                n = '0 -60px';
+                            }
+                            if (level == '0') {
+                                $('#points').text('差');
+                            } else if (level == '1') {
+                                $('#points').text('一般')
+                            } else if (level == '2') {
+                                $('#points').text('好')
+                            } else if (level == '3') {
+                                $('#points').text('很好')
+                            } else if (level == '4') {
+                                $('#points').text('非常好')
+                            }
+                            $this.prevAll().andSelf().css('background-position', n);
+                            $this.nextAll().css('background-position', '0 -90px');
+                        }
+                        function setStar1(star) {
+                            var $this = $(star);
+                            var level = $this.text();
+                            var n;
+                            if (level == '1' || level == '2') {
+                                n = '0 -30px';
+                            } else if (level == '3' || level == '4') {
+                                n = '0 0';
+                            } else {
+                                n = '0 -60px';
+                            }
+                            if (level == '0') {
+                                $('#points1').text('差');
+                            } else if (level == '1') {
+                                $('#points1').text('一般')
+                            } else if (level == '2') {
+                                $('#points1').text('好')
+                            } else if (level == '3') {
+                                $('#points1').text('很好')
+                            } else if (level == '4') {
+                                $('#points1').text('非常好')
+                            }
+                            $this.prevAll().andSelf().css('background-position', n);
+                            $this.nextAll().css('background-position', '0 -90px');
+                        }
+                        function setStar2(star) {
+                            var $this = $(star);
+                            var level = $this.text();
+                            var n;
+                            if (level == '1' || level == '2') {
+                                n = '0 -30px';
+                            } else if (level == '3' || level == '4') {
+                                n = '0 0';
+                            } else {
+                                n = '0 -60px';
+                            }
+                            if (level == '0') {
+                                $('#points2').text('差');
+                            } else if (level == '1') {
+                                $('#points2').text('一般')
+                            } else if (level == '2') {
+                                $('#points2').text('好')
+                            } else if (level == '3') {
+                                $('#points2').text('很好')
+                            } else if (level == '4') {
+                                $('#points2').text('非常好')
+                            }
+                            $this.prevAll().andSelf().css('background-position', n);
+                            $this.nextAll().css('background-position', '0 -90px');
+                        }
+                    </script>
+                    <div class="dialog-row" style="margin-top: -50px;">
+                        <div class="dialog-row">
+                            <div class="dialog-label vt-top" style="margin-left: -2%">点评:</div>
+                            <div class="dailog-content vt-top">
+                                <textarea class="comment-text placeholder-con" placeholder="您的意见很重要！口味如何？服务怎样？来点评一下吧！(200字以内)" maxlength="200" onchange="this.value=this.value.substring(0, 200)" onkeydown="this.value=this.value.substring(0, 200)" onkeyup="this.value=this.value.substring(0, 200)"></textarea>
+                            </div>
+                        </div>
+                        <div class="dialog-row">
+                            <div class="dialog-label"></div>
+                            <div class="dailog-content">
+                                <button type="button" style="margin-left: 30px;" id="submit">提交评价</button>
+                                <span id="ajaxdata" class="ft-red" style="margin-left:80px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--评价框中的内容结束-->
+
+        <!-- 评价成功示意框开始 -->
+        <div style="display:none;position:fixed; top:50%;  left: 50%; background-color: #fb4b4d;z-index:1004;width:350px;height:80px;border-radius: 8px;margin:-50px 0px 0px -175px;" id="pingjiaok">
+            <div class="msg-dialog">
+                <div class="msg-bd">
+                    <div style="margin-top:22px; text-align: center;margin-left: -30px;">
+                        <div style="font-size:16px;">
+                            <p style="color: #fff;font-size: 16px;">恭喜您，评价成功！</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions"></div>
+            </div>
+        </div>
+                    <!--弹出框结束-->
+<script type="text/javascript">
+    //点击评价订单按钮的效果
+    $('.pingjia').click(function() {
+        $('#orderid').val($(this).attr("id"));
+        $('#dialog').show();
+        ztools.maskshow();
+    });
+    $('#close-btn').click(function() {
+        $('#dialog').hide();
+        ztools.maskhide();
+        location.reload();
+    });
+    //点击提交评价按钮的效果
+    $('#submit').click(function() {
+        var pingjiadata = {
+            order_id: $('#orderid').val(),
+            pingfen: $('#stars').val(),
+            pingfen1: $('#stars1').val(),
+            pingfen2: $('#stars2').val(),
+            content: $('.placeholder-con').val()
+        };
+        $.post("{:U('Orderlist/createpj')}", pingjiadata, function(data) {
+            if (data == 'pingfen') {
+                $('#ajaxdata').html('评个分呗~！')
+            }
+            if (data == 'content') {
+                $('#ajaxdata').html('给点意见呗~！')
+            }
+            if (data === true) {
+                $('#dialog').hide();
+                $('#pingjiaok').show();
+                $('#pingjiaok').fadeOut(1000, function() {
+                    ztools.maskhide();
+                    $('#orderid').val('');
+                    $('#stars').val('');
+                    $('textarea').val('');
+                    window.location.href="{:U('Orderlist/pingjia')}";
+                });
+            }
+        })
+    })
+                    </script>
+</section>
+</div>
+
+</block>

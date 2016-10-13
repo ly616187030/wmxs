@@ -1,0 +1,78 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <form id="form" action="{:U('index')}" method="post" class="form-horizontal doc-modal-form">
+                            <!-- 基础 -->
+                            <div class="form-group">
+                                <label class='col-sm-2 control-label' >押金：</label>
+                                <div class='col-sm-2'>
+                                    <input type="hidden" name="tab_id" value="{$list.tab_id}">
+                                    <input type='number' class='form-control' name='tab_deposit' value="{$list.tab_deposit}">
+                                </div>
+                                <label class='control-label' >（元）</label>
+                            </div>
+                            <div class="form-group">
+                                <label class='col-sm-2 control-label' >餐具备注：</label>
+                                <div class='col-sm-3'>
+                                    <textarea class='form-control'  name='tab_remarks' rows="3">{$list.tab_remarks}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class='col-sm-2 control-label' >餐具详情：</label>
+                                <div class='col-sm-3'>
+                                    <textarea class='form-control'  name='tab_details' rows="5">{$list.tab_details}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">启用状态：</label>
+                                <div class="col-sm-4">
+                                    <div class="controls" id="demo_inp2" data-status="{$list.tab_status}">
+                                        <label class="col-sm-3 control-label"><input type="radio" value="0" name="tab_status" class="rsht">禁用</label>
+                                        <label class="col-sm-3 control-label"><input type="radio" value="1" name="tab_status" class="rsht">启用</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    <button class="btn submit-btn btn-primary ajax-post no-refresh" type="submit" id="id_qdtj" target-form="form-horizontal" >确定</button>
+                                    <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返回</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+</block>
+<block name="script">
+	
+	<script type="text/javascript">
+
+         
+         $(document).ready(function(){
+
+             var rsht = $("#demo_inp2").data("status");
+             if(rsht == 1){
+                 $("input[name=tab_status]:eq(1)").attr("checked",'checked');
+             }else{
+                 $("input[name=tab_status]:eq(0)").attr("checked",'checked');
+             }
+
+         })
+         
+    
+	</script>
+</block>

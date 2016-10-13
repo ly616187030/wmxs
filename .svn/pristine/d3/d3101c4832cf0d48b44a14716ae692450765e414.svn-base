@@ -1,0 +1,63 @@
+
+#form{
+    border:1px solid #dcdcdc;;
+    margin-top:1em;
+    background:#FFFFFF;
+    padding-top:1em;
+}
+.linkman{
+    font-size:1em;
+    margin-left:1em;
+    padding-top:1em;
+}
+.name{
+    height:2.6em;
+    width:75%;
+    font-size:1em;
+    border:none;
+    border-bottom:1px solid #dcdcdc;
+}
+.check{
+   float:left;
+   margin-left:4em;
+   margin-top:0.5em;
+}
+.ssex{
+    border-bottom:1px solid #dcdcdc;
+    padding:0.5em 0.5em;
+    width:90%;
+    margin:0 auto;
+}
+.sex{
+    float:left;
+    font-size:1em;
+    margin-top:0.9em;
+}
+.link{
+    margin-top:1em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

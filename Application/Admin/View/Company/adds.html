@@ -1,0 +1,143 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:20px;
+        }
+        .builder-toolbar{margin-bottom: 20px;}
+    </style>
+</block>
+
+<block name="main">
+
+
+    <style>
+        .dep_title{ width: 100%; line-height: 50px; color: #40A2C4; background:#F7F7F7; padding-left:50px;}
+        .dep_title a{color: #40A2C4;}
+        .dep_plus{border: 1px solid #40A2C4; padding: 1px 2px; margin-right:5px; }
+        .dep_box{ width: 100%; height: auto;}
+        .dep_box ul{ list-style: none; padding: 0; margin: 0;}
+        .dep_box ul li{ line-height: 45px;  border-bottom: 1px solid #F1F1F1;padding-left:50px; color: #40A2C4;}
+        .dep_box ul li:hover{ background: #eee;}
+        .dep_box ul li span{ color: #40A2C4;margin-right:5px;}
+        .dep_box ul li a{ float: right;padding-right: 10px;}
+        .dep_box ul li input{ border: 1px solid #cccccc; height: 34px; line-height: 34px; padding: 5px 3px;}
+        .edit_sub {color: #fff;background-color: #5cb85c;border-color: #4cae4c;}
+    </style>
+    <div class="builder-container builder-list-container">
+        <div class="dep_title"><a href="javascript:;" id="add_button"><span class="fa fa-plus dep_plus"></span>公司类型</a> </div>
+        <div class="dep_box">
+            <ul>
+                <li id="first_button" style="display: none;"><span class="fa fa-folder"></span><input type="text" name="cy_name" />
+                    <button type="submit" class="btn btn-success ajax-post" data-pid="0" data-lev="0">保存</button>
+                    <button class="btn btn-default" id="first_quxiao">取消</button> </li>
+                <volist name="list" id="vo">
+                    <li id="menu_{$vo.id}" class="menu_pid_{$vo.pid}" style="padding-left:{$vo.margin_left}px">
+                        <span class="fa fa-folder"></span><span id="cy_name_{$vo.id}">{$vo.cy_name}</span><a href="javascript:;" class='del' data-id="{$vo.id}">删除</a>
+                        <a href="javascript:;" class="edit" data-id="{$vo.id}">修改</a>
+                        <a href="javascript:;" class="addchild" data-id="{$vo.id}" data-lev="{$vo.level}">新增子类型</a></li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var aa = '';
+        $(document).on('click','.btn-success',function(){
+            var pid = $(this).data('pid');
+            var cy_name = $(this).siblings("input[name='cy_name']").val();
+            var level = $(this).data('lev');
+            var left = 21*level+50;
+
+            $.post("{:U('add')}",{pid:pid,cy_name:cy_name,level:level}).success(function(data){
+//                alert(JSON.stringify(data));
+                if(data != false){
+                    aa = "<li style='padding-left: "+left+"px' id=\"menu_"+data.id+"\"  class=\"menu_pid_"+data.pid+"\">" +
+                    "<span class=\"fa fa-folder\"></span><span id=\"cy_name_"+data.id+"\">"+data.cy_name+"</span><a href=\"javascript:;\" class='del' data-id=\""+data.id+"\">删除</a>" +
+                    "<a href=\"javascript:;\" class='edit' data-id=\""+data.id+"\">修改</a>" +
+                    "<a href=\"javascript:;\" class=\"addchild\" data-id=\""+data.id+"\" data-lev=\""+data.level+"\">新增子类型</a></li>";
+
+                    if($('.dep_box ul li').length > 1){
+                        if(data.level == 0){
+                            $('.dep_box ul').append(aa);
+                        }else{
+                            if($('.dep_box ul li').hasClass("menu_pid_"+pid)){
+                                $('.menu_pid_'+pid).last().after(aa);
+                            }else{
+                                $('#menu_'+pid).after(aa);
+                            }
+                        }
+
+                    }else{
+                        $('.dep_box ul').append(aa);
+                    }
+                    $("input[name='cy_name']").val('');
+                }else{
+                    $.alertMessager('添加失败');
+                }
+            });
+        });
+        //添加子类型
+        $(document).on('click','.addchild',function(){
+            var id = $(this).data('id');
+            var level = $(this).data('lev')+1;
+            var left = 21*level+50;
+            aa = "<li style='padding-left: "+left+"px'><span class=\"fa fa-folder\"></span><input type=\"text\" name=\"cy_name\" />"+
+            " <button type=\"submit\" class=\"btn btn-success ajax-post\" data-pid=\""+id+"\" data-lev=\""+level+"\"> 保存</button>"+
+            " <button class=\"btn btn-default quxiao\" data-id=\""+id+"\">取消</button> </li>";
+
+            $('#menu_'+id).after(aa);
+        });
+        $(document).on('click','.quxiao',function(){
+            $(this).parent().remove();
+        });
+        $('#first_quxiao').click(function(){
+            $('#first_button').hide();
+        });
+        $('#add_button').click(function(){
+            var first = $('#first_button');
+            if(first.is(":hidden")){
+                first.show();
+            }else{
+                first.hide();
+            }
+        });
+        $(document).on('click','.edit',function(){
+            var id = $(this).data('id');
+            var text = $('#cy_name_'+id).text();
+            aa = "<input type=\"text\" name=\"cy_name\" value='"+text+"' />"+
+            " <button type=\"submit\" class=\"btn ajax-post edit_sub\"> 保存</button>"+
+            " <button class=\"btn btn-default edit_quxiao\">取消</button>";
+            $('#cy_name_'+id).html(aa);
+            $('.edit_sub').click(function(){
+                var cy_name = $(this).siblings('input[name="cy_name"]').val();
+                $.post("{:U('edit1')}",{id:id,cy_name:cy_name}).success(function(data){
+                    if(data > 0){
+                        $('#cy_name_'+id).text(cy_name);
+                    }else{
+                        $.alertMessager('修改失败');
+                    }
+                });
+
+            });
+            $('.edit_quxiao').click(function(){
+                $('#cy_name_'+id).text(text);
+            });
+        });
+        //删除
+        $(document).on('click','.del',function(){
+            var id = $(this).data('id');
+            $.post("{:U('del')}",{id:id}).success(function(data){
+                if(data.status == 1){
+                    $('#menu_'+id).remove();
+                    $.alertMessager(data.text,'success');
+                }else{
+                    $.alertMessager(data.text);
+                }
+
+            });
+
+        });
+    </script>
+</block>

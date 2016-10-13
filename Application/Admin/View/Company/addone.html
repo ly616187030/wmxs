@@ -1,0 +1,440 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <style>
+        .content {
+            padding: 20px;
+        }
+
+        .tab-content {
+            padding: 20px 0;
+        }
+
+        .required:before {
+            content: "*";
+            color: red;
+            font-size: 1.2em;
+            padding-right: 5px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="content ">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active "><a href="javascript('0')" role="tab" style="color: #333"
+                                                       data-toggle="tab">录入公司信息</a></li>
+            <!--<li role="presentation"  style="cursor: pointer" ><a href="{:U('addtwo',array('ids' => '0'))}" style="color: #333" >录入用户信息</a></li>-->
+        </ul>
+        <form class="form-horizontal" action="{:U('addone')}" method="post">
+            <input type="hidden" name="sale_id" value="{$is}">
+            <div id="base-form" class="tab-content ">
+                <div role="tabpanel" class="tab-pane fade active in">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>公司名称：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="c_name" value=""/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>手机：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="tel" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">密码：</label>
+                        <div class="col-sm-3">
+                            <input type="password" class="form-control" name="password" value="" placeholder="请录入登录密码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">版本号：</label>
+                        <div class="col-sm-3">
+                            <select name="vip_id" class="form-control">
+                                <volist name="vip" id="ip">
+                                    <option value="{$ip.id}">{$ip.vip_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">版本类型：</label>
+                        <div class="col-sm-2" style="width:12em;">
+                            <select name="banben_type" class="form-control">
+                                <option value="">选择版本类型</option>
+                                <option value="1">试用版</option>
+                                <option value="2">正式版</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 shiy_type" style="width:12em;display:none;">
+                            <select name="shiy_type" class="form-control">
+                                <option value="">选择试用类型</option>
+                                <option value="1">按单试用</option>
+                                <option value="2">按时间试用</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 zhengshi_type" style="width:14em;display:none;height:35px;line-height: 35px;">
+                            <input name="zhengshi_type" type="radio" value="1"/>一年
+                            <input name="zhengshi_type" type="radio" value="2" style="margin-left: 1em;"/>两年
+                            <input name="zhengshi_type" type="radio" value="3" style="margin-left: 1em;"/>三年
+                        </div>
+                        <div class="col-sm-4 sy_content"style="display:none;">
+                            <label class="control-label con1 col-sm-2">单数：</label>
+                            <label class="control-label con2 col-sm-3">试用天数：</label>
+                            <input type="text" class="form-control col-sm-2" name="sy_content">
+                        </div>
+                    </div>
+                    <div class="form-group zhengshi_content" style="display:none;">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-5">
+                            <label class="control-label col-sm-2" style="color:red;">开始日期：</label>
+                            <input readonly="readonly" name="sign_time" type="text" class="form-control col-sm-4 runcode"  id="demo_inp1" />
+                            <label class="control-label col-sm-2" style="color:red;">结束日期：</label>
+                            <input readonly="readonly" name="expire_time" type="text" class="form-control col-sm-4 overtime" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">公司logo：</label>
+                        <div class="col-sm-4">
+                            <div  id="_upload_box" class="wu-example">
+                                <!--用来存放文件信息-->
+                                <div id="_upload_list" class="uploader-list col-xs-12 img-box">
+                                    <!--<notempty name="list.c_logo">-->
+                                    <!--<i class="fa fa-times-circle remove-picture" style="cursor: pointer;float: right;" title="关闭"></i>-->
+                                    <!--<div id="_upload_preview" class="col-md-4 file-item thumbnail">-->
+                                    <!--<img src="{$list.c_logo|get_new_cover='path'}" data-id="">-->
+                                    <!--</div>-->
+                                    <!--<else />-->
+                                    <div id="_upload_preview" class="col-md-12 file-item thumbnail hidden">
+                                        <i class="fa fa-times-circle remove-picture" style="cursor: pointer;float: right;" title="关闭"></i>
+                                        <img src="" data-id="">
+                                    </div>
+                                    <!--</notempty>-->
+                                </div>
+                                <div class="btns col-xs-12">
+                                    <input type="hidden" id="_upload_input" name="c_logo" value="{$list.c_logo}"/>
+                                    <div id="_upload">上传图片</div>
+                                    <button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <label style="padding-top:7px;font-weight:normal;">（320×240像素的图片）</label>
+                        <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+                        <script type="text/javascript">
+                            $(function(){
+                                var uploader = WebUploader.create({
+                                    auto: true,                                                                    // 选完文件后，是否自动上传
+                                    duplicate: true,                                                               // 同一文件是否可以重复上传
+                                    swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                                    server: '{:U("Admin/Upload/Upload", array("dir" => "image"))}',    // 文件接收服务端
+                                    pick: '#_upload',                                   							// 选择文件的按钮
+                                    resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                                    //fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+                                    fileSingleSizeLimit:<php> echo C('UPLOAD_FILE_SIZE') ? : 2; </php>*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                                    // 文件过滤
+                                    accept: {
+                                        title: 'Images',
+                                        extensions: 'gif,jpg,jpeg,bmp,png',
+                                        mimeTypes: 'image/*'
+                                    }
+                                });
+
+                                // 文件上传过程中创建进度条实时显示。
+                                uploader.on( 'uploadProgress', function( file, percentage ) {
+                                    $( '#_upload_preview').removeClass('hidden');
+                                    var $li = $( '#_upload_preview'),
+                                            $percent = $li.find('.progress .progress-bar');
+                                    // 避免重复创建
+                                    if ( !$percent.length ) {
+                                        $percent = $('<div class="progress"><div class="progress-bar"></div></div>').appendTo( $li ).find('.progress-bar');
+                                    }
+                                    $percent.css( 'width', percentage * 100 + '%' );
+                                });
+
+                                // 完成上传完了，成功或者失败，先删除进度条。
+                                uploader.on( 'uploadComplete', function( file ) {
+                                    $( '#_upload_preview' ).find('.progress').remove();
+                                });
+
+                                // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                                uploader.on( 'uploadSuccess', function( file , response) {
+                                    $( '#_upload_preview' ).addClass('upload-state-done');
+                                    if(eval('response').status == 0){
+                                        $.alertMessager(response.info);
+                                    } else {
+                                        $( '#_upload_input' ).attr('value', response.id);
+                                        $( '#_upload_preview img').attr('src', response.url);
+                                        $( '#_upload_preview img').attr('data-id', response.id);
+                                    }
+                                });
+
+                                // 文件上传失败，显示上传出错。
+                                uploader.on( 'uploadError', function( file ) {
+                                    $.alertMessager('error');
+                                    var $li = $( '_upload_preview'),
+                                            $error = $li.find('div.error');
+                                    // 避免重复创建
+                                    if ( !$error.length ) {
+                                        $error = $('<div class="error"></div>').appendTo( $li );
+                                    }
+                                    $error.text('上传失败');
+                                });
+
+                                // 删除图片
+                                $(document).on('click', '#_upload_list .remove-picture', function() {
+                                    $( '#_upload_input' ).val('') //删除后覆盖原input的值为空
+                                    $( '#_upload_preview').addClass('hidden');
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">行业类别：</label>
+                        <div class="col-sm-3">
+                            <select name="c_category" class="form-control">
+                                <option value="">请选择行业类别</option>
+                                <volist name="list_cc" id="vo">
+                                    <option value="{$vo.id}"
+                                    <eq name="list.c_category" value="$vo.id">selected="selected"</eq>
+                                    >{$vo.title_prefix}{$vo.cy_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>所属地区：</label>
+                        <div class="col-sm-3">
+                            <select class="form-control" id="province" name="province">
+                                <option value="">省份</option>
+                                <volist name="_province" id="vo">
+                                    <option value="{$vo.code}"
+                                    <eq name="vo.code" value="$list.province">selected="selected"</eq>
+                                    >{$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control" name="city" id="city">
+                                <empty name="list.city">
+                                    <option>地级市</option>
+                                    <else/>
+                                    <volist name="_city" id="vo">
+                                        <option value="{$vo.code}"
+                                        <eq name="vo.code" value="$list.city">selected="selected"</eq>
+                                        >{$vo.name}</option>
+                                    </volist>
+                                </empty>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control" id="town" name="county">
+                                <empty name="list.county">
+                                    <option>区、县</option>
+                                    <else/>
+                                    <volist name="_county" id="vo">
+                                        <option value="{$vo.code}"
+                                        <eq name="vo.code" value="$list.county">selected="selected"</eq>
+                                        >{$vo.name}</option>
+                                    </volist>
+                                </empty>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>详细地址：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="address" value="{$list.address}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮编：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="post_code" value=""/>
+                        </div>
+                    </div>
+                    <if condition="$ent eq 1">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">软件实施人员：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="software_install_id">
+                                    <option value="" style="display: none">请选择软件实施人员</option>
+                                    <empty name="list1">
+                                        <option value="">暂无软件实施人员</option>
+                                        <else />
+                                        <volist name="list1" id="vo">
+                                            <option value="{$vo.id}">{$vo.nickname}</option>
+                                        </volist>
+                                    </empty>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">直销人员：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="sale_id">
+                                    <option value="" style="display: none">请选择直销人员</option>
+                                    <empty name="list2">
+                                        <option value="">暂无软件实施人员</option>
+                                        <else />
+                                        <volist name="list2" id="v">
+                                            <option value="{$v.id}">{$v.nickname}</option>
+                                        </volist>
+                                    </empty>
+
+                                </select>
+                            </div>
+                        </div>
+                    </if>
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label"></label>
+                        <label class="col-sm-1 control-label">传真：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="fax" value="{$list.fax}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span style="color: #ff0000;">*</span>联系人：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="username" value="{$list.username}"/>
+                        </div>
+                        <label class="col-sm-1 control-label">职位：</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="job" value="{$list.job}"/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">QQ：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="qq" value="{$list.qq}"/>
+                        </div>
+                        <label class="col-sm-1 control-label">Email：</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="email" value="{$list.email}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">公司网址：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="c_website" value="{$list.c_website}"/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">公司简介：</label>
+                        <div class="col-sm-7">
+                            <textarea rows="3" name="intro" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">&nbsp;</label>
+                        <div class="col-sm-4">
+                            <button class="btn btn-success ajax-post" style="width: 100px;" type="submit"
+                                    target-form="form-horizontal">确 定
+                            </button>
+                            <button class="btn btn-return btn-info " style="width: 100px;"
+                                    onclick="javascript:history.back(-1);return false;">返 回
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript">
+        var url = "{:U('getCity','',false)}";
+        var curl = "{:U('getTown','',false)}";
+        ztools.getLianDong({"p_url": url, "c_url": curl});
+
+        $(function(){
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+
+            $("select[name='banben_type']").change(function(){
+                var _this=$(this);
+                if(_this.val()==1){
+                    $(".shiy_type").show();
+                    $('.zhengshi_type').hide();
+                    $(".sy_content").hide();
+                    $('.zhengshi_content').hide();
+                }else if(_this.val()==2){
+                    $('.zhengshi_type').show();
+                    $(".shiy_type").hide();
+                    $(".sy_content").hide();
+                    $('.zhengshi_content').hide();
+                }else{
+                    $(".shiy_type").hide();
+                    $('.zhengshi_type').hide();
+                    $(".sy_content").hide();
+                    $('.zhengshi_content').hide();
+                }
+            })
+
+            $("select[name='shiy_type']").change(function(){
+                var _this=$(this);
+                if(_this.val()==1){
+                    $('.con1').show();
+                    $('.con2').hide();
+                    $(".sy_content").show();
+                }else if(_this.val()==2){
+                    $('.con1').hide();
+                    $('.con2').show();
+                    $(".sy_content").show();
+                }
+            })
+
+            $("input[name='zhengshi_type']").change(function(){
+                var _this=$(this);
+                $('.zhengshi_content').show();
+                $('#demo_inp1').val('');
+                var num=_this.val();
+                $('#demo_inp1').click(function() {
+                    $.calendar({ onSetDate:function(){
+//                   alert('日期框原来的值为:'+this.inpE.value+',要用新选择的值:'+this.getDate('date')+'覆盖吗?');
+                        var time=this.getDate('date');
+                        var startime=time.split('-');
+                        var startime1=startime[0];
+                        var startime2=startime[1];
+                        var startime3=startime[2];
+                        if(num==1){
+                            startime[0]=parseInt(startime1)+1;
+                        }else if(num==2){
+                            startime[0]=parseInt(startime1)+2;
+                        }else if(num==3){
+                            startime[0]=parseInt(startime1)+3;
+                        }
+                        if(startime2.length==1){
+                            startime[1]=0+startime[1];
+                        }
+                        if(startime3.length==1){
+                            startime[2]=0+startime[2];
+                        }
+                        var overtime=startime.join('-');
+                        $('.overtime').val(overtime);
+                    }
+                    });
+                });
+            })
+
+
+
+
+        })
+    </script>
+</block>

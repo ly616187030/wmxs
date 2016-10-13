@@ -1,0 +1,26 @@
+<extend name="Base/common_zhgIndex"/>
+
+<block name="body_zhgIndex">
+    <div class="header">
+    <div class="main top-line">
+        <div class="step4"></div>
+        <div class="succeed-wrap">
+            <div class="succeed-info">
+                <img src="__IMG__/win-icon.png" style="margin-left: 50px;">
+                <div class="font">恭喜您下单成功！请耐心等待您的火锅</div>
+                <div class="font">订单编号：{$order_bh}</div>
+                <div class="font">金额：<b class="red">￥{$zongjia}</b></div>
+                <div class="font">支付方式：
+                    <if condition = "$zhifufangshi eq 1">
+                        货到付款
+                        <else/>
+                        在线支付
+                    </if>
+                </div>
+                <div class="but-all"><a href="{:U('Orderlist/detail','',false)}/order_id/{$ord_id.order_id}">查看订单</a><a href="{:U('Waimai/index')}">返回门店</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</block>

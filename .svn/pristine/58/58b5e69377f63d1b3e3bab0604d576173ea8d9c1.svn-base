@@ -1,0 +1,27 @@
+
+.title{list-style: none;height:3em;line-height: 3em;width:100%;background-color: #eee;}
+.title li{list-style: none;height:3em;line-height: 3em;text-align: center;}
+.title li a{text-decoration: none;font-size: 16px;color:#666;}
+.title-current{list-style: none;height:3em;line-height: 3em;background-color: #1fce02;text-align: center;width:10em;}
+.sub_tab a{text-decoration: none;}
+
+.setting_step{height: 44px;line-height: 44px;border: 1px solid #eee;margin: 2em 0px 1em 0em;}
+.setting_step .step_cur_1 {
+    background: #44b549 url(../images/step.png) no-repeat right -88px;
+    float: left;
+    color: #fff;
+}
+.app_setting .step {
+    width: 145px;
+}
+
+.setting_step .step {
+    /*background: #ffffff url(../images/step.png) no-repeat right 0;*/
+    float: left;
+    text-align: center;
+    line-height: 44px;
+    color: #666;
+    width: 160px;
+    height: 44px;
+    text-decoration: none;
+}

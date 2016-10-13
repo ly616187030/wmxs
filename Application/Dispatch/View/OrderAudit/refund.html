@@ -1,0 +1,186 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <style>
+        body{
+            margin:30px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="m-b">
+        <h3>日期：[{:date('Y-m-d H:i:s',time())}]</h3>
+    </div>
+
+    <!--    <div class="cf">
+            <div class="fl">
+                <a href="{:U('add')}">
+                    <button class="btn" id="sqbtn">新 增</button>
+                </a>
+                <button class="btn confirm ajax-post" target-form="ids" url="{:U('del')}">删 除</button>
+            </div>
+        </div>-->
+    <div class="m-b">
+        <form class="form-inline" action="{:U('OrderAudit/refund')}" method="get">
+            <input type="hidden" name="m" value="Home"/>
+            <input type="hidden" name="c" value="OrderAudit"/>
+            <input type="hidden" name="a" value="refund"/>
+            <div class="form-group">
+                <label>餐厅：</label>
+                <select name="storeid" class="form-control">
+                    <option value="">请选择餐厅</option>
+                    <volist name="store" id="vo" >
+                        <option value="{$vo.store_id}" class="form-control">{$vo.store_name}</option>
+                    </volist>
+                </select>
+            </div>
+            <div class="form-group">
+                <label  for="exampleInputEmail3">查询日期：</label>
+                <input type="text" class="form-control date" id="exampleInputEmail3" name="keywords" placeholder="输入日期" value="{$keyword}">
+                <button class="btn btn-default" type="submit">查询</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="data-table">
+        <table class="table">
+            <!-- 表头 -->
+            <thead>
+            <tr>
+                <th class="row-selected row-selected">
+                    <input class="check-all" type="checkbox">
+                </th>
+                <th>订单编号</th>
+                <th>配送方式</th>
+                <th>支付方式</th>
+                <th>总金额(元)</th>
+                <th>订单状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <!-- 列表 -->
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="vo">
+                    <tr>
+                        <td>
+                            <input class="ids" type="checkbox" value="{$vo.cm_id}" name="cm_id[]">
+                        </td>
+                        <td>{$vo.order_sn}</td>
+                        <if condition="$vo.sh_mode eq 0"><td>自己配送</td><else/><td>平台配送</td></if>
+                        <if condition="$vo.pay_type eq 0"><td>货到付款</td><else/><td>在线支付<if condition="$vo.is_paied eq 1"><strong style="color:red;">(已付款)</strong><else/><strong style="color:red;">(待付款)</strong></if></td></if>
+                        <td>{$vo['total']+$vo['ps_cost']+$vo['yajin']+$vo.['canju_total']}</td>
+                        <td>
+                            <switch name="vo.status">
+                                <case value="8"><a href="javascript:;" data-toggle="popover" data-container="body" data-placement="left" data-content="取消订单时间：{$vo.cancel_ord_time|date='Y-m-d H:i:s',###}取消订单原因：{$vo.cancel_ord_reason}" >取消订单</a></case>
+                                <case value="9"><a href="javascript:;" data-toggle="popover" data-container="body" data-placement="left" data-content="拒接订单时间：{$vo.reject_time|date='Y-m-d H:i:s',###}拒接订单原因：{$vo.reject_reason}">拒接订单</a></case>
+                                <case value="10"><a href="javascript:;" data-toggle="popover" data-container="body" data-placement="left" data-content="拒接订单时间：{$vo.reject_time|date='Y-m-d H:i:s',###}拒接订单原因：{$vo.reject_reason}">拒接订单</a></case>
+                                <case value="13"><a href="javascript:;" data-toggle="popover" data-container="body" data-placement="left" data-content="取消订单时间：{$vo.cancel_ord_time|date='Y-m-d H:i:s',###}拒接订单原因：{$vo.cancel_ord_reason}">取消订单</a></case>
+                                <case value="11"><span>退款中</span></case>
+                                <case value="15"><span>退款中</span></case>
+                                <case value="16"><span>退款中</span></case>
+                                <case value="17"><span>退款完成</span></case>
+                                <case value="18"><span>退款完成</span></case>
+                                <case value="12"><span>退款完成</span></case>
+                            </switch>
+                        </td>
+                        <td><if condition="($vo.is_paied eq 1) AND (($vo.status eq 8) OR ($vo.status eq 10) OR ($vo.status eq 13))"><a class="refund" href="javascript:void(0)" data-status="{$vo.status}" data-transaction_id="{$vo.transaction_id}" data-order_sn="{$vo.order_sn}" data-total_fee="{$vo.total}" data-refund_fee="{$vo.total}">申请退款</a>
+                            <elseif condition="($vo.status eq 11) OR ($vo.status eq 15) OR ($vo.status eq 16)"/><a data-transaction_id="{$vo.transaction_id}" href="javascript:;" class="refund_search">退款查询</a><elseif condition="($vo.status eq 12) OR ($vo.status eq 17) OR ($vo.status eq 18)"/>退款完成<else/>无
+                        </if>
+                        </td>
+                    </tr>
+                </volist>
+                <else/>
+                <empty name="pd_dp">
+                    <td colspan="17" class="text-center"> aOh! 暂时还没有内容! </td>
+                    <else />
+                    <td colspan="17" class="text-center">{$pd_dp}</td>
+                </empty>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+    <!-- 分页 -->
+    <div class="page">
+        {$page}
+    </div>
+</block>
+<block name="script">
+
+    <link href="__PUBLIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="__PUBLIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+
+            });
+        })
+        //退款操作
+        $(".refund").click(function(){
+            var $this=$(this);
+            var transaction_id=$this.data('transaction_id');
+            var total_fee=$this.data('total_fee');
+            var refund_fee=$this.data('refund_fee');
+            var ordsn=$this.data('order_sn');
+            var status=$this.data('status');
+            var url="{:U('Order/refund')}";
+            var modal=$("#myModal");
+            if(confirm('你确定要申请退款吗？退款金额为：'+refund_fee)){
+                $.get("WxPay/pay/refund.php?transaction_id="+transaction_id+"&total_fee="+total_fee+"&refund_fee="+refund_fee).success(function(data){
+                    //console.log(data);
+                    var dd=$.parseJSON(data);
+                    if(dd.result_code=='SUCCESS'){
+                        $.get("{:U('Order/modifyRefundStatus')}",'order_sn='+ordsn+'&status='+status).success(function(data){
+                            if(data=='success'){
+                                modal.modal('show').find('.modal-title').text('提示信息').end().find('.modal-body').html('<strong style="font-size:1.5em;">申请退款成功！</strong>');
+                                setTimeout(function(){
+                                    modal.modal('hide');
+                                },3000);
+                            }
+                        });
+                    }else if(dd.result_code=='FAIL'){
+                        modal.modal('show').find('.modal-title').text('提示信息').end().find('.modal-body').html('<strong style="color:red;font-size:1.5em;">申请退款失败！</strong>');
+                        setTimeout(function(){modal.modal('hide')},3000);
+                    }
+                });
+            }
+        });
+
+
+        //展示订单详情
+        $(".detail").click(function(){
+            var $this=$(this);
+            var ordid=$this.data('orderid');
+            $.get('{:U("getOrderDetail")}','ordid='+ordid).success(function(data){
+                if(data!=null){
+                    var list=data;
+                    var str='<table class="table table-bordered"><thead><tr><th>菜品名称</th><th>单价</th><th>数量</th><th>金额</th></tr></thead><tbody>';
+                    for(var i= 0,ln=list.length;i<ln;i++){
+
+                        str+='<tr><td>'+list[i].cm_name+'</td><td>'+list[i].price+'</td><td>'+list[i].quantity+'</td><td>'+list[i].total_money+'</td></tr>';
+                    }
+                    str+='</tbody></table><div><strong>姓名：'+list[0].username+'</strong>/<strong>电话：'+list[0].phone+'</strong>/<strong>详细地址：'+list[0].detail_address+'</strong>';
+                    $('#myModal').modal('show').find('.modal-title').text('订单详情').end().find('.modal-body').html(str).end().find('.modal-footer').html('<button class="btn btn-default" data-dismiss="modal" aria-label="Close">关闭</button>');
+                }else{
+                    $('#myModal').modal('show').find('.modal-title').text('提示信息').end().find('.modal-body').text('暂无详情');
+                }
+            });
+        });
+    </script>
+
+
+
+</block>
+
+
+

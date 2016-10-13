@@ -1,0 +1,74 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+	<style>
+		body{
+			padding:20px;
+		}
+		.builder-toolbar{margin-bottom: 20px;}
+	</style>
+</block>
+
+<block name="main">
+	<div class="table-bar" style="margin: 1em 0em;">
+		<div class="fl">
+			<div class="tools">
+				<a class="btn" style="background-color: #40A2C4;color: white" href="{:U('add')}">新增</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- 数据列表 -->
+	<div class="data-table">
+		<form class="ids">
+			<table class="table table-bordered text-center">
+				<thead >
+				<tr>
+					<th class="">编号</th>
+					<th class="">标识</th>
+					<th class="">名称</th>
+					<th class="">类型</th>
+					<th class="">描述</th>
+					<td class="">时间</td>
+					<th class="">状态</th>
+					<th class="">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+			<notempty name="list">
+				<volist name="list" id="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.name}</td>
+						<td>{$vo.title}</td>
+						<td>
+						    <if condition="$vo.type eq 1">
+								 系统
+								<else/>
+								 用户
+							</if>
+						</td>
+						<td>{$vo.remark}</td>
+						<td>{$vo.update_time|date='Y-m-d H:i:s',###}</td>
+						<td>
+							<if condition="$vo.status eq 1">
+								  正常
+								<else/>
+								 <b style="color: yellow">禁用</b>
+							</if>
+						</td>
+						<td><a href="{:U('del1',array('id'=>$vo['id']))}" class="glyphicon glyphicon-trash ajax-get confirm">删除</a></td>
+					</tr>
+				</volist>
+				<else/>
+				<td colspan="13" class="text-center"> aOh! 暂时还没有行为! </td>
+			</notempty>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<!-- 分页 -->
+	<div class="page">{$_page}</div>
+	<!-- /分页 -->
+
+</block>
+

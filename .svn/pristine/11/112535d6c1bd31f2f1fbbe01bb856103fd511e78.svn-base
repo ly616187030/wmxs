@@ -1,0 +1,88 @@
+<extend name="Base/menu"/>
+<block name="style">
+    <style>
+        .size{
+            font-size: 24px;
+            color: orangered;
+        }
+        .content{
+            margin-left: auto;margin-right: auto;
+            height: 2em;
+        }
+        .content1{
+            margin-left: auto;margin-right: auto;
+            height: 3.2em;line-height: 3.2em;
+        }
+        .pad{
+            width: 33.33333%;
+        }
+    </style>
+</block>
+<block name="body">
+    <div class="fl" style="width: 100%;height: 9em">
+        <img src="__IMG__/huoguo/store_beijing.png" width="100%" height="100%" style="opacity: 0.5">
+        <div style="position: absolute;top: 1.5em;left:0;width: 100%;z-index: 10;">{$list_store.store_name}</div>
+        <div style="position: absolute;top: 3.5em;left: 0;width: 100%;background-color: red;z-index: 10">
+            <span class="ub-f1" style="font-size: 20px;font-weight: bold;color: red">
+                           <switch name="$list_store.pingfen">
+                               <case value="1">
+                                   ★
+                               </case>
+                               <case value="2">
+                                   ★★
+                               </case>
+                               <case value="3">
+                                   ★★★
+                               </case>
+                               <case value="4">
+                                   ★★★★
+                               </case>
+                               <case value="5">
+                                   ★★★★★
+                               </case>
+                           </switch>
+            </span>
+        </div>
+        <if condition="$list_store.sh_mode eq 1">
+            <div style="position: absolute;top: 6em;left: 0;width: 100%;z-index: 10;">由{$list_store.store_name}提供配送服务</div>
+            <else />
+            <div style="position: absolute;top: 6em;left: 0;width: 100%;z-index: 10">由平台提供配送服务</div>
+        </if>
+    </div>
+    <div style="clear: both"></div>
+    <div class="ub" style="border-bottom: 1px #dddddd solid; padding: 10px 0 10px 0; background-color:rgba(226, 220, 226, 0.55) ">
+        <div class="ub-f1 fl pad">
+            <div>平均配送时长</div>
+            <div><span class="size">{$list_store.pj_songda}</span><span>分钟</span></div>
+        </div>
+        <div style="height: 4em; border-right: 2px solid gainsboro; margin-top: 0.5em;"></div>
+        <div  class="ub-f1 fl pad">
+            <div>起送价</div>
+            <div>￥<span class="size">{$list_store.qisong_price}</span></div>
+        </div>
+        <div style="height: 4em; border-right: 2px solid gainsboro; margin-top: 0.5em;"></div>
+        <div  class="ub-f1 fl pad">
+            <div>配送费</div>
+            <div>￥<span class="size">{$list_store.peisongfeiqi}</span>-<span class="size">{$list_store.peisongfeizhi}</span></div>
+        </div>
+    </div>
+    <div style="background-color: white; height: 10em; margin-top: 1em;">
+        <div style="width: 90%; margin-left: auto; margin-right: auto;">
+            <div style="border-bottom: 1px solid gainsboro;" class="content1">配送时间：{$timea[0]}-{$timea[1]}<notempty name="timeb[0]">,{$timeb[0]}-{$timeb[1]}</notempty></div>
+            <div style="border-bottom: 1px solid gainsboro;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"class="content1">商家地址：{$list_store.address_detail}</div>
+            <if condition="$list_store.sh_mode eq 1">
+            <div class="content1">配送服务：由{$list_store.store_name}提供配送服务</div>
+            <else />
+                <div class="content1">配送服务：由平台提供配送服务</div>
+            </if>
+        </div>
+    </div>
+    <div style="background-color: white; height: 13em; margin-top: 1em;">
+        <div style="width: 90%; margin-left: auto; margin-right: auto;">
+            <div style="border-bottom: 1px solid gainsboro;" class="content">餐厅简介</div>
+            <div class="content">
+                <p>{$list_store.store_desc}</p>
+            </div>
+        </div>
+    </div>
+</block>

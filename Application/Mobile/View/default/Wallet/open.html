@@ -1,0 +1,41 @@
+<extend name="Base/orderlist" />
+<block name="title">
+     绑定银行卡
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----余额开始--------->
+        <div class=" recharge">
+            <ul>
+                <li class="recharge-1 rech">请绑定您的本人银行卡，助友钱包保障您的使用安全，请放心填写</li>
+                <li class="recharge-1 rech"><div class="text"><a>卡号</a><input type="text" placeholder="银行卡号" class="box" name="text"></div><a href="{:U('bank')}"><div style="font-size: 0.4em;float: right;color: #6699cc;margin-right: 2em">查看支持的银行卡</div></a></li>
+                <li class="recharge-1 rech "><input type="button"  value="下一步" id="btn" disabled="disabled"></li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $(function(){
+                $('.box').keyup(function(){
+                    var value = $(this).val();
+                    var regex =/^\d{16}|\d{19}$/;
+                    if(regex.test(value)){
+                        $('#btn').removeAttr("disabled").css('background-color','#0066cc');
+                    }
+                });
+                $('#btn').click(function(){
+                    confirm('请确认银行卡无误');
+                    var jine = $('.box').val();
+                    alert(jine)
+                    window.location.href="{:U('bank')}"
+                });
+            })
+        </script>
+        <!-----余额开始--------->
+</block>

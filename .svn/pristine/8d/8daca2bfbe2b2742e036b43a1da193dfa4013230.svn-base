@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>确认订单 - 叫外卖上wmxs.me</title>
+    <meta name="description" content="外卖先生是中国最专业的网上订餐平台，提供各类中式、日式、韩式、西式等优质美食。">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="application-name" content="外卖先生网上订餐">
+    <meta name="msapplication-tooltip" content="外卖先生网上订餐">
+    <meta name="msapplication-starturl" content="http://wmsx.me">
+    <meta name="renderer" content="webkit">
+    <link href="__STATIC__/bootstrap-3.3.4/css/bootstrap.css" rel="stylesheet">
+    <link class="usemin" rel="stylesheet" href="__CSS__/address.css">
+    <link class="usemin" rel="stylesheet" href="__CSS__/global.css">
+    <link class="usemin" rel="stylesheet" href="__CSS__/order.css">
+
+    <script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body class="day cart-wide">
+<div class="container">
+    <header class="cart-topbar group"> <a class="ctopbar-logo" role="logo" href="{:U('Index/index')}">wmxs.me</a>
+        <div class="ctopbar-breadcrumb" role="navigation"> <span class="ctopbar-nav">美食篮子</span> </div>
+        <div class="eleme_dropdown ctopbar-usernav">
+            <a class="e_toggle tuser-link" id="t_username">{:session('user_auth.username')}</a>
+            <ul class="e_dropdown topbar-user-dropdown ctopbar-dropdown" id="menu">
+                <li><a class="tuser-link" href="{:U('Orderlist/index')}"><i class="icon-profile"></i>个人中心</a></li>
+                <li><a class="tuser-link" href="{:U('Favorite/index')}"><i class="icon-fav"></i>我的收藏</a></li>
+                <li><a class="tuser-link" href="{:U('Account/index')}"><i class="icon-config"></i>安全设置</a></li>
+                <li class="divider"></li>
+                <li><a id="topbar_logout" class="tuser-link" href="{:U('User/logout')}"><i class="icon-logout"></i>退出登录</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="cart_wrap" class="cart-container cart-empty">
+        <i class="icon-basket"></i>
+        <div class="empty-content">
+            <p>美食篮子是空的，<a href="{:U('Stores/index',array('store_id'=>$storeid))}">继续挑选美食</a></p>
+        </div>
+    </div>
+
+    <div class="cart-container tencentgame"> </div>
+</div>
+<footer class="site-footer group" role="contentinfo">
+    <div class="container">
+        <p class="sfooter-line">
+            <a class="sfooter-link" href="{:U('Approve/index')}">我要开店</a> |
+            <a class="sfooter-link" href="#">联系我们</a> |
+            <a class="sfooter-link" href="#">服务条款和协议</a> |
+            <a class="sfooter-link" href="#">站点地图</a> |
+            <a class="sfooter-link" href="#">加入我们</a>
+        </p>
+    </div>
+</footer>
+
+<div class="site-bg" style="background-position: 0px -4421.4648px;">
+    <div class="bg-sun"></div>
+    <div class="bg-moon"></div>
+    <div class="bg-cloud-left"></div>
+    <div class="bg-cloud-right"></div>
+</div>
+<script>
+    $("#t_username").click(function(){
+        var menu = $("#menu");
+        if(menu.is(":hidden")){
+            menu.show();
+        }else{
+            menu.hide();
+        }
+    });
+</script>
+</body>
+</html>

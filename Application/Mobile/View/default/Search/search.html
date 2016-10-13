@@ -1,0 +1,165 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <link href="__CSS__/mui.min.css" rel="stylesheet"/>
+    <style>
+        .mui-content>.mui-table-view:first-child {
+            margin-top: 6px;
+        }
+    </style>
+</block>
+<block name="body">
+    <!--header开始-->
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left text-white"
+           onclick="javascript:history.back();return false;"></a>
+
+        <form action="{:U('Search/search')}" method="post" class="" style="margin-top: 5px">
+            <input id="key" class="mui-title" type="text" name="key" placeholder="请输入商家名" value="{$key}"
+                   style="width: 70%;text-align: left">
+            <input class="mui-pull-right" type="submit" name="tj" value="搜索" style="padding: 8px 10px;width: 20%">
+        </form>
+    </header>
+    <!--header结束-->
+    <div class="mui-content">
+
+    </div>
+    <script src="__CUI__/js/jquery.lazyload.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            var key = $('#key').val();
+            var storeSearchUrl = "{:U('Search/storeSearch')}" + "&key=" + key;
+            /* var commoditySearchUrl="{:U('Search/commoditySearch')}"+"&key="+ key;*/
+            moreStore(storeSearchUrl);
+            //moreCommodity(commoditySearchUrl);
+            $(".get_more1").click(function () {
+                moreStore(storeSearchUrl);
+            });
+            /* $(".get_more2").click(function() {
+             moreCommodity(commoditySearchUrl);
+             });*/
+        });
+
+        //商家信息ajax获取=============start==================
+        function moreStore(url) {
+            $.post(url,function (data) {
+                renderStore(data)
+            })
+
+        }
+        //页面渲染
+        function renderStore(data) {
+            if(data==''||data==null){
+                $('.mui-content').html('<div style="position: fixed;width: 100%;height: 100%;top: 50px;left: 0;background-color: #eee;color: #007aff;text-align: center; "><i class="yqym mui-icon mui-icon-search" style="margin-top: 50%">搜你想吃</i></div>')
+                return;
+            }
+            var store_cont = "";
+//            var data = eval("("+data+")");     //将返回数据转化成JASON串
+            $(data).each(function (i) {
+                var a = this;
+                var youhui = '';
+                $(a['youhui']).each(function (i) {
+                    var b = this;
+                    youhui +='<span style="color:#fff;text-align: center;border-radius: 2px;background-color: #'+this.color+';font-size:16px">' + this['promotional_labels'] +'</span><span class="" style="color: grey;white-space: pre-wrap">'+ this.promotion_name +'</span></br>';
+                })
+                //根据服务端传过来的数据做页面拼装
+                if (a['is_open'] == 1) {
+                    var is_open = '<div class="ub-f1" style="color: grey;width: 50%">距离<span class="km">' + a['juli'] + '</span>km</div>'
+                } else {
+                    var is_open = '<div class="ub-f1" style="color: green;width: 50%">接受预定中</div>'
+                }
+                store_cont += '<ul class="mui-table-view " id="store">' +
+                        '<li class="mui-table-view-cell mui-media">' +
+                        ' <a href="' + a['url'] + '"> ' +
+                        '<img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png"  data-original="' + a['path'] + '" style="width: 5em;height: 4em"> ' +
+                        '<div class="mui-media-body">' + a['store_name'] + '<div style="font-size: 14px; color: #333" class="ub"> ' +
+                        '<input type="hidden" value="' + a['is_open'] + '">' + '' + is_open + ' ' +
+                        '</div> <div style="font-size: 12px;" class="ub">' +
+                        ' <div class="ub-f1" style="color: red;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">起送价 ￥' + a['qisong_price'] + '</div> ' +
+                        '<div class="ub-f1" style="color: red;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">配送费 ￥' + a['peisongfei'] + '</div>' +
+                        ' <div class="ub-f1" style="color:red;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">约' + a['sh_time'] + '分钟送达</div>' +
+                        ' </div> </div> </a> ' +
+                        '<div style="font-size: 13px;color: #333;"  class="ub" onclick="youhui(' + a['store_id'] + ')">' +
+                        '<div class="ub-f1" style="color: blue">优惠详情</div> ' +
+                        '<div class="ub-f1" style="text-align: right;font-size: 16px"><i class="fa fa-angle-down"></i></div> ' +
+                        '</div> <div style="font-size: 13px;color: #333;display: none"  class="youhui_' + a['store_id'] + '"> ' +
+                        '<ul>' + youhui + '</<ul></div>' +
+                        ' </li>' +
+                        ' </ul>'
+            });
+            $('.mui-content').html(store_cont);
+            $('img.lazy').lazyload({
+                effect:'fadeIn'
+            });
+        }
+        //============end================
+
+        /* //商品信息ajax获取=============start==================
+         function moreCommodity(url){
+         //var ile;
+
+         $.post(url, {
+         last : variables.commodity_last,
+         amount : variables.amount
+         }, function(data){
+         renderCommodity(data)
+         }, variables.format)
+
+         }
+         //页面渲染
+         function renderCommodity(data) {
+         if(data[0]!=''){
+         $('#product_banner').show();
+         $('.yqym').hide();
+         $('.get_more2').show();
+         }else{
+         if(variables.last<1) {
+         $('#product_banner').hide();
+         }
+         $('.get_more2').hide();
+         }
+
+         var commodity_cont = "";
+         $(data[0]).each(function(){
+         var a = this;
+
+         if(a['quantity']==null){
+         a['quantity']=0;
+         }
+         //                alert(a['quantity']);
+         //根据服务端传过来的数据做页面拼装
+         commodity_cont+='<ul class="mui-table-view " id="store">' +
+         '<li class="mui-table-view-cell mui-media">' +
+         ' <a href="'+a['url']+'"> ' +
+         '<img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png"  data-original="'+a['path']+'" style="width: 5em;height: 4em"> ' +
+         '<div class="mui-media-body">'+a['cm_name']+'<div style="font-size: 14px; color: #333" class="ub"> ' +
+         '</div> <div style="font-size: 12px;" class="ub">' +
+         ' <div class="ub-f1" style="color: red;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">价格 ￥'+a['now_price']+'</div> ' +
+         '<div class="ub-f1" style="color: red;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">销量 ￥'+a['sale_num']+'</div>' +
+         ' </div> </div> </a> ' +
+         ' </li>' +
+         ' </ul>'
+         variables.commodity_last++;
+         });
+         $(commodity_cont).insertBefore('.get_more2');
+         if(data[1]> variables.commodity_last){
+         $('.get_more2').show();
+         }else{
+         $('.get_more2').hide();
+         }
+
+         }*/
+        //=======================end============================
+
+        $(function () {
+            $('#shop').on('click', '.single_item1', function () {
+                $(this).css('background', '#eee');
+            });
+            $('#product').on('click', '.single_item2', function () {
+                $(this).css('background', '#eee');
+            });
+        })
+        function youhui(storeid) {
+            $('.youhui_' + storeid).toggle('');
+        }
+    </script>
+</block>

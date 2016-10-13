@@ -1,0 +1,252 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <style>
+        body{
+            margin:30px;
+        }
+    </style>
+</block>
+
+<block name="style">
+    <style>
+        .color-1{
+            background-color: #0edd81;
+        }
+        .color-2{
+            background-color: orange;
+        }
+        .color-3{
+            background-color: orangered;
+        }
+        .pad-rad{
+            padding: 30px 20px 30px 20px ;border-radius: 10px;
+        }
+        .pad-bottom-1{
+            padding-bottom: 10px;
+        }
+        .pad-bottom-2{
+            padding-bottom: 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="main-title">
+        <h2>调度中心 / 实时监控</h2>
+    </div>
+    <div class="form-control-wrap col-sm-12">
+        <div class="col-sm-1">
+            <select class="form-control" name="zhandian">
+                <option value="" >包头</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select class="form-control" name="zhandian">
+                <option value="" >包头叮咚速达（稀土站）</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-control" style="border: none"><span id="daojishi"></span><a class="glyphicon glyphicon-refresh" href="javascript:location.reload()"></a></div>
+        </div>
+        <div class="col-sm-2 text-right" style="position:absolute ;right:16.666666666666664%">
+            <div class="form-control" style="border: none"><button class="glyphicon glyphicon-folder-open"></button>订单改价</div>
+        </div>
+        <div class="col-sm-2" style="position:absolute ;right: 0">
+            <div class="form-control" style="border: none"><button class="glyphicon glyphicon-list"></button>指派任务</div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-top: 40px; color:white ">
+        <div class="col-sm-3" id="person_name">
+            <div class="<if condition='$person_bili gt 60'>color-1</if><if condition='$person_bili gt 30 and $person_bili lt 60'>color-2</if><if condition='$person_bili lt 30'>color-3</if> pad-rad">
+                <div class="pad-bottom-2"><h3>{$person_line}</h3></div>
+                <div class="pad-bottom-1">在岗骑手数 <i class="glyphicon glyphicon-question-sign" onclick="person_detail()"></i></div>
+                <div><i class="glyphicon glyphicon-info-sign"></i> {$person_bili}%骑手在岗，<if condition='$person_bili gt 60'>表现良好，无压力</if><if condition='$person_bili gt 30 and $person_bili lt 60'>在线骑手较少</if><if condition='$person_bili lt 30'>警告，在线骑手太少了</if></div>
+            </div>
+            <div class="color-1" style="display: none"></div>
+        </div>
+        <div class="col-sm-3">
+            <div class="<if condition='$chaoshi_bili gt 60'>color-3</if><if condition='$chaoshi_bili gt 30 and $chaoshi_bili lt 60'>color-2</if><if condition='$chaoshi_bili lt 30'>color-1</if> pad-rad">
+                <div class="pad-bottom-2"><h3>{$chaoshi_bili}%</h3></div>
+                <div class="pad-bottom-1">超时单占比 <i class="glyphicon glyphicon-question-sign"></i></div>
+                <div><i class="glyphicon glyphicon-info-sign"></i> <if condition='$chaoshi_bili gt 60'>超时的订单比例太多了</if><if condition='$chaoshi_bili gt 30 and $chaoshi_bili lt 60'>超时比例比较多</if><if condition='$chaoshi_bili lt 30'>超时比例在正常范围内</if></div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="<if condition='$average_fuzai gt 10'>color-3</if><if condition='$average_fuzai gt 3 and $average_fuzai lt 6'>color-2</if><if condition='$average_fuzai lt 3'>color-1</if> pad-rad">
+                <div class="pad-bottom-2"><h3>{$average_fuzai}</h3></div>
+                <div class="pad-bottom-1">人均负载 <i class="glyphicon glyphicon-question-sign"></i></div>
+                <div><i class="glyphicon glyphicon-info-sign"></i> <if condition='$average_fuzai gt 10'>负载压力好大啊</if><if condition='$average_fuzai gt 3 and $average_fuzai lt 6'>压力有点大</if><if condition='$average_fuzai lt 3'>轻轻松松</if></div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="<if condition='$order_num gt 60'>color-1</if><if condition='$order_num gt 30 and $order_num lt 60'>color-2</if><if condition='$order_num lt 30'>color-3</if> pad-rad">
+                <div class="pad-bottom-2"><h3>{$order_num}</h3></div>
+                <div class="pad-bottom-1">今日订单量 <i class="glyphicon glyphicon-question-sign"></i></div>
+                <div><i class="glyphicon glyphicon-info-sign"></i> <if condition='$order_num gt 50'>可以藐视对手了</if><if condition='$order_num gt 10 and $order_num lt 50'>继续发奋图强吧</if><if condition='$order_num lt 10'>该关门大吉了</if></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-top: 50px">
+        <div class="col-sm-6">
+            <div class="" style="width: 2%;position: absolute;height: 100%;top: 40%">超时单占比</div>
+            <div class="col-sm-11">
+                <div class="text-center">运力气泡图<i class="glyphicon glyphicon-question-sign"></i></div>
+                <canvas id="infotime" style="width: 100%;height: 100%"></canvas>
+                <div class="text-center">人均负载</div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="" style="width: 2%;position: absolute;height: 100%;top: 40%">进单量</div>
+            <div class="col-sm-11">
+                <div class="text-center">进单量曲线图<i class="glyphicon glyphicon-question-sign"></i></div>
+                <canvas id="inforder" style="width: 100%;height: 100%"></canvas>
+                <div class="text-center">时间</div>
+            </div>
+            <div class="" style="position: absolute;top: 40%;right: 0;border: solid 1px #ddd;border-radius: 3px">
+                <div style="color:#090;font-weight: bold ">——昨天</div>
+                <div style="color: orange;font-weight: bold;">——今天</div>
+            </div>
+        </div>
+    </div>
+
+    <!--<script src="__STATIC__/Chart.min.js" type="text/javascript"></script>-->
+    <script src="__STATIC__/Chart.js" type="text/javascript"></script>
+    <script src="__STATIC__/ztools.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function(){
+            var t = 60;
+           setInterval(function(){
+               $('#daojishi').html(t+'s后刷新页面')
+               t--;
+               if(t==0){
+                   location.reload();
+                   clearInterval(t);
+               }
+           },1000)
+//            var ctxa = document.getElementById("inforder").getContext("2d");
+//            var infotime = new Chart(ctxa);
+
+            var ctxb = document.getElementById("inforder").getContext("2d");
+            var inforder = new Chart(ctxb);
+            var a='{$yesterday.0}', b='{$yesterday.1}', c='{$yesterday.2}', d='{$yesterday.3}', e='{$yesterday.4}', f='{$yesterday.5}', g='{$yesterday.6}', h='{$yesterday.7}', i='{$yesterday.8}', j='{$yesterday.9}', k='{$yesterday.10}', l='{$yesterday.11}', m='{$yesterday.12}',n='{$yesterday.13}',o='{$yesterday.14}',p='{$yesterday.15}',q='{$yesterday.16}';
+            var aa='{$today.0}',bb='{$today.1}',cc='{$today.2}',dd='{$today.3}',ee='{$today.4}',ff='{$today.5}',gg='{$today.6}',hh='{$today.7}',ii='{$today.8}',jj='{$today.9}',kk='{$today.10}',ll='{$today.11}',mm='{$today.12}',nn='{$today.13}',oo='{$today.14}',pp='{$today.15}',qq='{$today.16}';
+            var data = {
+                labels : ["0:15","1:45","3:15","4:45","6:15","7:45","9:15","10:45","12:15","13:45","15:15","16:45","18:15","19:45","21:15","22:45"],
+                        datasets : [
+                    {
+                        fillColor : "#fff",
+                        strokeColor : "#090",
+                        pointColor : "#090",
+                        pointStrokeColor : "#fff",
+                        data : [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q]
+                    },//昨天
+                    {
+                        fillColor : "#fff",
+                        strokeColor : "orange",
+                        pointColor : "orange",
+                        pointStrokeColor : "#fff",
+                        data : [aa,bb,cc,dd,ee,ff,gg,hh,ii,jj,kk,ll,mm,nn,oo,pp,qq]
+                    }//今天
+                ]
+            }
+            var options = {
+
+                //Boolean - If we show the scale above the chart data
+                scaleOverlay : true,
+
+                //Boolean - If we want to override with a hard coded scale
+                scaleOverride : true,
+
+                //** Required if scaleOverride is true **
+                //Number - The number of steps in a hard coded scale
+                scaleSteps : 3,
+                //Number - The value jump in the hard coded scale
+                scaleStepWidth : 2.5,
+                //Number - The scale starting value
+                scaleStartValue : 0,
+
+                //String - Colour of the scale line
+                scaleLineColor : "rgba(0,0,0,0.1)",
+
+                //Number - Pixel width of the scale line
+                scaleLineWidth : 1,
+
+                //Boolean - Whether to show labels on the scale
+                scaleShowLabels : true,
+
+                //Interpolated JS string - can access value
+                scaleLabel : "<%=value%>",
+
+                //String - Scale label font declaration for the scale label
+                scaleFontFamily : "'Arial'",
+
+                //Number - Scale label font size in pixels
+                scaleFontSize : 12,
+
+                //String - Scale label font weight style
+                scaleFontStyle : "normal",
+
+                //String - Scale label font colour
+                scaleFontColor : "#666",
+
+                ///Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines : true,
+
+                //String - Colour of the grid lines
+                scaleGridLineColor : "rgba(0,0,0,0.1)",
+
+                //Number - Width of the grid lines
+                scaleGridLineWidth : 1,
+
+                //Boolean - Whether the line is curved between points
+                bezierCurve : false,
+
+                //Boolean - Whether to show a dot for each point
+                pointDot : false,
+
+                //Number - Radius of each point dot in pixels
+                pointDotRadius : 3,
+
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth : 1,
+
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke : true,
+
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth : 5,
+
+                //Boolean - Whether to fill the dataset with a colour
+                datasetFill : false,
+
+                //Boolean - Whether to animate the chart
+                animation : true,
+
+                //Number - Number of animation steps
+                animationSteps : 60,
+
+                //String - Animation easing effect
+                animationEasing : "easeOutQuart",
+
+                //Function - Fires when the animation is complete
+                onAnimationComplete : null
+
+            }
+            inforder.Line(data,options);
+            //alert(JSON.stringify(myNewChart.Line(data,options)))
+        });
+        function person_detail(){
+            $('#person_name').children('div:eq('+1+')').css({
+                'height':'100%',
+                'width':'100%',
+                'position':'absolute',
+                'top':'0',
+                'left':'0',
+                'border-radius':'10px'
+            }).addClass('pad-rad').show().html("<volist name='person_line_info' id='vo'><div class='text-center'>{$vo.person_name} {$vo.phone}</div></volist>")
+            $('#person_name').children('div:eq('+1+')').click(function(){
+                $('#person_name').children('div:eq('+1+')').hide();
+            })
+        }
+    </script>
+</block>

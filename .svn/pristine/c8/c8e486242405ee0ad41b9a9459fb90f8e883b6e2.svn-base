@@ -1,0 +1,43 @@
+<extend name="Base/orderlist"/>
+<block name="left"><div class="ub-f1 bc-f1" style="width: 15%"><i class="fa fa-angle-left"></i></div></block>
+<block name="title">渠道申请</block>
+<block name="right"><i class="fa fa-home" onclick="javascript:location.href='{:U(\'Mobile/Index/index\')}'"></i></block>
+<block name="body">
+    <form class="form-horizontal" style="padding-top: 15px;padding-bottom: 15px" method="post" action="{:U('Mobile/channels')}">
+        <div class="">
+            <label for="inputText1" class="col-sm-2 control-label">申请人<span style="color: red">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" id="inputText1" placeholder="请输入申请人姓名">
+            </div>
+        </div>
+        <div class="">
+            <label for="inputText2" class="col-sm-2 control-label">联系电话<span style="color: red">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="phone" id="inputText2" placeholder="请输入联系电话">
+            </div>
+        </div>
+        <div class="">
+            <label for="inputText3" class="col-sm-2 control-label">所在城市<span style="color: red">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="address" id="inputText3" placeholder="请输入联系地址">
+            </div>
+        </div>
+        <div class="">
+            <label for="inputText4" class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="email" id="inputText4" placeholder="请输邮箱地址">
+            </div>
+        </div>
+        <div class="">
+            <label for="textarea1" class="col-sm-2 control-label">留言内容</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" rows="4" name="content" id="textarea1" placeholder="如有留言"></textarea>
+            </div>
+        </div>
+        <div class="" style="margin-top: 20px">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" target-form="form-horizontal" class="btn btn-default col-xs-12 ajax-post" style="background-color: orangered;color: white">提交</button>
+            </div>
+        </div>
+    </form>
+</block>

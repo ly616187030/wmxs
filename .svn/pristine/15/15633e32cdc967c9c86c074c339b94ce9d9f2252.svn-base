@@ -1,0 +1,879 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <style type="text/css">
+        .background {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            /*background: deepskyblue;*/
+            background:url(__IMG__/bg_img.jpg) no-repeat;
+            background-size:100% 100%;
+            overflow: hidden;
+        }
+        .brand {
+            width: 100%;
+            height: 85px;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .panel-lite {
+            margin: 5% auto;
+            max-width: 400px;
+            background: #fff;
+            padding: 45px 30px;
+            border-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .panel-lite h4 {
+            font-weight: 400;
+            font-size: 24px;
+            text-align: center;
+            color: #1685d0;
+            margin: 15px auto;
+        }
+        .panel-lite a.link {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #1685d0;
+            font-size: 14px;
+        }
+        .panel-lite a.hover {
+            color: #666;
+        }
+
+        .form-group {
+            position: relative;
+            font-size: 15px;
+            color: #666;
+        }
+        .form-group + .form-group {
+            margin-top: 30px;
+        }
+        .form-group .form-label {
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 5px;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+        }
+        .form-group .form-control {
+            width: 100%;
+            position: relative;
+            z-index: 3;
+            height: 35px;
+            background: none;
+            border: none;
+            padding: 5px 0;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            border-bottom: 1px solid #777;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        .form-group .form-control:invalid {
+            outline: none;
+        }
+        .form-group .form-control:focus, .form-group .form-control:valid {
+            outline: none;
+            color: #1685d0;
+            box-shadow: 0 1px #1685d0;
+            border-color: #1685d0;
+        }
+        .form-group .form-control:focus + .form-label,
+        .form-group .form-control:valid + .form-label {
+            font-size: 12px;
+            -ms-transform: translateY(-15px);
+            -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+        }
+        .floating-btn {
+            background: #1685d0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 32px;
+            border: none;
+            position: absolute;
+            margin: auto;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+            margin: auto;
+            right: -30px;
+            bottom: 90px;
+            cursor: pointer;
+        }
+        .floating-btn:hover {
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.3) inset, 0 3px 6px rgba(0, 0, 0, 0.16), 0 5px 11px rgba(0, 0, 0, 0.23);
+        }
+        .floating-btn:hover .icon-arrow {
+            -ms-transform: rotate(45deg) scale(1.2);
+            -webkit-transform: rotate(45deg) scale(1.2);
+            transform: rotate(45deg) scale(1.2);
+        }
+        .floating-btn:focus, .floating-btn:active {
+            outline: none;
+        }
+        .icon-arrow {
+            position: relative;
+            width: 13px;
+            height: 13px;
+            border-right: 3px solid #fff;
+            border-top: 3px solid #fff;
+            display: block;
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            margin: auto;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+        }
+        .icon-arrow:after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 3px;
+            background: #fff;
+            left: -5px;
+            top: 5px;
+            -ms-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+        .verifyimg-box {
+            padding: 0;
+            border: 0;
+        }
+        .verifyimg-box .verifyimg {
+            cursor: pointer;
+            width: 130px;
+            height: 41px;
+            margin-top: -6px;
+            border-bottom: 1px solid #777;
+        }
+        @media (max-width: 768px) {
+            .background {
+                display: none;
+            }
+            .panel-lite {
+                box-shadow: none;
+                border-color: #fff;
+            }
+        }
+        #yzm:hover{
+            cursor:pointer;
+        }
+        .b_main{position:absolute;left:70%;}
+        .out{
+            position:absolute;
+            top:7px;
+            border-color:transparent #999999 transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+        }
+        .in{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .border{
+            position:relative;
+            border:1px solid #999999;
+            padding:10px;
+            left:16px;
+            border-radius:5px;
+        }
+        .b_main1{position:absolute;left:70%;}
+        .in1{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main2{position:absolute;left:70%;}
+        .in2{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main3{position:absolute;left:70%;}
+        .in3{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main4{position:absolute;left:70%;}
+        .in4{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main5{position:absolute;left:70%;}
+        .in5{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main6{position:absolute;left:70%;}
+        .in6{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <!-- 背景 -->
+    <div id="particles-js" class="background">
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">服务条款</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h5>一、服务条款</h5>
+                        <div>外卖先生服务条款（下称“服务条款”）是包头市助友科技有限公司 (下称“助友科技”)与您就外卖先生平台服务等相关事项所订立的有效合约。您通过盖章、网络页面点击确认或以其他方式选择接受本服务条款，即表示您与助友科技已达成协议并同意接受本服务条款的全部约定内容。此协议在必要时将进行修改更新，网站发布后立即生效。除非特别声明，某些增强服务的新功能将适用此协议。在接受本服务条款之前，请您仔细阅读本服务条款的全部内容。如果您对本服务条款的条款有疑问的，请通过询问助友科技，助友科技将向您解释条款内容。如果您不同意本服务条款的任意内容，或者无法准确理解助友科技对条款的解释，请不要进行后续操作。</div>
+                        <h5>二、服务内容</h5>
+                        <div>1、此协议所述服务仅在外卖先生网站内有效。外卖先生网站是指http://www.wmxs.me及其所属网页；</div>
+                        <div>2、外卖先生免费试用期间不收钱任何费用，无相关附加服务；</div>
+                        <div>3、外卖先生有权根据实际情况自主调整服务内容。</div>
+                        <h5>三、帐户</h5>
+                        <div>1、外卖先生的帐户是能够承担相应法律责任的公司或个人。若您不具备此资格，请不要使用外卖先生提供的服务；</div>
+                        <div>2、外卖先生要求帐户在使用服务时必须遵守相关法律法规。对帐户使用服务所产生的与其他公司或者个人的纠纷不负法律责任；</div>
+                        <div>3、外卖先生有权对恶意帐户中止服务，并无需特别通知；</div>
+                        <div> 4、外卖先生的服务将不提供给那些被临时或永久取消会员资格的公司或个人。</div>
+                        <h5>四、费用</h5>
+                        <div>1、外卖先生试用期赠送300条订单，在不超过常规使用、存储、上传数据数量免费使用；</div>
+                        <div>2、外卖先生保留对收费模式和具体金额调整的权利，涉及收费服务，将至少提前30天的时间在官方网站进行发布；</div>
+                        <div>3、针对于收费项目，服务期满双方愿意继续合作的，您规定期限内支付续费款项，以使服务得以继续进行。如续费时助友科技对外卖先生服务体系、名称或价格进行调整的，双方同意按照届时有效的新的服务体系、名称或价格履行，但调整前您已经支付的款项不受影响。</div>
+                        <div>4、助友科技保留在您未按照约定支付全部费用之前不向您提供服务和技术支持，或者终止服务和技术支持的权利。</div>
+                        <h5>五、服务期限</h5>
+                        <div>助友科技有权判定帐户的行为是否符合《帐户协议》的要求，如果帐户违背了该《帐户协议》的规定，助友科技有权决定取消该外卖先生帐户资格或者采取其他助友科技认为合适的措施。</div>
+                        <h5>六、服务终止</h5>
+                        <div>有下列情形之一的，助友科技有权随时暂停、终止、取消或拒绝外卖先生帐户服务。</div>
+                        <div>1、帐户违反了此协议或已在约定范围内的任一条款；</div>
+                        <div>2、根据此协议相关说明而终止服务；</div>
+                        <div>3、外卖先生的发布功能滥发重复信息；</div>
+                        <div>4、未经请求或授权向外卖先生帐户发送大量与业务不相关的信息；</div>
+                        <div>5、冒用其他企业的名义发布商业信息，进行商业活动；</div>
+                        <div>6、攻击外卖先生网站的数据、网络或服务；</div>
+                        <div>7、盗用他人在外卖先生网站上的帐户名和或密码。</div>
+                        <div>以下信息是严格禁止并绝对终止帐户服务的：</div>
+                        <div>1、有关宗教、种族或性别的贬损言辞；</div>
+                        <div>2、骚扰、滥用或威胁其他帐户；</div>
+                        <div>3、侵犯任何第三方著作权、专利、商标、商业秘密或其它专有权利、发表权或隐私权的信息；</div>
+                        <div>4、其它任何违反互联网相关法律法规的信息。</div>
+                        <h5>七 、您的权力与义务</h5>
+                        <div>1、您同意遵守本服务条款以及服务展示页面的相关管理规范及流程。您了解上述协议及规范等的内容可能会不时变更。如本服务条款的任何内容发生变动，助友科技应通过提前30天在www.wmxs.me的适当版面公告向您提示修改内容。如您不同意助友科技对服务条款相关条款所做的修改，您有权停止使用外卖先生服务，此等情况下，助友科技应与您进行服务费结算（如有），并且您需要自行备份业务数据。如您继续使用外卖先生服务，则视为您接受助友科技对服务条款相关条款所做的修改。</div>
+                        <div>2、您应按照助友科技在www.wmxs.me网站公示的提示及本服务条款的约定支付相应服务费用。</div>
+                        <div>3、您使用“外卖先生”进行商务活动所引起的一切法律纠纷均与助友科技无关。</div>
+                        <div>4、您对自己使用外卖先生服务过程产生的数据以及进入和管理外卖先生服务上各类产品与服务的账号、密码的完整性和保密性负责。因您维护不当或保密不当致使上述数据、口令、密码等丢失或泄漏所引起的一切损失和后果均由您自行承担。</div>
+                        <div>5、如您违反本合同规定的任何条款，助友科技有权拒绝向您提供服务，并终止本合同。您已支付的“服务费”不予退还，同时助友科技有进一步追究客户法律责任的权利。</div>
+                        <div>6、对于因不可抗力造成的服务中断、链接受阻或其他缺陷（包括但不限于自然灾害、社会事件以及因网站所具有的特殊性质而产生的包括黑客攻击、电信部门技术调整导致的影响、政府管制而造成的暂时性关闭在内的任何影响网络正常运营的因素），外卖先生网站不承担任何责任，但将尽力减少因此而给会员造成的损失和影响；</div>
+                        <h5>八、外卖先生网站的权利和义务</h5>
+                        <div>1、助友科技应按照合同约定提供服务,保证服务可持续运行及数据安全。</div>
+                        <div>2、 助友科技已获得必要的许可和授权，有权按本合同约定为客户提供“外卖先生服务”。</div>
+                        <div>3、助友科技不向其他任何第三方保证和承诺客户提交的网页和信息符合注册标准，客户自行对其外卖先生服务提供的内容、产品、服务等承担全部责任。</div>
+                        <div>4、助友科技有权随时删除含有任何危害国家安全、淫秽色情、虚假、侮辱、诽谤、恐吓或骚扰、侵犯他人版权或人身权或其他合法权益等违法或有违社会公序良俗的内容。</div>
+                        <div>5、助友科技保留为维护系统升级而短暂停止服务的权利，在暂停服务之前，助友科技将通过网站予以公告。</div>
+                        <div>6、助友科技可以根据中国法律法规的调整、行政执法机关的命令和社会伦理道德的变化相应调整易订货服务的审核标准，客户不得以类似“以前曾通过助友科技审核”的理由要求助友科技继续审核通过。</div>
+                        <div>7、服务期限内，助友科技将为您提供如下客户服务：</div>
+                        <div>（1）助友科技为付费用户提供售后故障服务，并为付费用户提供有效的联系方式并保证付费用户能够联系到故障联系人。故障联系人在明确故障后及时进行反馈；</div>
+                        <div>（2）助友科技提供在线服务系统，解答客户在使用中的问题；</div>
+                        <div>（3）助友科技承诺应严格遵守客户的数据保密义务。明确客户数据的所有权属于客户本身。</div>
+                        <h5>九、保密责任</h5>
+                        <div>1、保密资料指由一方向另一方披露的所有技术及非技术信息(包括但不限于产品资料，产品计划，价格，财务及营销规划，业务战略，客户信息，客户数据，研发，软件硬件，API应用数据接口，技术说明，设计，特殊公式，特殊算法等)。</div>
+                        <div>2、本服务条款任何一方同意对获悉的对方之上述保密资料予以保密，并严格限制接触上述保密信息的员工遵守本条之保密义务。除非国家机关依法强制要求或上述保密资料已经进入公有领域外，接受保密资料的一方不得对外披露。</div>
+                        <div>3、本服务条款双方明确认可各自用户信息和业务数据等是各自的重要资产及重点保密信息。本服务条款双方同意尽最大的努力保护上述保密信息等不被披露。一旦发现有上述保密信息泄露事件，双方应合作采取一切合理措施避免或者减轻损害后果的产生。</div>
+                        <div>4、本条款不因本服务条款的终止而失效。</div>
+                        <h5>十、违约责任</h5>
+                        <div>1、本服务条款任何一方违约均须依法承担违约责任。</div>
+                        <div>2、请您理解，鉴于计算机、互联网的特殊性，下述情况不属于助友科技违约：</div>
+                        <div>（1）助友科技在进行外卖先生服务配置、维护、升级时，需要短时间中断服务；</div>
+                        <div>（2）助友科技提供的服务涉及到互联网及相关信息等服务，可能会受到Internet不稳定因素的影响。因此服务存在因上述不可抗力、计算机病毒或黑客攻击、系统不稳定、用户所在位置、用户关机、通信网络、Internet等原因等造成您访问外卖先生服务速度下降或无法使用；</div>
+                        <div>3、由于您的故意或过失导致遭受损失的，助友科技不承担任何责任。</div>
+                        <div>4、如因助友科技原因，造成您连续72小时不能正常使用服务的，您可以终止服务，但非助友科技控制之内的原因引起的除外。</div>
+                        <div>5、如果助友科技违反服务条款规定的义务，给您造成损失的，赔偿金的最高限额为您有关“外卖先生服务”向助友科技首次提出赔偿主张时最近一次续费实际支付的“外卖先生服务”服务费。客户未续费的，以首次支付的“服务费”为限额。</div>
+                        <div>6、在任何情况下，助友科技对本服务条款所承担的违约赔偿责任总额不超过违约服务对应之服务费总额。</div>
+                        <h5>十一、争议解决</h5>
+                        <div>外卖先生与使用账户任何一方未履行协议所规定的责任均视为违约，按《合同法》规定处理；如双方在此协议范围内发生纠纷，应尽量友好协商解决。此协议适用中华人民共和国法律。如与此协议有关的某一特定事项缺乏明确法律规定，则应参照通用的国际商业惯例和行业惯例。</div>
+                        <div>1、 本合同的生效、解释、执行、管辖、争议的解决均适用中华人民共和国法律。</div>
+                        <div>2、 因本合同引起的或与本合同有关的任何争议，双方可友好协商解决；协商不成，可将争议提交相关部门进行处理。</div>
+                        <h5>十二、最终解释权</h5>
+                        <div>包头市助友科技有限公司对外卖先生保有任何活动、限制等的最终解释权。</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">阅读并同意服务条款</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 登陆框 -->
+        <div style="width:35%;margin:0% 37%;height:100%;">
+            <div class="brand" style="width:100%;height:20%;"></div>
+            <form class="login-form form" action="{:U('')}" method="post">
+                <!--第一步-->
+                <div class="form-group" style="margin-bottom: 8%">
+                    <a style="display:block;background:url(__IMG__/login_log.png) no-repeat  left 45%;width:100%;height:120px;" href=""></a>
+                </div>
+                <div class="step1" >
+                    <div class="input-group" style="width:100%;">
+                        <input type="text" class="form-control tel" style="height:50px;line-height: 50px;width:70%;" placeholder="手机号" name="tel">
+                        <div class="b_main" style="float:right;display:none">
+                            <div class="border alert1" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top:4%;width:100%;border:none;">
+                        <div class="verify_input" style=" width:70%;float:left;">
+                            <input type="text" class="form-control verify" style="width:66%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="识别码" name="verify">
+                            <span class="input-group-addon verifyimg-box" style="padding:1% 0;margin:0px;width:34%;height:49px;line-height: 49px;">
+                                <img class="verifyimg reload-verify" alt="CoreThink验证码" src="{:U('public/verify')}" title="点击刷新" style="width:100%;height:100%;"/>
+                            </span>
+                        </div>
+                        <div class="b_main1" style="float:right;display:none">
+                            <div class="border alert2" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 4%;width:100%;border:none;">
+                        <div style="width:70%;float:left;border:1px solid #ccc;" class="phoneVerify_input">
+                            <input type="text" class="form-control phoneVerify" style="width:66%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="验证码" name="phoneVerify">
+                                 <span class="input-group-addon" style="padding:0;margin:0px;width:34%;height:48px;line-height: 48px;">
+                                     <div style="width:100%;background-color: #ccc;color:#666;" id="yzm">获取动态码</div>
+                                 </span>
+                        </div>
+                        <div class="b_main2" style="float:right;display:none">
+                            <div class="border alert3" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:2%;width:70%;">
+                        <input type="checkbox" name="agree" checked="checked" /> <span style="color:#fff;">我已同意</span><a href="javascript:void(0);" class="fwtk" style="color:#287DDE" data-toggle="modal" data-target="#myModal">服务条款</a>
+                    </div>
+                    <div class="form-group" style="margin-top: 12%;">
+                        <button type="button" class=" zhuce" style="border:none;width:70%;height:55px;line-height: 55px;background-color: green;color:#fff;font-size: 18px;" target-form="login-form">注&nbsp&nbsp&nbsp&nbsp册</button>
+                    </div>
+                    <div class="form-group" style="margin-top:2%;width:70%;">
+                        <span style="color:#fff;float:right;">已有账号，<a class="link" target="_blank" href="{:U('public/login')}" style="font-size: 14px;">直接登录</a></span>
+                    </div>
+                </div>
+                <!--第一步-->
+                <!--第二步-->
+                <div class="step2"   style="display:none">
+                    <input type="hidden" class="form-control" placeholder="昵称" name="nickname" value="tyzc" aria-describedby="basic-addon6">
+                    <input type="hidden" class="form-control" placeholder="注册来源" name="reg_type" value="tiyan" aria-describedby="basic-addon7">
+                    <input type="hidden" class="form-control" placeholder="权限分组" name="permission" value="12" aria-describedby="basic-addon8">
+                    <div class="input-group" style="width:100%;">
+                        <input type="text" class="form-control c_name" style="height:50px;line-height: 50px;width:70%" placeholder="公司名称" name="c_name">
+                        <div class="b_main3" style="float:right;display:none">
+                            <div class="border alert4" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:4%;width:100%;float:left;">
+                        <div class="input-group" style="width:70%;border:none;float:left;">
+                            <input type="text" class="form-control user" style="height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名" name="user" autocomplete="off">
+                        </div>
+                        <div class="b_main4" style="float:right;display:none">
+                            <div class="border alert5" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:4%;width:100%;float:left;">
+                        <div class="input-group" style="width:70%;border:none;float:left;">
+                            <input type="text" class="form-control pwd" style="width:100%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="登录密码" name="pwd" autocomplete="off" onfocus="this.type='password'">
+                        </div>
+                        <div class="b_main5" style="float:right;display:none">
+                            <div class="border alert6" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:4%;width:100%;float:left;">
+                        <div class="input-group" style="width:70%;border:none;float:left;">
+                            <input type="text" class="form-control email" style="width:100%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="邮&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp箱" name="email">
+                        </div>
+                        <div class="b_main6" style="float:right;display:none">
+                            <div class="border alert7" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                    <div class="form-group" style="margin-top:12%;">
+                        <button type="submit" class="tijiao" style="border:none;width:70%;height:55px;line-height: 55px;background-color: green;color:#fff;font-size: 18px;" target-form="login-form">提&nbsp&nbsp&nbsp&nbsp交</button>
+                    </div>
+                    <div class="form-group" style="margin-top:2%;width:70%;">
+                        <a class="link" target="_blank" href="{:U('public/login')}" style="font-size: 14px;float:right;">直接登录</a>
+                    </div>
+                </div>
+                <!--第二步-->
+            </form>
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+    <script src="__PUBLIC__/libs/particles/particles.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            //第一步开始
+            // 刷新验证码
+            $(".reload-verify").on('click', function() {
+                var verifyimg = $(".verifyimg").attr("src");
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+
+            $('.tel').click(function(){
+                var tel=$(this).val();
+                if($.trim(tel)==''){
+                    $('.tel').css('border','1px solid deepskyblue');
+                    $('.alert1').css('background-color','deepskyblue');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('11位手机号！');
+                }
+            });
+            $('.tel').blur(function(){
+                var tel=$(this).val();
+                if($.trim(tel)==''){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.alert1').css('background-color','orangered');
+                }else if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.alert1').css('background-color','orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                }else{
+                    $('.b_main').hide();
+                }
+            });
+
+            $('.verify').click(function(){
+                var verify=$(this).val();
+                if($.trim(verify)==''){
+                    $('.verify_input').css('border','1px solid deepskyblue');
+                    $('.alert2').css('background-color','deepskyblue');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入4位识别码！');
+                }
+            });
+            $('.verify').blur(function(){
+                var verify=$(this).val();
+                if($.trim(verify)==''){
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('识别码不能为空！');
+                }else if($.trim(verify).length<4 || $.trim(verify).length>4){
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入4位识别码！');
+                }else {
+                    $('.b_main1').hide();
+                }
+            });
+
+            $('.phoneVerify').click(function(){
+                var phoneVerify=$(this).val();
+                if($.trim(phoneVerify)==''){
+                    $('.phoneVerify_input').css('border','1px solid deepskyblue');
+                    $('.alert3').css('background-color','deepskyblue');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('请输入手机收到的验证码！');
+                }
+            });
+
+            $('.phoneVerify').blur(function(){
+                $('.phoneVerify_input').css('border','1px solid orangered');
+                $('.b_main2').hide();
+            });
+
+
+            //手机验证码
+            $("#yzm").click(function() {
+//                $(this).css("background","gray");
+                var _this = $(this);
+                var tel = $("input[name='tel']").val();
+                var verify = $("input[name='verify']").val();
+                var url = "{:U('sendSms','',false)}";
+                if ($.trim(tel) == '' && $.trim(verify) == '') {
+                    $('.tel').css('border', '1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color', 'transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.alert1').css('background-color', 'orangered');
+                    $('.verify_input').css('border', '1px solid orangered');
+                    $('.alert2').css('background-color', 'orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color', 'transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('识别码不能为空！');
+                    return false;
+                }
+
+                if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))) {
+                    $('.tel').css('border', '1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color', 'transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                    $('.alert1').css('background-color', 'orangered');
+                    return false;
+                } else if ((/^1[3|4|5|8][0-9]\d{8}$/.test(tel))) {
+                    var url2 = "{:U('exist')}";
+                    $.get(url2, {tel: tel}, function (data) {
+                        if (data.status == false) {
+                            $('.b_main').hide();
+                            $('.tel').css('border', '1px solid #ccc');
+                            if ($.trim(verify).length < 4 || $.trim(verify).length > 4) {
+                                $('.verify_input').css('border', '1px solid orangered');
+                                $('.alert2').css('background-color', 'orangered');
+                                $('.b_main1').show().find($('.in1')).css('border-color', 'transparent orangered transparent transparent');
+                                $('.b_main1').show().find($('.alert2')).text('请输入4位识别码！');
+                            } else {
+                                var url1 = "{:U('shibie')}";
+                                $.get(url1, {verify: verify}, function (data) {
+                                    if (data.status) {
+                                        $('.b_main1').hide();
+                                        $('.verify_input').css('border', '1px solid #ccc');
+                                        var url = "{:U('sendSms','',false)}";
+                                        $.get(url, 'phone=' + tel).success(function (data) {
+                                            var rg = /^000/;
+                                            if (rg.test(data)) {
+                                                _this.prop('disabled', 'disabled');
+                                                timer = ztools.countdown(59, function (h, m, s) {
+                                                    _this.text(s + 's重新获取');
+                                                })
+                                            }
+                                        });
+                                        setTimeout(function () {
+                                            _this.prop('disabled', false);
+                                            _this.text('获取验证码');
+                                            clearInterval(timer)
+                                        }, 60000);
+                                    } else {
+                                        $('.verify_input').css('border', '1px solid orangered');
+                                        $('.alert2').css('background-color', 'orangered');
+                                        $('.b_main1').show().find($('.in1')).css('border-color', 'transparent orangered transparent transparent');
+                                        $('.b_main1').show().find($('.alert2')).text(data.info);
+                                        $(".verifyimg").click();
+                                        return false;
+                                    }
+                                })
+                            }
+                        } else {
+                            $('.tel').css('border', '1px solid orangered');
+                            $('.alert1').css('background-color', 'orangered');
+                            $('.b_main').show().find($('.in')).css('border-color', 'transparent orangered transparent transparent');
+                            $('.b_main').show().find($('.alert1')).text(data.info);
+
+                        }
+                    })
+                }
+            });
+
+
+
+            $("input[name='agree']").click(function(){
+                var check=$(this).is(':checked');
+                if(check==false){
+                    $('.zhuce').attr('disabled','disabled');
+                }else{
+                    $('.zhuce').removeAttr('disabled');
+                }
+            })
+
+            $('.zhuce').click(function(){
+
+                var tel=$("input[name='tel']").val();
+                var verify=$("input[name='verify']").val();
+                var phoneVerify=$("input[name='phoneVerify']").val();
+
+                if($.trim(tel)=='' && $.trim(verify)==''){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.alert1').css('background-color','orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('识别码不能为空！');
+                    return false;
+                }
+
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                }else if((/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    var url="{:U('exist')}";
+                    $.get(url,{tel:tel},function(data){
+                        if(data.status){
+                            $('.tel').css('border','1px solid orangered');
+                            $('.alert1').css('background-color','orangered');
+                            $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main').show().find($('.alert1')).text(data.info);
+                        }else{
+                            $('.b_main').hide();
+                        }
+                    })
+                }else{
+                    $('.tel').css('border','none');
+                    $('.b_main').hide();
+                }
+
+                if($.trim(verify).length<4 || $.trim(verify).length>4){
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.alert2')).text('请输入4位识别码！');
+                    return false;
+                }else{
+                    $('.verify_input').css('border','none');
+                    $('.b_main1').hide();
+                }
+
+                if($.trim(verify)!='' && $.trim(verify).length==4){
+                    var url1="{:U('shibie')}";
+                    $.get(url1,{verify:verify},function(data){
+                        if(data.status){
+                            $('.b_main1').hide();
+                            $('.verify_input').css('border','none');
+                        }else{
+                            $('.verify_input').css('border','1px solid orangered');
+                            $('.alert2').css('background-color','orangered');
+                            $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main1').show().find($('.alert2')).text(data.info);
+                            $(".verifyimg").click();
+                        }
+                    })
+                }
+
+                if($.trim(phoneVerify)==''){
+                    $('.phoneVerify_input').css('border','1px solid orangered');
+                    $('.alert3').css('background-color','orangered');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('验证码不能为空！');
+                    return false;
+                }
+
+                if($.trim(phoneVerify)!='' && $.trim(verify)!='' && $.trim(tel)!=''){
+                            var url="{:U('yanzheng')}";
+                            $.get(url,{phoneVerify:phoneVerify},function(data){
+                                if(data.status){
+                                        $('.step1').hide();
+                                        $('.step2').show();
+                                }else{
+                                    $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                                    $('.b_main2').show().find($('.alert3')).text(data.info);
+                                    $('.alert3').css('background-color','orangered');
+                                }
+                            })
+                    return false;
+                }
+            })
+            //第一步结束
+
+            //第二步开始
+            $('.c_name').click(function(){
+                var c_name=$(this).val();
+                if($.trim(c_name)==''){
+                    $('.c_name').css('border','1px solid deepskyblue');
+                    $('.alert4').css('background-color','deepskyblue');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('请输入公司名称！');
+                }
+            });
+            $('.c_name').blur(function(){
+                var c_name=$(this).val();
+                if($.trim(c_name)==''){
+                    $('.c_name').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('公司名称不能为空！');
+                }else{
+                    $('.b_main3').hide();
+                }
+            });
+            $('.user').click(function(){
+                var user=$(this).val();
+                if($.trim(user)==''){
+                    $('.user').css('border','1px solid deepskyblue');
+                    $('.alert5').css('background-color','deepskyblue');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('请输入联系人！');
+                }
+            });
+            $('.user').blur(function(){
+                var user=$(this).val();
+                if($.trim(user)==''){
+                    $('.user').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('联系人不能为空！');
+                }else{
+                    $('.b_main4').hide();
+                }
+            });
+            $('.pwd').click(function(){
+                var pwd=$(this).val();
+                if($.trim(pwd)==''){
+                    $('.pwd').css('border','1px solid deepskyblue');
+                    $('.alert6').css('background-color','deepskyblue');
+                    $('.b_main5').show().find($('.in5')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main5').show().find($('.alert6')).text('请输入密码！');
+                }
+            });
+            $('.pwd').blur(function(){
+                var pwd=$(this).val();
+                if($.trim(pwd)==''){
+                    $('.pwd').css('border','1px solid orangered');
+                    $('.alert6').css('background-color','orangered');
+                    $('.b_main5').show().find($('.in5')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main5').show().find($('.alert6')).text('密码不能为空！');
+                }else{
+                    $('.b_main5').hide();
+                }
+            });
+            $('.email').click(function(){
+                var email=$(this).val();
+                if($.trim(email)==''){
+                    $('.email').css('border','1px solid deepskyblue');
+                    $('.alert7').css('background-color','deepskyblue');
+                    $('.b_main6').show().find($('.in6')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main6').show().find($('.alert7')).text('请输入常用邮箱！');
+                }
+            });
+            $('.email').blur(function(){
+                var email=$(this).val();
+                if(!(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) && email!=''){
+                    $('.alert7').show().text('邮箱格式不正确！');
+                    $('.alert7').css('background-color','orangered');
+                    $('.b_main6').show().find($('.in6')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main6').show().find($('.alert7')).text('邮箱格式不正确！');
+                }else{
+                    $('.b_main6').hide();
+                }
+            });
+
+            $('.form').submit(function(){
+                var self = $(this);
+                var c_name=self.find($("input[name='c_name']"));
+                var user=self.find($("input[name='user']"));
+                var pwd=self.find($("input[name='pwd']"));
+                var email=self.find($("input[name='email']"));
+
+                if(c_name.length>0){
+                    if($.trim(c_name.val())==''){
+                        $('.alert4').css('background-color','orangered');
+                        $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                        $('.b_main3').show().find($('.alert4')).text('公司名称不能为空！');
+                        return false;
+                    }
+                }
+                if(user.length>0){
+                    if($.trim(user.val())==''){
+                        $('.alert5').css('background-color','orangered');
+                        $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                        $('.b_main4').show().find($('.alert5')).text('联系人不能为空！');
+                        return false;
+                    }
+                }
+                if(pwd.length>0){
+                    if($.trim(pwd.val())==''){
+                        $('.alert6').css('background-color','orangered');
+                        $('.b_main5').show().find($('.in5')).css('border-color','transparent orangered transparent transparent');
+                        $('.b_main5').show().find($('.alert6')).text('密码不能为空！');
+                        return false;
+                    }
+                }
+                if(email.length>0){
+                    if($.trim(email.val())==''){
+                        $('.alert7').css('background-color','orangered');
+                        $('.b_main6').show().find($('.in6')).css('border-color','transparent orangered transparent transparent');
+                        $('.b_main6').show().find($('.alert7')).text('邮箱不能为空！');
+                        return false;
+                    }
+
+                    if(!(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email.val())) && email.val()!=''){
+                        $('.alert7').css('background-color','orangered');
+                        $('.b_main6').show().find($('.in6')).css('border-color','transparent orangered transparent transparent');
+                        $('.b_main6').show().find($('.alert7')).text('邮箱格式不正确！');
+                        return false;
+                    }
+                }
+
+                $.post(self.attr("action"), self.serialize(), function(data){
+                    $('.tijiao').attr('disabled','disabled');
+                    if(data.status){
+                        $('.b_main6').show().find($('.alert7')).text(data.info);
+                        $('.alert7').css('background-color','orangered');
+                        $('.b_main6').show().find($('.in6')).css('border-color','transparent orangered transparent transparent');
+                        setTimeout(function(){
+                            window.location.href=data.url;
+                        },2500);
+                    }else{
+                        $('.b_main6').show().find($('.alert7')).text(data.info);
+                        $('.alert7').css('background-color','orangered');
+                        $('.b_main6').show().find($('.in6')).css('border-color','transparent orangered transparent transparent');
+                    }
+                }, "json");
+                return false;
+            })
+
+            //第二步结束
+
+        });
+    </script>
+</block>

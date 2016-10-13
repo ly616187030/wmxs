@@ -1,0 +1,417 @@
+<extend name="Base/common_zhgIndex" />
+
+<block name="style">
+
+    <style>
+
+        .faster_bottom ul li{ height: 50px; line-height: 50px; cursor: pointer;}
+
+        .faster_bottom ul a:hover li{background-color: #D6D6D6;}
+
+        .left_bottom{height:60px; margin-top: 15px; margin-left: 20px;line-height: 20px;}
+
+        .faster{ width: 100%; text-indent: 20px;height: 40px; background-color:#E0E0E0; font-size: 16px; line-height: 40px; border-top: 1px solid #E3E3E3; border-bottom: 1px solid #E3E3E3;}
+
+        .wm_right_right{ width: 700px; height: 500px; float: left; margin-left: 20px;}
+
+        .infoname{text-align: right; width: 100px; font-size: 16px;float: left;margin-top: 1%;}
+
+        .infoname ul li{ height: 50px;}
+
+        .infoform{ margin-left: 100px; float: left}
+
+        .infoform ul li{height: 50px;}
+
+        .Myselect{ width: 80px;}
+
+    </style>
+
+</block>
+
+<block name="script">
+
+    <script type="text/javascript" src="__JS__/jquery-1.9.0.js"></script>
+
+    <script type="text/javascript">
+
+        var d = "";
+
+        var getdays = function(){
+
+            var a = 31;
+
+            var b = 30;
+
+            var yearIndex = $("#yearid").val();
+
+            var monthIndex = $("#monthid").val();
+
+            var dsyindex = $("#daysid");
+
+            if(monthIndex != "" && yearIndex != ""){
+
+                $("#daysid").empty();
+
+                $("#daysid").append("<option>日</option>");
+
+                var c = "";
+
+                if(yearIndex%4 == 0){
+
+                    if(monthIndex == 4 ||
+
+                            monthIndex == 6 ||
+
+                            monthIndex == 9 ||
+
+                            monthIndex == 11 ){ c = b}else if(
+
+                            monthIndex == 2
+
+                    ){c = 29}else{
+
+                        c = a;
+
+                    }
+
+                }else{
+
+                    if(monthIndex == 4 ||
+
+                            monthIndex == 6 ||
+
+                            monthIndex == 9 ||
+
+                            monthIndex == 11 ){ c = b}else if(
+
+                            monthIndex == 2
+
+                    ){c = 28}else{
+
+                        c = a;
+
+                    }
+
+                }
+
+                var h = 1;
+
+                for(i=0;i<c;i++){
+
+                    dsyindex.append("<option value="+h+">"+h+"</option>");
+
+                    h++;
+
+                }
+
+                d = c;
+
+            }
+
+        }
+
+        $("#province").change(function(){
+
+            $this = $(this);
+
+            $.post("{:U('Getcity')}",{suggest:$this.val()}).success(function(data){
+
+                $("#city").empty();
+
+                for(i=0;i<data.length;i++){
+
+                    $("#city").append("<option value='"+data[i].code+"'>"+data[i].name+"</option>");
+
+                }
+
+            });
+
+        });
+
+        $("#city").change(function(){
+
+            $this = $(this);
+
+            $.post("{:U('Gettown')}",{suggest:$this.val()}).success(function(data){
+
+                $("#town").empty();
+
+                for(i=0;i<data.length;i++){
+
+                    $("#town").append("<option value='"+data[i].code+"'>"+data[i].name+"</option>");
+
+                }
+
+            });
+
+        });
+
+
+
+
+
+
+
+
+
+        $(function(){
+
+            var birthstr = "{$now.birthday}";
+
+            birthstr = birthstr.replace(/-0/g,"-");
+
+            var arr1 = birthstr.split("-");
+
+            $("#yearid").val(arr1[0]);
+
+            $("#monthid").val(arr1[1]);
+
+            $("#daysid").append("<option value='"+arr1[2]+"'>"+arr1[2]+"</option>");
+
+            $("#daysid").val(arr1[2]);
+
+
+
+            if("{$now.sex}" == 1){
+
+                var sexid  = $("#woman").get(0);
+
+                sexid.checked = "checked";
+
+            }else{
+
+                var sexid = $("#man").get(0);
+
+                sexid.checked = "checked";
+
+            }
+
+        })
+
+    </script>
+
+</block>
+
+<block name="body_zhgIndex">
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div style="min-height: 653px;" id="content" class="clearfix">
+
+        <div class="main center-main">
+
+            <!-- 个人中心菜单 -->
+
+            <include file="Public/user_center_left_zhg"/>
+
+            <!-- /个人中心菜单 -->
+
+            <!--个人中心右侧-->
+
+            <section class="usercenter-detail" id="usercenter-address" style="margin-left: 5%;margin-top: -1.5%;">
+
+                <div class="summary">
+
+                    <h3 class="summary-header">更改账户设置</h3>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="wm_right_right">
+
+                        <div style="margin-top: 20px; margin-left: 20px;"><h4>基本信息</h4></div>
+
+                        <div style=" border-bottom: solid 1px #E3E3E3;margin-top: 20px;"></div>
+
+                        <div style="width: 700px; margin-top: 10px;">
+
+                            <div class="infoname">
+
+                                <ul>
+
+                                    <li><label> 名称：</label></li>
+
+                                    <li><label> 性别：</label></li>
+
+                                    <li><label> 生日：</label></li>
+
+                                    <li><label> 居住地：</label></li>
+
+                                    <li><label> 联系电话：</label></li>
+
+                                    <li><label> QQ：</label></li>
+
+                                </ul>
+
+                            </div>
+
+                            <form action="{:U('PostInfo')}" method="post">
+
+                            <div class="infoform">
+
+                                <ul>
+
+                                    <li> <div class="form-group">
+    
+    <input type="text" class="form-control" name="nickname" id="nickname" value="{$now.nickname}">
+  </div></li>
+
+                                    <li style="font-size: 16px;margin-left: 5%"><span><input id="man" type="radio" name="sex" value="0">男</span><span style="margin-left: 50px;"><input id="woman" type="radio" name="sex" value="1">女</span></li>
+
+                                    <li>
+
+                                        <span>
+
+                                            <select class="form-control" name="birthY" onchange="getdays()" id="yearid" class="Myselect" style="width:10em;float:left;">
+
+                                                <option value="">年</option>
+
+                                                <script type="text/javascript">
+
+                                                    var year = 2015;
+
+                                                    for(i=0;i<70;i++){
+
+                                                        document.write("<option value="+year+">"+year+"</option>");
+
+                                                        year--;
+
+                                                    }
+
+                                                </script>
+
+                                            </select>
+
+                                        </span>
+
+                                        <span>
+
+                                            <select class="form-control" name="birthM" onchange="getdays()" id="monthid" class="Myselect" style="width:10em;float:left;">
+
+                                                <option value="">月</option>
+
+                                                <script type="text/javascript">
+
+                                                    var month = 12;
+
+                                                    for(i=0;i<12;i++){
+
+                                                        document.write("<option value="+month+">"+month+"</option>");
+
+                                                        month--;
+
+                                                    }
+
+                                                </script>
+
+                                            </select>
+
+                                        </span>
+
+                                        <span>
+
+                                            <select class="form-control" name="birthD" id="daysid" class="Myselect" style="width:10em;float:left;">
+
+                                                <option value="">日</option>
+
+                                            </select>
+
+                                        </span>
+
+                                    </li>
+
+                                    <li>
+
+                                        <span>
+<div style="clear: both"></div>
+                                            <select id="province" class="form-control" style="width:10em;float:left;">
+
+                                                <option>请选择省份</option>
+
+                                                <volist name="list" id="p">
+
+                                                    <option value="{$p.code}">{$p.name}</option>
+
+                                                </volist>
+
+                                            </select>
+
+                                        </span>
+
+                                        <span>
+
+                                            <select id="city" class="form-control" style="width:10em;float:left;">
+
+                                                <option>请选择城市</option>
+
+                                            </select>
+
+                                        </span>
+
+                                        <span>
+
+                                            <select id="town" class="form-control" style="width:10em;float:left;">
+
+                                                <option>请选择市区</option>
+
+                                            </select>
+
+                                        </span>
+
+                                    </li>
+
+                                    <li>
+    <input type="text" class="form-control" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="tel" name="phone" maxlength="13" value="{$now.phone}">
+
+                                    </li>
+
+                                    <li>
+
+                                        <input type="text" class="form-control" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="qqnum" maxlength="12" name="qq" value="{$now.qq}">
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                                <button class="btn btn-danger" id="sub" type="submit" style="width: 90px; height: 30px; margin-left: 220px;">确定</button>
+                                <button class="btn btn-default" id = "back" style="width: 90px; height: 30px;">返回</button>
+
+                            </form>
+<script type="text/javascript">
+$(function(){
+    $("#back").click(function(){
+        window.location.href=history.back();
+    })
+})
+</script>
+                            <div style="clear: both"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div style="clear: both;"></div>
+
+                </div>
+
+            </section>
+
+            <!--//个人中心右侧-->
+
+        </div>
+
+    </div>
+
+</block>
+

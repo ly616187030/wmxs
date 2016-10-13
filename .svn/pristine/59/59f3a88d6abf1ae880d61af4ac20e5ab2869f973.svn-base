@@ -1,0 +1,136 @@
+<extend name="Public/layout"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+
+    </style>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/angular-1.4.js"></script>
+    <script>
+        var myapp = angular.module('Func',[]);
+        myapp.controller('softCtrl',function($scope){
+            $scope.isshow = true;
+            $scope.changeshow = function(){
+                $scope.isshow = !$scope.isshow;
+            }
+        });
+    </script>
+</block>
+<block name="main">
+    <form class="form-horizontal" action="<?php echo empty($soft_list)?U('vipadd'):U('vipedit');?>" method="post">
+        <?php if($soft_list):?><input type="hidden" value="{$soft_list.id}" name="id"/><?php endif;?>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">产品名称</label>
+            <div class="col-sm-4">
+                <input type="text" name="vip_name" value="{$soft_list.vip_name}" class="form-control" id="inputEmail3" placeholder="必填">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword31" class="col-sm-2 control-label">授权方式</label>
+            <div class="col-sm-4">
+                <label class="radio-inline">
+                    <input type="radio" name="auth_type" id="inlineRadio1" <?php if($soft_list['auth_type'] == 1 || empty($soft_list['auth_type'])):?>checked<?php endif;?> value="1"> 租用
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="auth_type" id="inlineRadio2" <?php if($soft_list['auth_type'] == 2):?>checked<?php endif;?> value="2"> 按订单
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3211" class="col-sm-2 control-label">每单收费标准</label>
+            <div class="col-sm-4">
+                <input type="text" name="charge_standard" value="{$soft_list.charge_standard}" class="form-control" id="inputPassword3211" placeholder="元/每单">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword321" class="col-sm-2 control-label">订单数量</label>
+            <div class="col-sm-4">
+                <input type="text" name="order_quantity" value="{$soft_list.order_quantity}" class="form-control" id="inputPassword321" placeholder="免费可用订单数量">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword32" class="col-sm-2 control-label">租用时间</label>
+            <div class="col-sm-4">
+                <input type="text" name="rent_time" value="{$soft_list.rent_time}" class="form-control" id="inputPassword32" placeholder="单位：月">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword33" class="col-sm-2 control-label">安装服务</label>
+            <div class="col-sm-4">
+                <label class="radio-inline">
+                    <input type="radio" name="install_service" <?php if($soft_list['install_service'] == 1 || empty($soft_list['install_service'])):?>checked<?php endif;?> value="1"> 免费
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="install_service" <?php if($soft_list['install_service'] == 2):?>checked<?php endif;?>  value="2"> 收费
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword34" class="col-sm-2 control-label">可建商铺数量</label>
+            <div class="col-sm-4">
+                <input type="text" name="store_number" value="{$soft_list.store_number}" class="form-control" id="inputPassword34" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword35" class="col-sm-2 control-label">价格</label>
+            <div class="col-sm-4">
+                <input type="text" name="price" value="{$soft_list.price}" class="form-control" id="inputPassword35" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword37" class="col-sm-2 control-label">功能</label>
+            <div class="col-sm-4">
+                <volist name="func" id="vo">
+                    <p class="col-sm-6">
+                        <label class="checkbox-inline ">
+                            <input type="checkbox" <?php if(in_array($vo['id'],explode(',',$soft_list['function_list']))):?>checked<?php endif;?>  name="function_list[]" value="{$vo.id}"> {$vo.name}
+                        </label>
+                    </p>
+                </volist>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword38" class="col-sm-2 control-label">权限分组</label>
+            <div class="col-sm-4">
+                <volist name="list" id="vo">
+                    <p class="col-sm-6">
+                        <label class="radio-inline ">
+                            <input type="radio" <?php if($vo['id'] == $soft_list['role_id']):?>checked<?php endif;?>  name="role_id" value="{$vo.id}"> {$vo.name}
+                        </label>
+                    </p>
+                </volist>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword38" class="col-sm-2 control-label">版本号</label>
+            <div class="col-sm-4">
+                 <input type="text" name="version_number" class="form-control"  value="{$soft_list.version_number}"  >
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="inputPassword37" class="col-sm-2 control-label">功能介绍</label>
+            <div class="col-sm-4">
+                <textarea rows="5" id="inputPassword37"  name="intro" class="form-control" >{$soft_list.intro}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword38" class="col-sm-2 control-label">备注</label>
+            <div class="col-sm-4">
+                <textarea rows="3" id="inputPassword38"  name="remark" class="form-control" >{$soft_list.remark}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success ajax-post" target-form="form-horizontal">保存</button>
+                <a type="button" href="javascript:history.back(-1)" class="btn btn-default">取消</a>
+            </div>
+        </div>
+    </form>
+</block>

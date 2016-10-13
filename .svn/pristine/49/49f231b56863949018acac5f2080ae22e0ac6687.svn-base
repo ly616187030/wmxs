@@ -1,0 +1,123 @@
+<extend name="Base/common-2"/>
+<block name="body">
+      <style type="text/css">
+         * {
+            margin: 0;
+            padding: 0;
+         }
+
+         .bgc {
+            position: relative;
+            background: #bc0000 url("__IMG__/Share/bg.jpg") no-repeat fixed center center / 100%;
+         }
+
+         /*.img1 {
+             width: 100%;
+             height: 580px;
+             margin-top: 8px;
+             background: url(images/img1.png) no-repeat top center/100%;
+         }*/
+         .img1 h2 {
+            margin-top: 10px;
+            color: #fff;
+            font-family: "微软雅黑";
+            text-align: center;
+            font-size: 1.2em;
+         }
+
+         .img1 h3 {
+            color: #fff;
+            font-family: "微软雅黑";
+            text-align: center;
+            font-size: 1.0em;
+         }
+         .img1 p {
+            margin: 4px 0 15px 0;
+            color: #fff;
+            font-family: "微软雅黑";
+            font-size: 0.7em;
+            padding: 0 10%;
+            box-sizing: border-box;
+            text-indent: 2em;
+            line-height: 20px;
+         }
+
+         .c80 {
+            width: 80%;
+            margin-left: 10%;
+            background: rgba(139, 0, 0, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            margin-top: -30px;
+         }
+
+         .mo {
+            width: 100%;
+            margin-bottom: 10px;
+            display: none;
+         }
+
+         .mob {
+            display: block;
+            width: 100%;
+            height: 30px;
+            padding-left: 12px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            border: none;
+            margin: 10px 0;
+         }
+
+         .moby {
+            width: 55%;
+            height: 30px;
+            padding-left: 12px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            border: none;
+         }
+
+         .moinput {
+            width: 38%;
+            display: inline-block;
+            background: #999;
+            border-radius: 6px;
+            box-sizing: border-box;
+            height: 30px;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            float: right;
+            line-height: 30px;
+            border: 0px;
+         }
+
+         .tel {
+            width: 60%;
+            text-align: center;
+            margin: 10px 20%;
+         }
+      </style>
+   <div class="bgc">
+      <div class="img1">
+         <div class="c80" style="text-align: center;">
+            <p style=" color:#f6e597 ; font-size:1.2em; margin-top:8px; padding:10px 0 0 0; text-indent:0;">参与活动</p>
+            <p style=" color:#f6e597 ; font-size:1.4em; margin-top:8px; padding:0; text-indent:0;font-weight: bold;">{$tishi}</p>
+            <img id="imgGeneralizerCode" src="__IMG__/Share/wx.jpg" alt="暂时没有二维码" align="absmiddle" style="width:100%;border-width:0px;">
+            <p style=" color:#f6e597 ; font-size:1em; margin-top:8px; padding:0; text-indent:0;">长按二维码关注找火锅</p>
+            <a style="color: rgba(139, 0, 0, 0.8);font-size:1.4em;background-color: #f6e597;border-radius: 8px;font-weight: bold;"  href="{:U('Share/getFollow')}">&nbsp;&nbsp;&nbsp;我也去邀请&nbsp;&nbsp;&nbsp;</a>
+         </div>
+         <h2 style="margin-top: 25px;">好消息：</h2>
+         <h3>进入找火锅微信公众号→更多→邀请好友</h3>
+         <h3>您也可以获得红包大奖哦！</h3>
+         <h2 style="margin-top: 25px;">找火锅</h2>
+         <p>找火锅创立于2015年11月，是助友科技有限公司主打产品。公司致力于通过O2O上门服务模式为都市消费者提供美味、便捷、居家的专业外卖火锅，做自有品牌外卖火锅行业的领航者。</p>
+      </div>
+      <img class="tel" src="__IMG__/Share/tel.png" alt="" width="100%">
+      <p style='margin: 4px 0 0 20%;color: #fff;font-family: "微软雅黑";font-size: 0.6em;padding: 0 10%;text-indent: 2em;line-height: 20px;'>本活动最终解释权归找火锅所有</p>
+
+   </div>
+</block>

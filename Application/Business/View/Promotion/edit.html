@@ -1,0 +1,280 @@
+<extend  name="Public/base"/>
+<block name="body">
+    <link href="__STATIC__/lhgdar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="__STATIC__/lhgdar/lhgcore.lhgcalendar.min.js"></script>
+    <div class="main-title cf">
+        <div class="col-sm-12">
+            <h3 class="m-b col-sm-8">促销活动 <notempty name="storename">/<span style="font-size: 0.6em;color:green;">{$storename}</span></notempty></h3>
+        </div>
+    </div>
+    <form action="{:U('edit')}" method="post" class="form-horizontal">
+        <input type="hidden" name="promotion_id" value="{$list.promotion_id}">
+        <input type="hidden" name="store_id" value="{$_storeid}" />
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">促销标题：</label>
+            <div class="col-sm-3">
+                <textarea name="promotion_name" rows="4" placeholder="促销标题" class="form-control" >{$list.promotion_name}</textarea>
+            </div>
+            <label style="padding-top:7px;font-weight:normal;">（必填）</label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单总金额限制：</label>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" name="promotion_money" value="{$list.promotion_money}">
+            </div>
+            <label style="padding-top: 7px;font-weight: normal;">（必填）</label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">具体时间：</label>
+            <div class="col-sm-5" style="width: 500px;">
+                <div class="radio">
+                    <label><input type="radio" name="promotion_time" value="0" <eq name="list.promotion_time" value="0">checked</eq> >不限制</label>
+                    <label style="margin-left: 30px;"><input type="radio" name="promotion_time"  value="1" <eq name="list.promotion_time" value="1">checked</eq>>每周星期</label>
+                    <label style="margin-left: 30px;"><input type="radio" name="promotion_time"  value="2" <eq name="list.promotion_time" value="2">checked</eq>>每天时间段</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group dnf"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">支付方式：</label>
+            <div class="col-sm-3">
+                <div class="radio">
+                    <label><input type="radio" name="payment" value="0" checked="checked" <eq name="list.payment" value="0">checked</eq>>无限制</label>
+                    <label><input type="radio" name="payment" value="1" <eq name="list.payment" value="1">checked</eq>>在线支付</label>
+                    <label><input type="radio" name="payment" value="2" <eq name="list.payment" value="2">checked</eq>>货到付款</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class='col-sm-2 control-label'>促销类型：</label>
+            <div class='col-sm-2'>
+                <select class='form-control' name="promotion_type">
+                    <option value='0' <eq name="list.promotion_type" value="0">selected</eq>>送赠品</option>
+                    <option value='1' <eq name="list.promotion_type" value="1">selected</eq>>减费用</option>
+                    <option value='2' <eq name="list.promotion_type" value="2">selected</eq>>折扣</option>
+                    <option value='4' <eq name="list.promotion_type" value="4">selected</eq>>满立减</option>
+                    <option value='5' <eq name="list.promotion_type" value="5">selected</eq>>首次下单</option>
+                    <option value='3' <eq name="list.promotion_type" value="3">selected</eq>>免费配送</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group zpmc"></div>
+        <div class='form-group cpsl'></div>
+        <div class="form-group zen"></div>
+        <div class="form-group">
+            <label class='col-sm-2 control-label'>生效时间：</label>
+            <div class='col-sm-2'style="width: 300px;">
+                <div style='float: left; margin-top: 5px;'>从</div>
+                <div style='float: left;margin-left: 13px'><input type='text' class='form-control' name='effective_date' value="{$list.effective_date|date='Y-m-d H:i:s',###}" id='demo_inp1'></div></div>
+            <div class='col-sm-2'><div style='float: left; margin-top: 5px; margin-left: -28px;'>至</div>
+                <div style='float: left; margin-left: -0px;'><input type='text' class='form-control' name='termination_date' value="{$list.termination_date|date='Y-m-d H:i:s',###}" id='demo_inp2'></div></div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">促销标签：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="promotional_labels" value="{$list.promotional_labels}">
+
+                <!--<div class="radio">-->
+                <!--<label><input type="radio" name="promotional_labels" value="1">在线支付</label>-->
+                <!--<label><input type="radio" name="promotional_labels" value="2">减</label>-->
+                <!--<label><input type="radio" name="promotional_labels" value="3">赠可乐</label>-->
+                <!--<label><input type="radio" name="promotional_labels" value="4">招牌菜</label>-->
+                <!--</div>-->
+            </div>
+            <label style="padding-top: 7px;font-weight: normal">例如：首、减</label>
+        </div>
+
+
+
+        <!--<div class="form-group">-->
+            <!--<label class='col-sm-2 control-label'>首次下单活动：</label>-->
+            <!--<div class='col-sm-3'>-->
+                <!--<div class='radio'><label>-->
+                    <!--<input type='radio' name='first_order'  value='1' <eq name='list.first_order' value='1'>checked</eq>>开</label>-->
+                    <!--<label>-->
+                        <!--<input type='radio' name='first_order' value='2' <eq name='list.first_order' value='2'>checked</eq> >关-->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group lijian" style="display: none">-->
+            <!--<label class="col-sm-2 control-label">立减：</label>-->
+            <!--<div class="col-sm-1">-->
+                <!--<input type="text" class="form-control" name="vertical" value="{$list.vertical}">-->
+            <!--</div>-->
+            <!--<label style="padding-top: 7px; font-weight: normal">(元)</label>-->
+        <!--</div>-->
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">关联活动：</label>
+            <div class="col-sm-2">
+                <select class="form-control" name="first">
+                     <if condition="$lian eq ''">
+                         <else/>
+                         <option value="{$lian.promotion_id}" style="display: none">{$lian.promotion_name}</option>
+                     </if>
+                    <option value="">关联活动</option>
+                    <volist name="huo" id="vo">
+                        <option value="{$vo.promotion_id}" name="first" >{$vo.promotion_name}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">排序：</label>
+            <div class="col-sm-1">
+                <input type="text" name="first_order" class="form-control" value="{$list.first_order}">
+            </div>
+        </div>
+
+        <div class='form-group'><label class='col-sm-2 control-label'>是否启用：</label>
+            <div class='col-sm-3'>
+                <div class='radio'><label>
+                    <input type='radio' name='state'  value='0' <eq name='list.state' value='0'>checked</eq>>启用</label>
+                    <label>
+                        <input type='radio' name='state' value='1' <eq name='list.state' value='1'>checked</eq> >禁用
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 50px">
+            <label class="col-sm-2 control-label" >&nbsp;</label>
+            <div class="col-sm-4">
+                <button type="submit" id="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">保  存</button>
+                <button class="btn btn-return" onclick="history.back(-1);return false;">取 消</button>
+            </div>
+        </div>
+    </form>
+</block>
+<block name="script">
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            var data = {$aaa};
+            var arr = String(data).split(",");
+            var arr1 = [0,0,0,0,0,0,0];
+            for(var j=0;j<arr.length;j++){
+                for(var i=0;i<7;i++){
+                    if(parseInt(arr[j]) == i){
+                        arr1[i-1] = 1;
+                    }
+                }
+            }
+            arr2 = ['','','','','','',''];
+            for(var i=0;i<arr1.length;i++){
+                if(arr1[i] == 1){
+                    arr2[i] = 'checked';
+                }
+            }
+            if("{$list.promotion_time}" == 1){
+                $('.dnf').html("<label class='col-sm-2 control-label'>请选择日期：</label>" +
+                        "<div class='col-sm-5'><div class='checkbox'>"+
+                        "<label><input type='checkbox' name='time_quantum[]' value='1' "+arr2[0]+">星期一</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='2' "+arr2[1]+">星期二</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='3' "+arr2[2]+">星期三</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='4' "+arr2[3]+">星期四</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='5' "+arr2[4]+">星期五</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='6' "+arr2[5]+">星期六</label>" +
+                        "<label><input type='checkbox' name='time_quantum[]' value='7' "+arr2[6]+">星期日</label></div></div>")
+            }else if("{$list.promotion_time}" == 2){
+                $('.dnf').html("<label class='col-sm-2 control-label'>时间段：</label>" +
+                        "<div class='col-sm-3'><div style='float: left;margin-top: 7px'>从</div><div style='float: left;margin-left: 10px'><input type='text' class='form-control' name='time_quantum[]' style='width:85px' value='{$list[0][0]}'></div><div/>" +
+                        "<div class='col-sm-3' style='width: 150px'><div style='float: left;margin-top: 7px'>至</div><div style='float: right;'><input type='text' class='form-control' name='time_quantum[]' style='width:85px' value='{$list[0][1]}'></div><div/>" +
+                        "<div style='width: 500px;margin: 50px 0 0 0;margin-left: -100px'>例如：从08:00至11:00 增加时间段</div>")
+            }else{
+                $('.dnf').html("");
+            }
+            if("{$list.promotion_type}" == 0){
+                $('.zpmc').html("<label class='col-sm-2 control-label'>赠品名称：</label><div class='col-sm-2'><input type='text' class='form-control' name='present_name' value='{$list.present_name}'></div>");
+                $('.cpsl').html("<label class='col-sm-2 control-label'>库存数量：</label><div class='col-sm-1'> <input type='text' class='form-control' name='kucun_nuber' value='{$list.kucun_nuber}'></div><label style='padding-top: 7px;font-weight: normal;'>（请录入赠品库存数量）</label>");
+                $('.zen').html("<label class='col-sm-2 control-label'>赠品数量：</label><div class='col-sm-1'> <input type='text' class='form-control' name='present_numbe' value='{$list.present_numbe}'></div><label style='padding-top: 7px;font-weight: normal;'>（请录入赠品数量）</label>");
+            }else if("{$list.promotion_type}" == 1){
+                $('.cpsl').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>减费用金额：</label><div class='col-sm-1'><input type='text' class='form-control' name='reduction' value='{$list.reduction}'></div>")
+            }else if("{$list.promotion_type}" == 2){
+                $('.cpsl').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>折扣：</label><div class='col-sm-1'><input type='text' class='form-control' name='discount' value='{$list.discount}'></div><label style='padding-top: 7px;font-weight: normal;'>假如9折请录入90</label>")
+            }else if("{$list.promotion_type}" == 4){
+                $('.cpsl').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>满立减：</label><div class='col-sm-2'><input type='text' class='form-control' name='jian' value='{$list.jian}'></div><label style='padding-top: 7px;font-weight: normal'>例如：满50减10：100-50,50-10从大到小依次录入,多个请用逗号隔开</label>")
+            }else if("{$list.promotion_type}" == 5){
+                $('.cpsl').html("");$('.zen').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>立减：</label><div class='col-sm-1'><input type='text' class='form-control' name='shou_jian' value='{$list.shou_jian}'></div><label style='padding-top: 7px;font-weight: normal'>(首次下单立减)</label>")
+            }else{
+                $('.zpmc').html("");$('.cpsl').html("");
+            }
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+            $('#demo_inp2').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+            $('#img').calendar({ id:'#cal3' });
+            if("{$list['first_order']}" == 1){
+                $('.lijian').show();
+            }else{
+                $('.lijian').hide();
+            }
+
+            $("input[name='promotion_time']").bind("click",function(){
+                var time = $(this).val();
+                if(time == 1){
+                    $('.dnf').html("<label class='col-sm-2 control-label'>请选择日期：</label>" +
+                            "<div class='col-sm-5'><div class='checkbox'>"+
+                            "<label><input type='checkbox' name='time_quantum[]' value='1' "+arr2[0]+">星期一</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='2' "+arr2[1]+">星期二</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='3' "+arr2[2]+">星期三</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='4' "+arr2[3]+">星期四</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='5' "+arr2[4]+">星期五</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='6' "+arr2[5]+">星期六</label>" +
+                            "<label><input type='checkbox' name='time_quantum[]' value='7' "+arr2[6]+">星期日</label></div></div>")
+                }else if(time == 2){
+                    $('.dnf').html("<label class='col-sm-2 control-label'>时间段：</label>" +
+                            "<div class='col-sm-3'><div style='float: left;margin-top: 7px'>从</div><div style='float: left;margin-left: 10px'><input type='text' class='form-control' name='time_quantum[]' style='width:85px' value='{$list[0][0]}'></div><div/>" +
+                            "<div class='col-sm-3' style='width: 150px'><div style='float: left;margin-top: 7px'>至</div><div style='float: right;'><input type='text' class='form-control' name='time_quantum[]' style='width:85px' value='{$list[0][1]}'></div><div/>" +
+                            "<div style='width: 500px;margin: 50px 0 0 0;margin-left: -100px'>例如：从08:00至11:00 增加时间段</div>")
+                }else{
+                    $('.dnf').html("");
+                }
+            });
+
+
+
+
+
+
+        });
+
+        $("select[name='promotion_type']").change(function() {
+            var option = $(this).find("option:checked").attr("value");
+            if(option == 1){
+                $('.cpsl').html("");$('.zen').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>减费用金额：</label><div class='col-sm-1'><input type='text' class='form-control' name='reduction' value='{$list.reduction}'></div>")
+            }else if(option == 2){
+                $('.cpsl').html("");$('.zen').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>折扣：</label><div class='col-sm-1'><input type='text' class='form-control' name='discount' value='{$list.discount}'></div><label style='padding-top: 7px;font-weight: normal;'>假如9折请录入90</label>")
+            }else if(option == 3){
+                $('.zpmc').html("");$('.cpsl').html("");$('.zen').html("");
+            }else if(option == 4){
+                $('.cpsl').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>满立减：</label><div class='col-sm-2'><input type='text' class='form-control' name='jian' value='{$list.jian}'></div><label style='padding-top: 7px;font-weight: normal'>例如：满50减10：100-50,50-10从大到小依次录入,多个请用逗号隔开</label>")
+            }else if(option == 5){
+                $('.cpsl').html("");$('.zen').html("");
+                $('.zpmc').html("<label class='col-sm-2 control-label'>立减：</label><div class='col-sm-1'><input type='text' class='form-control' name='shou_jian' value='{$list.shou_jian}'></div><label style='padding-top: 7px;font-weight: normal'>(首次下单立减)</label>")
+            }else{
+                $('.zpmc').html("<label class='col-sm-2 control-label'>赠品名称：</label><div class='col-sm-2'><input type='text' class='form-control' name='present_name' value='{$list.present_name}'></div>");
+                $('.cpsl').html("<label class='col-sm-2 control-label'>库存数量：</label><div class='col-sm-1'> <input type='text' class='form-control' name='kucun_nuber' value='{$list.kucun_nuber}'></div><label style='padding-top: 7px;font-weight: normal;'>（请录入赠品库存数量）</label>");
+                $('.zen').html("<label class='col-sm-2 control-label'>赠品数量：</label><div class='col-sm-1'> <input type='text' class='form-control' name='present_numbe' value='{$list.present_numbe}'></div><label style='padding-top: 7px;font-weight: normal;'>（请录入赠品数量）</label>");
+            }
+
+        });
+
+        $("input[name='first_order']").click(function(){
+            var  id = $(this).val();
+            if(id == 1){
+                $('.lijian').show();
+            }else{
+                $('.lijian').hide();
+            }
+        })
+    </script>
+</block>

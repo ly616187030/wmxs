@@ -1,0 +1,29 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{:C('WEB_SITE_TITLE')}<notempty name="_position">_{$_position}</notempty><notempty name="meta_title">_{$meta_title}</notempty></title>
+<meta name="viewport" content="width=device-width">
+<!--<meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+
+<meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}">-->
+
+<link rel="stylesheet" type="text/css" href="__CUI__/css/cui.min.css">
+<link type="text/css" rel="stylesheet" href="__HOME_CSS__/timeList.css">
+<link type="text/css" rel="stylesheet" href="__HOME_CSS__/member_center_zhg.css">
+<link type="text/css" rel="stylesheet" href="__HOME_CSS__/layout_zhg.css">
+<link type="text/css" rel="stylesheet" href="__HOME_CSS__/layout_wm.css">
+
+
+
+<block name="style">
+</block>
+<!--[if lt IE 9]>
+
+<script type="text/javascript" src="__PUBLIC__/libs/jquery/1.x/jquery.min.js"></script>
+
+<![endif]-->
+
+<!--[if gte IE 9]><!-->
+
+<script type="text/javascript" src="__PUBLIC__/libs/jquery/2.x/jquery.min.js"></script>
+<script type="text/javascript" src="__CUI__/js/cui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ztools.js"></script>
+

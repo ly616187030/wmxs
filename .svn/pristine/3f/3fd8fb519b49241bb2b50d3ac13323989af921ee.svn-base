@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="__CSS__/ticket.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div class="ticketMain">
+        <div class="ticketMainTitle">
+            给顾客专用
+        </div>
+        <div class="Blank10">*****************************</div>
+        <div class="Title fw"><div class="pdt5">找火锅</div><div class="pdt5">[{$list.pay_type}]</div></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5"> 期望送达时间：{$list.send_time|date="Y-m-d h:i",###}</div><div class="pdt5">订单备注：{$list.order_message}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5"> 订单编号：{$list.order_sn}</div><div class="pdt5">下单时间：{$list.xd_time|date="Y-m-d h:i:s",###}</div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+                <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody>
+                <volist name="list_detail" id="vo">
+                <tr>
+                    <td width="60%" align="left">{$vo.cm_name}</td>
+                    <td width="20%" align="center">{$vo.quantity}</td>
+                    <td width="20%" align="right">{$vo.price}</td>
+                </tr>
+                </volist>
+                <tr>
+                    <td width="80%" colspan="2" align="left">餐盒费：</td>
+                    <td width="20%" align="right">{$list.canju_total}</td>
+                </tr>
+                <tr>
+                    <td width="80%" colspan="2" align="left">配送费：</td>
+                    <td width="20%" align="right">{$list.ps_cost}</td>
+                </tr>
+                <tr>
+                    <td width="80%" colspan="2" align="left">优惠：</td>
+                    <td width="20%" align="right">{$list.yh_price}</td>
+                </tr>
+                <tr>
+                    <td width="80%" colspan="2" align="left">总计：</td>
+                    <td width="20%" align="right">{$list.zongjia}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5 fz18 fw"> 姓名：{$list.username} {$list.gender}</div>
+        <div class="pdt5 fz18 fw"> 地址：{$list.detail_address}</div>
+        <div class="pdt5 fz18 fw"> 电话：{$list.phone}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5"> {$list.store_name}</div>
+        <div class="pdt5"> {$list.tel}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5"> 找火锅 {$time|date="m月d日 h:i:s",###}</div>
+    </div>
+<script>
+    window.print();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+
+    </style>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/angular-1.4.js"></script>
+    <script>
+        var myapp = angular.module('Func',[]);
+        myapp.controller('softCtrl',function($scope){
+            $scope.isshow = true;
+            $scope.changeshow = function(){
+                $scope.isshow = !$scope.isshow;
+            }
+        });
+
+        $('input[name="listorder"]').change(function(){
+            var $this = $(this);
+            var v=$this.val();
+            var id = $this.data('id');
+            if($.trim(v)!='' && $.isNumeric(v)){
+                $.get('{:U("listorder")}','id='+id+'&num='+v).success(function(res){
+                    if(res == 'success') location.reload();
+                });
+            }
+        });
+
+    </script>
+</block>
+<block name="main">
+    <div ng-app="Func" ng-controller="softCtrl">
+    <p><a href="javascript:;" ng-click="changeshow()"><i class="fa fa-plus-square"></i>添加功能</a></p>
+    <form class="software" action="{:U('funcindex')}" method="post">
+    <table class="table table-bordered">
+        <thead>
+            <tr><th width="5%">ID</th><th width="5%">排序</th><th width="15%">功能名称</th><th width="55%">&nbsp;</th><th width="20%">操作</th></tr>
+        </thead>
+        <tbody>
+
+            <tr ng-hide="isshow">
+                <td>&nbsp;</td><td>&nbsp;</td><td><input type="text" class="form-control" name="sname"/></td><td>&nbsp;</td><td><button type="submit" class="btn btn-success ajax-post" target-form="software">保存</button>&nbsp;<a href="javascript:;" class="btn btn-default" ng-click="changeshow()">取消</a></td>
+            </tr>
+
+            <volist name="list" id="vo">
+                <tr>
+                    <td>{$vo.id}</td><td><input type="text" data-id="{$vo.id}" class="form-control" name="listorder" value="{$vo.listorder}" /></td><td>{$vo.name}</td><td>&nbsp;</td><td><a class="ajax-get confirm" href="{:U('funcdel',array('id'=>$vo['id']))}">删除</a></td>
+                </tr>
+            </volist>
+
+        </tbody>
+    </table>
+    </form>
+    </div>
+</block>

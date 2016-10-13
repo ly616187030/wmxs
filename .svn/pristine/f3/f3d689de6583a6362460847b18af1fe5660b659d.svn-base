@@ -1,0 +1,130 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+    <block name="main">
+        <style>
+            .sendObjSelectBox {
+            width: 200px;
+            height: 200px;
+            overflow-y: scroll;
+            border: 1px solid #CCC;
+            }
+            .form-group{
+            width: 1240px;
+            }
+            .red-star:before{
+            content:"*";
+            color:red;
+            font-weight: bold;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+        </style>
+        <form action="{:U('add')}" method="post" class="form-horizontal" style="margin-top: 50px;">
+            <div class="form-group">
+                <label class="col-sm-2 control-label red-star">
+                    标题：
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" name="configname"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label red-star">
+                    内容：
+                </label>
+                <div class="col-sm-8">
+                    <textarea name="configtext" id="_kindeditor_6" class="form-control" >
+                    </textarea>
+                    <script type="text/javascript" src="__PUBLIC__/libs/kindeditor/kindeditor-min.js" charset="utf-8">
+                    </script>
+                    <script type="text/javascript">
+                        $(function(){
+                        KindEditor.ready(function(K) {
+                        kindeditor_6 = K.create('#_kindeditor_6', {
+                        allowFileManager : true,
+                        filePostName : 'file',
+                        cssPath : [
+                        '__PUBLIC__/libs/cui/css/cui.min.css',
+                        '__PUBLIC__/libs/kindeditor/plugins/code/prettify.css'
+                        ],
+                        width : '100%',
+                        height : '400px',
+                        resizeType: 1,
+                        pasteType : 2,
+                        urlType : 'absolute',
+                        fileManagerJson : '{:U("Admin/Upload/fileManager")}',
+                        uploadJson : '{:U("Admin/Upload/upload")}',
+                        extraFileUploadParams: {
+                        session_id : '80galifpllakf9m1he4a82isf4'
+                        },
+                        afterBlur: function(){this.sync();}
+                        });
+                        });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label red-star">
+                    发送对象：
+                </label>
+                <div class="col-sm-3">
+                    <label class="radio-inline">
+                        <input type="radio" name="configrenyuan" id="suoyou" value="1" checked/>
+                        所有人员
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="configrenyuan" id="xuanze" data-id="{fid}" value="2"/>
+                        自定义人员
+                    </label>
+                </div>
+            </div>
+            <div class="form-group xuanzekuang" style="display: none;">
+                <label class="col-sm-2 control-label">
+                </label>
+                <div class="col-sm-2">
+                    <div class="sendObjSelectBox charu">
+                        
+                    </div>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        &nbsp;
+                    </label>
+                    <div class="col-sm-4">
+                        <button class="btn btn-success ajax-post"  type="submit" target-form="form-horizontal">
+                            确 定
+                        </button>
+                        <button class="btn btn-return btn-info " onclick="history.back(-1);return false;">
+                            返 回
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </block>
+        <block name="script">
+            <script type="text/javascript">
+                $(function(){
+                $('input:radio').click(function(){
+                if($('input:radio:checked').val()==1){
+                $('.xuanzekuang').hide();
+                }else{
+                $('.charu').empty();
+                $.post('{:U("user/admin/Message/yewumsgadd")}',function(data){
+                //alert(JSON.stringify(data));
+                var yuangong = '';
+                if(data.length>1){
+                     for (var i = 0; i < data.length; i++) {
+                      yuangong+='<div class="checkbox">&nbsp;&nbsp;<label><input name="uid[]" type="checkbox" value="'+data[i].id+'"/>'+data[i].nickname+'('+data[i].username+')</label></div>';
+                    }
+                }else{
+                        yuangong='<div class="checkbox">&nbsp;&nbsp;<label><input name="uid" type="checkbox" value="'+data[0].id+'"/>'+data[0].nickname+'('+data[0].username+')</label></div>';
+                }
+                    $('.charu').append(yuangong);
+                    $('.xuanzekuang').show();
+                })
+                }
+                });
+                })
+            </script>
+        </block>

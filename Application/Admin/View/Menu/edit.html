@@ -1,0 +1,204 @@
+
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+    <div class="builder builder-list-box panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li ><a href="{:U('index')}">菜单管理</a></li>
+                    <li class="active"><a href="javascript:void(0);" style="color:#287DDE;">编辑菜单</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- 标签页导航 -->
+        <div class="tab-wrap" style="margin-top: 50px;">
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('edit_post')}" method="post" class="form-horizontal ">
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">上级：</label>
+
+                        <div class="col-sm-3">
+
+                            <select class="form-control" name="parentid">
+                                <option value="0">作为一级菜单</option>
+                                {$select_categorys}
+                            </select>
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">名称：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="name" value="{$data.name}">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">应用：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="app" value="{$data.app}">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">控制器：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="model" value="{$data.model}">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">方法：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="action" value="{$data.action}">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">参数：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="data" value="{$data.data}">
+
+                        </div>
+
+                        <label class="control-label" style="font-weight: normal">例:id=3&p=3</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">图标：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="icon" value="{$data.icon}">
+
+                        </div>
+
+                        <label class="control-label " id="_icon_4" style="font-weight: normal">不带前缀fa-，如fa-user => user</label>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">备注：</label>
+
+                        <div class="col-sm-3">
+
+                            <textarea class="form-control" rows="3" name="remark" maxlength="120" placeholder="">{$data.remark}</textarea>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">状态：</label>
+
+                        <div class="col-sm-3">
+
+                            <select name="status"  class="form-control">
+                                <option value="1">显示</option>
+                                <php>$status_selected=empty($data['status'])?"selected":"";</php>
+                                <option value="0" {$status_selected}>隐藏</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">类型：</label>
+
+                        <div class="col-sm-3">
+
+                            <select name="type" class="form-control">
+                                <option value="1">权限认证+菜单</option>
+                                <php>$type_selected=empty($data['type'])?"selected":"";</php>
+                                <option value="0" {$type_selected}>只作为菜单</option>
+                            </select>
+                        </div>
+
+                        <label class="control-label " id="_icon_8" style="font-weight: normal">注意：“权限认证+菜单”表示加入后台权限管理，纯碎是菜单项请不要选择此项。</label>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label sr-only"></label>
+
+                        <div class="col-sm-3">
+                            <input type="hidden" name="id" value="{$data.id}" />
+                            <button class="btn submit-btn ajax-post btn-info" id="submit"  url="{:U('edit_post')}" type="submit" target-form="form-horizontal">保 存</button>
+
+                            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+
+
+
+
+
+
+

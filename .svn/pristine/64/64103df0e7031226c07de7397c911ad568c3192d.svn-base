@@ -1,0 +1,217 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+    <style type="text/css">
+        .top{
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            width: 100%;
+            height: 35px;
+            border-bottom: 1px solid #F3F3F3;
+        }
+        .ss{
+            width:100%;
+            height:auto;
+        }
+        dl{
+            float: left;
+            margin-left: 50px;
+            margin-top: 5px;
+        }
+        dd{
+            margin-top: 10px;
+        }
+        .input{
+            width: 223px;
+        }
+        .chax{
+            height: 55px;
+            width: 100%;
+        }
+        .chax p{
+            float: left;
+
+            margin-left: 50px;
+        }
+        a{
+            margin-left:5px;
+        }
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <div class="main-title cf">
+        <h2>桌台类别管理</h2>
+        <legend>&nbsp;</legend>
+    </div>
+    <div class="table-bar" style="margin: 1em 0em;">
+        <div class="fl">
+            <div class="tools">
+                <a class="btn btn-primary" href="<?php echo U('add',array('id'=>0));?>" id="websiteCategoryAdd">新 增</a>
+                <button class="btn ajax-post confirm btn-danger" target-form="ids" url="<?php echo U('del',array('m'=>'seat_location'));?>">删 除</button>
+            </div>
+        </div>
+    </div>
+    <!------搜索------------>
+    <div style="height: 15px;"></div>
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>桌台类别ID</th>
+                    <th>桌台类别名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($leibie)): if(is_array($leibie)): $i = 0; $__LIST__ = $leibie;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$_data): $mod = ($i % 2 );++$i;?><tr>
+                            <td>
+                                <input class="ids" type="checkbox" value="<?php echo ($_data["id"]); ?>" name="id[]">
+                            </td>
+                            <td><?php echo ($_data["id"]); ?></td>
+                            <td><?php echo ($_data["name"]); ?></td>
+                            <td>
+                                <a href="<?php echo U('add',array('id'=>$_data['id']));?>" class="glyphicon glyphicon-edit">编辑</a>
+                                <a href="<?php echo U('del',array('id'=>$_data['id'],'m'=>'seat_location'));?>" class="glyphicon glyphicon-trash ajax-get confirm">删除</a>
+                            </td>
+                        </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                    <?php else: ?>
+                    <td colspan="13" class="text-center"> aOh! 暂时还没有内容! </td><?php endif; ?>
+                </tbody>
+            </table>
+        </form>
+        <div class="page"><?php echo ($page); ?></div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width:800px;text-align: center;">
+                <div class="modal-content" >
+                    <div class="modal-header form-horizontal">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body" style="width: 100%;">
+                        <img src="" class="images"/>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            
+    <script type="text/javascript">
+
+        $(function() {
+
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '#search', function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+
+            var btn=$('.sn');
+            btn.each(function(){
+                if($(this).val()==1){
+                    $(this).next().text('更新商家信息');
+                    $(this).next().css('color','orange');
+                }else if($(this).val()==0){
+                    $(this).next().show();
+                }
+            });
+        });
+    </script>
+
+        </div>
+    </div>
+</body>
+</html>

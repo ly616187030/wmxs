@@ -1,0 +1,73 @@
+[ 2016-04-08T08:49:38+08:00 ] 127.0.0.1 /index.php?s=/dispatch/peisongyuan/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000013s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0044s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0026s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.026665s ]
+INFO: [ app_init ] --END-- [ RunTime:0.026757s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000538s ]
+SQL: SELECT `name`,`value`,`type` FROM `wm_admin_config` WHERE `status` = 1  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+SQL: SHOW COLUMNS FROM `wm_admin_theme` [ RunTime:0.0029s ]
+SQL: SELECT * FROM `wm_admin_theme` WHERE `current` = 1 ORDER BY id asc LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_hook` [ RunTime:0.0022s ]
+SQL: SELECT `addons` FROM `wm_admin_hook` WHERE `name` = 'FormBuilderExtend' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_addon` [ RunTime:0.0022s ]
+SQL: SELECT `config` FROM `wm_admin_addon` WHERE `name` = '' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.014311s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.014959s ]
+INFO: [ action_begin ] --START--
+SQL: SELECT `name`,`addons` FROM `wm_admin_hook`  [ RunTime:0.0003s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('后台首页小工具')  [ RunTime:0.0002s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('ReturnTop')  [ RunTime:0.0002s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('BaiduShare')  [ RunTime:0.0002s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('SocialComment')  [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.014421s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.014477s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0024s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Dispatch' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0028s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 1 LIMIT 1   [ RunTime:0.0004s ]
+SQL: SHOW COLUMNS FROM `wm_delivery_person` [ RunTime:0.0023s ]
+SQL: SELECT a.*,b.name FROM wm_delivery_person a  LEFT JOIN wm_address_city AS b ON a.city = b.code  WHERE `founder_id` = '1'  [ RunTime:0.0005s ]
+SQL: SELECT a.*,b.name FROM wm_delivery_person a  LEFT JOIN wm_address_city AS b ON a.city = b.code  WHERE `founder_id` = '1' LIMIT 0,15   [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000144s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000185s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Dispatch\d8544a7f46501193f49cad98f3deb57a.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Dispatch\d8544a7f46501193f49cad98f3deb57a.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.034419s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.034458s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000295s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000323s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000528s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000570s ]
+

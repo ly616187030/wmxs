@@ -1,0 +1,743 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <style type="text/css">
+        .background {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            /*background: deepskyblue;*/
+            /*background:url(__IMG__/bg_img.jpg) no-repeat;*/
+            background-size:100% 100%;
+            overflow: hidden;
+        }
+        .brand {
+            width: 100%;
+            height: 85px;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .panel-lite {
+            margin: 5% auto;
+            max-width: 400px;
+            background: #fff;
+            padding: 45px 30px;
+            border-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .panel-lite h4 {
+            font-weight: 400;
+            font-size: 24px;
+            text-align: center;
+            color: #1685d0;
+            margin: 15px auto;
+        }
+        .panel-lite a.link {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #1685d0;
+            font-size: 14px;
+        }
+        .panel-lite a.hover {
+            color: #666;
+        }
+
+        .form-group {
+            position: relative;
+            font-size: 15px;
+            color: #666;
+        }
+        .form-group + .form-group {
+            margin-top: 30px;
+        }
+        .form-group .form-label {
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 5px;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+        }
+        .form-group .form-control {
+            width: 100%;
+            position: relative;
+            z-index: 3;
+            height: 35px;
+            background: none;
+            border: none;
+            padding: 5px 0;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            border-bottom: 1px solid #777;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        .form-group .form-control:invalid {
+            outline: none;
+        }
+        .form-group .form-control:focus, .form-group .form-control:valid {
+            outline: none;
+            color: #1685d0;
+            box-shadow: 0 1px #1685d0;
+            border-color: #1685d0;
+        }
+        .form-group .form-control:focus + .form-label,
+        .form-group .form-control:valid + .form-label {
+            font-size: 12px;
+            -ms-transform: translateY(-15px);
+            -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+        }
+        .floating-btn {
+            background: #1685d0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 32px;
+            border: none;
+            position: absolute;
+            margin: auto;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.3) inset;
+            margin: auto;
+            right: -30px;
+            bottom: 90px;
+            cursor: pointer;
+        }
+        .floating-btn:hover {
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.3) inset, 0 3px 6px rgba(0, 0, 0, 0.16), 0 5px 11px rgba(0, 0, 0, 0.23);
+        }
+        .floating-btn:hover .icon-arrow {
+            -ms-transform: rotate(45deg) scale(1.2);
+            -webkit-transform: rotate(45deg) scale(1.2);
+            transform: rotate(45deg) scale(1.2);
+        }
+        .floating-btn:focus, .floating-btn:active {
+            outline: none;
+        }
+        .icon-arrow {
+            position: relative;
+            width: 13px;
+            height: 13px;
+            border-right: 3px solid #fff;
+            border-top: 3px solid #fff;
+            display: block;
+            -ms-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+            margin: auto;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+        }
+        .icon-arrow:after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 3px;
+            background: #fff;
+            left: -5px;
+            top: 5px;
+            -ms-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+        .verifyimg-box {
+            padding: 0;
+            border: 0;
+        }
+        .verifyimg-box .verifyimg {
+            cursor: pointer;
+            width: 130px;
+            height: 41px;
+            margin-top: -6px;
+            border-bottom: 1px solid #777;
+        }
+        @media (max-width: 768px) {
+            .background {
+                display: none;
+            }
+            .panel-lite {
+                box-shadow: none;
+                border-color: #fff;
+            }
+        }
+        #yzm:hover{
+            cursor:pointer;
+        }
+        .b_main{position:absolute;left:70%;}
+        .out{
+            position:absolute;
+            top:7px;
+            border-color:transparent #999999 transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+        }
+        .in{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .border{
+            position:relative;
+            border:1px solid #999999;
+            padding:10px;
+            left:16px;
+            border-radius:5px;
+        }
+        .b_main1{position:absolute;left:70%;}
+        .in1{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main2{position:absolute;left:70%;}
+        .in2{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main3{position:absolute;left:70%;}
+        .in3{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main4{position:absolute;left:70%;}
+        .in4{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main5{position:absolute;left:70%;}
+        .in5{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+        .b_main6{position:absolute;left:70%;}
+        .in6{
+            position:absolute;
+            border-color:transparent orangered transparent transparent;
+            border-style:dashed dashed solid dashed;
+            border-width:8px;
+            top:-8px;
+            left:-6px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <!-- 背景 -->
+    <div id="particles-js" class="background">
+
+        <!-- 登陆框 -->
+        <div style="width:35%;margin:0% 37%;height:100%;">
+            <div class="brand" style="width:100%;height:15%;"></div>
+            <form class="login-form form" action="{:U('')}" method="post">
+                <div class="form-group" style="margin-bottom: 8%">
+                    <a style="display:block;background:url(__IMG__/login_log.png) no-repeat  left 45%;width:100%;height:120px;" href=""></a>
+                </div>
+                <div class="step1">
+                    <div class="input-group" style="width:100%;">
+                        <input type="text" class="form-control tel" style="height:50px;line-height: 50px;width:70%;border:1px solid #ccc;" placeholder="输入注册的手机号" name="tel">
+                        <div class="b_main" style="float:right;display:none">
+                            <div class="border alert1" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top:4%;width:100%;border:none;">
+                        <div class="verify_input" style=" width:70%;float:left;border:1px #ccc solid;">
+                            <input type="text" class="form-control verify" style="width:66%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="识别码" name="verify">
+                            <span class="input-group-addon verifyimg-box" style="padding:1% 0;margin:0px;width:34%;height:49px;line-height: 49px;">
+                                <img class="verifyimg reload-verify" alt="CoreThink验证码" src="{:U('public/verify')}" title="点击刷新" style="width:100%;height:100%;"/>
+                            </span>
+                        </div>
+                        <div class="b_main4" style="float:right;display:none">
+                            <div class="border alert5" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 4%;width:100%;border:none;">
+                        <div style="width:70%;float:left;border:1px solid #ccc;" class="phoneVerify_input">
+                            <input type="text" class="form-control phoneVerify" style="width:66%;height:50px;line-height: 50px;background-color: #fff;padding-left:13px;border:none;box-shadow:none;" placeholder="验证码" name="phoneVerify">
+                                 <span class="input-group-addon" style="padding:0;margin:0px;width:34%;height:48px;line-height: 48px;">
+                                     <div style="width:100%;background-color: #ccc;color:#666;" id="yzm">获取动态码</div>
+                                 </span>
+                        </div>
+                        <div class="b_main2" style="float:right;display:none">
+                            <div class="border alert3" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top:4%;width:100%;border:none;">
+                        <input type="text" class="form-control password" style="height:50px;line-height: 50px;width:70%;border:1px solid #ccc;" placeholder="输入新密码" name="password" autocomplete="off" onfocus="this.type='password'">
+                        <div class="b_main1" style="float:right;display:none">
+                            <div class="border alert2" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top:4%;width:100%;border:none;">
+                        <input type="text" class="form-control comfirmpwd" style="height:50px;line-height: 50px;width:70%;border:1px solid #ccc;" placeholder="确认新密码" name="comfirmpwd" autocomplete="off" onfocus="this.type='password'">
+                        <div class="b_main3" style="float:right;display:none">
+                            <div class="border alert4" style="color:#fff;"></div>
+                            <div class="out">
+                                <div class="in3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 12%;">
+                        <button type="button" class=" zhuce" style="border:none;width:70%;height:55px;line-height: 55px;background-color: green;color:#fff;font-size: 18px;" target-form="login-form">提&nbsp&nbsp&nbsp&nbsp交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+    <script src="__PUBLIC__/libs/particles/particles.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            // 刷新验证码
+            $(".reload-verify").on('click', function() {
+                var verifyimg = $(".verifyimg").attr("src");
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+
+
+            $('.tel').click(function(){
+                var tel=$(this).val();
+                if($.trim(tel)==''){
+                    $('.tel').css('border','1px solid deepskyblue');
+                    $('.alert1').css('background-color','deepskyblue');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('11位手机号！');
+                }
+            });
+
+            $('.tel').blur(function(){
+                var tel=$(this).val();
+                if($.trim(tel)==''){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.alert1').css('background-color','orangered');
+                }else if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.alert1').css('background-color','orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                }else{
+                    $('.b_main').hide();
+                    $('.tel').css('border','1px solid deepskyblue');
+                }
+            });
+
+            $('.verify').click(function(){
+                var verify=$(this).val();
+                if($.trim(verify)==''){
+                    $('.verify_input').css('border','1px solid deepskyblue');
+                    $('.alert5').css('background-color','deepskyblue');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('请输入4位识别码！');
+                }
+            });
+
+            $('.verify').blur(function(){
+                var verify=$(this).val();
+                if($.trim(verify)==''){
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('识别码不能为空！');
+                }else if($.trim(verify).length<4 || $.trim(verify).length>4){
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('请输入4位识别码！');
+                }else {
+                    $('.b_main4').hide();
+                    $('.verify_input').css('border','1px solid deepskyblue');
+                }
+            });
+
+
+            $('.phoneVerify').click(function(){
+                var phoneVerify=$(this).val();
+                if($.trim(phoneVerify)==''){
+                    $('.phoneVerify_input').css('border','1px solid deepskyblue');
+                    $('.alert3').css('background-color','deepskyblue');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('请输入手机收到的验证码！');
+                }
+            });
+
+            $('.phoneVerify').blur(function(){
+                var phoneVerify=$(this).val();
+                if($.trim(phoneVerify)==''){
+                    $('.phoneVerify_input').css('border','1px solid orangered');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('验证码不能为空！');
+                    $('.alert3').css('background-color','orangered');
+                } else if($.trim(phoneVerify)!=''){
+                    var url="{:U('yanzheng')}";
+                    $.get(url,{phoneVerify:phoneVerify},function(data){
+                        if(data.status){
+                            $('.b_main2').hide();
+                        }else{
+                            $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main2').show().find($('.alert3')).text(data.info);
+                            $('.alert3').css('background-color','orangered');
+                        }
+                    })
+                } else{
+                    $('.b_main2').hide();
+                    $('.phoneVerify_input').css('border','1px solid deepskyblue');
+                }
+            });
+
+            $('.password').click(function(){
+                var password=$(this).val();
+                if($.trim(password)==''){
+                    $('.password').css('border','1px solid deepskyblue');
+                    $('.alert2').css('background-color','deepskyblue');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入密码！');
+                }
+            });
+
+            $('.password').blur(function(){
+                var password=$(this).val();
+                if($.trim(password)==''){
+                    $('.password').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('密码不能为空！');
+                }else if($.trim(password).length<6 || $.trim(password).length>14){
+                    $('.password').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入6-14位密码！');
+                }else{
+                    var url4="{:U('ypwd')}";
+                    var tel=$('.tel').val();
+                    $.get(url4,{tel:tel,password:password},function(data){
+                        if(data.status){
+                            $('.b_main1').hide();
+                            $('.password').css('border','1px solid deepskyblue');
+                        }else{
+                            $('.password').css('border','1px solid orangered');
+                            $('.alert2').css('background-color','orangered');
+                            $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main1').show().find($('.alert2')).text(data.info);
+                        }
+                    })
+                }
+            })
+
+            $('.comfirmpwd').click(function(){
+                var comfirmpwd=$(this).val();
+                if($.trim(comfirmpwd)==''){
+                    $('.comfirmpwd').css('border','1px solid deepskyblue');
+                    $('.alert4').css('background-color','deepskyblue');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent deepskyblue transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('请输入确认密码！');
+                }
+            });
+
+            $('.comfirmpwd').blur(function(){
+                var comfirmpwd=$(this).val();
+                var password=$('.password').val();
+                if($.trim(comfirmpwd)==''){
+                    $('.comfirmpwd').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('确认密码不能为空！');
+                } else if($.trim(comfirmpwd) != $.trim(password)){
+                    $('.comfirmpwd').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('确认密码输入不正确！');
+                }else{
+                    $('.b_main3').hide();
+                    $('.comfirmpwd').css('border','1px solid deepskyblue');
+                }
+            })
+
+
+            //手机验证码
+            $("#yzm").click(function(){
+//                $(this).css("background","gray");
+                var _this=$(this);
+                var tel=$("input[name='tel']").val();
+                var verify=$("input[name='verify']").val();
+                if($.trim(tel)==''&& $.trim(verify)==''){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.alert1').css('background-color','orangered');
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('识别码不能为空！');
+                    return false;
+                }
+
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                    $('.alert1').css('background-color','orangered');
+                    return false;
+                }else if((/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    var url2="{:U('exist')}";
+                    $.get(url2,{tel:tel},function(data){
+                        if(data.status==false){
+                            $('.tel').css('border','1px solid orangered');
+                            $('.alert1').css('background-color','orangered');
+                            $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main').show().find($('.alert1')).text(data.info);
+                        }else{
+                            $('.b_main').hide();
+                            $('.tel').css('border','1px solid deepskyblue');
+                            if($.trim(verify).length<4 || $.trim(verify).length>4){
+                                $('.verify_input').css('border','1px solid orangered');
+                                $('.alert5').css('background-color','orangered');
+                                $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                                $('.b_main4').show().find($('.alert5')).text('请输入4位识别码！');
+                            }else{
+                                var url1="{:U('shibie')}";
+                                $.get(url1,{verify:verify},function(data){
+                                    if(data.status){
+                                        $('.b_main4').hide();
+                                        $('.verify_input').css('border','1px solid deepskyblue');
+                                        var url="{:U('sendSms','',false)}";
+                                        $.get(url,'phone='+tel).success(function(data){
+                                            var rg=/^000/;
+                                            if(rg.test(data)){
+                                                _this.prop('disabled','disabled');
+                                                timer=ztools.countdown(59,function(h,m,s){
+                                                    _this.text(s+'s重新获取');
+                                                })
+                                            }
+                                        });
+                                        setTimeout(function(){_this.prop('disabled',false);_this.text('获取验证码');clearInterval(timer)},60000);
+                                    }else{
+                                        $('.verify_input').css('border','1px solid orangered');
+                                        $('.alert5').css('background-color','orangered');
+                                        $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                                        $('.b_main4').show().find($('.alert5')).text(data.info);
+                                        $(".verifyimg").click();
+                                        return false;
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            });
+
+
+
+            $('.zhuce').click(function(){
+
+                var tel=$("input[name='tel']").val();
+                var phoneVerify=$("input[name='phoneVerify']").val();
+                var password=$("input[name='password']").val();
+                var comfirmpwd=$("input[name='comfirmpwd']").val();
+                var verify=$("input[name='verify']").val();
+
+                if($.trim(tel)=='' && $.trim(phoneVerify)=='' && $.trim(password)=='' && $.trim(comfirmpwd)=='' && $.trim(verify)==''){
+                    $('.tel').css('border','1px solid orangered');
+                    $('.alert1').css('background-color','orangered');
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码不能为空！');
+                    $('.phoneVerify_input').css('border','1px solid orangered');
+                    $('.alert3').css('background-color','orangered');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('验证码不能为空！');
+                    $('.password').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('新密码不能为空！');
+                    $('.comfirmpwd').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('确认密码不能为空！');
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('识别码不能为空！');
+                    return false;
+                }
+
+                if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main').show().find($('.alert1')).text('手机号码格式不正确！');
+                }else if((/^1[3|4|5|8][0-9]\d{8}$/.test(tel))){
+                    var url="{:U('exist')}";
+                    $.get(url,{tel:tel},function(data){
+                        if(data.status){
+                            $('.b_main').hide();
+                        }else{
+                            $('.tel').css('border','1px solid orangered');
+                            $('.alert1').css('background-color','orangered');
+                            $('.b_main').show().find($('.in')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main').show().find($('.alert1')).text(data.info);
+                        }
+                    })
+                }else{
+                    $('.tel').css('border','1px #deepskyblue solid');
+                    $('.b_main').hide();
+                }
+
+                if($.trim(verify)==''){
+                    $('.verify_input').css('border','1px solid orangered');
+                    $('.alert5').css('background-color','orangered');
+                    $('.b_main4').show().find($('.in4')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main4').show().find($('.alert5')).text('识别码不能为空！');
+                    return false;
+                }
+
+                if($.trim(phoneVerify)==''){
+                    $('.phoneVerify_input').css('border','1px solid orangered');
+                    $('.alert3').css('background-color','orangered');
+                    $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main2').show().find($('.alert3')).text('验证码不能为空！');
+                    return false;
+                }
+
+                if($.trim(phoneVerify)!=''){
+                    var url2="{:U('yanzheng')}";
+                    $.get(url2,{phoneVerify:phoneVerify},function(data){
+                        if(data.status){
+                            $('.b_main2').hide();
+                            $('phoneVerify').css('border','1px #deepskyblue solid');
+                        }else{
+                            $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main2').show().find($('.alert3')).text(data.info);
+                            $('.alert3').css('background-color','orangered');
+                        }
+                    })
+                }
+
+                if($.trim(password)==''){
+                    $('.password').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入密码！');
+                }else if($.trim(password).length<6 || $.trim(password).length>14){
+                    $('.password').css('border','1px solid orangered');
+                    $('.alert2').css('background-color','orangered');
+                    $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main1').show().find($('.alert2')).text('请输入6-14位密码！');
+                }else{
+                    var url4="{:U('ypwd')}";
+                    $.get(url4,{tel:tel,password:password},function(data){
+                        if(data.status){
+                            $('.b_main1').hide();
+                        }else{
+                            $('.password').css('border','1px solid orangered');
+                            $('.alert2').css('background-color','orangered');
+                            $('.b_main1').show().find($('.in1')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main1').show().find($('.alert2')).text(data.info);
+                        }
+                    })
+                }
+
+                if($.trim(comfirmpwd)==''){
+                    $('.comfirmpwd').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('请输入确认密码！');
+                }else if($.trim(comfirmpwd)!=$.trim(password)){
+                    $('.comfirmpwd').css('border','1px solid orangered');
+                    $('.alert4').css('background-color','orangered');
+                    $('.b_main3').show().find($('.in3')).css('border-color','transparent orangered transparent transparent');
+                    $('.b_main3').show().find($('.alert4')).text('确认密码输入不正确！');
+                }else{
+                    $('.comfirmpwd').css('border','1px #deepskyblue solid');
+                    $('.b_main3').hide();
+                }
+
+                if($.trim(tel)!='' && $.trim(phoneVerify)!='' && $.trim(password)!='' && $.trim(comfirmpwd)!='' && $.trim(password)==$.trim(comfirmpwd)){
+                    var url2="{:U('yanzheng')}";
+                    $.get(url2,{phoneVerify:phoneVerify},function(data) {
+                        if(data.status){
+                            var url4 = "{:U('ypwd')}";
+                            $.get(url4, {tel: tel, password: password}, function (data) {
+                                if (data.status) {
+                                    var url1 = "{:U('getpwd')}";
+                                    $.post(url1, {tel: tel, password: password}, function (data) {
+                                        if (data.status) {
+                                            $('.b_main3').show().find($('.in3')).css('border-color', 'transparent orangered transparent transparent');
+                                            $('.b_main3').show().find($('.alert4')).text(data.info);
+                                            $('.alert4').css('background-color', 'orangered');
+                                            setTimeout(function () {
+                                                window.location.href = data.url;
+                                            }, 2500);
+                                        } else {
+                                            $('.b_main3').show().find($('.in3')).css('border-color', 'transparent orangered transparent transparent');
+                                            $('.b_main3').show().find($('.alert4')).text(data.info);
+                                            $('.alert4').css('background-color', 'orangered');
+                                        }
+                                    })
+                                } else {
+                                    $('.password').css('border', '1px solid orangered');
+                                    $('.alert2').css('background-color', 'orangered');
+                                    $('.b_main1').show().find($('.in1')).css('border-color', 'transparent orangered transparent transparent');
+                                    $('.b_main1').show().find($('.alert2')).text(data.info);
+                                }
+                            })
+                        }else{
+                            $('.b_main2').show().find($('.in2')).css('border-color','transparent orangered transparent transparent');
+                            $('.b_main2').show().find($('.alert3')).text(data.info);
+                            $('.alert3').css('background-color','orangered');
+                        }
+                    })
+                    return false;
+                    $('.b_main3').hide();
+                }
+            })
+        });
+    </script>
+</block>

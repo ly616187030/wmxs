@@ -1,0 +1,539 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+    <link href="__CSS__/ticket.css" rel="stylesheet" type="text/css">
+</block>
+
+<block name="main">
+    <style>
+        .table-responsive tr td{text-align: center}
+    </style>
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+            <div class="main-title cf" style="padding-left: 15px;height: 50px;">
+
+                <button id="stop" class="btn btn-default glyphicon glyphicon-pause" type="button">停止提示铃声</button>
+                <audio src="__PUBLIC__/audio.mp3" preload="auto" id="audio"></audio>
+
+            </div>
+            <!-- 数据列表 -->
+            <div class="builder-container builder-list-container">
+
+                <div id="display" <empty name="list">style="display:none;"</empty>>
+
+
+                <div class="col-sm-3" style="padding-right: 0;">
+                    <div class="orderLeft">
+                        <ul>
+                            <volist name="list" id="vo">
+                                <li data-id="{$vo.order_id}" <eq name="i" value="1">class="active"</eq>>
+                                <div class="storeName">堂室-{$vo.order_count}<span style="float: right;">桌台：{$vo.seat_name}</span></div>
+                                <div class="storeName"><span class="fa fa-home"></span>{$vo.store_name}</div>
+                                <div class="storeName">
+                                    <span class="fa fa-user"></span>{$vo.username}
+                                    <switch name="vo.gender">
+                                        <case value="1">先生</case>
+                                        <case value="2">女士</case>
+                                    </switch>
+                                    <span class="fa fa-mobile" style="margin-left: 20px;font-size: 16px;"></span>{$vo.phone}</div>
+                                <div class="storeName">订单总额：<span class="total">￥{$vo['total']+$vo['ps_cost']+$vo['canju_total']-$vo['yh_price']}</span></div>
+                                <div class="storeButton">
+                                    <button class="btn btn-primary jiedan" data-id="{$vo.order_id}" data-type="2" data-qiantai="{$vo.is_qiantai_print}" data-kitchen="{$vo.is_kitchen_print}">接单并打印</button>
+                                    <button class="btn btn-default judan" data-id="{$vo.order_id}" data-pay_type="{$vo.pay_type}">拒绝</button>
+                                </div>
+                                </li>
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-8" style="padding: 0;" id="orderMore">
+                    <div class="newOrderMore">
+                        <div class="newOrderMoreTitle">
+                            <span id="order_sn">订单号：{$list_first.order_sn}</span><span id="xd_time">下单时间：{$list_first.xd_time|date="Y-m-d H:i",###}</span><span id="zongjia">订单金额：￥{$list_first.zongjia}</span><span id="status">订单状态：{$list_first.status}</span>
+                        </div>
+                        <div class="newOrderMoreButton" id="aa">
+                            <button class="btn btn-primary jiedan" data-id="{$list_first.order_id}" data-type="2" data-qiantai="{$list_first.is_qiantai_print}" data-kitchen="{$vo.is_kitchen_print}">接单并打印</button>
+                            <!--<button class="btn btn-primary" id="" onclick="jiedan()" data-id="{$list_first.order_id}">接单</button>
+                            <button class="btn btn-primary" id="print" data-id="{$list_first.order_id}" onclick="orderPrint()">打印</button>-->
+                            <button class="btn btn-default judan" data-id="{$list_first.order_id}" data-pay_type="{$list_first.pay_type}">拒绝</button>
+                        </div>
+                        <div class="newOrderMoreMess">
+                            <div class="newOrderMoreMessLeft">
+                                <div class="newOrderMoreMessLeftUp">
+                                    <div><span class="fa fa-clock-o"></span>期望时间：<span id="send_time">{$list_first.send_time|date="Y-m-d H:i",###}</span></div>
+                                    <div><span class="fa fa-tag"></span>订单备注：<span id="order_message">{$list_first.order_message}</span></div>
+                                </div>
+                                <div class="newOrderMoreMessLeftDown">
+                                    <ul>
+                                        <li><span class="fa fa-user"></span><span id="username">{$list_first.username}</span><span id="gender">{$list_first.gender}</span></li>
+                                        <li><span class="fa fa-mobile" style="font-size: 18px;"></span><span id="phone">{$list_first.phone}</span></li>
+                                        <li><span class="fa fa-home"></span><span id="store_name">{$list_first.store_name}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="newOrderMoreMessRight">
+                                <table class="table table-bordered table-responsive  table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>菜品</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额(元)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="caipin">
+                                    <volist name="list_first.child" id="ro">
+                                        <tr>
+                                            <td>{$ro.cm_name}</td>
+                                            <td>{$ro.price}</td>
+                                            <td>{$ro.quantity}</td>
+                                            <td>{$ro.total_money}</td>
+                                        </tr>
+                                    </volist>
+                                    <tr>
+                                        <td colspan="3" style="text-align: left">小计：</td>
+                                        <td>{$list_first.total}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>其他费用</th>
+                                        <th>金额(元)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td width="75%">配送费</td>
+                                        <td align="center" id="ps_cost">{$list_first.ps_cost}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="75%">餐盒费</td>
+                                        <td align="center" id="canju_total">{$list_first.canju_total}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="75%">优惠</td>
+                                        <td align="center" id="yh_price">{$list_first.yh_price}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="newOrderMoreMessTotal">
+                                    合计：<span id="zongjia2">{$list_first.zongjia}</span>
+                                </div>
+                            </div>
+                            <div style="clear: both"></div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div id="empty_order" <notempty name="list">style="display:none;"</notempty>><h1 align="center"><span class="label label-default"> 暂无订单</span></h1></div>
+
+
+    </div>
+    <!-- 额外功能代码 -->
+    </div>
+
+    </div>
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="{:U('judan')}" method="post" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">拒单理由</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" value="" name="order_id" />
+                        <input type="hidden" value="" name="pay_type" />
+                        <textarea class="form-control" rows="5" name="reject_reason"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--顾客小票start-->
+    <div class="ticketMain" style="display: none;">
+        <div id="order_count" style="font-size: 30px;font-weight: bold">堂室-{$list_first.order_count}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="Title fw"><div class="pdt5">{:C('TICKETNAME')}</div><div class="pdt5" id="customer_ticket_pay_type">[{$list_first.pay_type_text}]</div></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_send_time"> 期望送达时间：{$list_first.send_time|date="Y-m-d H:i",###}</div>
+        <div class="pdt5" id="customer_ticket_order_message">订单备注：{$list_first.order_message}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_sn"> 订单编号：{$list_first.order_sn}</div>
+        <div class="pdt5" id="customer_ticket_xd_time">下单时间：{$list_first.xd_time|date="Y-m-d H:i:s",###}</div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+            <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody id="good_detail">
+            <volist name="list_first.child" id="vo">
+                <tr>
+                    <td width="60%" align="left">{$vo.cm_name}</td>
+                    <td width="20%" align="center">{$vo.quantity}</td>
+                    <td width="20%" align="right">{$vo['price']*$vo['quantity']|round=2}</td>
+                </tr>
+            </volist>
+            <tr>
+                <td width="80%" colspan="2" align="left">餐盒费：</td>
+                <td width="20%" align="right">{$list_first.canju_total}</td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">配送费：</td>
+                <td width="20%" align="right">{$list_first.ps_cost}</td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">优惠：</td>
+                <td width="20%" align="right">{$list_first.yh_price}</td>
+            </tr>
+            <tr>
+                <td width="80%" colspan="2" align="left">总计：</td>
+                <td width="20%" align="right">{$list_first.zongjia}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_username"> 姓名：{$list_first.username} {$list_first.gender}</div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_detail_address"> 地址：{$list_first.detail_address}</div>
+        <div class="pdt5 fz18 fw" id="customer_ticket_phone"> 电话：{$list_first.phone}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_store_name"> {$list_first.store_name}</div>
+        <div class="pdt5" id="customer_ticket_tel"> {$list_first.tel}</div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_now_time"> {:C('TICKETNAME')} {$time|date="m月d日 H:i:s",###}</div>
+    </div>
+    <!--顾客小票end-->
+    <!--档口小票start-->
+    <div id="dangkou" style="display: none;">
+        <volist name="list_dangkou" id="vo">
+            <div id="dangkou{$vo.id}" data-dangkou="{$vo.id}" data-print="{$vo.printer_sn}">
+                <div style="font-size: 30px; font-weight: bold;">堂室-{$list_first.order_count}</div>
+                <div style="line-height: 30px;" id="dangkou_order_sn">订单编号：{$list_first.order_sn}</div>
+                <div style="line-height: 20px;">{$vo.name}</div>
+                <table width="100%">
+                    <thead>
+                    <th align="left" style="border-bottom: 1px solid #000;border-top: 1px solid #000;">菜品名称</th>
+                    <th align="center" style="border-bottom: 1px solid #000;border-top: 1px solid #000;">数量</th>
+                    </thead>
+                    <tbody>
+                    <notempty name="vo.dangkou">
+                        <volist name="vo.dangkou" id="ro">
+                            <tr>
+                                <td width="80%" align="left">{$ro.cm_name}</td>
+                                <td width="20%" align="center">{$ro.quantity}</td>
+                            </tr>
+                        </volist>
+                    </notempty>
+                    </tbody>
+                </table>
+                <div style="border-top: 1px solid #000;line-height: 25px;">{$time|date="m月d日 H:i:s",###}</div>
+            </div>
+        </volist>
+    </div>
+
+    <!--档口小票end-->
+    <style>
+        .page .current {height: auto;}
+    </style>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/LodopFuncs.js"></script>
+    <script src='__PUBLIC__/socket.io.js'></script>
+    <script>
+        var LODOP=getLodop();
+
+        //打印功能
+        $(document).ready(function () {
+            var uid='{:session("user_auth.push_msg_id")}';
+            // 连接服务端
+            //var socket = io('http://'+document.domain+':2120');
+            var socket = io('http://zhg.zhuyousoft.com:2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                //$('#content').html('收到消息：'+msg);
+                msg=='success' && get_list();
+                playaudio();
+                //msg=='success' && location.reload();
+            });
+            // 推送信息响铃
+
+            //get_list();
+
+            var music=document.getElementById('audio');
+            var stop=document.getElementById('stop');
+            var timer;
+            function playaudio(){
+                timer=setInterval(function(){
+                    music.play();
+                },2000);
+            }
+
+            stop.onclick=function(){
+                music.pause();
+                clearInterval(timer);
+            }
+        });
+        function printing(html,printsn,num){
+            var num=num || 1;
+            var printsn= printsn || 0;
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_HTM(10,5,"100%","100%",html);
+            LODOP.SET_PRINTER_INDEX(printsn);
+            LODOP.SET_PRINT_COPIES(num);
+            LODOP.PRINT();
+        }
+        function print_front(){
+            var htmls=$('.ticketMain').html();
+            $.get('{:U("getLocalNum")}').success(function(data){
+                //console.log(data.nums);
+                printing(htmls,data.printer_sn,data.nums);
+            });
+
+        }
+        function print_backend(){
+            var div=$('#dangkou > div');
+            div.each(function(){
+                var $this=$(this);
+                printing($this.html(),$this.data('print'));
+            });
+        }
+        //接单功能
+        function jiedan(id,type,qiantan,kitchen){
+            if(qiantan == 1){
+                print_front();//用户小票打印
+            }
+            if(kitchen == 1){
+                print_backend();//后厨小票打印
+            }
+            $.post("{:U('Order/pushOrder')}",{id:id,type:type}).success(function(newdata){
+
+                if(newdata.value == 0){
+                    $.alertMessager(newdata.info);
+                    $('.jiedan').removeAttr('disabled');
+                }else{
+                    $.alertMessager(newdata.info,'success');
+                }
+                setTimeout(function(){
+                    window.location.reload();
+                },1500);
+
+            });
+
+        }
+
+        function judan(id,pay_type){
+            $('input[name="order_id"]').val(id);
+            $('input[name="pay_type"]').val(pay_type);
+            $('#myModal').modal('show');
+            $('#myModal').on('hidden.bs.modal', function (e) {
+                $('input[name="order_id"]').val("");
+                $('input[name="1"]').val("");
+            })
+        }
+
+        function test(data){
+            $('#order_count').html("堂室-"+data.order_count);
+            $('#order_sn').html("订单号："+data.order_sn);
+            $('#xd_time').html("下单时间："+data.xd_time);
+            $('#zongjia').html("订单金额：￥"+data.zongjia);
+            $('#status').html("订单状态："+data.status);
+            $('#send_time').html(data.send_time);
+            $('#order_message').html(data.order_message);
+            $('#username').html(data.username);
+            $('#gender').html(data.gender);
+            $('#phone').html(data.phone);
+            $('#store_name').html(data.store_name);
+            var aa = '';
+            var bb = '';
+            var cc = '';
+            var dd = '';
+
+            for(var i=0;i<data.child.length;i++){
+                aa += "<tr><td>"+data.child[i].cm_name+"</td><td>"+data.child[i].price+"</td><td>"+data.child[i].quantity+"</td><td>"+data.child[i].total_money+"</td></tr>";
+            }
+            aa += "<tr><td colspan=\"3\" style=\"text-align: left\">小计：</td> <td>"+data.total+"</td> </tr>";
+            $('#caipin').html(aa);
+            $('#ps_cost').html(data.ps_cost);
+            $('#yh_price').html(data.yh_price);
+            $('#canju_total').html(data.canju_total);
+            $('#zongjia2').html(data.zongjia);
+            $('#aa').html("" +
+            "<button class=\"btn btn-primary jiedan\" data-id=\""+data.order_id+"\" data-type=\"2\" data-qiantai=\""+data.is_qiantai_print+"\" data-kitchen=\""+data.is_kitchen_print+"\">接单并打印</button> " +
+            "<button class=\"btn btn-default judan\" data-id=\""+data.order_id+"\"  data-pay_type=\""+data.pay_type+"\">拒绝</button> ");
+
+            //顾客小票信息写入
+            $('#customer_ticket_pay_type').html("["+data.pay_type_text+"]");
+            $('#customer_ticket_send_time').html("期望送达时间："+data.send_time);
+            $('#customer_ticket_order_message').html("订单备注："+data.order_message);
+            $('#customer_ticket_order_sn').html("订单编号："+data.order_sn);
+            $('#customer_ticket_xd_time').html("下单时间："+data.xd_time);
+
+            for(var i=0;i<data.child.length;i++){
+                bb += "<tr>" +
+                " <td width=\"60%\" align=\"left\">"+data.child[i].cm_name+"</td> <td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                " <td width=\"20%\" align=\"right\">"+(data.child[i].price*data.child[i].quantity).toFixed(2)+"</td> </tr>";
+            }
+            bb += "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">餐盒费：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.canju_total+"</td>"+
+            "</tr>"+
+            " <tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">配送费：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.ps_cost+"</td>"+
+            "</tr>"+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">优惠：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.yh_price+"</td>"+
+            "</tr>"+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">总计：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.zongjia+"</td>"+
+            "</tr>";
+            $('#good_detail').html(bb);
+
+            $('#customer_ticket_username').html(" 姓名："+data.username+" "+data.gender);
+            $('#customer_ticket_detail_address').html(" 地址："+data.detail_address);
+            $('#customer_ticket_phone').html(" 电话："+data.phone);
+            $('#customer_ticket_store_name').html(data.store_name);
+            $('#customer_ticket_tel').html(data.tel);
+            $('#customer_ticket_now_time').html(data.ticket+" "+data.now_time);
+            if(data.dangkou != null){
+                for(var i=0;i<data.dangkou.length;i++){
+
+                    cc += "" +
+                    "<div id=\"dangkou"+data['dangkou'][i]['id']+"\" data-dangkou=\""+data['dangkou'][i]['id']+"\" data-print=\""+data['dangkou'][i]['printer_sn']+"\">" +
+                    "<div style=\"font-size: 30px; font-weight: bold;\">堂室-"+data.order_count+"</div>"+
+                    "<div style=\"line-height: 30px;\">订单编号："+data.order_sn+"</div>"+
+                    "<div style=\"line-height: 20px;\">"+data['dangkou'][i]['name']+"</div>"+
+                    "<table width='100%'>"+
+                    "<thead>"+
+                    "<th align=\"left\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">菜品名称</th>"+
+                    "<th align=\"center\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">数量</th>"+
+                    "</thead>"+
+                    "<tbody>"+
+                    "</tbody>"+
+                    "</table>" +
+                    "<div style=\"border-top: 1px solid #000;line-height: 25px;\" >"+data.now_time+"</div></div>";
+
+
+                }
+                $('#dangkou').html(cc);
+                for(var i=0;i<data.child.length;i++){
+                    dd = "<tr>"+
+                    "<td width=\"80%\" align=\"left\">"+data.child[i].cm_name+"</td>"+
+                    "<td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                    "</tr>";
+                    $('#dangkou'+data.child[i]['dangkou_id']).find('tbody').append(dd);
+                }
+            }
+
+        }
+        $('.orderLeft').find('li').click(function(){
+            var id = $(this).data('id');
+            $('.orderLeft').find('li').removeClass('active');
+            $(this).addClass('active');
+            $.post("{:U('orderMore')}",{id:id}).success(function(data2){
+                if(data2 != null){
+                    //右侧订单详情写入
+                    test(data2);
+
+                }
+            });
+        });
+        /*$('#stop').click(function(){
+         get_list();
+
+         });*/
+
+
+        function get_list(){
+
+            $.post("{:U('neworder')}",{type:1}).success(function(data){
+                var htmls = '';
+                for(var i=0;i<data[0].length;i++){
+                    if(data[0][i].gender == 1){
+                        data[0][i].gender = "先生";
+                    }else{
+                        data[0][i].gender = "女士";
+                    }
+                    htmls += "<li data-id=\""+data[0][i].order_id+"\">"+
+                    "<div class=\"storeName\">堂室-"+data[0][i].order_count+"</div>"+
+                    "<div class=\"storeName\"><span class=\"fa fa-home\"></span>"+data[0][i].store_name+"</div>"+
+                    "<div class=\"storeName\">"+
+                    "<span class=\"fa fa-user\"></span>"+data[0][i].username+" "+data[0][i].gender+" "+
+                    "<span class=\"fa fa-mobile\" style=\"margin-left: 20px;font-size: 16px;\"></span>"+data[0][i].phone+"</div>"+
+                    "<div class=\"storeName\">订单总额：<span class=\"total\">￥"+data[0][i].zongjia+"</span></div>"+
+                    "<div class=\"storeButton\">"+
+                    "<button class=\"btn btn-primary jiedan\" data-id=\""+data[0][i].order_id+"\" data-type=\"1\" data-qiantai=\""+data[0][i].is_qiantai_print+"\" data-kitchen=\""+data[0][i].is_kitchen_print+"\">接单推送并打印</button> "+
+                    "<button class=\"btn btn-default judan\" data-id=\""+data[0][i].order_id+"\" data-pay_type=\""+data[0][i].pay_type+"\">拒绝</button>"+
+                    "</div></li>";
+
+                }
+
+                $('.orderLeft ul').html(htmls);
+                $('.orderLeft ul li').eq(0).addClass('active');
+                $('.orderLeft').find('li').click(function(){
+                    var id = $(this).data('id');
+                    $('.orderLeft').find('li').removeClass('active');
+                    $(this).addClass('active');
+                    $.post("{:U('orderMore')}",{id:id}).success(function(data2){
+                        if(data2 != null){
+                            //右侧订单详情写入
+                            test(data2);
+
+                        }
+                    });
+                });
+
+                test(data[1]);
+                $('#display').show();
+                $('#empty_order').hide();
+            });
+        }
+        $(document).on('click','.jiedan',function(){
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            var qiantan = $(this).data('qiantai');
+            var kitchen = $(this).data('kitchen');
+
+            $(this).attr('disabled','disabled');
+            $.post("{:U('orderMore')}",{id:id}).success(function(data2){
+                if(data2 != null){
+                    //右侧订单详情写入
+                    test(data2);
+                    jiedan(id,type,qiantan,kitchen);
+                }
+            });
+
+        });
+        $(document).on('click','.judan',function(){
+            var id = $(this).data('id');
+            var pay_type = $(this).data('pay_type');
+            judan(id,pay_type);
+        });
+
+
+
+    </script>
+</block>
+
+
+

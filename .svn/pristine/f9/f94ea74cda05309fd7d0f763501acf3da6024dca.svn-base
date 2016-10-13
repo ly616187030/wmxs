@@ -1,0 +1,187 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo ($meta_keywords); ?>">
+    <meta name="description" content="<?php echo ($meta_description); ?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    
+    <style type="text/css">
+        body{
+            padding:40px 20px;
+        }
+        .list{
+            list-style-type: none;
+        }
+        .list span{
+
+            border:1px solid blue;
+            display:block;
+            height:40px;
+            line-height: 40px;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>
+
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+
+    <div class="builder builder-list-box panel-body">
+        <div class="builder-tabs builder-form-tabs">
+            <ul class="nav nav-tabs">
+                <li><a href="<?php echo U('Userconfig/index',array('group'=>1));?>">基本</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>2));?>">系统</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>3));?>">开发</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>4));?>">部署</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>5));?>">授权</a></li>
+                <li><a class="active" href="<?php echo U('Userconfig/groupone',array('group'=>6));?>">项目</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="table-bar" style="margin: 1em 0em;">
+        <div class="fl">
+            <div class="tools">
+                <a class="btn btn-primary" href="<?php echo U('add',array('id'=>0));?>" id="websiteCategoryAdd">新 增</a>
+                <button class="btn ajax-post confirm btn-danger" target-form="ids" url="<?php echo U('del',array('m'=>'user_config'));?>">删 除</button>
+            </div>
+        </div>
+    </div>
+    <!------搜索------------>
+    <div style="height: 15px;"></div>
+    <div class="data-table table-striped" id="peizhi">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>标题</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($info)): if(is_array($info)): $i = 0; $__LIST__ = $info;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$_data): $mod = ($i % 2 );++$i;?><tr class="list_type" data-group="<?php echo ($_data["group"]); ?>">
+                            <td>
+                                <input class="ids" type="checkbox" value="<?php echo ($_data["id"]); ?>" name="id[]">
+                            </td>
+                            <td><?php echo ($_data["id"]); ?></td>
+                            <td><?php echo ($_data["name"]); ?></td>
+                            <td><?php echo ($_data["title"]); ?></td>
+                            <td><?php echo ($_data["sort"]); ?></td>
+                            <td><?php echo ($_data["status"]); ?></td>
+                            <td>
+                                <a href="<?php echo U('add',array('id'=>$_data['id']));?>" class="glyphicon glyphicon-edit">编辑</a>
+                                <a href="<?php echo U('storeinfo',array('id'=>$_data['id']));?>" class="glyphicon glyphicon-edit">禁用</a>
+                                <a href="<?php echo U('del',array('id'=>$_data['id'],'m'=>'user_config'));?>" class="glyphicon glyphicon-trash ajax-get confirm">删除</a>
+                            </td>
+                        </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                    <?php else: ?>
+                    <td colspan="13" class="text-center"> aOh! 暂时还没有内容! </td><?php endif; ?>
+                </tbody>
+            </table>
+        </form>
+        <div class="page"><?php echo ($page); ?></div>
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            
+    <script type="text/javascript">
+        //第二个选项卡选中
+        $(".nav li:nth-child(6)").addClass('active');
+        $(function() {
+
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '#search', function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+
+        </div>
+    </div>
+</body>
+</html>

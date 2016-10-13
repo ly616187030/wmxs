@@ -1,0 +1,1088 @@
+<extend name="Base/common_zhgIndex"/>
+
+
+<block name="body_zhgIndex">
+<style type="text/css">
+a{text-decoration: none;color: black;}
+a:hover{text-decoration: none;color: orange;}
+.flowstep1{background: url("__IMG__/orderlist/status_step_green.png") no-repeat -20px -45px;width:1150px;height:60px;margin: 20px}
+/* status_step css sprites position */
+/* 
+-20px -45px
+-20px -144px
+-20px -252px
+-20px -353px
+-20px -468px 
+*/
+.flowstep1 li{float: left;width: 198px}
+.flowstep1 .step-name{margin-top: 5px}
+.flowstep1 .step-time{margin-top: 25px}
+.blue{color: #020251;}
+</style>
+
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <div class="current">
+    <a href="{:U('Orderlist/index')}">个人中心</a> &gt; 
+    <a href="{:U('Orderlist/index')}">我的订单</a> &gt; 
+    <a href="javascript:;">订单详情</a></div>
+    <div class="dishes-info-title">
+        <span>订单号：{$list.order_sn}</span>
+        <span>{$list.store_id|get_store_name} </span>
+        <span>订单金额：￥{$list['total']+$list['yajin']+$list['ps_cost']+$list['canju_total']-$list['yh_price']}</span>
+                    <span>状态：<span style="color:red;font-size:14px;width:350px">
+                    <switch name="list.status" >
+                                <case value="1">待支付</case>
+                                <case value="2">支付完成</case>
+                                <case value="3">商家确认中</case>
+                                <case value="4">商家已确认</case>
+                                <case value="5">待评价</case>
+                                <case value="6">订单完成</case>
+                                <case value="7">已退单</case>
+                                <case value="8">支付完成<br>已退单</case>
+                                <case value="9">商家拒接<if condition="$list.reject_reason neq null">({$list.reject_reason})</if></case>
+                                <case value="10">支付完成<br>商家拒接
+                                <if condition="$list.reject_reason neq null">({$list.reject_reason})</if></case>
+                                <case value="11">支付完成<br>退款审核中</case>
+                                <case value="12">退款完成</case>
+                                <case value="13">已退单</case>
+                                <!--<case value="14">请耐心等待配送</case>-->
+                                <case value="15">退款审核中</case>
+                                <case value="16">退款审核中</case>
+                                <case value="17">退款完成</case>
+                                <case value="18">退款完成</case>
+                            </switch>
+                    </span></span>
+    </div>
+<switch name="list.status" >
+<case value="1">
+    <div class="flowstep" style="background-position:-20px -45px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">商家已确认</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">配送中</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">已送达</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">完成</div>
+                    <div class="step-time"></div>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="2">
+    <div class="flowstep" style="background-position:-20px -45px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">商家已确认</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">配送中</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">已送达</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">完成</div>
+                    <div class="step-time"></div>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="3">
+    <div class="flowstep" style="background-position:-20px -45px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">商家已确认</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">配送中</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">已送达</div>
+                    <div class="step-time"></div>
+                </li>
+                <li>
+                    <div class="step-name">完成</div>
+                    <div class="step-time"></div>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="4">
+    <if condition="$list.sh_mode eq 1">
+        <div class="flowstep" style="background-position:-20px -252px;">
+            <ul>
+                <li class="red">
+                    <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">配送中</div>
+                    <if condition="$res.come_time neq 0">
+                        <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">已送达</div>
+                    <if condition="$res.delivery_time neq 0">
+                        <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">完成</div>
+                    <if condition="$list.complete_time neq 0">
+                        <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+            </ul>
+        </div>
+    </if>
+    <if condition="$list.sh_mode eq 2">
+        <eq name="list.ord_peisong_status" value="0">
+            <div class="flowstep" style="background-position:-20px -144px;">
+                <ul>
+                    <li class="red">
+                        <div class="step-name">订单提交成功</div>
+                        <if condition="$list.xd_time neq 0">
+                            <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">商家已确认</div>
+                        <if condition="$list.confirm_time neq 0">
+                            <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">配送中</div>
+                        <if condition="$res.come_time neq 0">
+                            <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">已送达</div>
+                        <if condition="$res.delivery_time neq 0">
+                            <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">完成</div>
+                        <if condition="$list.complete_time neq 0">
+                            <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                </ul>
+            </div>
+        </eq>
+        <eq name="list.ord_peisong_status" value="1">
+            <div class="flowstep" style="background-position:-20px -144px;">
+                <ul>
+                    <li class="red">
+                        <div class="step-name">订单提交成功</div>
+                        <if condition="$list.xd_time neq 0">
+                            <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">商家已确认</div>
+                        <if condition="$list.confirm_time neq 0">
+                            <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">配送中</div>
+                        <if condition="$res.come_time neq 0">
+                            <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">已送达</div>
+                        <if condition="$res.delivery_time neq 0">
+                            <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">完成</div>
+                        <if condition="$list.complete_time neq 0">
+                            <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                </ul>
+            </div>
+            <div class="flowstep1" style="background-position:-20px -23px;">
+                <span style="font-size: 14px;">配送详情：</span>
+                <ul>
+                    <li class="blue">
+                        <div class="step-name">餐品打包完成</div>
+                    </li>
+                    <li>
+                        <div class="step-name">配送员正在赶往餐厅</div>
+                    </li>
+                    <li>
+                        <div class="step-name">餐品配送中</div>
+                    </li>
+                    <li>
+                        <div class="step-name">餐品已送达</div>
+                    </li>
+                    <li>
+                        <div class="step-name">配送完成</div>
+                    </li>
+                </ul>
+            </div>
+        </eq>
+        <eq name="list.ord_peisong_status" value="2">
+            <div class="flowstep" style="background-position:-20px -252px;">
+                <ul>
+                    <li class="red">
+                        <div class="step-name">订单提交成功</div>
+                        <if condition="$list.xd_time neq 0">
+                            <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">商家已确认</div>
+                        <if condition="$list.confirm_time neq 0">
+                            <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">配送中</div>
+                        <if condition="$res.come_time neq 0">
+                            <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">已送达</div>
+                        <if condition="$res.delivery_time neq 0">
+                            <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">完成</div>
+                        <if condition="$list.complete_time neq 0">
+                            <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                </ul>
+            </div>
+            <div class="flowstep1" style="background-position:-20px -123px;">
+                <span style="font-size: 14px;">配送详情：</span>
+                <ul>
+                    <li class="blue">
+                        <div class="step-name">餐品打包完成</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">配送员正在赶往餐厅</div>
+                    </li>
+                    <li>
+                        <div class="step-name">餐品配送中</div>
+                    </li>
+                    <li>
+                        <div class="step-name">餐品已送达</div>
+                    </li>
+                    <li>
+                        <div class="step-name">配送完成</div>
+                    </li>
+                </ul>
+            </div>
+        </eq>
+        <eq name="list.ord_peisong_status" value="3">
+            <div class="flowstep" style="background-position:-20px -252px;">
+                <ul>
+                    <li class="red">
+                        <div class="step-name">订单提交成功</div>
+                        <if condition="$list.xd_time neq 0">
+                            <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">商家已确认</div>
+                        <if condition="$list.confirm_time neq 0">
+                            <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">配送中</div>
+                        <if condition="$res.come_time neq 0">
+                            <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">已送达</div>
+                        <if condition="$res.delivery_time neq 0">
+                            <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">完成</div>
+                        <if condition="$list.complete_time neq 0">
+                            <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                </ul>
+            </div>
+            <div class="flowstep1" style="background-position:-20px -230px;">
+                <span style="font-size: 14px;">配送详情：</span>
+                <ul>
+                    <li class="blue">
+                        <div class="step-name">餐品打包完成</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">配送员正在赶往餐厅</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">餐品配送中</div>
+                    </li>
+                    <li>
+                        <div class="step-name">餐品已送达</div>
+                    </li>
+                    <li>
+                        <div class="step-name">配送完成</div>
+                    </li>
+                </ul>
+            </div>
+        </eq>
+        <eq name="list.ord_peisong_status" value="4">
+            <div class="flowstep" style="background-position:-20px -353px;">
+                <ul>
+                    <li class="red">
+                        <div class="step-name">订单提交成功</div>
+                        <if condition="$list.xd_time neq 0">
+                            <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">商家已确认</div>
+                        <if condition="$list.confirm_time neq 0">
+                            <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">配送中</div>
+                        <if condition="$res.come_time neq 0">
+                            <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li class="red">
+                        <div class="step-name">已送达</div>
+                        <if condition="$res.delivery_time neq 0">
+                            <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                    <li>
+                        <div class="step-name">完成</div>
+                        <if condition="$list.complete_time neq 0">
+                            <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                        </if>
+                    </li>
+                </ul>
+            </div>
+            <div class="flowstep1" style="background-position:-20px -446px;">
+                <span style="font-size: 14px;">配送详情：</span>
+                <ul>
+                    <li class="blue">
+                        <div class="step-name">餐品打包完成</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">配送员正在赶往餐厅</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">餐品配送中</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">餐品已送达</div>
+                    </li>
+                    <li class="blue">
+                        <div class="step-name">配送完成</div>
+                    </li>
+                </ul>
+            </div>
+        </eq>
+    </if>
+</case>
+<case value="5">
+    <div class="flowstep" style="background-position:-20px -353px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">配送中</div>
+                    <if condition="$res.come_time neq 0">
+                        <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">已送达(待评价)</div>
+                    <if condition="$res.delivery_time neq 0">
+                        <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">完成</div>
+                    <div class="step-time"></div>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="6">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">配送中</div>
+                    <if condition="$res.come_time neq 0">
+                        <div class="step-time">{$res.come_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">已送达</div>
+                    <if condition="$res.delivery_time neq 0">
+                        <div class="step-time">{$res.delivery_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">完成</div>
+                    <if condition="$list.complete_time neq 0">
+                        <div class="step-time">{$list.complete_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="8">
+    <div class="flowstep" style="background-position:-20px -252px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">支付完成</div>
+                    <if condition="$list.pay_complete_time neq 0">
+                        <div class="step-time">{$list.pay_complete_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="9">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家确认中</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家拒接</div>
+                    <if condition="$list.reject_time neq 0">
+                        <div class="step-time">{$list.reject_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">拒接原因</div>
+                    <if condition="$list.reject_reason neq 0">
+                        <div class="step-time">{$list.reject_reason|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">已退单</div>
+                    <if condition="$list.reject_time neq 0">
+                        <div class="step-time">{$list.reject_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="10">
+    <div class="flowstep" style="background-position:-20px -252px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家拒接</div>
+                    <if condition="$list.reject_time neq 0">
+                        <div class="step-time">{$list.reject_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="11">
+    <div class="flowstep" style="background-position:-20px -353px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">支付完成</div>
+                    <if condition="$list.pay_complete_time neq 0">
+                        <div class="step-time">{$list.pay_complete_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="12">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">支付完成</div>
+                    <if condition="$list.pay_complete_time neq 0">
+                        <div class="step-time">{$list.pay_complete_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="13">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请取消订单</div>
+                    <if condition="$list.cancel_ord_time neq 0">
+                        <div class="step-time">{$list.cancel_ord_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">订单取消成功</div>
+                    <if condition="$list.cancel_ord_time neq 0">
+                        <div class="step-time">{$list.cancel_ord_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">已退单</div>
+                </li>
+        </ul>
+    </div>
+</case>
+<!--<case value="14">
+
+</case>-->
+<case value="15">
+    <div class="flowstep" style="background-position:-20px -353px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家拒接</div>
+                    <if condition="$list.reject_time neq 0">
+                        <div class="step-time">{$list.reject_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="16">
+    <div class="flowstep" style="background-position:-20px -353px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">订单取消成功</div>
+                    <if condition="$list.cancel_ord_time neq 0">
+                        <div class="step-time">{$list.cancel_ord_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li>
+                    <div class="step-name">退款完成</div>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="17">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家拒接</div>
+                    <if condition="$list.reject_time neq 0">
+                        <div class="step-time">{$list.reject_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">申请退款</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+<case value="18">
+    <div class="flowstep" style="background-position:-20px -468px;">
+        <ul>
+                <li class="red">
+                <div class="step-name">订单提交成功</div>
+                    <if condition="$list.xd_time neq 0">
+                        <div class="step-time">{$list.xd_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">商家已确认</div>
+                    <if condition="$list.confirm_time neq 0">
+                        <div class="step-time">{$list.confirm_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">订单取消成功</div>
+                    <if condition="$list.cancel_ord_time neq 0">
+                        <div class="step-time">{$list.cancel_ord_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款审核中</div>
+                    <if condition="$list.back_time neq 0">
+                        <div class="step-time">{$list.back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+                <li class="red">
+                    <div class="step-name">退款完成</div>
+                    <if condition="$list.complete_back_time neq 0">
+                        <div class="step-time">{$list.complete_back_time|date="Y-m-d H:i:s",###}</div>
+                    </if>
+                </li>
+        </ul>
+    </div>
+</case>
+</switch>
+      
+    <div class="dishes-info-tiem">
+        <h1>收货人信息</h1>
+        <span>收货人：{$list.address_id|get_user_address}</span>
+        <span>联系电话：{$list.address_id|get_user_phone}</span>
+        <span>地址：{$list.address_id|get_address}</span>
+        <p><span>下单时间：{$list.xd_time|date="Y-m-d H:i:s",###}</span><span>就餐时间：{$list.send_time|date="Y-m-d H:i:s",###}</span></p>
+        <p>给商家留言：{$list.order_message}</p>
+
+    </div>
+    <div class="dishes-info-tiem order-line">
+        <h1>支付信息</h1>
+        <span>支付方式：
+            <switch name="list.pay_type" >
+               <case value="0">货到付款</case>
+               <case value="1">在线支付</case>
+            </switch>
+        </span>
+
+    </div>
+    <div class="menu-box order-menu-box">
+        <div class="menu-title"><strong>菜单信息</strong></div>
+        <div class="menu-header">
+            <span class="text-left">菜品</span>
+            <span>单价</span>
+            <span>数量</span>
+            <span>小计</span>
+        </div>
+        <div class="menu-List">
+            <volist name="canpin" id="vo">
+                        <div class="MenuGroupWrap ">
+                        <notempty name="vo.child">
+                            <div class="MenuGroupTitle">
+                                {$vo.canpin_id|get_canpin_name}<i class="slideClass"></i>
+                            </div>
+                            <div class="MenuItemWrap" style="display: none">
+                                <volist name="vo.child" id="ro">
+                                    <notempty name="ro">
+                                    <div class="MenuItems">
+                                        <span class="Menu-ItemName text-left">{$ro.cm_name}</span>
+                                        <span class="c-price">￥<b>{$ro.now_price}</b></span>
+                                        <span class="wrap-input"><a class="btn-minus" href="javascript:;">-</a><b class="amount"> {$ro.quantity}</b><a class="btn-add" href="javascript:;">+</a></span>
+                                        <span class="subtotal"><a href="javascript:;">￥<em>{$ro.total_money}</em></a></span>
+                                    </div>
+                                    </notempty>
+                                    </volist>
+                            </div>
+                            </notempty>
+                        </div>
+                        </volist>
+                                <if condition="$list.qiju_quantity neq 0">
+                    <div class="MenuGroupWrap ">
+                        <div class="MenuGroupTitle">
+                            器具租用<i class="slideClass"></i>
+                        </div>
+                        <div class="MenuItemWrap" style="display: none">
+                                <div class="MenuItems">
+                                    <span class="Menu-ItemName text-left">器具套装</span>
+                                    <span class="c-price">￥<b>{$list.yajin}</b></span>
+                                    <span class="wrap-input"><a class="btn-minus" href="javascript:;">-</a><b class="amount">{$list['qiju_quantity']}</b><a class="btn-add" href="javascript:;">+</a></span>
+                                    <span class="subtotal"><a href="javascript:;">￥<em>{$list.yajin}</em></a></span>
+                                </div>
+                                
+                        </div>
+                    </div></if>
+
+        </div>
+        <div class="other-line order-other-line">
+            <div class="other-info" style="padding-right: 1%;">
+                <p>菜品金额：<span>￥<b>{$list.total}</b></span></p>
+                <p>运费： <span>￥<b>{$list.ps_cost}</b></span></p>
+                <if condition="$list.qiju_quantity neq 0">
+                    <p>押金： <span>￥<b>{$list.yajin}</b></span></p>
+                </if>
+                <if condition="$list.canju_total neq 0">
+                    <p>餐盒费用： <span>￥<b>{$list.canju_total}</b></span></p>
+                </if>
+                <if condition="$list.yh_price neq 0">
+                    <p style="color: red;">商家优惠： <span>￥<b>{$list.yh_price}</b></span></p>
+                </if>
+            </div>
+        </div>
+        <div class="count">应付总额：￥{$list['total']+$list['ps_cost']+$list['yajin']+$list['canju_total']-$list['yh_price']}元</div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //菜单列表伸缩
+        $(".MenuGroupTitle").click(function () {
+            $(this).find("i").toggleClass("slideClass");
+            $(this).siblings(".MenuItemWrap").slideToggle();
+        })
+    })
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {   /*******右边浮动框*******/
+        var url = window.location.pathname;
+        $(".nav_list a").each(function () {
+            if ($(this).attr('href') == url) {
+                $(this).attr("class", "nav-active");
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        var timerapp = null
+        $('#showAPP,#appDiv').mouseover(function () {
+            clearTimeout(timerapp);
+            setTimeout(function () {
+                $('#appDiv').show();
+                $("#showAPP").addClass("n_hover");
+            }, 50);
+        }).mouseout(function () {
+            clearTimeout(timerapp);
+            timerapp = setTimeout(function () {
+                $('#appDiv').hide();
+                $("#showAPP").removeClass("n_hover");
+            }, 50);
+        })
+        /*配送范围*/
+        $(".scope").click(function () {
+            $("body").append("<div class='backdrop'></div>");
+            $("#scope-box").show();
+        })
+        $("#btnClosesite").click(function () {
+            $(".backdrop").remove();
+            $("#scope-box").hide();
+        })
+        $(".psclose").click(function () {
+            $(".backdrop").remove();
+            $("#scope-box").hide();
+        })
+    });
+</script>
+   
+    <script type="text/javascript">
+        $(function () {   /*******右边浮动框*******/
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 100) {
+                    $(".go-top").fadeIn(1000);
+                }
+                else {
+                    $(".go-top").fadeOut(1000);
+                }
+            });
+            $(".go-top").click(function () {
+                $('body,html').animate({ scrollTop: 0 }, 600);
+                return false;
+            });
+            $(".go-feedback").click(function () {
+                $("body").append("<div class='backdrop'></div>");
+                $(".feedback-box").show();
+            })
+            $(".tool-close").click(function () {
+                $(".backdrop").hide();
+                $(".feedback-box").hide();
+            })
+            $(".erweima").hover(function () {
+                $(".hidewm").fadeIn(300);
+            }, function () {
+                $(".hidewm").fadeOut(300);
+            })
+        });
+    </script>
+    <div class="scrollBtn">
+        <ul>
+            <li class="erweima"></li>
+            <li class="go-top" style="display: none"></li>
+        </ul>
+        <div class="hidewm" style="margin-top: -100px;">
+            <div>
+                <p>手机点餐请扫下方二维码</p>
+                <img width="100%" src="__IMG__/orderlist/waimai_icon_app.png" alt="手机点餐">
+            </div>
+            <div>
+                <p>微信点餐请扫下方二维码</p>
+                <img width="100%" src="__IMG__/orderlist/waimai_icon_weixin.jpg" alt="微信点餐">
+            </div>
+        </div>
+    </div>
+
+    <div class="notification sticky hide">
+        <p id="content"> </p>
+        <a class="close" href="javascript:"> <img src="/icon-close.png" /></a>
+    </div>
+    <script src='__STATIC__/socket.io.js'></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var uid='{:session("user_auth.push_msg_id")}';
+        // 连接服务端
+        var socket = io('http://'+document.domain+':2120');
+        // 连接后登录
+        socket.on('connect', function(){
+            socket.emit('login', uid);
+        });
+        // 后端推送来消息时
+        socket.on('new_msg', function(msg){
+            //$('#content').html('收到消息：'+msg);
+            msg=='success' && location.reload();
+        });
+    });
+</script>
+</block>

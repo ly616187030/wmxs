@@ -1,0 +1,152 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+	<style>
+		body{
+			padding:20px;
+		}
+	</style>
+</block>
+<block name="main">
+	<!-- 标签页导航 -->
+	<div class="tab-wrap" >
+		<div class="tab-content">
+			<!-- 表单 -->
+			<form id="form" action="{:U('edit')}" method="post" class="form-horizontal doc-modal-form">
+				<!-- 基础 -->
+				<input type="hidden" value="{$_city.qt_id}" name="qt_id"/>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">登陆页面logo</label>
+					<div class="col-sm-2">
+						<div  id="_upload_box" class="wu-example">
+							<!--用来存放文件信息-->
+							<div id="_upload_list1" class="uploader-list col-xs-12 img-box">
+								<notempty name="form">
+									<div id="_upload_preview1" class=" file-item thumbnail">
+										<i class="fa fa-times-circle remove-picture"></i>
+										<img src="" data-id="">
+									</div>
+									<else />
+									<div id="_upload_preview1" class="file-item thumbnail hidden">
+										<i class="fa fa-times-circle remove-picture"></i>
+										<img  style="width: 400px;height: 150px;">
+									</div>
+								</notempty>
+							</div>
+							<div class="btns col-xs-12">
+								<input type="hidden" id="_upload_input1" name="qt_login_pic" value="{$_city.qt_login_pic}">
+								<div id="_upload1">上传图片</div>
+								<button id="ctlBtn" class="btn btn-default hidden">开始上传</button>
+								<notempty name="_city.qt_login_pic">
+									<div  style="width:320px;height:240px;"><img src="{$_city.qt_login_pic|get_cover='path'}" height="240" width="320"/></div>
+								</notempty>
+							</div>
+						</div>
+					</div>
+					<label style="padding-top:7px;font-weight:normal;">（320×240像素的图片）</label>
+
+					<script type="text/javascript">
+						$(function(){
+							var uploader = WebUploader.create({
+								auto: true,                                                                    // 选完文件后，是否自动上传
+								duplicate: true,                                                               // 同一文件是否可以重复上传
+								swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+								server: '{:U("Admin/Upload/Upload", array("dir" => "image"))}',    // 文件接收服务端
+								pick: '#_upload1',                                   							// 选择文件的按钮
+								resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+								//fileNumLimit: 1,                                                             // 验证文件总数量, 超出则不允许加入队列
+								fileSingleSizeLimit:<php> echo C('UPLOAD_FILE_SIZE') ? : 2; </php>*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+							// 文件过滤
+							accept: {
+								title: 'Images',
+										extensions: 'gif,jpg,jpeg,bmp,png',
+										mimeTypes: 'image/*'
+							}
+						});
+
+						// 文件上传过程中创建进度条实时显示。
+						uploader.on( 'uploadProgress', function( file, percentage ) {
+							$( '#_upload_preview1').removeClass('hidden');
+							var $li = $( '#_upload_preview1'),
+									$percent = $li.find('.progress .progress-bar');
+							// 避免重复创建
+							if ( !$percent.length ) {
+								$percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+										.appendTo( $li )
+										.find('.progress-bar');
+							}
+							$percent.css( 'width', percentage * 100 + '%' );
+						});
+
+						// 完成上传完了，成功或者失败，先删除进度条。
+						uploader.on( 'uploadComplete', function( file ) {
+							$( '#_upload_preview1' ).find('.progress').remove();
+						});
+
+						// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+						uploader.on( 'uploadSuccess', function( file , response) {
+							$( '#_upload_preview1' ).addClass('upload-state-done');
+							if(eval('response').status == 0){
+								$.alertMessager(response.info);
+							} else {
+								$( '#_upload_input1' ).attr('value', response.id);
+								$( '#_upload_preview1 img').attr('src', response.url);
+								$( '#_upload_preview1 img').attr('data-id', response.id);
+							}
+						});
+
+						// 文件上传失败，显示上传出错。
+						uploader.on( 'uploadError', function( file ) {
+							$.alertMessager('error');
+							var $li = $( '_upload_preview1'),
+									$error = $li.find('div.error');
+							// 避免重复创建
+							if ( !$error.length ) {
+								$error = $('<div class="error"></div>').appendTo( $li );
+							}
+							$error.text('上传失败');
+						});
+
+						// 删除图片
+						$(document).on('click', '#_upload_list1 .remove-picture', function() {
+							$( '#_upload_input1' ).val('') //删除后覆盖原input的值为空
+							$( '#_upload_preview1').addClass('hidden');
+						});
+						});
+					</script>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" >客服电话</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" name="qt_kefu_tel" value="{$_city.qt_kefu_tel}">
+					</div>
+					<label style="padding-top:7px;font-weight:normal;">（请输入客服电话）</label>
+				</div>
+       		  <div class="form-group">
+				<label class="col-sm-2 control-label" style="padding-top:4px;">标记状态</label>
+					<div class="col-sm-1">
+						<select name="flag" class="form-control">
+							<if condition="$_city.flag == 0 ">
+								<option value="0">禁用</option> 
+								<option value="1">启用</option>
+								<else /> 
+								<option value="1">启用</option>
+								<option value="0">禁用</option>
+							</if>
+						</select>
+					</div>
+					<label style="padding-top:4px;font-weight:normal;">（0表示未启用，1表示启用）</label>
+			</div>
+				<!-- 按钮 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label" >&nbsp;</label>
+					<div class="col-sm-4">
+						<button class="btn submit-btn ajax-post btn-info" type="submit" target-form="form-horizontal">确定</button>
+						<button class="btn btn-return btn-info" onclick="javascript:history.back(-1);return false;">返回</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</block>
+
+

@@ -1,0 +1,112 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__WEIXIN__/css/websit.css"/>
+    <style>
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <form class="form-horizontal" action="{:U('MemberPublic/addMenu')}" method="post" id="form">
+        <ul class="title row">
+            <li class="title-current col-md-1"><a style="color:#fff;" href="{:U('MemberPublic/menu')}">自定义菜单管理</a></li>
+        </ul>
+        <div style="height:55px;line-height: 55px;">
+            <div class="col-sm-10" style="width:100%;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;">排序号 （数值越小越靠前）</label>
+                <div class="col-sm-2" >
+                    <input type="text"  class="form-control" name="sort" />
+                </div>
+            </div>
+            <div class="col-sm-10" style="width:100%;margin-top:1em;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;">一级菜单 （如果是一级菜单，选择“无”即可）</label>
+                <div class="col-sm-2" >
+                    <select class="form-control" name="pid">
+                        <option value="0">无</option>
+                        <volist name="info" id="vo">
+                            <option value="{$vo.id}">{$vo.title}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-10" style="width:100%;margin-top:1em;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;"><span style="color:red;">*</span> 菜单名 （可创建最多 3 个一级菜单，每个一级菜单下可创建最多 5 个二级菜单。编辑中的菜单不会马上被用户看到，请放心调试。）</label>
+                <div class="col-sm-2" >
+                    <input type="text"  class="form-control" name="title" />
+                </div>
+            </div>
+            <div class="col-sm-10" style="width:100%;margin-top:1em;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;">类型</label>
+                <div class="col-sm-2" >
+                    <select class="form-control type" name="type">
+                        <option value="click">点击推事件</option>
+                        <option value="view">跳转URL</option>
+                        <option value="scancode_push">扫码推事件</option>
+                        <option value="scancode_waitmsg">扫码带提示</option>
+                        <option value="pic_sysphoto">弹出系统拍照发图</option>
+                        <option value="pic_photo_or_album">弹出拍照或者相册发图</option>
+                        <option value="pic_weixin">弹出微信相册发图器</option>
+                        <option value="location_select">弹出地理位置选择器</option>
+                        <option value="none">无事件的一级菜单</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-10 keyword" style="width:100%;margin-top:1em;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;">关联关键词</label>
+                <div class="col-sm-2" >
+                    <input type="text"  class="form-control" name="keyword"/>
+                </div>
+            </div>
+            <div class="col-sm-10 url" style="width:100%;margin-top:1em;display:none;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:100%;height:30px;line-height: 30px;">关联URL</label>
+                <div class="col-sm-4" >
+                    <input type="text"  class="form-control" name="url" style="width:100%;"/>
+                </div>
+            </div>
+            <div class="cf" style="margin:2em 0em 0em 2em;">
+                <div class="fl">
+                    <button class="btn ajax-post btn-success" style="width:12em;height:3em;margin-top: 2em;" type="submit" id="submit" >确定</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</block>
+    <block name="script">
+    <script type="text/javascript">
+        $('#submit').click(function(){
+            var self = $('#form');
+            $.post(self.attr("action"), self.serialize(), function(data){
+                if(data.status){
+                    setTimeout(function(){
+                        $.alertMessager(data.info, 'danger');
+                        window.location.href=data.url;
+                    },1500);
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }else{
+                    $.alertMessager(data.info, 'danger');
+                    setTimeout(function(){
+                        $('#top-alert').slideUp();
+                    },1500);
+                }
+            }, "json");
+            return false;
+        })
+
+        $(function(){
+            $('.type').change(function(){
+
+                if($('.type').val()=='view'){
+                    $('.url').show();
+                    $('.keyword').hide();
+                }else{
+                    $('.url').hide();
+                    $('.keyword').show();
+                }
+            })
+        })
+    </script>
+    </block>
+</block>

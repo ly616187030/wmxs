@@ -1,0 +1,89 @@
+<extend name="Public/base" />
+<block name="style">
+	    <style type="text/css">
+        #result1 {
+            position: absolute;
+            background-color: white;
+            max-height: 80%;
+            z-index: 999;
+            margin-top: 100px;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+            border:solid 1px silver;
+        }
+    </style>
+</block>
+<block name="body">
+
+	<div style="z-index: 1;" id="mapContainer"></div>
+	
+	<volist name="order" id="vo">
+			<div id="result1"></div>
+	<div style="width: 85.1%; height: 50px; line-height: 50px; background-color: darkgray; z-index: 99; left: 14.8%; top: -50px; position: absolute; margin-top: 100px;">
+		<span style="margin-left: 2%;float: left;">{$vo.xd_time|date='Y-m-d H:i:s',###}</span>
+		<span style="float: left; margin-left: 2%;">取:{$vo.store_name}</span>
+		<div style="width:500px;text-overflow : ellipsis; margin-left: 2%; white-space : nowrap; overflow : hidden; float: left;">送:{$vo.detail_address}</div>
+		<span style="float: left;margin-left: 2%;">距离:<span class="juli"></span>米</span>
+		<span style="float: left;margin-left: 2%;">当前骑手:{$vo.person_name}</span>
+		<span style="float: left;margin-left: 2%;"><div onclick="window.location.reload();" class="btn" style="background-color: white; color: black; margin-left: 2%;">刷新</div></span>
+	</div>
+	</volist>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=880000cc83dab45ae997c7465af21569"></script>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css" />
+
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	
+    
+        //基本地图加载
+        
+        var o_lng = "{$vo.u_lng}";
+        var o_lat = "{$vo.u_lat}";
+        var s_lng = "{$vo.lng}";
+        var s_lat = "{$vo.lat}";
+        var p_lng = "{$vo.p_lng}";
+        var p_lat = "{$vo.p_lat}";
+    	    var map = new AMap.Map("mapContainer", {
+        resizeEnable: true,
+        center: [p_lng, p_lat],//地图中心点
+        zoom: 13 //地图显示的缩放级别
+    });
+    
+    var userPosition = new AMap.LngLat(o_lng,o_lat);
+    var peisongPosition = new AMap.LngLat(s_lng,s_lat);
+      		//获得用户与配送员距离(米)
+    var juli = userPosition.distance([s_lng,s_lat]);
+	$('.juli').html(Math.floor(juli));
+    //步行导航
+    AMap.service(["AMap.Walking"], function() {
+        var MWalk;
+        MWalk = new AMap.Walking({
+            map: map,
+            panel: "result1"
+        }); //构造路线导航类
+        //根据起终点坐标规划步行路线
+        MWalk.search([s_lng,s_lat], [o_lng,o_lat])
+       
+    });
+       var marker = new AMap.Marker({
+      position: map.getCenter(),
+      draggable: true,
+      cursor: 'move'
+    });
+
+    marker.setMap(map);
+    
+    // 设置点标记的动画效果，此处为弹跳效果
+    marker.setAnimation('AMAP_ANIMATION_BOUNCE');
+    
+})
+    </script>
+</block>
+<block name="script">
+	<script>
+		highlight_subnav("{:U('Dispatch/index')}");
+	</script>
+</block>

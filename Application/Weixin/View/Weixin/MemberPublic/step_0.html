@@ -1,0 +1,133 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__WEIXIN__/css/websit.css"/>
+    <style>
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="span9 page_message">
+        <section id="contents">
+            <ul style="margin:0px;padding:0px;">
+                <li style="width:8em;height:3em;line-height: 3em;background-color: #1fce02; list-style: none;text-align: center;margin:0px;padding:0px;font-size: 18px;"><a href="{:U('MemberPublic/index')}" style="color:#fff;text-decoration: none;">公众号管理</a></li>
+            </ul>
+            <div class="setting_step app_setting">
+                <a class="step step_cur_1" style="color:#fff;" href="{:U('MemberPublic/step_edit_0',array('id'=>$id))}">1.增加基本信息</a>
+                <a class="step " href="<empty name="id">###<else /> {:U('MemberPublic/step_edit_1',array('id'=>$id))}</empty>">2.配置公众平台</a>
+                <a class="step " href="<empty name="id">###<else /> {:U('MemberPublic/step_edit_2',array('id'=>$id))}</empty>">3.保存接口配置</a>
+            </div>
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form class="form-horizontal" method="post" action="{:U('')}" id="form" onsubmit="return false;">
+                    <!-- 基础文档模型 -->
+                    <div class="tab-pane in tab1" id="tab1">
+                        <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>公众号名称</label>
+                        <div class="col-sm-3" >
+                            <input type="text" value="{$info.public_name}" name="public_name" class="form-control"/>
+                        </div>
+                        <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>原始ID<span style="color:#ccc"> （请正确填写，保存后不能再修改，且无法接收到微信的信息） </span></label>
+                        <div class="col-sm-3" >
+                            <input type="text" value="{$info.public_id}" name="public_id" class="form-control"/>
+                        </div>
+                        <label class="col-sm-12" style="height:40px;line-height: 40px;"><span style="color:red;">*</span>微信号</label>
+                        <div class="col-sm-3" >
+                            <input type="text" value="{$info.wechat}" name="wechat" class="form-control"/>
+                        </div>
+                            <label class="col-sm-12" style="height:40px;line-height: 40px;"> 公众号类型</label>
+                            <div class="col-sm-12" style="height:40px;line-height: 40px;">
+                                <div class="col-sm-1">
+                                    <!--[if !IE]><!-->
+                                    <input type="radio" <eq name="info.type" value="0">checked="checked"</eq>  name="type" id="type_0" value="0" class="regular-radio">
+                                    <label for="type_0"></label>
+                                    普通订阅号
+                                    <!--<![endif]-->
+                                    <!--[if IE]>
+                                    <input type="radio" <eq name="info.type" value="0">checked</eq> value="0"  id="type_0" name="type" checked="checked" />
+                                    <label for="type_0"></label>普通订阅号
+                                    <![endif]-->
+                                </div>
+                                <div class="col-sm-2" style="width: 15em;">
+                                    <!--[if !IE]><!-->
+                                    <input type="radio" <eq name="info.type" value="1">checked="checked"</eq> name="type" id="type_1" value="1" class="regular-radio">
+                                    <label for="type_1"></label>
+                                    认证订阅号/普通服务号
+                                    <!--<![endif]-->
+                                    <!--[if IE]>
+                                    <input type="radio" <eq name="info.type" value="1">checked="checked"</eq> value="1" id="type_1" name="type" />
+                                    <label for="type_1"></label>认证订阅号/普通服务号
+                                    <![endif]-->
+                                </div>
+                                <div class="col-sm-1">
+                                    <!--[if !IE]><!-->
+                                    <input type="radio" <eq name="info.type" value="2">checked="checked"</eq> name="type" id="type_2" value="2" class="regular-radio">
+                                    <label for="type_2"></label>
+                                    认证服务号
+                                    <!--<![endif]-->
+                                    <!--[if IE]>
+                                    <input type="radio" <eq name="info.type" value="2">checked="checked"</eq> value="2" id="type_2" name="type" />
+                                    <label for="type_2"></label>认证服务号
+                                    <![endif]-->
+                                </div>
+                            </div>
+                        <div class="col-sm-12">
+                            <input type="hidden" name="id" value="{$id|intval}">
+                            <button  type="submit" id="submit" class="btn submit-btn ajax-post btn-success" target-form="form-horizontal" style="width:12em;height:3em;margin-top: 1em;">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--帮助消息-->
+            <div class="col-sm-12">
+                <h3>帮助消息</h3>
+                <p>以上消息可以从公众平台里找到，如下图</p>
+                <p><img src="__WEIXIN__/images/help01.png" ></p>
+            </div>
+        </section>
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '
+        <link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+        ';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css?v={:SITE_VERSION}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v={:SITE_VERSION}" charset="UTF-8"></script>
+    <script type="text/javascript">
+//            $('#submit').click(function(){
+//                var self = $('#form');
+//                $.post(self.attr("action"), self.serialize(), function(data){
+//                    if(data.status){
+//                        $('#alert-danger').slideDown().text(data.info);
+//                        window.location.href=data.url;
+//                        setTimeout(function(){
+//                            $('#alert-danger').slideUp();
+//                        },1500);
+//                    }else{
+//                        $('#alert-danger').slideDown().text(data.info);
+//                        setTimeout(function(){
+//                            $('#alert-danger').slideUp();
+//                        },1500);
+//                    }
+//                }, "json");
+//            });
+
+
+        $(function(){
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language:"zh-CN",
+                minView:0,
+                autoclose:true
+            });
+            $('.date').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            showTab();
+        });
+    </script>
+</block>

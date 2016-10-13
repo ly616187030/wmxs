@@ -1,0 +1,96 @@
+<extend name="Base/common_zhgIndex" />
+
+<block name="style">
+
+    <style>
+
+        .AccMenu1{ margin-top: 15px; float: left; line-height: 40px;}
+
+        .AccMenu2{margin-top: 15px; float: left; margin-left: 100px; line-height: 40px;}
+
+    </style>
+
+</block>
+
+<block name="body_zhgIndex">
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div style="min-height: 653px;" id="content" class="clearfix">
+
+        <div class="main center-main">
+
+            <!-- 个人中心菜单 -->
+
+            <include file="Public/user_center_left_zhg"/>
+
+            <!-- /个人中心菜单 -->
+
+            <!--个人中心右侧-->
+
+            <section class="usercenter-detail" id="usercenter-address" style="margin-left: 5%;margin-top: -1.5%;">
+
+                <div class="summary">
+
+                    <h3 class="summary-header">账户设置</h3>
+
+                </div>
+
+                <div class="content">
+
+                    <div id="combottom">
+
+                        <div class="AccMenu1">
+
+                            <ul>
+
+                                <li>更改账户设置</li>
+
+                                <li>登陆密码</li>
+
+                                <li>手机绑定</li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="AccMenu2">
+
+                            <ul>
+
+                                <li><a href="{:U('Edit')}">修改</a></li>
+
+                                <li><a href="{:U('Repass')}">修改</a></li>
+
+                                <li><a href="{:U('Phonebound')}">修改</a></li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!--//个人中心右侧-->
+
+
+
+        </div>
+
+
+
+    </div>
+
+</block>
+

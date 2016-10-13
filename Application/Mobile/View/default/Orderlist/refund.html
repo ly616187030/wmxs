@@ -1,0 +1,139 @@
+<extend name="Base/orderlist"/>
+<block name="title"><h3>退款申请</h3></block>
+<block name="style">
+    <style>
+        div.content{
+            padding: 10px 10px 0px 10px ;
+        }
+       .content h3{
+            padding-left:10px ;
+        }
+        .content .money{
+            font-size: 1.17em;
+            font-weight: bold;
+            color: #aaa;
+            border: 1px solid #ddd;
+            padding-left: 10px;
+        }
+        .pad-b{
+            -webkit-padding-before: 0.6em;
+        }
+        .pad-a{
+            -webkit-padding-after: 0.6em;
+        }
+        .tip{
+            font-size: 1.17em;
+            font-weight: bold;
+            color: #aaa;
+            padding-left: 10px;
+        }
+        .text-r{
+            text-align: right;
+        }
+        .reason{
+            font-size: 1.17em;
+            border: 1px solid #ddd;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 5px;
+        }
+        input[type=checkbox] {
+            visibility: hidden;
+        }
+        .checkboxFive{
+            width: 25px;
+            position: relative;
+        }
+        .checkboxFive label{
+            cursor: pointer;
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            top: 0;
+            right: 0;
+            background: #eee;
+            border:1px solid #ddd;
+        }
+        .checkboxFive label:after {
+
+        }
+        .checkboxFive input[type=checkbox]:checked + label:after {
+            content: '';
+            position: absolute;
+            width: 9px;
+            height: 5px;
+            background: transparent;
+            top: 6px;
+            left: 7px;
+            border: 3px solid orangered;
+            border-top: none;
+            border-right: none;
+
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+    </style>
+</block>
+<block name="body">
+    <form method="post" action="{:U('cancelOrderReason')}">
+ <div class="content">
+     <h3 class="pad-a">退款内容</h3>
+     <div class="money pad-a pad-b">
+         现金：<span style="color: orangered">￥<?php echo $total?></span>
+     </div>
+     <h3 class="pad-b">退款原因</h3>
+     <p class="tip">为了帮我们做的更好，请至少选择一项</p>
+
+
+
+     <div id="tips">
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">买错了，买多了</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput1" value="买错了，买多了"><label for="checkboxFiveInput1"></label></div>
+         </div>
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">地址、电话填写有误</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput2" value="地址、电话填写有误"><label for="checkboxFiveInput2"></label></div>
+         </div>
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">计划有变、不想要了</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput3" value="计划有变、不想要了"><label for="checkboxFiveInput3"></label></div>
+         </div>
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">商品质量有问题</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput4" value="商品质量有问题"><label for="checkboxFiveInput4"></label></div>
+         </div>
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">送的太慢，等太久了</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput5" value="送的太慢，等太久了"><label for="checkboxFiveInput5"></label></div>
+         </div>
+         <div class="ub reason pad-a pad-b">
+             <div class="ub-f1">没有给承诺的优惠</div>
+             <div class="ub-f1 text-r checkboxFive"><input type="checkbox" name="reason[]" id="checkboxFiveInput6" value="没有给承诺的优惠"><label for="checkboxFiveInput6"></label></div>
+         </div>
+         <input type="hidden" value="{$ordid}" name="orderid" />
+         <input type="hidden" value="{$status}" name="status" />
+     </div>
+     <div style="margin-top: 5px">
+         <textarea placeholder="请详细描述您遇到的问题，以便有助于我们更快处理您的退款" name="reason_text" style="width: 100%; border: 1px solid #ddd; height: 5em"></textarea>
+     </div>
+ </div>
+    <button type="button" id="but" style="width: 100%; height: 2.5em; position: absolute; bottom: 0; text-align: center; background-color: orangered; margin-top: 20px; line-height: 2.5em; font-size: 16px; color: white; ">申请退款</button>
+    </form>
+    <script>
+        $(function(){
+            $('#but').click(function(){
+                var forms=$('form').serialize();
+                $.get('{:U("cancelOrderReason")}',forms).success(function(data){
+                    if(data){
+                        location.href='{:U(rderlist/detail","",false)}'+'/order_id/'+data;
+                    }
+                });
+            })
+        })
+    </script>
+
+</block>

@@ -1,0 +1,218 @@
+/*个人中心*/
+
+.main {
+    width:1230px;
+    margin: 20px auto 0;
+    margin-top: 10px;
+    position: relative;
+}
+.order-menu {
+    width:18%;
+    display:inline-block;
+    min-height:350px
+}
+.order-menu .order-menu-pos {
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:18%;
+    background:#fafafa;
+    min-height:330px
+}
+.order-menu .splitter {
+    margin:0 20px;
+    border-bottom:1px solid #e5e5e5
+}
+.order-menu .order-menu-header {
+    height:60px;
+    line-height:60px;
+    font-size:1.2em;
+    padding:0 20px;
+    position:relative
+}
+.order-menu .order-menu-header a {
+    color:#333
+}
+.order-menu .selected:before {
+    content:' ';
+    width:2px;
+    height:100%;
+    display:block;
+    position:absolute;
+    left:0;
+    background:#ff2d4b
+}
+.order-menu .order-menu-body {
+    padding:10px 0 50px
+}
+.order-menu .order-menu-body a {
+    color:#333;
+    font-size:1.0em;
+    width:75%;
+    display:inline-block
+}
+.order-menu .order-menu-body .menu-icon {
+    display:inline-block;
+    width:24px;
+    height:20px;
+    background-repeat:no-repeat;
+    background-position:left center;
+    vertical-align:text-bottom
+}
+.order-menu .order-menu-body .menu-item {
+    height:35px;
+    line-height:35px;
+    padding:0 20px;
+    position:relative
+}
+.order-menu .order-menu-body .menu-item:hover {
+    background-color:#f0f0f0
+}
+.order-menu .order-menu-body .order-icon {
+    background-image:url("../images/waimai/order_4da8746.png");
+}
+.order-menu .order-menu-body .address-icon {
+    background-image:url("../images/waimai/address_f4107f9.png");
+}
+.order-menu .order-menu-body .favorite-icon {
+    background-image:url("../images/waimai/favorite_c335607.png");
+}
+.order-menu .order-menu-body .coupon-icon {
+    background-image:url("../images/waimai/coupon_14d20c5.png");
+}
+.order-menu .order-menu-body .refund-icon {
+    background-image:url("../images/waimai/refund_fbd537d.png");
+}
+.order-menu .order-menu-body .account-icon {
+    background-image:url("../images/waimai/account_9272e08.png");
+}
+.usercenter-detail {
+    display:inline-block;
+    vertical-align:top;
+    width:80%;
+    min-height:296px;
+    float:right
+}
+.usercenter-detail .summary {
+    border-bottom:1px solid #e4e4e4;
+    height:60px;
+    line-height:60px
+}
+.usercenter-detail .summary .summary-header {
+    display:inline-block;
+    font-size:1.2em;
+    font-weight:400
+}
+.usercenter-detail .content {
+    margin-top:20px
+}
+.usercenter-detail .content .addr-list {
+    overflow:hidden;
+    zoom:1
+}
+.usercenter-detail .content .addr-list .addr-add {
+    text-align:center;
+    cursor:pointer
+}
+.usercenter-detail .content .addr-list .addr-add:hover a {
+    color:#ff2d4b
+}
+.usercenter-detail .content .addr-list .addr-add a {
+    color:#333;
+    display:inline-block;
+    margin-top:45px;
+    text-decoration:none
+}
+
+.addr-item {
+    float:left;
+    width:270px;
+    height:130px;
+    margin:0 15px 20px 0;
+    padding:0 15px 15px;
+    border:1px solid #e4e4e4;
+    font-size:1.2em;
+    font-size:14px;
+    color:#333;
+    font-weight:400;
+    text-decoration:none;
+    background:#fff;
+    position:relative;
+    overflow:hidden
+}
+.addr-item .addr-title {
+
+
+    padding:10px 0 7px 0;
+    border-bottom:1px solid #e4e4e4;
+    overflow:hidden;
+    zoom:1
+}
+.addr-item .addr-title .addr-user {
+    float:left;
+    width:99px;
+    height:26px;
+    overflow:hidden
+}
+.addr-item .addr-title .addr-user .name {
+    display:inline-block;
+    max-width:130px;
+    height:26px;
+    overflow:hidden
+}
+.addr-item .addr-title .addr-user .sex {
+    display:inline-block;
+    max-width:30px;
+    height:26px;
+    overflow:hidden
+}
+.addr-item .addr-title .addr-action {
+    float:right;
+    display:none
+}
+.addr-item .addr-title .addr-action a {
+    padding:2px 3px;
+    text-decoration:none;
+    color:#ff2d4b
+}
+.addr-item .addr-title .addr-action a:hover {
+    color:#ff2d4b
+}
+.addr-item .addr-con {
+    padding-top:10px
+}
+.addr-item .select-ico {
+    position:absolute;
+    right:0;
+    bottom:0;
+    display:inline-block;
+    margin-right:0;
+    width:24px;
+    height:24px;
+    line-height:24px;
+    vertical-align:text-bottom;
+    *display:inline;
+    zoom:1;
+    visibility:hidden;
+    background-repeat: no-repeat;
+}
+.addr-item:hover {
+    -webkit-transition:all .2s ease-in 0s;
+    -moz-transition:all .2s ease-in 0s;
+    -o-transition:all .2s ease-in 0s;
+    transition:all .2s ease-in 0s;
+    border-color:#ff2d4b
+}
+.addr-item:hover .addr-action {
+    display:inline-block
+}
+.addr-item.select {
+    border-color:#ff2d4b
+}
+.addr-item.select .select-ico {
+    visibility:visible
+}
+.select-ico {
+    background-image: url(../images/waimai/common_z_e58f986.png);
+    background-position: -60px -207px;
+}

@@ -1,0 +1,58 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+	    <style type="text/css">
+        #result1 {
+            position: absolute;
+            background-color: white;
+            max-height: 80%;
+            z-index: 999;
+            margin-top: 100px;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+            border:solid 1px silver;
+        }
+    </style>
+</block>
+<block name="main">
+
+	<div style="display: none;">
+	<volist name="or" id="vo">
+	</volist>
+	</div>
+	<div style="z-index: 1;" id="mapContainer"></div>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=880000cc83dab45ae997c7465af21569"></script>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css" />
+
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	
+    
+    var person_lng = "{$vo.lng}";
+    var person_lat = "{$vo.lat}";
+    	var map = new AMap.Map("mapContainer", {
+        resizeEnable: true,
+        center: [person_lng, person_lat],//地图中心点
+        zoom: 13 //地图显示的缩放级别
+    });
+   var marker = new AMap.Marker({
+      position: map.getCenter(),
+      draggable: true,
+      cursor: 'move'
+    });
+
+    marker.setMap(map);
+    
+    // 设置点标记的动画效果，此处为弹跳效果
+    marker.setAnimation('AMAP_ANIMATION_BOUNCE');
+    
+})
+    </script>
+</block>
+<block name="script">
+	<script>
+		highlight_subnav("{:U('Dispatch/index')}");
+	</script>
+</block>

@@ -1,0 +1,156 @@
+[ 2016-04-07T18:11:30+08:00 ] 127.0.0.1 /index.php?s=/receiveorder/order/neworder.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0023s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0025s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.024328s ]
+INFO: [ app_init ] --END-- [ RunTime:0.024395s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000503s ]
+SQL: SELECT `name`,`value`,`type` FROM `wm_admin_config` WHERE `status` = 1  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0004s ]
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+SQL: SHOW COLUMNS FROM `wm_admin_theme` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wm_admin_theme` WHERE `current` = 1 ORDER BY id asc LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_hook` [ RunTime:0.0024s ]
+SQL: SELECT `addons` FROM `wm_admin_hook` WHERE `name` = 'FormBuilderExtend' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_addon` [ RunTime:0.0025s ]
+SQL: SELECT `config` FROM `wm_admin_addon` WHERE `name` = '' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.013889s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.014481s ]
+NOTIC: [2048] Declaration of Receiveorder\Controller\OrderController::setStatus() should be compatible with Admin\Controller\AdminController::setStatus($model = Admin\Controller\CONTROLLER_NAME, $script = false) E:\xampp\htdocs\zhaohuoguo\Application\Receiveorder\Controller\OrderController.class.php 第 24 行.
+INFO: [ action_begin ] --START--
+SQL: SELECT `name`,`addons` FROM `wm_admin_hook`  [ RunTime:0.0003s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('后台首页小工具')  [ RunTime:0.0002s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('ReturnTop')  [ RunTime:0.0002s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('BaiduShare')  [ RunTime:0.0001s ]
+SQL: SELECT `id`,`name` FROM `wm_admin_addon` WHERE `status` = 1 AND `name` IN ('SocialComment')  [ RunTime:0.0001s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.002582s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.002623s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0027s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Receiveorder' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0037s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_order` [ RunTime:0.0041s ]
+SQL: SHOW COLUMNS FROM `wm_order_detail` [ RunTime:0.0032s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0032s ]
+SQL: SHOW COLUMNS FROM `wm_dangkou` [ RunTime:0.0033s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0033s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `store_id` FROM `wm_store` WHERE ( uid = 51 )  [ RunTime:0.0002s ]
+SQL: SELECT a.*,u.username,u.gender,u.phone,u.detail_address,s.store_name,s.tel,s.is_qiantai_print,s.is_kitchen_print,sn.name as seat_name FROM wm_order a LEFT JOIN wm_user_address AS u ON a.address_id = u.address_id LEFT JOIN wm_store AS s ON a.store_id = s.store_id LEFT JOIN wm_seat_num AS sn ON a.seat_id = sn.id  WHERE a.status IN (2,3) AND a.store_id IN ('1','17') AND a.from_operation = 4 ORDER BY a.xd_time desc  [ RunTime:0.0519s ]
+SQL: SELECT a.*,c.cm_name,c.dangkou_id FROM wm_order_detail a LEFT JOIN wm_canming AS c ON a.cm_id = c.cm_id  WHERE ( order_id = 22 )  [ RunTime:0.0026s ]
+SQL: SELECT a.*,p.printer_sn FROM wm_dangkou a LEFT JOIN wm_printer AS p ON a.dayinji_id = p.id  WHERE ( a.uid = 51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000521s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000564s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\a7e257171eb67dcbfbaaf6f91ceabf73.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\a7e257171eb67dcbfbaaf6f91ceabf73.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\a7e257171eb67dcbfbaaf6f91ceabf73.php 第 10 行.
+NOTIC: [8] Undefined index: source_text E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\a7e257171eb67dcbfbaaf6f91ceabf73.php 第 104 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.021485s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.021531s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000174s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000200s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000413s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000447s ]
+
+[ 2016-04-07T18:11:32+08:00 ] 127.0.0.1 /index.php?s=/receiveorder/order/refuse.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0032s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0001s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.024669s ]
+INFO: [ app_init ] --END-- [ RunTime:0.024730s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000507s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001603s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002169s ]
+NOTIC: [2048] Declaration of Receiveorder\Controller\OrderController::setStatus() should be compatible with Admin\Controller\AdminController::setStatus($model = Admin\Controller\CONTROLLER_NAME, $script = false) E:\xampp\htdocs\zhaohuoguo\Application\Receiveorder\Controller\OrderController.class.php 第 24 行.
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000557s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000590s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0029s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0034s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Receiveorder' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0028s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_order` [ RunTime:0.0039s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0029s ]
+SQL: SELECT `store_id` FROM `wm_store` WHERE ( uid = 51 )  [ RunTime:0.0002s ]
+SQL: SELECT * FROM wm_order a LEFT JOIN wm_user_address AS B ON a.address_id = B.address_id  WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') ORDER BY order_id desc  [ RunTime:0.0004s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wm_order` WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') LIMIT 1   [ RunTime:0.0004s ]
+SQL: SELECT SUM(total) AS tp_Sum FROM `wm_order` WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT SUM(yh_price) AS tp_Sum FROM `wm_order` WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT SUM(ps_cost) AS tp_Sum FROM `wm_order` WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT SUM(canju_total) AS tp_Sum FROM `wm_order` WHERE `xd_time` >= 1459958400 AND `status` >= 4 AND `store_id` IN ('1','17') LIMIT 1   [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000641s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000682s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 10 行.
+NOTIC: [8] Undefined variable: stime E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 60 行.
+NOTIC: [8] Undefined variable: etime E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 63 行.
+NOTIC: [8] Undefined variable: order_sn E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 66 行.
+NOTIC: [8] Undefined variable: status E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 72 行.
+NOTIC: [8] Undefined variable: status E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 73 行.
+NOTIC: [8] Undefined variable: status E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 74 行.
+NOTIC: [8] Undefined variable: status E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 75 行.
+NOTIC: [8] Undefined variable: pay_type E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 80 行.
+NOTIC: [8] Undefined variable: pay_type E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 81 行.
+NOTIC: [8] Undefined variable: pay_type E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 82 行.
+NOTIC: [8] Undefined variable: send_time E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 87 行.
+NOTIC: [8] Undefined variable: send_time E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 88 行.
+NOTIC: [8] Undefined variable: send_time E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Receiveorder\b0631795cc147856e368a649d81fa445.php 第 89 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.035821s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.035859s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000310s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000339s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000557s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000604s ]
+

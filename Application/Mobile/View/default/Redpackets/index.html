@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>找火锅发红包啦，快去抢抢看~</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+
+    <link rel="stylesheet" href="__CSS__/global.e0fe15d2.css">
+    <script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
+    <link href="__CSS__/red-enve-schoolopen.89e7bb11.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            background: #ff3f26;
+            font-family: "Microsoft Yahei", "微软雅黑", Arial, Tahoma;
+        }
+    </style>
+</head>
+<body class="i">
+
+<script>
+    (function(){
+        function o(){document.documentElement.style.fontSize=(document.documentElement.clientWidth>414?414:document.documentElement.clientWidth)/12+"px"}
+        var e=null;
+        window.addEventListener("resize",function(){clearTimeout(e),e=setTimeout(o,300)},!1),o()
+    })(window);
+</script>
+<div style="height:0px;overflow:hidden;">
+    <img src="__IMG__/weixinshare1.0c707072.png" />
+</div>
+
+<div class="wrapper">
+    <div class="t-banner"><img src="__IMG__/red-enve-bg.baf31239.png" alt=""/></div>
+    <section class="content1" >
+        <div class="opr">
+            <empty name="list">
+                <div style="background-image: url('__IMG__/img/ka.png'); background-size: 240px 100px; margin-left: 8%; background-repeat: no-repeat; width: 240px; height: 100px;">
+                    <div style="margin-left: 25%; color: red; font-size: 1.3em;z-index: 99; width: 175px; height: 90px; text-align: center;line-height: 90px;">已抢光</div>
+                </div>
+                <else/>
+                <div id="qiang_over" style="display:none;background-image: url('__IMG__/img/ka.png'); background-size: 240px 100px; margin-left: 8%; background-repeat: no-repeat; width: 240px; height: 100px;">
+                    <div style="margin-left: 25%; color: red; font-size: 1.3em;z-index: 99; width: 175px; height: 90px; text-align: center;line-height: 90px;">已抢光</div>
+                </div>
+            </empty>
+
+            <notempty name="list">
+                <div id="show_price" style="display:none;background-image: url('__IMG__/img/ka.png'); background-size: 240px 100px; margin-left: 8%; background-repeat: no-repeat; width: 240px; height: 100px;">
+                    <div  style="margin-left: 25%; color: red; font-size: 1.3em; font-weight:bold;z-index: 99; width: 175px; height: 90px; text-align: center;line-height: 90px;"><span style="font-size: 0.8em;">￥</span><span id="price"></span></div>
+                    <div id="shuoming" style="margin-left: 25%; margin-top: -20px; font-size: 0.3em; width: 175px; text-align: center; color: red;"></div>
+                    <a href="{:U('index/index')}"><div style="width: 240px; height: 40px; background-color: yellow; margin-top: 30px; font-size: 0.7em; text-align: center;line-height: 40px;font-weight: bold; color: red;border-radius: 0.5em; ">马上去订餐</div></a>
+                </div>
+                <div id="show_error" style="display:none;background-image: url('__IMG__/img/ka.png'); background-size: 240px 100px; margin-left: 8%; background-repeat: no-repeat; width: 240px; height: 100px;">
+                    <div  style="margin-left: 25%; color: red; font-size: 1.3em; font-weight:bold;z-index: 99; width: 175px; height: 90px; text-align: center;line-height: 90px;"><span style="font-size: 0.8em;">￥</span><span id="price1"></span></div>
+                    <div id="shuoming1" style="margin-left: 25%; margin-top: -20px; font-size: 0.3em; width: 175px; text-align: center; color: red;"></div>
+                    <a href="{:U('index/index')}"><div style="width: 240px; height: 40px; background-color: yellow; margin-top: 30px; font-size: 0.7em; text-align: center;line-height: 40px;font-weight: bold; color: red;border-radius: 0.5em; ">马上去订餐</div></a>
+                </div>
+                <div id="show_error1" style="display:none;background-image: url('__IMG__/img/ka.png'); background-size: 240px 100px; margin-left: 8%; background-repeat: no-repeat; width: 240px; height: 100px;">
+                    <div id="guang" style="margin-left: 25%; color: red; font-size: 0.9em; font-weight:bold;z-index: 99; width: 175px; height: 90px; text-align: center;line-height: 90px;"></div>
+                </div>
+
+                <form action="{:U()}" method="post">
+                    <input id="phone-input" type="text" name="user_phone" class="borderradius-3" placeholder="请输入您的手机号" />
+                    <div id="capture-tip" class="capture-tip"></div>
+                    <input id="capture-btn" class="combtn borderradius-3" type="submit" value="马上领取" />
+                </form>
+            </notempty>
+
+        </div>
+    </section>
+    <script>
+
+        $(function(){
+            var phone=localStorage.getItem('phone');
+            if(phone){
+                $('#phone-input').val(phone);
+            }
+        });
+        $('form').submit(function(){
+
+            var self = $(this);
+            var phone = $('#phone-input').val();
+            var rex = /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/;
+            if(phone == ""){
+                $('.capture-tip').show().text("请输入手机号码");
+                return false;
+            }
+            if(!rex.test(phone)){
+                $('.capture-tip').show().text("请输入正确的手机号码");
+                return false;
+            }
+
+            $.post(self.attr("action"), self.serialize(), function(data){
+                localStorage.setItem('phone',phone);
+                $('.capture-tip').hide();
+                if(data.status ==1){
+                    $('#show_price').show();
+                    $('#price').text(data.price);
+                    $('#shuoming').text(data.desc);
+                    $('#phone-input,#capture-btn').hide();
+                }else if(data.status==0){
+
+                    $('#show_error').show();
+                    $('#price1').text(data.price);
+                    $('#shuoming1').text(data.desc);
+                    $('#phone-input,#capture-btn').hide();
+                }else if(data.status==2){
+
+                    $('#qiang_over').show();
+                        $('#phone-input,#capture-btn').hide();
+                    }
+
+            }, "json");
+
+            return false;
+
+        });
+
+
+
+
+
+    </script>
+    <section class="rule" style="margin-top: 2em;">
+        <h4 class="sec-sub-title">活动规则</h4>
+        <ul>
+            <li>1.红包新老用户同享</li>
+            <li>2.红包可与其他优惠叠加使用，首单支付红包不可叠加</li>
+            <li>3.红包仅限在找火锅客户端下单且选择在线支付时使用</li>
+            <li>4.使用红包时下单手机号码必须为抢红包时手机号码</li>
+            <li>5.本活动最终解释权找火锅所有</li>
+
+        </ul>
+    </section>
+
+
+</div>
+
+
+
+</body>
+</html>

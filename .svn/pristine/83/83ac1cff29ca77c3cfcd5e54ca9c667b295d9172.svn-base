@@ -1,0 +1,157 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="body_zhgIndex">
+<style type="text/css">
+/*CSS jogger style pagination*/
+
+DIV.jogger {
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; MARGIN: 7px; PADDING-TOP: 2px;
+    text-align: center;
+}
+DIV.jogger A {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e; TEXT-DECORATION: none
+}
+}
+DIV.jogger A:hover {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger A:active {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger SPAN.current {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e
+}
+</style>
+
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main center-main">
+   <include file="Public/user_center_left_zhg"/>
+    <section class="usercenter-detail" id="usercenter-address">
+    <div class="uc-content">
+    <div class="content-box" id="MyFavoriteDiv" style="display: block;">
+    <div class="curmenu">我的收藏</div>
+    <table width="1043" border="0" class="collect-box">
+        <tbody>
+            <tr class="col-name">
+                <td>门店名称</td>
+                <td>人均消费</td>
+                <td>起送价格</td>
+                <td>操作</td>
+            </tr>
+            <volist name='shoucang' id='vo'>
+                 <tr class="col-item">
+                <td class="dishes-name" valign="middle">
+                    <div>{$vo.store_name}</div>
+                    <div class="pop">
+                    <between name="vo.renqi" value="0,0.09">
+                        人气：暂无；    
+                    </between>
+                    <between name="vo.renqi" value="0.1,0.19">
+                        人气：
+                            <a href="javascript:"></a>    
+                    </between>
+                    <between name="vo.renqi" value="0.2,0.29">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>     
+                    </between>
+                    <between name="vo.renqi" value="0.3,0.39">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>     
+                    </between> 
+                    <between name="vo.renqi" value="0.4,0.49">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>     
+                    </between> 
+                    <between name="vo.renqi" value="0.5,0.59">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>     
+                    </between> 
+                    <between name="vo.renqi" value="0.6,0.69">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>     
+                    </between> 
+                    <between name="vo.renqi" value="0.7,0.79">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>       
+                    </between> 
+                    <between name="vo.renqi" value="0.8,0.89">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                    </between> 
+                    <between name="vo.renqi" value="0.9,1.0">
+                        人气：
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                            <a href="javascript:"></a>
+                    </between> 
+                    </div>
+                </td>
+                <td class="order-name" valign="middle">￥{$vo['qisong_price']/2}</td>
+                <td class="price" valign="middle">￥{$vo.qisong_price}</td>
+                <td class="operate" valign="middle" width="150">
+                    <div>
+                        <a target="_blank" href="{:U('Stores/index?store_id='.$vo['store_id'].'&store_name='.$vo['store_name'])}">点菜</a>
+                        
+                    </div>
+                </td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</div>
+<div class="jogger">
+{$page}
+</div>
+</div>
+<script type="text/javascript">
+     
+</script>
+</section>
+</div>
+
+</block>

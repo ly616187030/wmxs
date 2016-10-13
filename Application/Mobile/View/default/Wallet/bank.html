@@ -1,0 +1,74 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    可支持银行卡
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+        .yyy{
+            color: red;
+            border-bottom: 1px solid red;
+        }
+    </style>
+        <!-----余额开始--------->
+          <div class="bank">
+              <div class="bank_left yyy">信用卡</div>
+              <div class="bank_right">储蓄卡</div>
+          </div>
+          <div class="bank_bottom-1">
+               <div class="bank_bottom-1-content">
+                    <ul class="xi">
+                        <li><img src="__IMG__/tub/1.jpg"><p class="yinhang">农业银行</p></li>
+                        <li><img src="__IMG__/tub/2.jpg"><p class="yinhang">中国银行</p></li>
+                        <li><img src="__IMG__/tub/3.jpg"><p class="yinhang">广州市农村信用合作社</p></li>
+                        <li><img src="__IMG__/tub/4.jpg"><p class="yinhang">中国人民银行</p></li>
+                        <li><img src="__IMG__/tub/5.jpg"><p class="yinhang">中信银行</p></li>
+                        <li><img src="__IMG__/tub/4.jpg"><p class="yinhang">农业银行</p></li>
+                        <li><img src="__IMG__/tub/2.jpg"><p class="yinhang">农业银行</p></li>
+                        <li><img src="__IMG__/tub/1.jpg"><p class="yinhang">农业银行</p></li>
+                        <li><img src="__IMG__/tub/5.jpg"><p class="yinhang">农业银行</p></li>
+                    </ul>
+                   <ul class="li" style="display: none;">
+                       <li><img src="__IMG__/tub/5.jpg"><p class="yinhang">中国银行</p></li>
+                       <li><img src="__IMG__/tub/4.jpg"><p class="yinhang">中国人民银行</p></li>
+                       <li><img src="__IMG__/tub/3.jpg"><p class="yinhang">广州市农村信用合作社</p></li>
+                       <li><img src="__IMG__/tub/2.jpg"><p class="yinhang">中国人民银行</p></li>
+                       <li><img src="__IMG__/tub/1.jpg"><p class="yinhang">中信银行</p></li>
+                       <li><img src="__IMG__/tub/5.jpg"><p class="yinhang">农业银行</p></li>
+                       <li><img src="__IMG__/tub/4.jpg"><p class="yinhang">农业银行</p></li>
+                       <li><img src="__IMG__/tub/2.jpg"><p class="yinhang">农业银行</p></li>
+                       <li><img src="__IMG__/tub/3.jpg"><p class="yinhang">农业银行</p></li>
+                   </ul>
+               </div>
+          </div>
+        <!-----余额开始--------->
+        <script type="text/javascript">
+              $(function(){
+                  $('.bank_right').click(function(){
+                      $('.bank_right').addClass('yyy');
+                      $('.bank_left').removeClass('yyy');
+                      $('.xi').hide();
+                      $('.li').show();
+                  });
+                  $('.bank_left').click(function(){
+                      $('.bank_right').removeClass('yyy');
+                      $('.bank_left').addClass('yyy');
+                      $('.xi').show();
+                      $('.li').hide();
+                  });
+              })
+        </script>
+</block>
+
+
+
+
+
+<!--$(".bank_right").animate({left:'250px'}).fadeOut("fast");//向右滑出动画*/-->
+<!--$(".bank_right").animate({right:'250px'}).fadeOut("fast");-->

@@ -1,0 +1,70 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    我的优惠劵
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+    <style type="text/css">
+
+    </style>
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+        .sss{
+             color: red;
+              border-bottom: 1px solid red;
+        }
+    </style>
+        <!-----余额开始--------->
+        <div class="bank" style="background-color: #cccccc">
+            <div class="bank_left sss">可以优惠券</div>
+            <div class="bank_right">不可用优惠券</div>
+        </div>
+        <div class="coupons">
+                <ul class="xi"> </ul>
+            <ul class="li" style="display: none;"></ul>
+                          <div id="" class="123"></div><div data-id="" class="1234"></div>
+                    <script type="text/javascript">
+                        $(function(){
+                            var detailed = $('.123').attr('id');
+                            if(detailed == ''){
+                                $('.xi').html("<div class='coupons'><img src='__IMG__/youhuijuan.jpg'><p style='margin-left: 30%;color: #cccccc'>您还没有可用优惠券啊！</p></div>")
+                            }else{
+                                $('.xi').html('叔叔好好好说谁谁谁谁谁谁水水水水水水水水');
+                            }
+                            var ffff = $('.1234').data('id');
+                            if(ffff == ''){
+                                $('.li').html("<div class='coupons'><img src='__IMG__/youhuijuan.jpg'><p style='margin-left: 30%;color: #cccccc'>您还没有优惠劵啊！</p></div>")
+                            }else{
+                                $('.li').html('我听过请轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻轻');
+                            }
+                        })
+                    </script>
+
+
+
+
+        </div>
+        <!-----余额开始--------->
+        <script type="text/javascript">
+            $(function(){
+                $('.bank_right').click(function(){
+                    $('.bank_right').addClass('sss');
+                    $('.bank_left').removeClass('sss');
+                    $('.xi').hide();
+                    $('.li').show();
+                });
+                $('.bank_left').click(function(){
+                    $('.bank_right').removeClass('sss');
+                    $('.bank_left').addClass('sss');
+                    $('.xi').show();
+                    $('.li').hide();
+                });
+            })
+        </script>
+</block>
+

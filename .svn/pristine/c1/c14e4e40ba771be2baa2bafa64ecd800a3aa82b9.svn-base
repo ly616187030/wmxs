@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <block name="title"><title>{$meta_title}｜{:C('WEB_SITE_TITLE')}－{:C('WEB_SITE_SLOGAN')}</title></block>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="description" content="{$meta_description}">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="shortcut icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="__HOME_CSS__/home.css?v={:C('STATIC_VERSION')}">
+    <block name="style"></block>
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        {:C('CDN_RESOURCE_LIST')}
+    <?php else: ?>
+        <script type="text/javascript" src="__PUBLIC__/libs/jquery/1.x/jquery.min.js"></script>
+    <?php endif; ?>
+
+    <link href="__HOME_CSS__/layout_wm.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="clearfix hook hook-page-header">
+        {:hook('PageHeader')} <!-- 文档开始钩子 -->
+    </div>
+
+    <block name="wrap">
+        <div class="clearfix full-wrap">
+
+            <div class="clearfix full-container">
+
+                <div id="main" class="main">
+                    <block name="main">这里是内容</block>
+                </div>
+            </div>
+
+        </div>
+    </block>
+
+    <div class="clearfix hook hook-page-footer">
+        {:hook('PageFooter')} <!-- 文档末尾钩子 -->
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="__HOME_IMG__">
+            <script type="text/javascript" src="__CUI__/js/cui.min.js"></script>
+            <script type="text/javascript" src="__HOME_JS__/home.js?v={:C('STATIC_VERSION')}"></script>
+            <block name="script"></block>
+            {:C('WEB_SITE_STATISTICS')} <!-- 站点统计代码 -->
+        </div>
+    </div>
+
+    <!--模态-->
+
+    <block name="modal">
+
+        <div class="modal fade" id="myModal">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        <h4 class="modal-title">提示信息</h4>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <p class="clearfix"></p>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+
+                    </div>
+
+                </div><!-- /.modal-content -->
+
+            </div><!-- /.modal-dialog -->
+
+        </div><!-- /.modal -->
+
+    </block>
+
+    <!--//模态-->
+</body>
+</html>

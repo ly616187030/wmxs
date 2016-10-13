@@ -1,0 +1,236 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        span{padding:1em;}
+        /*.scroll{height: 30em;width: 100%;}*/
+        /*.scroll thead{display: block;width: 100%;padding:0px;margin:0px;}*/
+        /*.scroll tbody{overflow:scroll;display: block;width: 100%;height: 30em;padding:0px;margin:0px;}*/
+        /*.scroll thead th{width: 6.8em;}*/
+        .scroll tbody .data td{width: 6.8em;}
+        .scroll thead th:first-child{width: 14.2em;}
+        .scroll tbody .data td:first-child{width: 13em;}
+        .scroll thead th:nth-child(2){width: 10em;}
+        .scroll tbody .data td:nth-child(2){width: 10em;}
+        .scroll thead th:nth-child(3){width: 13em;}
+        .scroll tbody .data td:nth-child(3){width: 13em;}
+        .scroll thead th:nth-child(4){width: 6em;}
+        .scroll tbody .data td:nth-child(4){width: 6em;}
+        .scroll thead th:nth-child(5){width: 7em;}
+        .scroll tbody .data td:nth-child(5){width: 7em;}
+        .scroll thead th:nth-child(6){width: 6em;}
+        .scroll tbody .data td:nth-child(6){width:6em;}
+        .scroll thead th:nth-child(21){width: 8.5em;}
+        .scroll tbody .data td:nth-child(21){width:8.5em;}
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <link href="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+</block>
+<block name="main">
+    <div class="main-title">
+        <h4>销量统计</h4>
+    </div>
+    <div style="padding:2em 3em;">
+        <form action="{:U('salesVolume')}" method="get" class="form-horizontal doc-modal-form">
+            <input type="hidden" name="m" value="Settle" />
+            <input type="hidden" name="c" value="Settle" />
+            <input type="hidden" name="a" value="salesVolume" />
+            <div style="height:55px;line-height: 55px;">
+                <label class="col-sm-1" style="margin:0px;padding:0px;width:3em;height:30px;line-height: 30px;">日期：</label>
+                <div class="col-sm-3" style="margin:0px;padding:0px;height:30px;line-height: 30px;width:25em;">
+                    <input name="date" type="radio" value="1" checked=checked"<eq name="date" value="1">checked=checked"</eq> /> 今天<span>|</span>
+                    <input name="date" type="radio" value="2" <eq name="date" value="2">checked=checked"</eq> /> 昨天<span>|</span>
+                    <input name="date" type="radio" value="3" <eq name="date" value="3">checked=checked"</eq> /> 近三天<span>|</span>
+                    <input name="date" type="radio" value="0" <eq name="date" value="0">checked=checked"</eq> /> 自定义时间
+                </div>
+                <div class="col-sm-2">
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedStart" id="demo_inp1" <notempty name="definedStart">value="{$definedStart|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <div class="col-sm-1" style="width:3em;height:30px;line-height: 30px;">至</div>
+                <div class="col-sm-2" >
+                    <input readonly="readonly" type="text"  class="form-control runcode" name="definedOver" id="demo_inp2" <notempty name="definedOver">value="{$definedOver|date='Y-m-d H:i:s',###}"</notempty>/>
+                </div>
+                <input type="hidden" value="{$jintian}" name="datevalue" id="datevalue"/>
+                <input type="hidden" value="{$zt}" name="startdate" id="startdate"/>
+                <input type="hidden" value="{$jst}" name="overdate" id="overdate"/>
+
+                <input type="hidden" value="{$store_id}"  id="sjmc"/>
+                <input type="hidden" value="{$cpfl}"  id="caipfl"/>
+                <label class="col-sm-1" style="padding:0px;width:5em;height:30px;line-height: 30px;">商家名称：</label>
+                <div class="col-sm-2">
+                    <select class="form-control ordertype" name="storename" id="storeID">
+                        <option value="">全部</option>
+                        <volist name="store" id="vo">
+                            <option value="{$key}" data-id="{$key}" <eq name="key" value="$store_id">selected="selected"</eq>>{$vo}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div style="height:65px;line-height: 65px;margin:0px;padding:0px;" >
+                <label class="col-sm-1" style="padding:0px;width:5em;height:30px;line-height: 30px;">餐品分类：</label>
+                <div class="col-sm-2">
+                    <select class="form-control ordertype" name="cpfl" id="fenl">
+                        <option value="">全部</option>
+                    </select>
+                </div>
+                <div class="col-sm-2" style="margin:-17px;">
+                    <button class="btn btn-primary" type="submit">查询</button>
+                    <a href="{:U('salesexcel')}"><button class="btn btn-info" type="button">导出EXCEL</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="data-table table-striped" style="width: 100%;overflow: auto;">
+        <table class="table table-bordered scroll text-center" style="width:100%;overflow-x: hidden;">
+            <thead>
+            <tr>
+                <th>菜品名称</th>
+                <th>销售数量</th>
+                <th>销售单价</th>
+                <th>销售总额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="data" id="vo">
+                <tr>
+                    <td>总计</td>
+                    <td>{$zongji.xlzj}</td>
+                    <td>{$zongji.djzj}</td>
+                    <td>{$zongji.zezj}</td>
+                </tr>
+                <volist name="data" id="vo">
+                    <tr class="data">
+                        <td>{$vo.name}</td>
+                        <td>{$vo.xiaoliang}</td>
+                        <td>{$vo.danjia}</td>
+                        <td>{$vo.zongjia}</td>
+                    </tr>
+                </volist>
+                <else/>
+                <tr><td colspan="5" class="text-center"> aOh! 暂时还没有内容!</td></tr>
+            </notempty>
+            </tbody>
+        </table>
+        <div class="page">{$page}</div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_doc/prettify/prettify.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/lhgcalendar.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/lhgcalendar/_demo/demo.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            //时间选择切换
+            $("input[name='date']").change(function () {
+                var date = $(this).val();
+                if (date == 1) {
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#demo_inp1').val('');
+                    $('#demo_inp2').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth() + 1;
+                    var day = time.getDate();
+                    var riqi = year + "-" + month + "-" + day;
+                    $('#datevalue').val(riqi);
+
+                } else if (date == 2) {
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#demo_inp1').val('');
+                    $('#demo_inp2').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth() + 1;
+                    var day = time.getDate() - 1;
+                    var riqi = year + "-" + month + "-" + day;
+                    $('#datevalue').val(riqi);
+
+
+                } else if (date == 3) {
+                    $('#datevalue').val('');
+                    $('#demo_inp1').val('');
+                    $('#demo_inp2').val('');
+                    var time = new Date();
+                    var year = time.getFullYear();
+                    var month = time.getMonth() + 1;
+                    var startday = time.getDate() - 2;
+                    var overday = time.getDate();
+                    var startriqi = year + "-" + month + "-" + startday;
+                    var overriqi = year + "-" + month + "-" + overday;
+                    $('#startdate').val(startriqi);
+                    $('#overdate').val(overriqi);
+
+                } else if (date == 0) {
+                    $('#startdate').val('');
+                    $('#overdate').val('');
+                    $('#datevalue').val('');
+                } else {
+                }
+            })
+            $('select[name="ordertype"]').click(function () {
+                if ($('option[name="ordertype"]').val() == 1) {
+
+                }
+            })
+
+
+            //判断隐藏域里商家名称的store_id是不是为空，如果不为空ajax获得相应的餐品分类
+            if($('#sjmc').val!=''){
+                var url="{:U('getFenlei')}";
+                var id=$('#sjmc').val();
+                $.post(url,{id:id},function(data){
+                    var info='';
+                    info +='<option value="0">全部</option>';
+                    if(data!='') {
+                        for (var i = 0; i < data.length; i++) {
+                            //得到控制器返回页面的餐品分类的canpin_id
+                            var cp_id=$('#caipfl').val();
+                            if(cp_id==data[i].canpin_id){
+                                info += '<option value="' + data[i].canpin_id + '" selected="selected">' + data[i].canpin_name + '</option>';
+                            }else{
+                                info += '<option value="' + data[i].canpin_id + '">' + data[i].canpin_name + '</option>';
+                            }
+                        }
+                        $('#fenl').html(info);
+                    }
+                })
+            }
+
+            //店铺对应的餐品分类
+            $('#storeID').change(function(){
+                var id=$(this).find("option:checked").data("id");
+                if(id==undefined){
+                    $('#fenl').attr('disabled','disabled');
+                }else{
+                    $('#fenl').removeAttr('disabled','disabled');
+                }
+                var url="{:U('getFenlei')}";
+                $.get(url,{id:id},function(data){
+                    var info='';
+                    info +='<option value="0">全部</option>';
+                    if(data!='') {
+                        for (var i = 0; i < data.length; i++) {
+                            info += '<option value="' + data[i].canpin_id + '">' + data[i].canpin_name + '</option>';
+                        }
+                        $('#fenl').html(info);
+                    } else{
+                        info = '<option value="0">---无菜品分类---</option>';
+                        $('#fenl').html(info);
+                    }
+                })
+            })
+        })
+
+        //时间插件
+        $(function(){
+            $('#demo_inp1').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+            $('#demo_inp2').calendar({ format:'yyyy-MM-dd HH:mm:ss' });
+        })
+
+    </script>
+</block>
+</block>

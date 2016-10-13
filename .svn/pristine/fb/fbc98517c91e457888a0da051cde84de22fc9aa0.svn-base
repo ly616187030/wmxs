@@ -1,0 +1,449 @@
+<extend name="Base/common_zhgIndex"/>
+<block name="style">
+<style type="text/css">
+/*CSS jogger style pagination*/
+
+DIV.jogger {
+    PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; MARGIN: 7px; PADDING-TOP: 2px;
+    text-align: center;
+}
+DIV.jogger A {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e; TEXT-DECORATION: none
+}
+}
+DIV.jogger A:hover {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger A:active {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #de1818
+}
+DIV.jogger SPAN.current {
+    PADDING-RIGHT: 0.64em; PADDING-LEFT: 0.64em; PADDING-BOTTOM: 0.43em; MARGIN: 2px; COLOR: #fff; PADDING-TOP: 0.5em; BACKGROUND-COLOR: #ee4e4e
+}
+</style>
+</block>
+<block name="body_zhgIndex">
+<!doctype html>
+<div class="main">
+    <div class="nav">
+        <div class="home_nav"><a href="{:U('Index/index')}"><i></i>首页</a></div>
+        <div class="navR">
+            <div class="nav_list">
+                 <a href="{:U('Orderlist/index')}">个人中心</a>
+                <a style="float: right;" href="{:U('User/logout')}" target="_self">退出登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main center-main">
+   <include file="Public/user_center_left_zhg"/>
+    <section class="usercenter-detail" id="usercenter-address">
+    <div class="uc-content">
+    <!-- 我的订单 -->
+<div class="content-box" id="MyOrderDiv">
+    <div class="curmenu">我的点评</div>
+    <div class="remide">
+        <a class="linkTab" id="all" href="javascript:">全部<b>({$count})</b></a>
+    </div>
+    <div>
+        <table width="1043" border="0">
+            <tbody>
+                <tr class="col-name">
+                    <td>订单信息</td>
+                    <td>订单金额</td>
+                    <td>送达时间</td>
+                    <td>服务品质</td>
+                    <td>评价时间</td>
+                    <!-- <td>操作</td> -->
+                </tr>
+                <volist name="list" id="vo">                                                                                                 
+                    <tr class="col-item">
+                        <td valign="middle">订单编号：{$vo.order_sn}<br>
+                            {$vo.store_id|get_store_name}  </td>
+                        <td valign="middle">￥{$vo['total']+$vo['yajin']+$vo['ps_cost']+$vo['canju_total']-$vo['yh_price']}</td>
+                        <td valign="middle">{$vo.pj_songda}</td>
+                        <td valign="middle" width="200">
+                        	<switch name="vo.pingfen">
+								<case value="1">
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+								</case>
+								<case value="2">
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+								</case>
+								<case value="3">
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+								</case>
+								<case value="4">
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+								</case>
+								<case value="5">
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+                                    <span class="glyphicon glyphicon-star" style="color: #ff2222;font-size: 13px;"></span>
+								</case>
+							</switch>
+                        </td>
+                        <td valign="middle">{$vo.pj_time|date="Y-m-d H:i:s",###}</td>
+                        
+                        <!-- <td class="operate" valign="middle" width="150">
+                            <a id="{$vo.pj_id}" class="delpj" href="javascript:void(0)">删除</a>
+                        </td> -->
+                    </tr>
+                    <tr style="border-bottom:1px solid #c1bfc1;height:65px;">
+                    	<td style="color: #ff3333">评价详情：</td>
+                    	<td colspan="6" style="text-align: left">{$vo.content}</td>
+                    </tr>
+                    </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+	 $(function(){
+	 	$('.delpj').click(function(){
+	 		if(confirm("删除后无法恢复！确定删除吗？")){
+				var pj_id = $(this).attr('id');
+	 			$.post("{:U('Orderlist/delpingjia')}",{pj_id:pj_id},function(data){
+	 				if(data===true){
+	 					$('#pingjiaok').show();
+	 					$('#tishi').text('删除成功！');
+	 					ztools.maskshow();
+	 					$('#pingjiaok').fadeOut(1500, function() {
+                             ztools.maskhide();
+                             $('#tishi').text('');
+                             location.reload();
+                         });
+	 				}else if(data===false){
+	 					$('#pingjiaok').show();
+	 					$('#tishi').text('删除失败！');
+	 					ztools.maskshow();
+	 					$('#pingjiaok').fadeOut(1500, function() {
+                             ztools.maskhide();
+                             $('#tishi').text('');
+                             location.reload();
+                         });
+	 				}else{
+	 					$('#pingjiaok').show();
+	 					$('#tishi').text('服务器未响应！');
+	 					ztools.maskshow();
+	 					$('#pingjiaok').fadeOut(1500, function() {
+                             ztools.maskhide();
+                             $('#tishi').text('');
+                             location.reload();
+                         });
+	 				}
+	 			})
+	 		}
+	 	})
+	 })
+</script>
+<div class="jogger">
+{$page}
+</div>
+</div>
+
+<!--弹出框开始-->
+                    <!--评价框中的内容开始-->
+                    <style>
+                            .comment-dialog {
+            z-index: 1000;
+            color: #333
+        }
+        .comment-dialog .comment-text-notice {
+            text-align: right;
+            display: block;
+            padding: 5px 0;
+            color: #999
+        }
+        .comment-dialog .dialog-wrapper {
+            margin: auto;
+            width: 580px;
+            background: #fff;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            padding-bottom: 30px
+        }
+        .comment-dialog .dialog-header {
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            background: #fafafa;
+            line-height: 50px;
+            height: 50px;
+            padding: 0 10px
+        }
+        .comment-dialog .dialog-header .header-title {
+            font-size: 1.4em;
+            font-weight: 400;
+            text-indent: .8em;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1
+        }
+        .comment-dialog .dialog-header .close-btn {
+            font-size: 2em;
+            border: 0;
+            background: 0 0;
+            outline: 0;
+            float: right;
+            line-height: 50px;
+            height: 50px;
+            color: #ccc
+        }
+        .comment-dialog .dialog-header .closebtn {
+            font-size: 2em;
+            border: 0;
+            background: 0 0;
+            outline: 0;
+            float: right;
+            line-height: 50px;
+            height: 50px;
+            color: #ccc;
+            margin-right: 10px;
+        }
+        .comment-dialog .dialog-row {
+            padding: 0 4%;
+            line-height: 50px
+        }
+        .comment-dialog .dialog-row i {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            left: 30%;
+            background: url(http://webmap2.map.bdimg.com/static/waimai/images/wm_landing-code_7cd2eaf.png) center no-repeat
+        }
+        .comment-dialog .dialog-row .dialog-label {
+            font-size: 1.0em;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            text-align: right;
+            width: 12%;
+            vertical-align: top
+        }
+        .comment-dialog .dialog-row .dialog-label.lh-normal {
+            line-height: normal
+        }
+        .comment-dialog .dialog-row .vt-top {
+            vertical-align: top;
+            line-height: normal
+        }
+        .comment-dialog .dialog-row .dailog-content {
+            width: 82%;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            padding: 0 0 0 4%;
+            margin: 0 0 20px;
+            line-height: normal
+        }
+        .comment-dialog .dialog-row .dailog-content button {
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            padding: 0;
+            border: 0;
+            text-align: center;
+            zoom: 1;
+            *display: inline;
+            -webkit-transition: background-color .2s ease-in 0s;
+            -moz-transition: background-color .2s ease-in 0s;
+            -o-transition: background-color .2s ease-in 0s;
+            transition: background-color .2s ease-in 0s;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #fd4b4d;
+            cursor: pointer
+        }
+        .comment-dialog .dialog-row .dailog-content button.versa {
+            background-color: #666
+        }
+        .comment-dialog .dialog-row .dailog-content button.versa:hover {
+            background-color: #5c5c5c
+        }
+        .comment-dialog .dialog-row .dailog-content button:hover {
+            background-color: #a60f0e
+        }
+        .comment-dialog .dialog-row .dailog-content button.disable,
+        .comment-dialog .dialog-row .dailog-content button.disabled {
+            background-color: #888;
+            cursor: default
+        }
+        .comment-dialog .dialog-row .dailog-content .dialog-recomm {
+            background: #f7f7f7;
+            margin: 0 5px 0 0;
+            color: #999;
+            text-decoration: none;
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 5px;
+            margin: 0 5px 5px 0
+        }
+        .comment-dialog .dialog-row .dailog-content .dialog-recomm.select-dish {
+            outline: 1px solid #1e89e0;
+            background-color: #fff
+        }
+        .comment-dialog .dialog-row .dailog-content .comment-text {
+            border: 1px solid #e8e8e8;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            width: 100%;
+            height: 90px;
+            resize: none;
+            font-size: 1em
+        }
+        .comment-dialog .dialog-row .dailog-content select {
+            border: 1px solid #e8e8e8;
+        }
+        .comment-dialog .dialog-row .dailog-content input {
+            margin-left: 10px;
+        }
+        .msg-dialog {
+            margin-top: -20px;
+            z-index: 1005;
+            font-size: 16px
+        }
+        .msg-dialog .msg-bd {
+            min-width: 400px;
+            padding: 25px
+        }
+        .msg-dialog .actions {
+            height: 40px;
+            margin: 0 auto 30px;
+            text-align: center
+        }
+        .msg-dialog button.cancel {
+            display: none
+        }
+        .msg-dialog button {
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            padding: 0;
+            border: 0;
+            text-align: center;
+            zoom: 1;
+            *display: inline;
+            -webkit-transition: background-color .2s ease-in 0s;
+            -moz-transition: background-color .2s ease-in 0s;
+            -o-transition: background-color .2s ease-in 0s;
+            transition: background-color .2s ease-in 0s;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #1e89e0;
+            cursor: pointer
+        }
+        .msg-dialog button.versa {
+            background-color: #666
+        }
+        .msg-dialog button.versa:hover {
+            background-color: #5c5c5c
+        }
+        .msg-dialog button:hover {
+            background-color: #1662a0
+        }
+        .msg-dialog button.disable,
+        .msg-dialog button.disabled {
+            background-color: #888;
+            cursor: default
+        }
+        .msg-dialog.confirm button {
+            display: inline-block;
+            width: 90px;
+            height: 40px;
+            padding: 0;
+            border: 0;
+            text-align: center;
+            zoom: 1;
+            *display: inline;
+            -webkit-transition: background-color .2s ease-in 0s;
+            -moz-transition: background-color .2s ease-in 0s;
+            -o-transition: background-color .2s ease-in 0s;
+            transition: background-color .2s ease-in 0s;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #1e89e0;
+            cursor: pointer;
+            margin-right: 10px
+        }
+        .msg-dialog.confirm button.versa {
+            background-color: #666
+        }
+        .msg-dialog.confirm button.versa:hover {
+            background-color: #5c5c5c
+        }
+        .msg-dialog.confirm button:hover {
+            background-color: #1662a0
+        }
+        .msg-dialog.confirm button.disable,
+        .msg-dialog.confirm button.disabled {
+            background-color: #888;
+            cursor: default
+        }
+        .msg-dialog .contact {
+            width: 350px;
+            margin-bottom: 20px;
+            padding: 20px 0 0 88px;
+            background: url(__IMG__/orderlist/tele.png) no-repeat 25px 43px
+        }
+        .msg-dialog .contact .tp {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 20px 0 40px
+        }
+        .msg-dialog .contact .candidate {
+            font-size: 12px;
+            color: #999
+        }
+                        #rating-star {
+                            margin: 10px;
+                        }
+                        #rating-star a {
+                            background: url(__IMG__/orderlist/commentstar.png) no-repeat 0 -90px;
+                            display: inline-block;
+                            height: 23px;
+                            text-indent: -999em;
+                            width: 23px;
+                            cursor: pointer;
+                        }
+                        .star-notice {
+                            font-size: 1em;
+                            color: #9d9d9d;
+                        }
+                    </style>
+                    <div class="mod-dialog-frame">
+                    <div style="display:none;position:fixed; top:50%;  left: 50%; background-color: #fb4b4d;z-index:1004;width:350px;height:80px;border-radius: 8px;margin:-50px 0px 0px -175px;" id="pingjiaok">
+                        <div class="msg-dialog">
+                            <div class="msg-bd">
+                                <div style="margin-top:22px; text-align: center;margin-left: -30px;">
+                                    <div style="font-size:16px;">
+                                        <p id="tishi" style="color: #fff;font-size: 16px;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actions"></div>
+                        </div>
+                    </div>
+                    <!-- 评价成功示意框结束 -->
+
+                    <!--弹出框结束-->
+</section>
+</div>
+
+</block>

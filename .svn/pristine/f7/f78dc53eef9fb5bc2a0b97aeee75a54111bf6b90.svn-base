@@ -1,0 +1,151 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+
+    </style>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/angular-1.4.js"></script>
+    <script src="__PUBLIC__/app.js"></script>
+    <script>
+        var myapp = angular.module('Func',['HttpGet']);
+        myapp.controller('softCtrl',function($scope,getData){
+            $scope.showdetail=function(id){
+                var promise = getData('POST','{:U("showDetail")}','id='+id);
+                promise.then(function(res){
+                    if(res){
+                        $scope.detail=res;
+                        angular.element('#company_modal').modal();
+                    }
+                });
+            }
+        });
+        myapp.directive('showDetail',function(){
+            return {
+                restrict:'EAC',
+                replace:true,
+                scope:{
+                  ids:'@showId'
+                },
+                link:function(scope,ele,attrs,ctrl,trans){
+                    ele.bind('click',function(){
+                        //angular.element('.modal').modal();
+                        $scope.ttt = 'BBBB';
+                    });
+                }
+               /* controller:function($scope,$element,$attrs){
+                    console.log($element.text());
+                }*/
+            }
+        });
+
+    </script>
+</block>
+<block name="main">
+    <a class="btn   btn-primary" style="float: left"  href="{:U('addOne')}">新 增</a>
+    <div ng-app="Func" ng-controller="softCtrl">
+
+        <div class="col-sm-offset-4 col-sm-8 m-b clearfix">
+
+            <form method="get" action="?" id="form1">
+                <input type="hidden" name="m" value="admin" />
+                <input type="hidden" name="c" value="company" />
+                <input type="hidden" name="a" value="index" />
+                <input type="hidden" name="state" value=""/>
+                <div class=" col-sm-3">
+                    <select class="form-control" name="form_agent">
+                        <option value="">全部</option>
+                        <volist name="list_dl" id="vo">
+                            <option value="{$vo.id}" <eq name="form_agent" value="$vo.id">selected="selected"</eq>>{$vo.nickname}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" name="apply_type">
+                        <option value="">选择类型</option>
+                        <option value="frontend_register" <eq name="apply" value="frontend_register">selected="selected"</eq>>申请注册</option>
+                        <option value="backend_write" <eq name="apply" value="backend_write">selected="selected"</eq>>代理录入</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="keywords" placeholder="公司名称或注册人姓名" value="{$keyword}" />
+                </div>
+                <button type="submit" class="col-sm-1 btn btn-primary">搜索</button>
+                <button class="col-sm-2 btn btn-info new" style="width:8em;margin-left:1em;" onclick="newurl()">新注册用户</button>
+            </form>
+        </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr><th width="1%">序号</th><th>客户名称</th><th>注册人姓名</th><th>代理商</th><th>电话</th><th>地址</th><th>注册时间</th><th>版本号</th><th>入驻类型</th><th>销售人员</th><th>客服人员</th><th>操作</th></tr>
+                </thead>
+                <tbody >
+                <notempty name="list">
+                    <volist name="list" id="vo" key="k">
+                        <tr class="text-center">
+                            <td>{$k}</td>
+                            <td>{$vo.c_name}</td>
+                            <td>{$vo.username}</td>
+                            <td>{$vo.from_agent_name}</td>
+                            <td>{$vo.tel}</td>
+                            <td>{$vo.address}</td>
+                            <td>{$vo.reg_time|date='Y-m-d:H:i:s',###}</td>
+                            <td>{$vo.vip_name}</td>
+                            <td><php>echo $vo['apply_type'] == 'front_register'?'申请注册':($vo['apply_type'] == 'backend_write'?'代理录入':'');</php></td>
+                            <td>{$vo.salename}</td>
+                            <td>{$vo.installname}</td>
+                            <td><a ng-click="showdetail('{$vo.id}')" href="javascript:void(0)">查看详情</a>|<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a><if condition="$is eq 1">|<a class="ajax-get confirm" href="{:U('delt',array('id'=>$vo['id'],'name'=>$vo['username']))}">删除</a></if></td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="11" align="center">没有查到相关数据</td>
+                </notempty>
+
+
+                </tbody>
+            </table>
+        <div class="page">{$page}</div>
+
+        <div class="modal fade" id="company_modal">
+            <div class="modal-dialog"  style="width:1000px;">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr ><th class="text-left">行业类别</th><th class="text-left">省</th><th class="text-left">市</th><th class="text-left">区</th><th class="text-left">email</th><th class="text-left">地址</th><th class="text-left">邮编</th><th class="text-left">QQ</th><th class="text-left">传真</th><th class="text-left">职位</th><th class="text-left">公司简介</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{detail.c_category}}</td>
+                                    <td>{{detail.pname}}</td>
+                                    <td>{{detail.cname}}</td>
+                                    <td>{{detail.nname}}</td>
+                                    <td>{{detail.email}}</td>
+                                    <td>{{detail.address}}</td>
+                                    <td>{{detail.post_code}}</td>
+                                    <td>{{detail.qq}}</td>
+                                    <td>{{detail.fax}}</td>
+                                    <td>{{detail.job}}</td>
+                                    <td>{{detail.intro}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+    <block name="script">
+        <script type="text/javascript">
+            function newurl(){
+                $("input[name='state']").val(2);
+            }
+        </script>
+    </block>
+</block>

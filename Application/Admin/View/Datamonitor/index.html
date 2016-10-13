@@ -1,0 +1,250 @@
+
+    <extend name="./Application/Admin/View/Public/layout.html"/>
+    <block name="style">
+    <style type="text/css">
+        canvas{
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</block>
+    <block name="main">
+        <link rel="stylesheet" href="__PUBLIC__/libs/layer/skin/layer.css">
+        <div class="col-sm-12">
+                            <div class="dashboard clearfix col-sm-12">
+                                <div class="table table-striped text-center col-sm-8">
+                                    <table class="table table-striped table-condensed" style="border:1px solid #ccc;margin-bottom: 1.6em;">
+                                        <thead>
+                                        <tr>
+                                            <td width="16.5%" align="center">客户数量</td>
+                                            <td width="16.5%" align="center">试用客户数量</td>
+                                            <td width="16.5%" align="center">签约客户数量</td>
+                                            <td width="16.5%" align="center">总订单数量</td>
+                                            <td width="16.5%" align="center">快速下单数量</td>
+                                            <td width="17.5%" align="center">在线下单数量</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="16.5%" align="center">{$kehu}</td>
+                                            <td width="16.5%" align="center">{$notsignkehu}</td>
+                                            <td width="16.5%" align="center">{$signkehu}</td>
+                                            <td width="16.5%" align="center">{$ordzong}</td>
+                                            <td width="16.5%" align="center">{$ordquickly}</td>
+                                            <td width="17.5%" align="center">{$ordonline}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-striped table-condensed" style="border:1px solid #ccc;">
+                                        <thead>
+                                        <tr>
+                                            <td width="16.5%" align="center">当日订单量</td>
+                                            <td width="16.5%" align="center">昨日订单量</td>
+                                            <td width="16.5%" align="center">本周订单量</td>
+                                            <td width="16.5%" align="center">本月订单量</td>
+                                            <td width="16.5%" align="center">上月订单量</td>
+                                            <td width="17.5%" align="center">上月每日平均</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="16.5%" align="center">{$ordday}</td>
+                                            <td width="16.5%" align="center">{$ordlastday}</td>
+                                            <td width="16.5%" align="center">{$ordweek}</td>
+                                            <td width="16.5%" align="center">{$ordmonth}</td>
+                                            <td width="16.5%" align="center">{$ordlastmonth}</td>
+                                            <td width="17.5%" align="center">{$ordlastmonthjun}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div style="height: 23.3em;border: 1px solid #ccc;">
+                                        <canvas width="720px" height="320px" id="canvas"></canvas>
+                                    </div>
+                                </div>
+                                <div class="table-responsive col-sm-4">
+                                    <table class="table table-striped" style="border:1px solid #ccc;">
+                                        <thead>
+                                        <tr>
+                                            <td style="color: deepskyblue" colspan="2">系统资源使用情况</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td width="40%" align="left">在线用户数</td>
+                                            <td width="60%" align="left">
+                                                <span id="userNum"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40%" align="left">CPU占用:<span id="cpu"></span></td>
+                                            <td width="60%" align="left">
+                                                    <div class="progress" style="margin-bottom: 0;">
+                                                        <div class="progress-bar progress-bar-striped active cpu" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40%" align="left">内存占用:<span id="mem"></span></td>
+                                            <td width="60%" align="left">
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar progress-bar-striped active mem" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped" style="border:1px solid #ccc;margin-bottom: 0px;">
+                                        <thead>
+                                        <tr>
+                                            <td width="30%" align="center">业务员</td>
+                                            <td width="30%" align="center">客户数</td>
+                                            <td width="40%" align="center">订单数</td>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                        <div  style="height:18.5em;overflow-y: auto;border-left:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+                                        <table class="table table-striped" style="margin-bottom:0px;border-left:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+                                            <tbody>
+                                                <volist name="ywysa" id="ywysa">
+                                                    <tr>
+                                                        <td width="33%" align="center">{$ywysa.nickname}</td>
+                                                        <td width="33%" align="center">{$ywysa.kenumsa}</td>
+                                                        <td width="34%" align="center">{$ywysa.ordnumsa}</td>
+                                                    </tr>
+                                                </volist>
+                                                <volist name="ywyin" id="ywyin">
+                                                    <tr>
+                                                        <td width="33%" align="center">{$ywyin.nickname}</td>
+                                                        <td width="33%" align="center">{$ywyin.kenumin}</td>
+                                                        <td width="34%" align="center">{$ywyin.ordnumin}</td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+    </block>
+    <block name="script">
+        <script type="text/javascript" src="__PUBLIC__/libs/layer/layer.js"></script>
+        <script type="text/javascript" src="__JS__/Chart.bundle.min.js"></script>
+         <script type="text/javascript">
+             function show() {
+                 $.post("{:U('Datamonitor/get_used_status')}",function (data){
+                     $('#cpu').text('('+data['cpu_usage']+')');
+                     $('#mem').text('('+data['mem_usage']+')');
+                     if(data['c']>=0 && data['c']<=30){
+                         $('.cpu').addClass('progress-bar-success').css({ width:data['cpu_usage']});
+                     }else if(data['c']>30 && data['c']<=70){
+                         $('.cpu').addClass('progress-bar-warning').css({ width:data['cpu_usage']});
+                     }else{
+                         $('.cpu').addClass('progress-bar-danger').css({ width:data['cpu_usage']});
+                     }
+                     if(data['m']>=0 && data['m']<=30){
+                         $('.mem').addClass('progress-bar-success').css({ width:data['mem_usage']});
+                     }else if(data['m']>30 && data['m']<=70){
+                         $('.mem').addClass('progress-bar-warning').css({ width:data['mem_usage']});
+                     }else{
+                         $('.mem').addClass('progress-bar-danger').css({ width:data['mem_usage']});
+                     }
+                 })
+             }
+             show();
+             //setInterval("show()",10000);
+        var thismonth = '{$thismonth}';
+        var thismonth_days = {$thismonth_days};
+        var thismonth_data = {$thismonth_data};
+        //alert(thismonth_days);
+        var config = {
+            type: 'line',
+            data: {
+                labels: thismonth_days,
+                datasets: [{
+                    label: "订单数",
+                    data: thismonth_data,
+                    fill: false,
+                },]
+            },
+            options: {
+                responsive: true,
+                title:{
+                    display:true,
+                    text:'订单曲线图 （'+thismonth+'）'
+                },
+                tooltips: {
+                    mode: 'label',
+                    callbacks: {
+                        // beforeTitle: function() {
+                        //     return '...beforeTitle';
+                        // },
+                        // afterTitle: function() {
+                        //     return '...afterTitle';
+                        // },
+                        // beforeBody: function() {
+                        //     return '...beforeBody';
+                        // },
+                        // afterBody: function() {
+                        //     return '...afterBody';
+                        // },
+                        // beforeFooter: function() {
+                        //     return '...beforeFooter';
+                        // },
+                        // footer: function() {
+                        //     return 'Footer';
+                        // },
+                        // afterFooter: function() {
+                        //     return '...afterFooter';
+                        // },
+                    }
+                },
+                hover: {
+                    mode: 'dataset'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            show: true,
+                            labelString: 'Value'
+                        },
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 50,
+                        }
+                    }]
+                }
+            }
+        };
+        //曲线图曲线样式
+        $.each(config.data.datasets, function(i, dataset) {
+            dataset.borderColor = '#666';
+            dataset.backgroundColor = '#fff';
+            dataset.pointBorderColor = '#333';
+            dataset.pointBackgroundColor = '#fff';
+            dataset.pointBorderWidth = 1;
+        });
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+        };
+    </script>
+    </block>
+
+
+

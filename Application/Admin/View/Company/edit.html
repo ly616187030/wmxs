@@ -1,0 +1,131 @@
+
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+<style>
+            .red-star:before{
+            content:"*";
+            color:red;
+            font-weight: bold;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+</style>
+    <div class="builder builder-list-box panel-body">
+        <!-- 标签页导航 -->
+        <div class="tab-wrap" style="margin-top: 50px;">
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('edit')}" method="post" class="form-horizontal ">
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label red-star">vip等级：</label>
+
+                        <div class="col-sm-3">
+                            <select class="form-control" name="vip_id">
+                                <volist name="vip" id="v">
+                                <option value="{$v.id}">{$v.vip_name}</option>
+                              </volist>
+                            </select>
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">销售人员：</label>
+
+                        <div class="col-sm-3">
+                            <select class="form-control" name="sale_id">
+                                <empty name="listsa">
+                                    <option value="" style="display: none;">请选择销售人员</option>
+                                    <else />
+                                        <option value="{$listsa.id}" style="display: none;">{$listsa.nickname}</option>
+                                </empty>
+                                <empty name="sale">
+                                    <option value="">暂无销售人员</option>
+                                    <else />
+                                    <volist name="sale" id="sa">
+                                        <option value="{$sa.id}">{$sa.nickname}</option>
+                                    </volist>
+                                </empty>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">软件实施人员：</label>
+
+                        <div class="col-sm-3">
+                            <select class="form-control" name="software_install_id">
+                                <empty name="listin">
+                                    <option value="" style="display: none;">请选择软件实施人员</option>
+                                    <else />
+                                    <option value="{$listin.id}" style="display: none;">{$listin.nickname}</option>
+                                </empty>
+                                <empty name="sale">
+                                    <option value="">暂无软件实施人员</option>
+                                    <else />
+                                    <volist name="install" id="in">
+                                        <option value="{$in.id}">{$in.nickname}</option>
+                                    </volist>
+                                </empty>
+                            </select>
+                        </div>
+
+                    </div>
+                    <if condition="$admin eq 1">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">代理商：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control" name="from_agent_id">
+                                    <empty name="listag">
+                                        <option value="" style="display: none;">请选择代理商</option>
+                                        <else />
+                                        <option value="{$listag.id}" style="display: none;">{$listag.nickname}</option>
+                                    </empty>
+                                    <empty name="agent">
+                                        <option value="">暂无代理商</option>
+                                        <else />
+                                        <volist name="agent" id="ag">
+                                            <option value="{$ag.id}">{$ag.nickname}</option>
+                                        </volist>
+                                    </empty>
+                                </select>
+                            </div>
+                        </div>
+                    </if>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label sr-only"></label>
+
+                        <div class="col-sm-3">
+                            <input type="hidden" name="id" value="{$info.id}"/>
+                            <button class="btn submit-btn ajax-post btn-info" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                            <button class="btn btn-return" onclick="history.back(-1);return false;">返 回</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+
+
+
+
+
+
+

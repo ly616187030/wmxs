@@ -1,0 +1,98 @@
+<?php
+    // 获取用户信息
+    $user_info = D('User/User')->detail(is_login());
+// 获取所有模块配置的用户导航
+$mod_con['status'] = 1;
+$_user_nav_center = array();
+$_user_nav_main = array();
+$_user_nav_list = D('Admin/Module')->where($mod_con)->getField('user_nav', true);
+foreach ($_user_nav_list as $key => $val) {
+if ($val) {
+$val = json_decode($val, true);
+$_user_nav_center = array_merge($_user_nav_center, $val['center']);
+$_user_nav_main = array_merge($_user_nav_center, $val['main']);
+}
+}
+?>
+
+<block name="style">
+    <style type="text/css">
+        .panel-profile-img {
+            width: 100px;
+            height: 100px;
+        }
+        .panel-profile table.info td {
+            width: 50%;
+            padding: 2px;
+            text-align: left;
+        }
+        .panel-profile-img-action {
+            color: #fff;
+            padding: 1px 2px;
+            font-size: 10px;
+            border-radius: 20px;
+            background: rgba(0,0,0,.5);
+            display: block;
+            position: absolute;
+            bottom: 5px;
+            left: 20%;
+            right: 20%;
+        }
+        .panel-profile-img-box {
+            position: relative;
+        }
+    </style>
+</block>
+
+<div class="panel panel-default panel-profile">
+    <div class="panel-heading" style="background-image: url('__IMG__/bg/bg9.jpg');"></div>
+    <div class="panel-body text-center">
+        <a class="panel-profile-img-box" href="{:U('avatar')}">
+            <img class="panel-profile-img" src="{:session('user_auth.avatar')}">
+            <span class="panel-profile-img-action" >修改头像</span>
+        </a>
+        <h5 class="panel-title">
+            <b data-toggle="collapse" data-target=".user_detail">{$user_info.nickname}</b>
+            <a href="{:U('Mobile/Usercenter/nickname')}"><i class="fa fa-edit"></i></a>
+        </h5>
+        <p class="summary">{$user_info.summary}</p>
+        <!-- <table class="info">
+             <tbody>
+             <tr>
+                 <td class="border-none"><a href="{:U('Mobile/Voucher/index?src=1')}">代金券：{$countbao}</a></td>
+                 <td class="border-none"><a href="{:U('Mobile/Share/getFollow')}">邀请好友：{$tj_num}</a></td>
+             </tr>
+             <tr>
+                 <td class="border-none"><a href="{:U('Mobile/Usercenter/xianjin')}">现金红包：{$price}</a></td>
+                 <td class="border-none">余额：¥{$user_info.money} <a href="#">充值</a></td>
+             </tr>
+             </tbody>
+         </table>-->
+    </div>
+</div>
+
+<nav class="menu menu-corethink" data-toggle="menu">
+    <!-- 侧边导航 -->
+    <div class="panel-group" role="tablist">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+                <a class="" data-toggle="collapse" href="#list1">
+                    <h4 class="panel-title"><i class="fa fa-folder-open-o"></i> 个人中心<i class="fa fa-angle-right" style="float: right"></i></h4>
+                </a>
+            </div>
+            <div id="list1" class="panel-collapse collapse in" role="tabpanel">
+                <div class="list-group">
+                    <!--<a href="{:U('Mobile/Usercenter/password', null, true, true)}" class="list-group-item {$vo_nav_main.class}">-->
+                    <!--<i class="fa fa-lock"></i> 修改密码-->
+                    <!--</a>-->
+                    <a href="{:U('Mobile/Myaddress/index?src=1', null, true, true)}" class="list-group-item {$vo_nav_main.class}">
+                        <i class="fa fa-map-marker"></i> 我的地址
+                    </a>
+                    <a href="{:U('Mobile/Favorite/index', null, true, true)}" class="list-group-item {$vo_nav_main.class}">
+                        <i class="fa fa-bookmark"></i> 我的收藏
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

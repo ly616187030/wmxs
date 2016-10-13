@@ -1,0 +1,519 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <link href="/./Application/Receiveorder/View/Public/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/Public/lhgcalendar/_doc/prettify/prettify.css" type="text/css" rel="stylesheet"/>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+
+    <div class="builder builder-list-box panel-body">
+        <div class="builder-tabs builder-form-tabs">
+            <ul class="nav nav-tabs">
+                <li class="active" onclick="showType(0,this)"><a href="javascript:;">全部</a></li>
+                <?php if(is_array($list_location)): $i = 0; $__LIST__ = $list_location;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li onclick="showType(<?php echo ($vo["id"]); ?>,this)"><a href="javascript:;"><?php echo ($vo["name"]); ?></a></li><?php endforeach; endif; else: echo "" ;endif; ?>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12" id="zhuotai">
+        <ul>
+            <?php if(is_array($list_num)): $i = 0; $__LIST__ = $list_num;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$ro): $mod = ($i % 2 );++$i; if(($ro["status"]) == "1"): ?><li class="list_type<?php echo ($ro["f_id"]); ?> active" data-seat_id="<?php echo ($ro["id"]); ?>" data-seat_name="<?php echo ($ro["name"]); ?>"><div><?php echo ($ro["name"]); ?></div><div>已占用</div></li>
+                    <?php else: ?>
+                    <li class="list_type<?php echo ($ro["f_id"]); ?>" data-seat_id="<?php echo ($ro["id"]); ?>" data-seat_name="<?php echo ($ro["name"]); ?>"><div><?php echo ($ro["name"]); ?></div><div>未占用</div></li><?php endif; endforeach; endif; else: echo "" ;endif; ?>
+        </ul>
+    </div>
+    <div class="Both"></div>
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form action="<?php echo U('checkOut');?>" method="post" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center">菜单详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="col-sm-4">订单编号：<span id="order_sn_seat"></span></div>
+                            <div class="col-sm-4">桌台名：<span id="seat_name"></span></div>
+                            <div class="col-sm-4">下单时间：<span id="xd_time_seat"></span></div>
+                            <input type="hidden" name="order_id" value="" />
+                            <input type="hidden" name="seat_id" value="" />
+                            <input type="hidden" name="total" value="" />
+                            <input type="hidden" name="is_qiantai_print" value="" />
+                            <input type="hidden" name="is_kitchen_print" value="" />
+                            <div style="clear:both;height:15px;"></div>
+                            <table class="table table-bordered table-responsive table-hover text-center">
+                                <thead>
+                                <tr>
+                                    <th>菜品</th>
+                                    <th>单价(元)</th>
+                                    <th>数量</th>
+                                    <th>金额(元)</th>
+                                </tr>
+                                </thead>
+                                <tbody id="caipin">
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary submit-btn ajax-post confirm" id="submit" type="submit" target-form="form-horizontal" disabled="true">&nbsp;结&nbsp;&nbsp;&nbsp;&nbsp;账&nbsp;</button>
+                        <button class="btn btn-primary submit-btn ajax-post confirm" id="print" type="button">&nbsp;打&nbsp;&nbsp;&nbsp;&nbsp;印&nbsp;</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--顾客小票start-->
+    <div class="ticketMain" style="display: none;">
+        <div id="order_count" style="font-size: 30px;font-weight: bold"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_message"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_order_sn"></div>
+        <div class="pdt5" id="customer_ticket_xd_time"></div>
+        <div class="Blank10">*****************************</div>
+        <table class="fz18">
+            <thead>
+            <th align="left">菜单名称</th><th align="center">数量</th><th align="right">金额</th>
+            </thead>
+            <tbody id="good_detail">
+            <?php if(is_array($list_first["child"])): $i = 0; $__LIST__ = $list_first["child"];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr>
+                    <td width="60%" align="left"><?php echo ($vo["cm_name"]); ?></td>
+                    <td width="20%" align="center"><?php echo ($vo["quantity"]); ?></td>
+                    <td width="20%" align="right"><?php echo (round($vo['price']*$vo['quantity'],2)); ?></td>
+                </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+            </tbody>
+        </table>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_store_name"></div>
+        <div class="pdt5" id="customer_ticket_tel"></div>
+        <div class="Blank10">*****************************</div>
+        <div class="pdt5" id="customer_ticket_now_time" style="font-size: 10px"></div>
+        <div class="Blank10">*****************************</div>
+    </div>
+    <!--顾客小票end-->
+    <!--档口小票start-->
+    <div id="dangkou" style="display: none;">
+
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.min.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+    <script type="text/javascript" src="/Public/LodopFuncs.js"></script>
+    <script src='/Public/socket.io.js'></script>
+    <script>
+        var LODOP=getLodop();
+
+        //打印功能
+
+        function printing(html,printsn,num){
+            var num=num || 1;
+            var printsn= printsn || 0;
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_HTM(10,5,"100%","100%",html);
+            LODOP.SET_PRINTER_INDEX(printsn);
+            LODOP.SET_PRINT_COPIES(num);
+            LODOP.PRINT();
+        }
+        function print_front(){
+            var htmls=$('.ticketMain').html();
+            $.get('<?php echo U("getLocalNum");?>').success(function(data){
+                //console.log(data.nums);
+                printing(htmls,data.printer_sn,data.nums);
+            });
+
+        }
+        function print_backend(){
+            var div=$('#dangkou > div');
+            div.each(function(){
+                var $this=$(this);
+                printing($this.html(),$this.data('print'));
+            });
+        }
+        function showType(type_id,obj){
+            if(type_id == 0){
+                $('#zhuotai').find('li').show();
+            }else{
+                $('#zhuotai').find('li').hide();
+                $('#zhuotai').find('.list_type'+type_id).show();
+            }
+            $(obj).addClass('active').siblings().removeClass('active');
+        }
+        function test(data){
+
+            var bb = '';
+            var cc = '';
+            var dd = '';
+
+            //顾客小票信息写入
+            $('#order_count').html("堂食-"+data.seat_name+"-#"+data.order_count);
+            $('#customer_ticket_order_message').html("订单备注："+data.order_message);
+            $('#customer_ticket_order_sn').html("订单编号："+data.order_sn);
+            $('#customer_ticket_xd_time').html("下单时间："+data.xd_time);
+
+            for(var i=0;i<data.child.length;i++){
+                bb += "<tr>" +
+                " <td width=\"60%\" align=\"left\">"+data.child[i].cm_name+"</td> <td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                " <td width=\"20%\" align=\"right\">"+(data.child[i].price*data.child[i].quantity).toFixed(2)+"</td> </tr>";
+            }
+            bb += ""+
+            "<tr>"+
+            "<td width=\"80%\" colspan=\"2\" align=\"left\">总计：</td>"+
+            "<td width=\"20%\" align=\"right\">"+data.zongjia+"</td>"+
+            "</tr>";
+            $('#good_detail').html(bb);
+
+            $('#customer_ticket_store_name').html(data.store_name);
+            $('#customer_ticket_tel').html(data.tel);
+            $('#customer_ticket_now_time').html("<em>"+data.ticket+" "+data.now_time+"</em>");
+            if(data.dangkou != null){
+                for(var i=0;i<data.dangkou.length;i++){
+
+                    cc += "" +
+                    "<div id=\"dangkou"+data['dangkou'][i]['id']+"\" data-dangkou=\""+data['dangkou'][i]['id']+"\" data-print=\""+data['dangkou'][i]['printer_sn']+"\">" +
+                    "<div style=\"font-size: 30px; font-weight: bold;\">堂食-"+data.seat_name+"-#"+data.order_count+"</div>"+
+                    "<div style=\"line-height: 30px;\">订单编号："+data.order_sn+"</div>"+
+                    "<div style=\"line-height: 20px;\">"+data['dangkou'][i]['name']+"</div>"+
+                    "<table width='100%'>"+
+                    "<thead>"+
+                    "<th align=\"left\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">菜品名称</th>"+
+                    "<th align=\"center\" style=\"border-bottom: 1px solid #000;border-top: 1px solid #000;\">数量</th>"+
+                    "</thead>"+
+                    "<tbody>"+
+                    "</tbody>"+
+                    "</table>" +
+                    "<div style=\"border-top: 1px solid #000;line-height: 25px;\" >"+data.now_time+"</div></div>";
+
+                }
+                $('#dangkou').html(cc);
+                for(var i=0;i<data.child.length;i++){
+                    dd = "<tr>"+
+                    "<td width=\"80%\" align=\"left\">"+data.child[i].cm_name+"</td>"+
+                    "<td width=\"20%\" align=\"center\">"+data.child[i].quantity+"</td>"+
+                    "</tr>";
+                    $('#dangkou'+data.child[i]['dangkou_id']).find('tbody').append(dd);
+                }
+            }
+
+        }
+        $(document).on('click','#zhuotai ul li',function(){
+            var aa = "";
+            var seat_id = $(this).data('seat_id');
+            var seat_name = $(this).data('seat_name');
+            if($(this).hasClass('active')){
+                $.post('<?php echo U("orderMore");?>',{seat_id:seat_id,seat_name:seat_name}).success(function(data){
+
+                    if(data != null){
+                        $('#order_sn_seat').text(data['order_sn']);
+                        $('#seat_name').text(data['seat_name']);
+                        $('#xd_time_seat').text(data['xd_time']);
+                        $('input[name="order_id"]').val(data['order_id']);
+                        $('input[name="seat_id"]').val(seat_id);
+                        $('input[name="total"]').val(data['total']);
+                        $('input[name="is_qiantai_print"]').val(data['is_qiantai_print']);
+                        $('input[name="is_kitchen_print"]').val(data['is_kitchen_print']);
+
+                        for(var i=0;i<data['child'].length;i++){
+                            aa += "<tr><td>"+data['child'][i]['cm_name']+"</td><td>"+data['child'][i]['price']+"</td><td>"+data['child'][i]['quantity']+"</td><td>"+data['child'][i]['total_money']+"</td></tr>";
+                        }
+                        aa +=""+
+                        "<tr><td>备注：</td><td colspan=\"3\">"+data['order_message']+"</td></tr>"+
+                        "<tr><td>应收：</td><td colspan=\"3\"><span id=\"total\">"+data['total']+"</span> 元</td></tr>"+
+                        "<tr><td>减免：</td><td colspan=\"3\" class='total'><input type='text' name='yh_price' value='0' /> 元</td></tr>"+
+                        "<tr><td>实收：</td><td colspan=\"3\" class='total'><input type='text' name='real_money_customer' value='0' /> 元</td></tr>"+
+                        "<tr><td>找零：</td><td colspan=\"3\" class='total'><input type='text' name='give_money' readonly=\"true\" /> 元</td></tr>";
+
+                        test(data);
+                        $('#caipin').html(aa);
+
+                        $('#myModal').modal('show');
+                    }else{
+                        $.alertMessager('当前桌台没有订单');
+                    }
+                });
+
+            }else{
+                window.location.href="<?php echo U('Receiveorder/Fastfood/index/seat_id/"+seat_id+"/seat_name/"+seat_name+"');?>";
+            }
+        });
+        $('#print').click(function(){
+            var qiantai = $('input[name="is_qiantai_print"]').val();
+            var kitchen = $('input[name="is_kitchen_print"]').val();
+            if(qiantai == 1){
+                print_front();//用户小票打印
+            }
+            if(kitchen == 1){
+                print_backend();//后厨小票打印
+            }
+        });
+        $(document).on('focusout','input[name="real_money_customer"],input[name="yh_price"]',function(){
+            var real_money_customer = $('input[name="real_money_customer"]').val();
+            var yh_price = $('input[name="yh_price"]').val();
+            var rexnum = /^[0-9]+(\.[0-9]{1,2})*$/;
+
+            var total = parseFloat($('#total').text());
+                if(rexnum.test(real_money_customer) && rexnum.test(yh_price)){
+                    if(real_money_customer != 0){
+                        if(real_money_customer >= (total-yh_price)){
+                            $('input[name="give_money"]').val((real_money_customer-(total-yh_price)).toFixed(2));
+                            $('#submit').removeAttr('disabled');
+                        }else{
+                            $('#submit').attr('disabled','true');
+                            $.alertMessager('实收金额不能小于总价');
+                        }
+                    }
+                }else{
+                    $.alertMessager('输入的价钱格式不正确');
+                }
+        });
+
+    </script>
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>外卖先生于每月2号至5号进行结算，以下表格是您上月的订单统计，请您核对后支付！（收费标准￥0.1/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">上月有效订单</th>
+                          <th style="text-align: center;">上月全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥0.1/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="<?php echo U('zhifu');?>" method="post">
+                    <input type="hidden" name="total_fee" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" id="zhifu">去支付</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+     $('#closed').click(function(){
+        $('#jiesuanModal').modal('hide');
+        riqi == '5' && location.reload();
+    });
+</script>
+</body>
+</html>

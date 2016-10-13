@@ -1,0 +1,112 @@
+
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+    <div class="builder builder-list-box panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li ><a href="{:U('index')}">菜单管理</a></li>
+                    <li class="active"><a href="javascript:void(0);" style="color:#287DDE;">权限设置</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- 标签页导航 -->
+        <div class="tab-wrap" style="margin-top: 50px;">
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('authorize_post')}" method="post" class="form-horizontal ">
+
+                    <input type="hidden" name="roleid" value="{$roleid}"/>
+                    <div class="table_full">
+                        <table width="100%" cellspacing="0" id="dnd-example">
+                            <tbody>
+                            {$categorys}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label sr-only"></label>
+
+                        <div class="col-sm-3">
+                            <input type="hidden" name="roleid" value="{$roleid}" />
+                            <button class="btn submit-btn ajax-post btn-info" id="submit"  url="{:U('authorize_post')}" type="submit" target-form="form-horizontal">保 存</button>
+
+                            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function() {
+
+            $('#dnd-example').treeTable();
+        });
+
+        function checknode(obj) {
+            var chk = $("input[type='checkbox']"); //取所有选中的input
+            var count = chk.length; //取所有选中的input个数
+            var num = chk.index(obj); //在所有选中的input中找到当前点击input位置
+            var level_top = level_bottom = chk.eq(num).attr('level'); //取当前点击的input的level属性值
+
+            //选中当前点击的input所有父元素
+            for (var i = num; i >= 0; i--) {
+                //取迭代元素的level属性值
+                var le = chk.eq(i).attr('level');
+                if (le < level_top) {
+                    chk.eq(i).attr("checked", true);
+                    var level_top = level_top - 1;
+                }
+            }
+
+
+            for (var j = num + 1; j < count; j++) {
+                var le = chk.eq(j).attr('level');
+
+
+                if (chk.eq(num).attr("checked") == "checked") {
+
+                    if (eval(le) > eval(level_bottom)){
+                        chk.eq(j).attr("checked", true);
+                    }
+                    else if (eval(le) == eval(level_bottom)){
+                        break;
+                    }
+                } else {
+
+                    if (eval(le) > eval(level_bottom)){
+                        chk.eq(j).attr("checked", false);
+                    }else if(eval(le) == eval(level_bottom)){
+                        break;
+                    }
+                }
+            }
+
+
+
+        }
+    </script>
+
+</block>
+
+
+
+
+
+
+
+
+

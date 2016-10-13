@@ -1,0 +1,65 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="main-title">
+        <h4>公众号管理</h4>
+    </div>
+    <div class="">
+        <div class="cf">
+            <div class="fl">
+                <a href="{:U('MemberPublic/step_0')}"><button class="btn btn-success" type="submit">新增</button></a>
+                <button class="btn btn-success ajax-post confirm" type="button" target-form="ids" url="{:U('del')}">删除</button>
+            </div>
+        </div>
+
+        <div class="data-table table-striped" style="overflow-x:auto;overflow-y:auto;margin-top:2em;">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;"><input class="check-all" type="checkbox"></th>
+                    <th style="text-align: center;">公众号ID</th>
+                    <th style="text-align: center;">公众号名称</th>
+                    <th style="text-align: center;">类型</th>
+                    <th style="text-align: center;">等级</th>
+                    <th style="text-align: center;">Token</th>
+                    <th style="text-align: center;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="info" id="vo">
+                    <tr>
+                        <td style="text-align: center;"><input class="ids" type="checkbox" value="{$vo.id}" name="id[]"></td>
+                        <td style="text-align: center;">{$vo.id}</td>
+                        <td style="text-align: center;">{$vo.public_name}</td>
+                        <td style="text-align: center;">
+                            <switch name="vo.type" >
+                                <case value="0">普通订阅号</case>
+                                <case value="1">认证订阅号/普通服务号</case>
+                                <case value="2">认证服务号</case>
+                                <default />
+                            </switch>
+                        </td>
+                        <td style="text-align: center;">{$vo.group_id}</td>
+                        <td style="text-align: center;">{$vo.token}</td>
+                        <input type="hidden" name="id" value="{$vo.id}" id="id"/>
+                        <td style="text-align: center;"><a href="{:U('MemberPublic/step_edit_0',array('id'=>$vo['id']))}" style="margin-right: 1em;">编辑</a><eq name="vo.id" value="$Think.session.wid"><a href="" style="margin-right: 1em;">已成为当前选中公众号</a><else/><a href="{:U('MemberPublic/setSession',array('id'=>$vo['id'],'title'=>$vo['public_name']))}" style="margin-right: 1em;">设置为当前公众号</a></eq><a href="{:U('MemberPublic/del',array('id'=>$vo['id']))}" class="ajax-get confirm">删除</a></td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+
+    </script>
+</block>

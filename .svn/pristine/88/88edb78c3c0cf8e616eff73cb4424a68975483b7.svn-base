@@ -1,0 +1,111 @@
+<extend name="Base/common" />
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/my_comment_content/css/main.css">
+    <style>
+    .favorite_red_star {
+    height: 0.8px;
+    width: 3.7px;
+    position: absolute;
+    clip: rect(0px, 3.7em, 0.8em, 0px);
+    z-index: 3;
+
+    }
+
+    .favorite_white_star {
+    cursor: pointer;
+    height: 0.8px;
+    width: 3.7px;
+    position: absolute;
+    z-index: 2;
+    }
+    </style>
+</block>
+<block name="body">
+    <div id="page_0" class="up ub ub-ver bc-bg" tabindex="0">
+        <!--header开始-->
+        <div id="header" class="uh bc-text-head ub" style="color:#777;border-bottom:1px solid #dcdcdc;">
+            <div class="nav-btn" id="nav-left">
+                <div class="fa fa-angle-left fa-2x"></div>
+            </div>
+            <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">我的评论</h1>
+            <div class="nav-btn nav-bt" id="nav-right">
+                <div class="ub-img iocn-more umw2 umh4"></div>
+            </div>
+        </div>
+        <!--header结束--><!--content开始-->
+
+        <div id="content" class="ub-f1 tx-l">
+            <volist name="pingjia" id="vo">
+            <div key="{$key}" class="box" id="box">
+                <div id="top1">
+                    <div class="font">
+                        {$vo.cm_name}
+                    </div>
+                    <div class="rbox">
+                        <div class="year">
+                            {$vo.pj_time|date='Y-m-d',###}
+                        </div>
+                        <div class="time">
+                            {$vo.pj_time|date='H-i-s',###}
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="top2" id="top2">
+                    <div class="img_w_h">
+                        <span><img id="favorite_white_star1" class="favorite_white_star" src="__IMG__/favorite/white_star.png"/></span>
+                        <span><img id="favorite_red_star1" class="favorite_red_star" src="__IMG__/favorite/red-star.png"/></span></div>
+                    <div class="speed">
+                        送餐速度：<label>{$vo.send_time}</label>分钟
+                    </div>
+                    <div style="clear:both;"></div>
+                    <input class="pingfen" type="hidden" name="pingfen"
+                           value="{$vo.qqq}"/>
+                </div>
+
+                <div id="top3">
+                    <div class="mark1">
+                        送餐：<label>{$vo.pj_songda}</label>分
+                    </div>
+                    <div class="mark2">
+                        菜品：<label>{$vo.pingfen}</label>分
+                    </div>
+                    <div style="clear:both;"></div>
+
+                </div>
+            </div>
+        </volist>
+        </div>
+
+        <!--content结束-->
+    </div>
+    <script>
+        $(document).ready(function() {
+
+                var i;
+                var len = $(".top2").length;
+                for (i = 0; i <= len - 1; i++) {
+                    var user_num = 3.7;
+                    var one = user_num / 5;
+                    var ok = $('.pingfen:eq(' + i + ')').attr('value');
+                    var nowpx = one * ok;
+                    $('.favorite_red_star:eq(' + i + ')').css('clip', ' rect(0em,' + nowpx + 'em,0.8em,0em)');
+
+                };
+                setTimeout(del,2000);
+            function del(){
+                $('.box').mousedown(function(){
+                    var key = $(this).attr('key');
+                    if(confirm('是否删除第'+key+'条评论吗？')){
+                        alert('删除成功');
+                    }
+                })
+            }
+
+
+
+
+        })
+
+    </script>
+</block>

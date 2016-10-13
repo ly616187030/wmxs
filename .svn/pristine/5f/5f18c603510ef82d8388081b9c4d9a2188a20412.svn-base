@@ -1,0 +1,179 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="col-sm-12">
+        <h3 class="m-b col-sm-8">促销活动 <notempty name="storename">/<span style="font-size: 0.6em;color:green;">{$storename}</span></notempty></h3>
+        <a class="btn btn-success"  href="{:U('add',array('storeid'=>$_storeid,'storename'=>$storename))}">添加促销</a>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>促销名称</th>
+                <th>关联名称</th>
+                <th>规则说明</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        <notempty name="list">
+            <volist name="list" id="vo">
+                <tr>
+                    <td>{$vo.promotion_name}</td>
+                    <td>
+                        <volist name="vo.huo" id="aa">
+                            {$aa.promotion_name}
+                        </volist>
+                    </td>
+                    <td>
+                        <if condition="$vo.promotion_time eq 0">
+                            不限时
+                            <if condition="$vo.promotion_type eq 0">
+                                送赠品{$vo.present_name}:{$vo.present_numbe}
+                                <elseif condition="$vo.promotion_type eq 1"/>
+                                优惠：{$vo.reduction}元
+                                <elseif condition="$vo.promotion_type eq 2"/>
+                                折扣:{$vo['discount']/10}折
+                                <elseif condition="$vo.promotion_type eq 3"/>
+                                免费配送
+                                <elseif condition="$vo.promotion_type eq 4"/>
+                                满{$vo.promotion_money}元 立减 ：{$vo.jian}元
+                                <elseif condition="$vo.promotion_type eq 5"/>
+                                首次下单立减 ：{$vo.shou_jian}元
+                            </if>
+                            <elseif condition="$vo.promotion_time eq 1"/>
+                            每周（星期{$vo.time_quantum})，订单总价大于{$vo.promotion_money}元
+                            <if condition="$vo.promotion_type eq 0">
+                                送赠品{$vo.present_name}:{$vo.present_numbe}
+                                <elseif condition="$vo.promotion_type eq 1"/>
+                                优惠：{$vo.reduction}元
+                                <elseif condition="$vo.promotion_type eq 2"/>
+                                折扣:{$vo['discount']/10}折
+                                <elseif condition="$vo.promotion_type eq 3"/>
+                                免费配送
+                            </if>
+                            <elseif condition="$vo.promotion_time eq 2"/>
+                            每天在{$vo.time_quantum}时间段，订单总价大于{$vo.promotion_money}元
+                            <if condition="$vo.promotion_type eq 0">
+                                送赠品{$vo.present_name}:{$vo.present_numbe}
+                                <elseif condition="$vo.promotion_type eq 1"/>
+                                优惠：{$vo.reduction}元
+                                <elseif condition="$vo.promotion_type eq 2"/>
+                                折扣:{$vo['discount']/10}折
+                                <elseif condition="$vo.promotion_type eq 3"/>
+                                免费配送
+                            </if>
+                        </if>
+                    </td>
+                    <td>{$vo.effective_date|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo.termination_date|date="Y-m-d H:i:s",###}</td>
+                    <td>
+
+                        <a href="{:U('enable',array('id'=>$vo['promotion_id'],'state'=>abs($vo['state']-1)))}" class="ajax-get">
+                            <if condition="$vo.state == 0 ">
+                                启用
+                                <else />
+                                禁用
+                            </if>
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="{:U('edit?promotion_id='.$vo[promotion_id].'&first='.$vo['first'].'&storeid='.$_storeid.'&storename='.$storename)}">编辑</a>
+                        <a href="{:U('del?promotion_id='.$vo[promotion_id])}" class="ajax-get">删除</a>
+                    </td>
+                </tr>
+            </volist>
+            <else/>
+            <td colspan="17" class="text-center"> aOh! 暂时还没有内容! </td>
+        </notempty>
+        </tbody>
+    </table>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#id_select').selectpicker({
+                'noneSelectedText': '请选择店铺(可以多选设置)',
+                'selectedText': 'cat'
+            });
+        });
+        $('.copy_btn').click(function(){
+            var id = $(this).data("cxid");
+            var lx_id = $(this).data("cxlx");
+            $("#id_copy").data("cxid",id);
+            $("#id_copy").data("cxlx",lx_id);
+        });
+
+        $("#id_copy").click(function(){
+            var id = $(this).data("cxid");
+            var type = $(this).data("cxlx");
+            var id_list = $('#id_select').val();
+            $.ajax({
+                type:'post',
+                url:"{:U('copy_store')}",
+                data:{list_post:id_list,yh_id:id,yh_lx:type},
+                dataType:'json',
+                success:function(data){
+                    $('#myModal').modal('hide')
+                    if(data == '1'){
+                        $('#top-alert').find('div').text('复制成功');
+                        $('#top-alert').css('background-color',"#CCFF99");
+                        $('#top-alert').css('color',"#468847");
+                        $('#top-alert').css('border-color',"#eed3d7");
+                        $('#top-alert').show();
+                        setTimeout(function(){
+                            $('#top-alert').find('div').text('');
+                            $('#top-alert').hide();
+                            var url = "{:U('index')}";
+                            window.location.href = url;
+                        },1000)
+                    }else{
+                        $('#top-alert').find('div').text('复制失败');
+                        $('#top-alert').show();
+                        setTimeout(function(){
+                            $('#top-alert').find('div').text('');
+                            $('#top-alert').hide();
+                            var url = "{:U('index')}";
+                            window.location.href = url;
+                        },1000)
+                    }
+                }
+            });
+
+        });
+
+//        $("#id_checkbox").change(function(){
+//            if($(this).is(':checked')) {
+//                $("#id_qxdp").attr("class","has-success");
+//                $("#id_select").attr("disabled","disabled");
+//
+//            }else{
+//                $("#id_qxdp").attr("class","has-warning");
+//                $("#id_select").removeAttr("disabled");
+//
+//
+//            }
+//        });
+
+        $('.close').on('hide.bs.modal', function (event) {
+            var url = "{:U('index')}";
+            window.location.href = url;
+        })
+
+        $('#store').change(function(){
+            var store_id = $(this).val();
+            var store_name = $(this).children('option:selected').text();
+            $.post('{:U("Index/setSession")}',{store_id:store_id,store_name:store_name}).success(function(data){
+                if(data>0){
+                    window.location.reload();
+                }
+            });
+        });
+
+    </script>
+</block>

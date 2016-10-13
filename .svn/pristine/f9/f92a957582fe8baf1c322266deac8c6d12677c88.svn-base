@@ -1,0 +1,33 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+<style>
+body{padding:20px;}
+</style>
+</block>
+<block name="main">
+<table class="table table-hover">
+    <thead>
+        <tr style="background-color: #eee">
+            <th style="text-align: left;width: 60%;">消息内容<a href="{:U('user/admin/Message/yewumsg')}">  【返回】</a></th>
+            <th style="width: 20%;">时间</th>
+            <th style="width: 20%;">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <volist name="list" id="vo">
+                <tr>
+                    <td style="font-size:12px;padding:0 5px;vertical-align:middle;height:50px;;text-align: left;width: 60%;">&emsp;<a style="color: #1596AD" href="{:U('user/admin/Message/yewumsgeditdetail',array('id'=>$vo['id']))}">{$vo.title}</a></td>
+                    <td style="font-size:12px;padding:0 5px;vertical-align:middle;height:50px;;text-align:center;width: 20%;">{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                    <td style="font-size:12px;padding:0 5px;vertical-align:middle;height:50px;;text-align:center;width: 20%;">
+                        <a style="color: #1596AD" href="{:U('user/admin/Message/yewumsgeditdetail',array('id'=>$vo['id']))}">详情</a>
+                        <a style="color: #1596AD" class="ajax-get" href="{:U('user/admin/Message/yewumsgdel',array('title'=>$vo['title'],'create_time'=>$vo['create_time'],'type'=>$vo['type']))}">删除</a>
+                    </td>
+                </tr>
+        </volist>
+    </tbody>
+</table>
+<div style="float: right;">{$page}</div>
+</block>
+<block name="script">
+    
+</block>

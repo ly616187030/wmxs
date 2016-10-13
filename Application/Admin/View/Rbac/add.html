@@ -1,0 +1,98 @@
+
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+    <div class="builder builder-list-box panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li ><a href="{:U('index')}">角色管理</a></li>
+                    <li class="active"><a href="javascript:void(0);" style="color:#287DDE;">添加角色</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- 标签页导航 -->
+        <div class="tab-wrap" style="margin-top: 50px;">
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('add_post')}" method="post" class="form-horizontal ">
+
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">角色名称：</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="name">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+                    
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">角色描述：</label>
+
+                        <div class="col-sm-3">
+
+                            <textarea class="form-control" rows="3" name="remark" maxlength="120" placeholder=""></textarea>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">状态：</label>
+
+                        <div class="col-sm-8">
+                            <label class="radio-inline" for="active_true">
+                                <input type="radio" name="status" id="active_true" value="1" checked>开启
+                            </label>
+                            <label class="radio-inline" for="active_false">
+                                <input type="radio" name="status" id="active_false" value="0">禁用
+                            </label>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label sr-only"></label>
+
+                        <div class="col-sm-3">
+
+                            <button class="btn submit-btn ajax-post btn-info" id="submit" type="submit" target-form="form-horizontal">添 加</button>
+
+                            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <style>
+        body{
+            padding:40px 20px;
+        }
+    </style>
+</block>
+<block name="main">
+
+    <div class="row">
+        <div class="col-sm-2" style="margin-left:50px;width: auto;padding: 6px 35px 6px 35px;font-size:16px;">编辑奖励</div>
+    </div>
+    <form action="{:U('edit')}" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 50px;">
+
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">奖励名称：</label>
+            <input type="hidden" value="{$award.award_id}" name="award_id">
+            <div class="col-sm-2">
+                <select class="form-control" name="award_name" id="chose">
+                    <option value="" style="display: none;">请选择奖励类型</option>
+                    <!--<option value="获得积分"  <eq name="award.award_name" value="获得积分">selected="selected"</eq>>获得积分</option>-->
+                    <option value="获得红包" <eq name="award.award_name" value="获得红包">selected="selected"</eq>>获得红包</option>
+                    <option value="获得现金红包" <eq name="award.award_name" value="获得现金红包">selected="selected"</eq>>获得现金红包</option>
+                </select>
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group" id="time" style="display: none;">
+            <label class="col-sm-2 control-label">红包有效期：</label>
+            <div class="col-sm-2">
+                <input readonly="readonly" type="text" id="time-start" name="award_time" class="form-control" value="{$award.award_time|date='Y-m-d',###}"/>
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">奖励额度：</label>
+            <div class="col-sm-1">
+                <input type="text"  name="award_price" class="form-control " value="{$award.award_price}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">奖励获得方式：</label>
+            <div class="col-sm-3">
+                <label class="radio-inline">
+                    <input type="radio" name="award_status"  value="0" <eq name="award.award_status" value="0">checked</eq>> 关注公众号
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="award_status"  value="1" <eq name="award.award_status" value="1">checked</eq> > 注册会员
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">&nbsp;</label>
+
+            <div class="col-sm-4">
+
+                <button class="btn submit-btn ajax-post btn-success" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                <button class="btn btn-return btn-success " onclick="history.back(-1);return false;">返 回</button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#time-start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+            var chose = $('#chose').val();
+            if(chose =="获得红包"){
+                $('#time').show();
+            }else{
+                $('#time').hide();
+                $('#time-start').val('');
+            }
+        })
+
+        $('#chose').change(function(){
+            var $this = $(this);
+            if($this.val()=="获得红包"){
+                $('#time').show();
+            }else{
+                $('#time').hide();
+                $('#time-start').val('');
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            highlight_subnav("{:U('Share/index')}");
+        })
+    </script>
+</block>

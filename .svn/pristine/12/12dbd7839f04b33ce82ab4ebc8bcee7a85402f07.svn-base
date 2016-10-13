@@ -1,0 +1,321 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+
+    <div class="row">
+        <div class="col-sm-2" style="margin-top: 20px;margin-left:50px;width: auto;padding: 6px 35px 6px 35px;font-size:16px;">编辑站点范围</div>
+    </div>
+    <div class="cf" style="margin-top: 50px;">
+        <form action="{:U('edit')}" method="post" class="form-horizontal">
+            <input type="hidden" name="range_id" value="{$list.range_id}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">站点名称：</label>
+                <div class="col-sm-2">
+                    <input type="text" name="range_name" class="form-control" value="{$list.range_name}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">负责人名称：</label>
+                <div class="col-sm-1">
+                    <input type="text" name="charge" class="form-control" value="{$list.charge}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">联系电话：</label>
+                <div class="col-sm-2">
+                    <input type="text" name="phone" class="form-control" value="{$list.phone}"/>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="col-sm-2 control-label">所属省：</label>
+                <div class="col-sm-2">
+                    <select class="form-control"  id="province" name="province" >
+                        <option value="">省份</option>
+                        <volist name="_province" id="vo">
+                            <option value="{$vo.code}" <eq name="vo.code" value="$list.province">selected="selected"</eq> >{$vo.name}</option>
+                        </volist>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" name="city" id="city">
+                        <empty name="list.city">
+                            <option>地级市</option>
+                            <else/>
+                            <option value="{$list.city}">{$list.city|get_city_name="city",###}</option>
+                        </empty>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" id="town" name="area">
+                        <empty name="list.area">
+                            <option>区、县</option>
+                            <else/>
+                            <option value="{$list.area}">{$list.area|get_city_name="town",###}</option>
+                        </empty>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">详细地址：</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control"  name="dizhi" data-toggle="modal" data-target="#myModal" value="{$list.dizhi}" >
+                    <input type="hidden" class="form-control"  name="lng" value="{$list.lng}" >
+                    <input type="hidden" class="form-control"  name="lat" value="{$list.lat}" >
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">绘制范围：</label>
+                <div class="col-sm-3">
+                    <textarea type="text" rows="5" readonly="true"  class="form-control" name="range"  id="store_range"  data-zbj="{$list.range}">{$list.range}</textarea>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 50px">
+                <label class="col-sm-2 control-label" >&nbsp;</label>
+                <div class="col-sm-4">
+                    <button  type="submit" id="submit" class="btn btn-info ajax-post" target-form="form-horizontal">保  存</button>
+                    <button class="btn btn-info" onclick="history.back(-1);return false;">取 消</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="form-group bdmap-header" >
+                    <div class="modal-body" id="container" style="height: 500px;width: 100%;"></div>
+                    <div class="modal-footer">
+                        <input id = 'input' value = '点击地图显示地址'  class="form-control" style="width: 410px;float: left">
+                        <input type="hidden" id="lnglat" class="form-control">
+                        <input type="hidden"  id="lng" class="form-control">
+                        <button type='button' class='btn btn-default' id="queding" data-dismiss='modal'>确定</button>
+                        <button type='button' class='btn btn-default' data-dismiss='modal'>关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="http://webapi.amap.com/maps?v=1.3&key=e2b70eddc67205c44f1486cd2ed4b9d3"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#queding').click(function(){
+                var index = $('#input').val();
+                var lng = $('#lnglat').val();
+                var lat = $('#lng').val();
+                $("input[name='dizhi']").val(index);
+                $("input[name='lng']").val(lng);
+                $("input[name='lat']").val(lat);
+            })
+            var map = new AMap.Map('container',{
+                resizeEnable: true,
+                zoom: 14,
+                center: [109.845664, 40.666166]
+            });
+            AMap.plugin('AMap.Geocoder',function(){
+                var geocoder = new AMap.Geocoder({
+                    city: "包头"//城市，默认：“全国”
+                });
+                var marker = new AMap.Marker({
+                    map:map,
+                    bubble:true
+                })
+                map.on('click',function(e){
+                    marker.setPosition(e.lnglat);
+                    geocoder.getAddress(e.lnglat,function(status,result){
+                        if(status=='complete'){
+                            document.getElementById('input').value = result.regeocode.formattedAddress
+                        }
+                    })
+                })
+
+            });
+            //为地图注册click事件获取鼠标点击出的经纬度坐标
+            var clickEventListener = map.on('click', function(e) {
+                document.getElementById("lnglat").value = e.lnglat.getLng();
+                document.getElementById("lng").value = e.lnglat.getLat();
+            });
+            var auto = new AMap.Autocomplete({
+                input: "tipinput"
+            });
+            AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+            function select(e) {
+                if (e.poi && e.poi.location) {
+                    map.setZoom(15);
+                    map.setCenter(e.poi.location);
+                }
+            }
+
+        });
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <!--百度地图-->
+    <div id="bdmap1" class="form-horizontal"  style="display:none;">
+        <div class="bdmap-header form-group" style="margin-top: -5px;">
+            <label class="col-sm-7 control-label"></label>
+            <if condition="($data.distribution_range eq null)">
+                <div class="col-sm-2"><button  id="id_cxhz"></button></div>
+                <else />
+                <div class="col-sm-2"></div>
+            </if>
+            <div class="col-sm-2"><button id="id_doing" class="btn btn-primary">确定绘制</button></div>
+            <div class="col-sm-1"><a href="javascript:;" id="closeBdmap"><span class="glyphicon glyphicon-remove"></span></a></div>
+        </div>
+        <div class="bdmap-body" >
+            <!--<div id="bdmapshow"></div>-->
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__JS__/store.js"></script>
+    <script type="text/javascript" src="__STATIC__/ztools.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/libs/ztools.js"></script>
+
+    <script type="text/javascript">
+
+
+
+        var url="{:U('MenuPct/getCity','',false)}";
+
+        var curl="{:U('MenuPct/getTown','',false)}";
+
+
+
+        ztools.getPctMenu({"p_url":url,"c_url":curl});
+
+
+
+
+        var pointsCount; //坐标对象
+        var mouseTool; //鼠标绘制对象
+        var marker = [];
+        var editorTool; //图形编辑对象
+        var mapObj;  //地图对象
+        var arrarr = new Array(); //构建多边形经纬度坐标数组
+        //点击文本框事件
+        $("#store_range").click(function(){
+            bdmap=$("<div id=\"bdmapshow\"></div>");
+            $("div.bdmap-body").append(bdmap);
+            $("#bdmap1").css({
+                "position":"absolute",
+                "top":($(window).height()/2)-240,
+                "left":($(window).width()/2)-360,
+                "width":700,
+                "height":470,
+                "background":"#fff",
+                "borderRadius":"10",
+                "box-shadow":"0 0 3px rgba(0,0,0,0.6)",
+                "z-index":99,
+                "padding-top":"10px",
+                "border-radius":"10px"
+            }).show();
+            maskshow();
+            $("#bdmapshow").css("height",400);
+            searchLocal();
+        })
+
+
+
+        $("#closeBdmap").click(function(){
+            $("#bdmap1").hide();
+            bdmap.remove();
+            maskhide();
+        });
+
+
+        //确认事件
+        $("#id_doing").click(function(){
+            var zbj = $('#store_range').data('zbj');
+            if(zbj == null || zbj == ''){
+                $('#store_range').val(pointsCount.toString());
+            }else{
+                $('#store_range').val(arr.join(","));
+                editorTool.close();
+            }
+            $("#closeBdmap").click();
+        });
+
+
+
+        //地图初始化
+        function searchLocal(){
+            var dili = $('#town').find("option:selected").text();
+            mapObj = new AMap.Map('bdmapshow', {
+                resizeEnable: true,
+                zoom: 13
+            });
+            mapObj.setCity(dili);
+            //在地图中添加ToolBar插件
+            mapObj.plugin(["AMap.ToolBar"], function () {
+                toolBar = new AMap.ToolBar();
+                mapObj.addControl(toolBar);
+            });
+
+            var marker = new AMap.Marker({
+                position: mapObj.getCenter()
+            });
+            marker.setMap(mapObj);
+            set_graph();
+
+
+
+        }
+        // 绘制多边形
+        function set_graph(){
+            var zuobiao = $('#store_range').val();
+                arr = [];
+                strs=zuobiao.split(","); //字符分割
+                for (i=0;i<strs.length ;i+=2 )
+                {
+                    arr.push([strs[i],strs[i+1]]);
+                }
+                var polygon = new AMap.Polygon({
+                    map: mapObj,
+                    path: arr,
+                    strokeColor: "#0000ff",
+                    strokeOpacity: 1,
+                    strokeWeight: 3,
+                    fillColor: "#f5deb3",
+                    fillOpacity: 0.35
+                });
+                //添加编辑控件
+                mapObj.plugin(["AMap.PolyEditor"], function() {
+                    editorTool = new AMap.PolyEditor(mapObj, polygon);
+                });
+                editorTool.open();
+        }
+
+        //显示地图
+        function maskshow(){
+            if($("#maskDiv").length<=0){
+                maskdiv=$("<div id=\"maskDiv\"></div>");
+                $("body").append(maskdiv);
+                maskdiv.css({"position":"absolute","top":0,"left":0,"height":$(document).height(),"width":$(document).width(),"backgroundColor":"#000","opacity":"0.6","zIndex":88});
+            }else{
+                maskdiv.show();
+            }
+        }
+        //隐藏地图
+        function maskhide(){
+            maskdiv.hide();
+        }
+    </script>
+</block>

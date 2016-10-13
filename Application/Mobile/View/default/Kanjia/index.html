@@ -1,0 +1,41 @@
+<extend name="Base/common-2" />
+<block name="style">
+    <style>
+        #list ul li{
+            height: 2em;
+            line-height: 2em;
+            font-size: 0.7em;
+            border-bottom: 1px solid darkred;
+            white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+        }
+    </style>
+</block>
+<block name="body">
+    <div id="div" style="background-image: url('__IMG__/img/kanjia.png'); position: absolute; width:100%;  background-repeat: no-repeat; background-size: 100% 100%;">
+        <div id="aaa" style=" width: 36%; height: 7.2%; font-size: 1.1em; top: 38%; position: absolute; left: 29%; text-align: center; background-size: 42% 8%; background-repeat: no-repeat;">
+            <div id="shop_name" style="top: 25%; position: relative;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">{$store_name}</div>
+        </div>
+        <div id="btn" style="width: 85%; height: 8.5%; position: absolute; top: 63%; left: 7.6%;"></div>
+        <div style="position: absolute; top:28em; left: 1em; color: darkred;">
+            <ul>
+                <li>活动规则</li>
+                <li>1、每次只能参加一个店铺活动</li>
+                <li>2、邀请的朋友越多，砍价越高</li>
+                <li>3、砍到最低价时，将不能再砍</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#div').css('height', $(window).height()+'px');
+            var price = '{$price}',openid='{$openid}',kanjiaid='{$kanjiaid}';
+            $('#btn').click(function(){
+                $.get("{:U('indexx')}",{price:price,openid:openid,kanjiaid:kanjiaid}).success(function(data){
+                    if(data.status==true){
+                        window.location.href="{:U('detail','',false)}/kanjia_id/"+kanjiaid+"";
+                    }
+                })
+                })
+        })
+    </script>
+</block>

@@ -1,0 +1,66 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+	<style>
+		body{
+			margin:30px;
+		}
+	</style>
+</block>
+
+<block name="main">
+	<div class="cf">
+	</div>
+	<div class="data-table table-striped">
+		<form class="ids">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>店铺ID</th>
+						<th>店铺名称</th>
+						<th>所属商圈</th>
+						<th>服务电话</th>
+                        <th>订单取消状态</th>
+                        <th>订单取消时间（分钟）</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<notempty name="list">
+						<volist name="list" id="_data">
+							<tr>
+								<td>{$_data.store_id}</td>
+								<td>{$_data.store_name}</td>
+								<td>{$_data.sq_name}</td>
+								<td>{$_data.service_call}</td>
+                                <td>
+                                    <if condition="$_data.order_deft eq 0">
+                                        随时取消
+                                        <elseif condition="$_data.order_deft eq 1"/>
+                                        电话取消
+                                        <elseif condition="$_data.order_deft eq 2"/>
+                                        默认时间自动取消
+                                    </if>
+                                </td>
+                                <td>{$_data.order_dct}</td>
+									<td>
+										<a title="设置订单取消" href="{:U('edit?store_id='.$_data['store_id'])}">设置</a>
+									</td>
+
+								</empty>
+
+								
+							</tr>
+						</volist>
+						<else/>
+						<td colspan="7" class="text-center"> aOh! 暂时还没有内容! </td>
+					</notempty>
+				</tbody>
+			</table>
+		</form>
+		<div class="page">{$page}</div>
+	</div>
+	<block name="script">
+		<script type="text/javascript">
+		</script>
+	</block>

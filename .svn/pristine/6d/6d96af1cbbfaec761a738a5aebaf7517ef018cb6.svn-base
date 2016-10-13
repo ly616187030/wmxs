@@ -1,0 +1,213 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <link href="__CSS__/mui.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .mui-bar{
+            height: 44px;
+        }
+        .mui-ellipsis{
+            font-size: 10px;
+            color: orangered;
+        }
+        .mui-segmented-control{
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+        .mui-segmented-control .mui-control-item{
+            color: #333;
+            border-color: #ddd;
+            border-left: 1px solid #ddd;
+            font-size: 13px;
+        }
+    </style>
+</block>
+<block name="body">
+    <div style="width: 100%;height: 100%;background-color: #333;position: fixed;z-index: 5;display: none; opacity: 0.5" id="zhezao"></div>
+    <header class="mui-bar mui-bar-nav" style="position: fixed;z-index: 10">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left text-white" href="javascript:history.back()"></a>
+        <h1 class="mui-title">预定</h1>
+        <a class="mui-icon mui-icon-right-nav mui-pull-right mui-icon-search"></a>
+    </header>
+    <div class="mui-content">
+        <div id="slider" class=" ">
+            <div class="mui-segmented-control" style="position: fixed;top: 44px;z-index: 10">
+                <div id="segmentedControl" class="mui-segmented-control" style="">
+                    <a class="mui-control-item" id="quan_click">
+                        全部区域<i class="mui-icon mui-icon-arrowdown" style="font-size: 13px"></i>
+                    </a>
+                    <a class="mui-control-item" id="category_click">
+                        全部菜系<i class="mui-icon mui-icon-arrowdown" style="font-size: 13px"></i>
+                    </a>
+                    <input type="hidden" name="sqid" value="">
+                    <input type="hidden" name="cid" value="">
+                </div>
+                <div class="mui-table-view" style="display:none ; max-height: 260px;overflow: auto; font-size: 13px" id="list">
+                    <ul id="quan">
+                        <li class="mui-table-view-cell" data-sqid="">全部区域</li>
+                        <volist name="quan" id="vo">
+                       <li class="mui-table-view-cell" data-sqid="{$vo.sq_id}">{$vo.sq_name}</li>
+                        </volist>
+                    </ul>
+                    <ul id="category">
+                        <li class="mui-table-view-cell" data-cid="">全部菜系</li>
+                        <volist name="category" id="vp">
+                        <li class="mui-table-view-cell" data-cid="{$vp.store_c_id}">{$vp.store_c_name}</li>
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            <ul class="mui-table-view" style="margin-top: 43px" id="store">
+                <volist name="store" id="vt">
+                    <li class="mui-table-view-cell mui-media">
+                        <a href="{:U('myyuding?store_id='.$vt['store_id'])}">
+                            <img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png"  data-original="{$vt.store_logo_id|get_cover='path'}" style="width: 5em;height: 4em">
+                            <div class="mui-media-body">
+                                {$vt.store_name}
+                                <div style="font-size: 10px; color: #333">
+                                    <span style="color: red">营业时间： {$vt.timea}-{$vt.timeb}</span>
+                                </div>
+                                <div style="font-size: 10px; color: #333">
+                                    <span>{$vt.address_detail}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+            <div style="background-color: orangered;width: 40px;height: 40px;position: fixed;bottom: 50px;right: 10px;opacity: 0.5;z-index: 10;text-align: center;line-height: 40px;font-size: 40px">
+                <a class="fa fa-user" href="{:U('ydlist')}"></a>
+            </div>
+        </div>
+    </div>
+    <script src="__JS__/jquery.lazyload.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            $('img.lazy').lazyload({
+                effect:'fadeIn'
+            });
+            //选项卡样式
+            $('#quan_click').click(function(){
+                if($('#list').css('display')=='none'){
+                    $('#zhezao').show();
+                    $('#list').show();
+                }else if($('#category').css('display')=='block')
+                {
+                    $('#list').show();
+                    $('#zhezao').show();
+                }else{
+                    $('#list').hide();
+                    $('#zhezao').hide();
+                }
+                $('#quan').show();
+                $('#category').hide();
+            })
+            $('#category_click').click(function(){
+                if($('#list').css('display')=='none'){
+                    $('#list').show();
+                    $('#zhezao').show();
+                }else if($('#quan').css('display')=='block')
+                {
+                    $('#list').show();
+                    $('#zhezao').show();
+                }else{
+                    $('#list').hide();
+                    $('#zhezao').hide();
+                }
+                $('#quan').hide();
+                $('#category').show();
+            })
+            $('#zhezao').click(function(){
+                $('#zhezao').hide();
+                $('#list').hide();
+            });
+            $.each($('#quan li'),function(){
+                $(this).click(function(){
+                    $('#quan li').css('color','#000')
+                    $(this).css('color','orangered');
+                    $('#quan_click').html($(this).text()+'<i class="mui-icon mui-icon-arrowdown" style="font-size: 13px"></i>');
+                    $('#zhezao').hide();
+                    $('#list').hide();
+                    var sqid = $(this).data('sqid');
+                    $('#segmentedControl input[name="sqid"]').val(sqid);
+                    cxstore();
+                })
+            });
+            $.each($('#category li'),function(){
+                $(this).click(function(){
+                    $('#category li').css('color','#000')
+                    $(this).css('color','orangered');
+                    $('#category_click').html($(this).text()+'<i class="mui-icon mui-icon-arrowdown" style="font-size: 13px"></i>');
+                    $('#zhezao').hide();
+                    $('#list').hide();
+                    var cid = $(this).data('cid');
+                    $('#segmentedControl input[name="cid"]').val(cid);
+                    cxstore();
+                })
+            });
+             numm=0;
+            $(window).scroll(function(){
+                if($(this).scrollTop()+$(this).height()+10 >=$(document).height()){
+                numm += 8;
+                    $.get("{:U('index')}",{numm:numm},function(data){
+                        var store = '';
+                        if(data!==null){
+                            for(var i=0;i<data.length;i++){
+                                store +='<ul class="mui-table-view store"><li class="mui-table-view-cell mui-media">' +
+                                        '<a href="{:U(\'myyuding\',\'\',false)}/store_id/'+data[i]['store_id']+'"> ' +
+                                        '<img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png" data-original="'+data[i]['path']+'" style="width: 5em;height: 4em"> ' +
+                                        '<div class="mui-media-body">'+data[i]['store_name']+'<div style="font-size: 10px; color: #333"> ' +
+                                        '<span style="color: red">营业时间： '+data[i]['timea']+'-'+data[i]['timeb']+'</span> </div> <div style="font-size: 10px; color: #333">' +
+                                        ' <span>'+data[i]['address_detail']+'</span>' +
+                                        ' </div> ' +
+                                        '</div>' +
+                                        ' </a> ' +
+                                        '</li></ul>'
+                            }
+                            $('#store').after(store);
+                            $('img.lazy').lazyload({
+                                effect:'fadeIn'
+                            });
+                        }else{
+                                return false;
+                        }
+                    })
+                }
+            });
+        })
+        function cxstore(){
+            var sqid = $("#segmentedControl input[name='sqid']").val();
+            var cid = $("#segmentedControl input[name='cid']").val();
+            numm=0;
+            $.post("{:U('index')}",{sqid:sqid,cid:cid},function(data){
+                var store = '';
+                $('.store').html('');
+                if(data!==null){
+                for(var i=0;i<data.length;i++){
+                    var tdata = data[i]['timea'][1];
+                    if(tdata){
+                       var timedata = ','+data[i]['timea'][1]+'-'+data[i]['timeb'][1];
+                    }else{
+                        var timedata = '';
+                    }
+                    store +='<li class="mui-table-view-cell mui-media">' +
+                            '<a href="{:U(\'myyuding\',\'\',false)}/store_id/'+data[i]['store_id']+'"> ' +
+                            '<img class="mui-media-object mui-pull-left lazy" src="__IMG__/u22_normal.png" data-original="'+data[i]['path']+'" style="width: 5em;height: 4em"> ' +
+                            '<div class="mui-media-body">'+data[i]['store_name']+'<div style="font-size: 10px; color: #333"> ' +
+                            '<span style="color: red">营业时间： '+data[i]['timea']+'-'+data[i]['timeb']+'</span> </div> <div style="font-size: 10px; color: #333">' +
+                            ' <span>'+data[i]['address_detail']+'</span>' +
+                            ' </div> ' +
+                            '</div>' +
+                            ' </a> ' +
+                            '</li>'
+                }
+                $('#store').html(store);
+                    $('img.lazy').lazyload({
+                        effect:'fadeIn'
+                    });
+                }else{
+                    return false;
+                }
+            })
+        }
+    </script>
+</block>

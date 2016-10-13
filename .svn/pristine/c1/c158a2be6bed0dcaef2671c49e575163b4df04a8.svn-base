@@ -1,0 +1,1772 @@
+<extend name="Base/common_zhgIndex"/>
+
+<block name="body_zhgIndex">
+
+
+    <style>
+        .radioOffline20{
+            background-color: red;
+            color: #ffffff;
+        }
+        .time{
+            border: 1px solid #e1e1e1;
+            border-top: none;
+            background-color: #fef1ec;
+            width:220px;
+            padding:0px;
+            display:none;
+            position: absolute;
+            z-index: 888;
+        }
+        .date div{padding:0px; margin:0px;float:left;}
+        .time div{padding:0px; margin:0px;float:left;}
+        .time li{ padding:0px; margin:0px; }
+        .time li{
+            list-style-type: none;
+            height:45px;
+            line-height: 45px;
+            width: 200px;
+            border-bottom: 1px solid #ccc;
+            padding: 0px 10px 0px 10px;
+            font-size: 12px;
+        }
+        .time li a{
+            font-size: 15px;
+            text-decoration: none;
+            float:left;
+        }
+        .time li span{
+            float:right;
+            padding-right: 15px;
+            color: #009023;
+        }
+        .myDate{width: 90%;height: 45px;background: #fff;line-height: 45px;font-size: 16px;padding: 0 10px;border-bottom: 1px solid #ccc;}
+        .myDate a{text-decoration: none; color: #000}
+        .myDate span{float: right;}
+        .myDate .date{float:left;width:85%;height: 45px;line-height: 45px; font-size: 14px;}
+        .date div a{font-size: 15px;}
+        .date span{color: #009023;font-size: 13px;}
+        #search{
+            position: relative;
+        }
+        .address{
+            position:absolute;
+            width:390px;
+            background:#fff;
+            z-index: 888;
+            padding:0px 10px 10px 10px;
+            box-shadow: 2px 2px 1px 2px rgba(0,0,0,.4);
+        }
+        .address p{
+            width:100%;
+            height:40px;
+            line-height: 40px;
+            border-bottom: 1px solid #ccc;
+            padding:0px;
+            margin:0px;
+        }
+        .type{
+            width:75%;
+            height:100%;
+            background-color:#000;
+            -moz-opacity:0.8;
+            opacity: 0.8;
+            position:absolute;right:-65%;top:0px;
+            z-index: 9999;
+        }
+        .info{
+            width:15%;
+            position:absolute;left:50px;top:200px;
+            padding: 10px;
+        }
+        .edit{
+            display:inline-block;
+            width:5em;
+            height:2em;
+            line-height: 2em;
+            background:#000;
+            -moz-opacity:0.5;
+            opacity: 0.5;
+            text-align: center;
+            font-size:16px;
+            color:#fff;
+            text-decoration: none;
+            margin: 5em 0em 0em 0em;
+        }
+        .edit:hover{
+            color:#fff;
+            text-decoration: none;
+        }
+        .address:before {
+            content: "请从下拉列表中选择您的用餐地址";
+            color: #ff2d4b;
+            font-weight: bold;
+            font-size:1.2em;
+            padding: 10px 0px;
+            display: block;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        .order-go:hover{
+            cursor: pointer;
+        }
+
+
+        .address-select-inner {
+            /*margin-right: 65px;*/
+        }
+
+        .address-loading {
+            /*padding-right: 18px;*/
+            background: url('/Content/themes/img/loading_v2.gif') no-repeat right center !important;
+            width: 249px;
+            padding-right: 31px;
+            /*margin-right: 65px;*/
+        }
+
+        .address-select-down {
+            width: 290px;
+            border: 1px solid #afaeac;
+            /*padding: 5px;*/
+            background: #fff;
+        }
+
+        .address-select-down > li {
+            min-height: 20px;
+            border-bottom: 1px solid #a9a9a9;
+            background-color: #FFF;
+            line-height: 20px;
+            padding: 5px 8px;
+        }
+
+        .address-select-down > li span {
+            color: #363636;
+            font-size: 13px;
+            margin-right: 6px;
+        }
+
+        .address-select-down > li i {
+            font-style: normal;
+            color: #a9a9a9;
+            font-size: 12px;
+        }
+
+        .address-select-down > li:active span {
+            color: #F94C4C;
+        }
+
+        .address-select-down > li:active i {
+            color: #F94C4C;
+        }
+        .zdaa{
+            cursor: pointer;text-align: center;color: red;font-size: 1.2em;
+        }
+        .height{
+            height: 83px;
+        }
+    </style>
+
+
+        <div class="main top-line">
+            <div class="step3"></div>
+            <div class="storeslogo pic left-main">
+                <div class="logofixed">
+                    <div class="logofixed1">
+                        <img src="{$_store_info.store_logo_id|get_cover=###,'path'}" onerror="" style="width:113px;" title="{$_store_info.store_name}">
+                    </div>
+                </div>
+            </div>
+            <div class="right-main">
+                <div class="order-info">
+                    <h1 name="">送餐信息确认</h1>
+                    <div class="order-ltem">
+                        <div class="siteboo">
+                            <div class="sitetxt">
+                                <em style="color: red">*</em>送餐地址：<b class="dizhi cmodule-info current_addr zdaa" data-target="#myModal" data-toggle="modal">
+                                <if condition="$_address neq ''">
+                                    {$_address.detail_address}
+                                    <else/>
+                                    请选择地址
+                                </if>
+
+                                    </b>
+                               <input type="hidden"  id="address_id" value="{$_address.address_id|default=''}" data-lng="" data-lat=""/>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="order-ltem">
+                        <em style="color: red">*</em><span>
+                        就餐人数：
+                        <input data-val="true"  id="txtDinesPersonNum" name="DinesPersonNum" style="width:69px;z-index:100;position:relative;padding:0px;border: none" type="text" value="请选择人数" />
+                        <select style="width: 90px; position: relative; left: -77px; z-index: 1; height: 36px; margin-top: -2px;" id="ddlDinesPersonNum">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </span>
+                        <span class="field-validation-valid" data-valmsg-for="DinesPersonNum" data-valmsg-replace="true" style="margin-left:-80px"></span>
+                    </div>
+                    <div class="order-ltem">
+                        <span class="jctime"><em class="red">*</em>送餐时间：</span>
+                        <div class="time-warp">
+                            <div>
+
+                                <div class="dateTime">
+                                    <div class="dt-list dt-date" style="display: block;">
+                                        <span  style="width:170px;"><em></em><i class="down-icon "></i></span>
+                                        <ul  id="dateSelect" style="display:none;">
+                                        </ul>
+                                    </div>
+
+                                    <div class="dt-list dt-time" style="display: block;">
+                                        <span class="disabled" style="width:208px;" ><em  class="idle"></em><i class="down-icon" ></i></span>
+                                        <ul style="display:none;width:208px;overflow:auto;"   id="timeSelect">
+                                        </ul>
+                                    </div>
+                                    <div style="display: none; float: left; margin-left: 20px; color: rgb(226, 120, 120);" data-bind="text: $root.getSentImmediateTimeDiff()&gt;=120&amp;&amp;$root.getSentImmediateTimeDiff()&lt;150&amp;&amp;ShowData.isShowGaofengqiInfo()?'用餐高峰期':'', visible: $root.getSentImmediateTimeDiff()&gt;=120&amp;&amp;$root.getSentImmediateTimeDiff()&lt;150&amp;&amp;ShowData.isSentImmediate()&amp;&amp;ShowData.isShowGaofengqiInfo()"></div>
+                                </div>
+
+                                <input data-val="true" data-val-required="请选择送餐时间方式" id="DeliveryType" name="DeliveryType" type="hidden" value="Appointment">
+                                <input id="DeliveryDate" name="DeliveryDate" type="hidden" value="2015-10-28">
+                                <input id="DeliveryTime" name="DeliveryTime" type="hidden" value="11:31">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-alipy">
+                    <h1>支付方式</h1>
+                    <div class="order-ltem">
+                    <span>
+                        <input checked="checked" class="radio2" id="radioOnLine" name="PaymentType" type="radio" value="1" />
+                        <label for="radioOnLine" class="zxzf radioOffline20"><b style="font-size: 14px;">在线支付<!--<em id="onLinePayAlt" style="color: #ffffff">9.8折</em>--></b></label>
+                        <input  class="radio2" data-val="true" data-val-required="请选择支付方式" id="radioOffline" name="PaymentType" type="radio" value="0" />
+                        <label for="radioOffline" class="hdfk "><b style="font-size: 14px;">货到付款</b></label>
+                        <span class="field-validation-valid" data-valmsg-for="PaymentType" data-valmsg-replace="true"></span>
+                    </span>
+                    </div>
+                </div>
+                <div class="order-menu" style="width: 100%">
+
+                    <div class="menu-box">
+                        <div class="menu-title"><strong>菜单信息</strong>|<a href="{:U('Stores/index','',false)}/store_id/{$_store_info.store_id}" style="color: red">返回修改菜单</a></div>
+                        <div class="menu-header">
+                            <span class="text-left">菜品</span>
+                            <span>单价</span>
+                            <span>数量</span>
+                            <span>小计</span>
+                        </div>
+
+                        <div class="menu-List">
+                            <volist name="store_list" id="vo">
+                                <div class="MenuGroupWrap">
+                                    <div class="MenuGroupTitle"><em class="GroupTitle">{$vo.category_name}</em>（<em class="GroupTitleNum">{$vo.count}</em>）<i class=""></i></div>
+                                    <volist name="vo.child" id="cvo">
+                                    <div class="MenuItemWrap" style="display: block;" id="basketlist_{$cvo.id}" data-id="{$cvo.id}" title="{$cvo.name}" data-storeid="{$cvo.storeid}" data-price="{$cvo.price}" data-img="{$cvo.images}" data-storename="{$cvo.storename}" data-categoryid="{$vo.category_id}" data-categoryname="{$vo.category_name}">
+                                        <div class="MenuItems" pannum="0" meatnum="0" vegetariannum="0" eatperone="0.25">
+                                            <span class="Menu-ItemName text-left " style="height: 26px; text-overflow: ellipsis; white-space: nowrap; overflow:hidden; "  title="{$cvo.name}">{$cvo.name}</span>
+                                            <span class="c-price">￥<b>{$cvo.price}</b></span>
+                                            <span class="wrap-input"><a class="btn-minus" href="javascript:;" style="visibility: hidden;">-</a><b class="amount" limitnum="99">{$cvo.count}</b><a class="btn-add" href="javascript:;" style="visibility: hidden;">+</a></span>
+                                            <span class="subtotal cdish-total"><a href="javascript:;">￥<em>{$cvo.subtotal}</em></a></span>
+                                        </div>
+
+                                    </div>
+                                    </volist>
+                                </div>
+
+                            </volist>
+                            <div class="MenuGroupWrap">
+                                <div class="MenuGroupTitle"><em class="GroupTitle">餐盒费</em><i></i></div>
+                                <div class="MenuItemWrap">
+                                    <div class="MenuItems">
+                                        <span class="Menu-ItemName text-left">餐盒费</span>
+                                        <span class="c-price"></span>
+                                        <span class="wrap-input"></span>
+                                        <span class="subtotal"><a href="javascript:;">￥<em>{$canjutotal}</em></a></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <notempty name="canju_num">
+                                <div class="MenuGroupWrap">
+                                    <div class="MenuGroupTitle"><em class="GroupTitle">器具租用</em>（<em class="GroupTitleNum">{$canju_num}</em>）<i></i></div>
+                                    <div class="MenuItemWrap">
+                                        <div class="MenuItems">
+                                            <span class="Menu-ItemName text-left" title="器具套装（3日内回收）">器具套装（3日内回收）</span>
+                                            <span class="c-price">￥<b>{$canju_yj}.00</b>（押金 ）</span>
+                                            <span class="wrap-input"><a class="btn-minus-q" href="javascript:;" style="visibility: hidden;">-</a><b  class="amount-q">{$canju_num}</b><a class="btn-add-q" href="javascript:;" style="visibility: hidden;">+</a></span>
+                                            <span class="subtotal"><a href="javascript:;">￥<em>{$canju_total}.00</em></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </notempty>
+
+                            <!--优惠活动-->
+                            <notempty name="yhdesc">
+                                <div class="MenuGroupWrap">
+                                    <div class="MenuGroupTitle"><em class="GroupTitle">优惠活动</em><i></i></div>
+                                    <volist name="yhdesc" id="vo">
+                                        <switch name="vo.promotion_type">
+                                            <case value="0">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">{$vo.promotion_name}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                            <case value="1">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">{$vo.promotion_name}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                            <case value="2">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">{$vo.promotion_name}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                            <case value="3">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">{$vo.promotion_name}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                            <case value="4">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">{$vo.promotion_name}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                            <case value="5">
+                                                <div class="MenuItemWrap">
+                                                    <div class="MenuItems">
+                                                        <span class="Menu-ItemName text-left" style="width:100%;color:orangered;font-size:1.2em;font-weight: bold;">首单减{$vo.shou_jian}</span>
+                                                    </div>
+                                                </div>
+                                            </case>
+                                        </switch>
+                                    </volist>
+
+                                </div>
+                            </notempty>
+
+                        </div>
+
+                    </div>
+
+                    <div class="other-line">
+                        <div class="gbook">
+                        <textarea cols="20" data-val="true" data-val-length="该项长度不能超过500" data-val-length-max="500" id="Remark" name="Remark" placeholder="给商家留言" rows="2">
+</textarea>
+                            <span class="field-validation-valid" data-valmsg-for="Remark" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="divother-info" style="float: right; text-align: right;">
+                            <p>菜品金额：<span>￥<em class="jine">{$store_total}</em></span></p>
+                            <p>餐盒费：<span>￥<em class="canju">{$canjutotal}</em></span></p>
+                            <p>器具押金(餐到收取，回收退还)：￥<span id="deposit">{$canju_total}</span></p>
+                            <p id="online_pay_first" style="color: red;"></p>
+                            <p id="activity_discount" class="" style="color: orangered"><strong id="activity_discount_value"></strong></p>
+                            <p id="daijinquan"></p>
+                            <p id="zeng"></p>
+                            <p id="man"></p>
+                            <p id="zhe"></p>
+                            <p id="shou"></p>
+                            <p><strong id="juli" style="font-size:1.2em"></strong></p>
+                            <p><strong style="font-size:1.2em;padding-right:30px;">温馨提示:3公里以内20元，3-4公里25元，4-5公里35元，5-7公里50元，7公里以上暂不配送</strong>运费： <span><em  id="nps_price"></em></span></p>
+                            <!--<p>优惠： <span>-￥<em>0</em></span></p>-->
+
+                        </div>
+                    </div>
+                    <div style="display: none" class="sum">菜品总计：￥<em id="">{$store_total}</em></div>
+
+                    <!--<div class="payItem" id="voucherPayOuter" style="display: block;">
+                        <a href="javascript:void(0)" id="remainPay" class="togg"><b class="togglerB1"></b>使用代金劵</a>
+
+
+                        <div class="remainMoneyItem">
+                            <div class="voucherNow">
+                                <input type="text">
+                                <button type="button">使用</button>
+                                &lt;!&ndash; <span id="vouchermessage" style="color: red; line-height: 30px;"></span> &ndash;&gt;
+                            </div>
+                            <div class="wrap-voucher">
+                                <div class="voucher-money" id="divVoucherRulesList">
+                                    <ul>
+                                        <li><span class="voucher-pay"><a href="{:U('User/login')}">（请先登录）</a></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="VoucherCode">【请输入代金劵编码】</div>
+                                <div class="moneyOuter clearFix">
+                                    <input type="text" maxlength="16" id="txtVoucherCode">
+                                    <span id="vouchermessage" style="color: red; line-height: 30px;"></span>
+                                    <input type="button" value="使用" data-type="Confirm" id="btnPayVoucher" class="applyB payVoucher">
+                                    &lt;!&ndash; <span id="vouchermessage" style="color: red; line-height: 30px;"></span> &ndash;&gt;
+                                </div>
+                                &lt;!&ndash;                 <input type="hidden" value="0" id="voucherValue"> &ndash;&gt;
+                            </div>
+                        </div>
+
+                    </div>-->
+                    <input class="lgjument" value="false" style="display: none" />
+                    <div class="sum-price">应付总额：<em style="color: red; font-size: 22px">￥<b style="font-size: 22px" id="total_price_basket">{$store_total+$canjutotal+$yajin}</b></em></div>
+                    <div class="order-ltem"> </div>
+                </div>
+            </div>
+            <div class="order-go clearfix"><a onclick="submitOrder()">确认下单</a></div>
+        </div>
+
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin-top: 150px;">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" >选择送餐地址</h4>
+                </div>
+
+                <div class="modal-body height">
+                    <div class="addresslist">
+                        <notempty name="address">
+                            <volist name="address" id="vo">
+                                <div class="addressblock" data-uid="{$vo.uid}" data-addressid="{$vo.address_id}" data-lng="{$vo.lng}" data-lat="{$vo.lat}">
+                                    <div class="addressblock-buttons">
+                                        <span class="addressblock-name" style="font-size: 16px;font-family: "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif >{$vo.username}<if condition="$vo.gender eq 1">先生<elseif condition="$vo.gender eq 2" />女士</if></span>
+                                        <span class="addressblock-mobile" id="phone" style="font-size: 16px;position: absolute;left: 40%">{$vo.phone}</span>
+                                        <a href="{:U('Address/index')}"  style="font-size: 16px;float: right"><button class="addressblock-button btn btn-info" style="margin-top: 9px;">修改</button></a>
+                                    </div>
+                                    <div class="addressblock-address" style="font-size: 13px;line-height:30px;">{$vo.detail_address}</div>
+                                </div>
+                            </volist>
+                            <else/>
+                            <div class="alert alert-info" role="alert" style="font-size:1.2em">您还没有填写过地址，请您先新增地址！</div>
+                        </notempty>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button id="button" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addaddress" >新增地址</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--新增地址-->
+    <div class="modal fade" id="addaddress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin-top: 200px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新增送餐地址</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{:U('Cart/address')}" class="form-horizontal" method="post" id="myform">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">&nbsp;</label>
+                            <div class="col-sm-6">
+                                <div class="alert alert-danger" role="alert" style="display: none;height: 30px;padding:9px;">请输入手机号</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">姓名：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="username" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">性别：</label>
+                            <div class="col-sm-7 radio">
+                                <label><input type="radio"  name="gender" value="1" checked="checked">男</label>
+                                <label><input type="radio"  name="gender" value="2">女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">电话：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="phone" class="form-control" id="asd"  />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备用电话：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="phone_bak" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">位置：</label>
+                            <div class="landing-search col-sm-7">
+                                <input type="text" name="address_keyword" class="form-control" id="suggestId" placeholder="请输入小区、大厦或学校等" >
+                            </div>
+                            <input name="lng" type="hidden" id="bdlng" />
+                            <input type="hidden" name="lat" id="bdlat" />
+                        </div>
+
+
+
+                        <div class="form-group" style="display: none">
+                            <label class="col-sm-2 control-label">经度</label>
+
+                            <div class="col-sm-2">
+
+                                <input type="text" name="lng"  class="form-control"/>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group" style="display: none">
+                            <label class="col-sm-2 control-label">纬度</label>
+
+                            <div class="col-sm-2" >
+
+                                <input type="text" class="form-control"  name="lat"/>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">详细地址：</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="detail_address" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="submit" type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//新增地址-->
+
+    <div  class="tool-box xuanze" style="display: none; height:auto;position: fixed; top: 50%; left: 50%;margin-left:-100px;margin-top:-50px; width: 200px;" id="tsxx">
+        <div class="tool-bar">
+            <div class="tool-detail">
+                <p style="display:inline;"><span style = "color:#9f9f9f;font-size:15px;font-weight:bold;margin-left:20%;font-weight: 300" id="span"></span></p>
+            </div>
+        </div>
+        <div class="tool-footer" id="tishi"><a href="#"  style="width: 70px;height: 30px;line-height: 30px;border: 1px solid #9f9f9f;box-shadow:0 3px 0 #9f9f9f;font-size: 16px;color:#9f9f9f">确定</a></div>
+    </div>
+
+
+
+    <!--百度地图-->
+
+    <div id="bdmap" class="form-horizontal"  style="display:none;">
+
+        <div class="bdmap-header form-group">
+
+            <label for="inputEmail3" class="col-sm-3 control-label">地址:</label>
+
+            <div class="col-sm-6" >
+
+                <input type="text" id="keyword" name="address"  class="form-control"  placeholder="输入餐厅地址">
+
+                <div id="result1" name="result1" style="position: fixed;z-index: 9999;background:#ffffff;width: 335px">
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-2"><button id="doing" class="btn btn-primary"  data-toggle="modal" data-target="#addaddress">确定</button></div>
+
+            <div class="col-sm-1"><a href="javascript:;" id="closeBdmap"><span class="glyphicon glyphicon-remove"></span></a></div>
+
+
+
+            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+
+        </div>
+
+        <div class="bdmap-body" >
+
+            <!--<div id="bdmapshow"></div>-->
+
+        </div>
+
+    </div>
+
+    <!--//百度地图-->
+        <script type="text/javascript" src="__STATIC__/ztools.js" charset="utf-8"></script>
+        <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4e7f747958afeac1324ccd3e2015c006"></script>
+        <script type="text/javascript">
+            //用餐时间处理
+            var dataselect=$('#dateSelect');
+            var timeselect=$('#timeSelect');
+            var dt_time=$('div.dt-time');
+            var dt_date=$('div.dt-date');
+            var dateInput=$('#DeliveryDate');
+            var timeInupt=$('#DeliveryTime');
+            var zao='{$_store_info.s_time}';
+            var wan='{$_store_info.e_time}';
+            var zao_arr=zao.split(',');
+            var wan_arr=wan.split(',');
+            var pstime='{$pstime}';
+            var isopen=is_open(zao) || is_open(wan);
+            dt_date.find('.down-icon').click(function(e){e.stopPropagation();dataselect.toggle('slow')});
+            dt_time.find('.down-icon').click(function(e){e.stopPropagation();timeselect.toggle('slow').css('overflow','auto')});
+
+
+            function next_day(){
+                var m_s=time_to_stamp(zao_arr[0],zao_arr[1])+(30*60);
+                var m_e=time_to_stamp(zao_arr[2],zao_arr[3]);
+                var a_s=time_to_stamp(wan_arr[0],wan_arr[1])+(30*60);
+                var a_e=time_to_stamp(wan_arr[2],wan_arr[3]);
+                $('em.idle').text(stamp_to_time(m_s));
+                timeInupt.val(stamp_to_time(m_s));
+                var pl=30*60;
+                var str_m='',str_a='';
+                for(;m_s<m_e;m_s+=pl){
+                    str_m+='<li><span data-times="'+stamp_to_time(m_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(m_s)+'</span> <b class="idle">闲</b></li>';
+                }
+                for(;a_s<a_e;a_s+=pl){
+                    str_a+='<li><span data-times="'+stamp_to_time(a_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(a_s)+'</span> <b class="idle">闲</b></li>';
+                }
+                str_m+=str_a;
+                timeselect.empty().append(str_m).on('click','span',function(){
+                    var $this=$(this);
+                    dt_time.find('em').text($this.text());
+                    timeInupt.val($this.data('times'));
+                    timeselect.slideUp();
+                });
+            }
+
+            if(!isopen && timeout_today(zao,wan)){
+                //不营业并且超出今天最后营业时间
+                dt_date.find('em').text(dateFormat(1));
+                dateInput.val(dateFormat(1));
+                var str_m='',str_a='';
+                var pl=30*60;
+                var morning_s=time_to_stamp(zao_arr[0],zao_arr[1]);
+                var morning_e=time_to_stamp(zao_arr[2],zao_arr[3]);
+                var afternoon_s=time_to_stamp(wan_arr[0],wan_arr[1]);
+                var afternoon_e=time_to_stamp(wan_arr[2],wan_arr[3]);
+                $('em.idle').text(stamp_to_time(morning_s));
+                timeInupt.val(stamp_to_time(morning_s));
+                for(;morning_s<morning_e;morning_s+=pl){
+                    str_m+='<li><span data-times="'+stamp_to_time(morning_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(morning_s)+'</span> <b class="idle">闲</b></li>';
+
+                }
+                for(;afternoon_s<afternoon_e;afternoon_s+=pl){
+                    str_a+='<li><span data-times="'+stamp_to_time(afternoon_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(afternoon_s)+'</span> <b class="idle">闲</b></li>';
+                }
+                str_m+=str_a;
+                timeselect.append(str_m).on('click','span',function(){
+                    var $this=$(this);
+                    dt_time.find('em').text($this.text());
+                    timeInupt.val($this.data('times'));
+                    timeselect.slideUp();
+                });
+            }else{
+                dt_date.find('em').text(dateFormat(0));
+                dateInput.val(dateFormat(0));
+                var curr=getCurrentTimestamp();
+                if(curr<time_to_stamp(zao_arr[0],zao_arr[1])){
+                    //上午营业时间之前
+                    next_day();
+
+                }else if(curr>time_to_stamp(zao_arr[0],zao_arr[1]) && curr<time_to_stamp(zao_arr[2],zao_arr[3])){
+                    //在上午营业时间内
+                    var k=curr+(90*60);//上午退后90分钟
+                    var k_end=time_to_stamp(zao_arr[2],zao_arr[3]);
+                    var afternoon_s=time_to_stamp(wan_arr[0],wan_arr[1])+(30*60);//下午退后30分钟
+                    var afternoon_e=time_to_stamp(wan_arr[2],wan_arr[3]);
+                    var pl=30*60;
+                    var str='',afternoon='';
+                    if(k<k_end){
+                        $('em.idle').text(stamp_to_time(k));
+                        timeInupt.val(stamp_to_time(k));
+                        for(;k<k_end;k+=pl){
+                            str+='<li><span data-times="'+stamp_to_time(k)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(k)+'</span> <b class="idle">闲</b></li>';
+                        }
+                    }else{
+                        $('em.idle').text(stamp_to_time(afternoon_s));
+                        timeInupt.val(stamp_to_time(afternoon_s));
+                    }
+
+                    for(;afternoon_s<afternoon_e;afternoon_s+=pl){
+                        afternoon+='<li><span data-times="'+stamp_to_time(afternoon_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(afternoon_s)+'</span> <b class="idle">闲</b></li>';
+                    }
+                    str+=afternoon;
+                    timeselect.append(str).on('click','span',function(){
+                        var $this=$(this);
+                        dt_time.find('em').text($this.text());
+                        timeInupt.val($this.data('times'));
+                        timeselect.slideUp();
+                    });
+
+                }else if(curr>time_to_stamp(zao_arr[2],zao_arr[3]) && curr<time_to_stamp(wan_arr[0],wan_arr[1])){
+                    //在上午和下午餐厅休息之间
+                    var afternoon_s=time_to_stamp(wan_arr[0],wan_arr[1])+(30*60);//下午退后30分钟
+                    var afternoon_e=time_to_stamp(wan_arr[2],wan_arr[3]);
+                    $('em.idle').text(stamp_to_time(afternoon_s));
+                    timeInupt.val(stamp_to_time(afternoon_s));
+                    var pl=30*60,afternoon='';
+                    for(;afternoon_s<afternoon_e;afternoon_s+=pl){
+                        afternoon+='<li><span data-times="'+stamp_to_time(afternoon_s)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(afternoon_s)+'</span> <b class="idle">闲</b></li>';
+                    }
+                    timeselect.append(afternoon).on('click','span',function(){
+                        var $this=$(this);
+                        dt_time.find('em').text($this.text());
+                        timeInupt.val($this.data('times'));
+                        timeselect.slideUp();
+                    });
+                }else if(curr>time_to_stamp(wan_arr[0],wan_arr[1]) && curr<time_to_stamp(wan_arr[2],wan_arr[3])){
+                    //在晚间营业时间之内
+                    var k=curr+(90*60);//晚间退后90分钟
+                    var k_end=time_to_stamp(wan_arr[2],wan_arr[3]);
+                    var pl=30*60,str='';
+                    $('em.idle').text(stamp_to_time(k));
+                    timeInupt.val(stamp_to_time(k));
+
+                    for(;k<k_end;k+=pl){
+                        str+='<li><span data-times="'+stamp_to_time(k)+'" style="display:inline; border-width: 0px;">'+stamp_to_time(k)+'</span> <b class="idle">闲</b></li>';
+                    }
+                    timeselect.append(str).on('click','span',function(){
+                        var $this=$(this);
+                        dt_time.find('em').text($this.text());
+                        timeInupt.val($this.data('times'));
+                        timeselect.slideUp();
+                    });
+                }
+            }
+            var d_str='';
+            var dtext='';
+            var i,step;
+            if(isopen==0){
+                i=1;step=6;
+            }else{
+                i=0;step=5;
+            }
+            for(;i<step;i++){
+                switch (i){
+                    case 0:
+                        dtext='(今天)';
+                        break;
+                    case 1:
+                        dtext='(明天)';
+                        break;
+                    case 2:
+                        dtext='(后天)';
+                        break;
+                    default :
+                            dtext='';
+                        break;
+                }
+                d_str+='<li style="width:170px;">'+
+                '<span class="hitdate" data-dates="'+dateFormat(i)+'" style="border-width:0px; display:inline; position: inherit;">'+dateFormat(i)+dtext+'</span>'+
+                '<span  style="margin: 0px 0px 0px -13px; padding: 0px; font-size: 11px; border-width: 0px; display: inline; position: inherit; visibility: hidden;">(订满)</span></li>';
+            }
+            dataselect.append(d_str).on('click','.hitdate',function(){
+                var $this=$(this);
+                var d=$this.data('dates');
+                var ds= d.split('-');
+                dt_date.find('em').text($this.text());
+                dateInput.val(d);
+                dataselect.slideUp();
+                //选择大于今天时，时间和早于早营业时间
+                var dd=new Date();
+                dd.setFullYear(ds[0],ds[1],ds[2]);
+                dd.setHours(0,0,0);
+                var stamp=Date.parse(dd)/1000;
+                var d1=new Date();
+                d1.setHours(0,0,0);
+                var current=Date.parse(d1)/1000;
+                if(stamp>current){
+                    next_day();
+                }
+            });
+
+
+            function nowAddDay(day) {
+                var a = new Date();
+                a = a.valueOf();
+                a = a + day * 24 * 60 * 60 * 1000;
+                return a;
+            }
+            //是否营业
+            function is_open(times){
+                if(times=='') return false;
+                var t=times.split(',');
+                var curr=getCurrentTimestamp();
+                var s=time_to_stamp(t[0],t[1]);
+                var e=time_to_stamp(t[2],t[3]);
+                if(curr>s && curr<e){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+            //当前时间是否超出了今天最后的营业时间
+            function timeout_today(stime,etime){
+                var curr=getCurrentTimestamp();
+                if(etime!=''){
+                    var t1=etime.split(',');
+                    var e1=time_to_stamp(t1[2],t1[3]);
+                    if(curr>e1){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    var t=stime.split(',');
+                    var e=time_to_stamp(t[2],t[3]);
+                    if(curr>e){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+
+            }
+            //格式化时间为时间戳
+            function time_to_stamp(hours,minutes){
+                var d=new Date();
+                d.setHours(hours,minutes);
+                return Date.parse(d)/1000;
+            }
+
+            //返回当前时间：时+分
+            function stamp_to_time($timestamp,type){
+                var d=new Date($timestamp*1000);
+                var m=d.getMinutes();
+                var min;
+                m<10?min='0'+m:min=m;
+                switch (type){
+                    case 'h':
+                        return d.getHours();
+                    case 'm':
+                        return min;
+                    default :
+                        return d.getHours()+':'+ min;
+                }
+            }
+            //获取当前时间戳
+            function getCurrentTimestamp(){
+                return Date.parse(new Date())/1000;
+            }
+            function dateFormat(days) {
+                var curr = new Date();
+                curr = curr.valueOf();
+                curr = curr + days * 24 * 60 * 60 * 1000;
+                var myDate = new Date(curr);
+                var year = myDate.getFullYear();
+                var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+                var day = ("0" + myDate.getDate()).slice(-2);
+                return year + "-" + month + "-" + day;
+            }
+
+            $(document).click(function(e){
+                var target= e.target;
+                if($(target).closest('.dt-date').length==0 || $(target).closest('.dt-time').length==0){
+                    timeselect.slideUp();
+                    dataselect.slideUp();
+                }
+            });
+
+            Math.formatFloat = function (f, digit) {
+                var m = Math.pow(10, digit);
+                return parseInt(f * m, 10) / m;
+            }
+
+        $(document).ready(function(){
+            var hi =$('#hi').val();
+            if(hi == 1){
+                $('.dizhi').removeClass('zdaa').css('font-size','16px');
+            }else{
+                $('.dizhi').addClass('zdaa');
+            }
+            var phone =$('#phone').text();
+            if(phone != ''){
+                $('.modal-body').removeClass('height');
+            }
+        });
+
+
+        $("#other").click(function () {
+            $("#other-input").show();
+        })
+        $("#family" && "#company").click(function(){
+            $("#other-input").hide();
+        })
+        $("#ddlDinesPersonNum").bind("change", function () {
+            $("#txtDinesPersonNum").val($(this).val());
+        })
+
+
+        $('.togg').click(function(){
+            if("{$login}" != 0){
+                $('.remainMoneyItem').show();
+                $('#divVoucherRulesList').hide();
+                $('.VoucherCode').click(function(){
+                    $('.moneyOuter').show();
+                })
+            }else{
+                $('.remainMoneyItem').show();
+                $('.VoucherCode').click(function(){
+                    $('.moneyOuter').show();
+                })
+
+            }
+        })
+                $('#radioOffline').click(function(){
+                    $('.hdfk').addClass('radioOffline20');
+                    $('.zxzf').removeClass('radioOffline20');
+                    $('#online_pay_first').show();
+                    $('#activity_discount').show();
+                    zxzf(2);
+                  /*  if(!sessionStorage.getItem('total')){
+                        $('#total_price_basket').html(parseInt("{$store_total}")+parseFloat("{$canjutotal}",2)+parseInt(nps_price)+parseInt('{$yajin}'));
+                    }else{
+                        $('#total_price_basket').html(sessionStorage.getItem('total'));
+                    }*/
+                })
+                $("#radioOnLine").click(function(){
+                    $('.zxzf').addClass('radioOffline20')
+                    $('.hdfk').removeClass('radioOffline20');
+                    $('#online_pay_first').show();
+                    $('#activity_discount').show();
+
+                    zxzf(1);
+                });
+
+            var yhdata = {$yhui|default= null};
+            var yh_detail =[],yh_id=[], yh_money = 0, yh_jian = 0,man_jian= 0,zhe_jian=0;quan_jian = 0;
+            //配送费计算
+            function nps_price(lng_add,lat_add){
+                //计算用户就餐位置与商户的最近路线距离
+                var lng_st = '{$lng_st}',lat_st='{$lat_st}',rd={$rd},ps_price={$ps_price};
+                AMap.service(["AMap.Driving"],function(){
+                    var peisongRoute = new AMap.Driving({
+                        policy:"LEAST_DISTANCE"
+                    });
+                    peisongRoute.search([lng_add,lat_add], [lng_st,lat_st],function(status,result){
+                        var juli = result.routes[0].distance.toString()/1000;
+                        sessionStorage.setItem('juli',juli);
+                        for(var j=0;j<rd.length;j++){
+                            if(juli>rd[j-1]||rd[j-1]==undefined&&juli<=rd[j]){
+                                var nps_price=ps_price[j];
+                                var total = parseInt("{$store_total}")+parseFloat("{$canjutotal}",2)+parseInt(nps_price)+parseInt('{$yajin}');
+                                sessionStorage.setItem('total',total);
+                                sessionStorage.setItem('nps_price',nps_price);
+                                $('#juli').html('您的就餐位置距离商家店铺<span style="color: orangered">'+juli+'</span>公里');
+                                $('#nps_price').text('￥'+nps_price);
+                                $('#total_price_basket').html(total);
+                                zxzf(1);
+                            }
+                        }
+
+                    });
+                });
+            }
+            $(function(){
+                var lng_add='{$lng_add}',lat_add='{$lat_add}';
+                nps_price(lng_add,lat_add);
+                //菜品显示隐藏
+                $.each($('.MenuGroupTitle'),function(i){
+                    $(this).click(function(){
+                        $(this).find("i").toggleClass("slideClass");
+                        $(this).siblings().slideToggle();
+                    })
+                })
+                //绑定鼠标滑动事件
+                $('span.wrap-input').on('mouseenter',function(){
+                    var $this=$(this);
+                    $this.find('.btn-minus').css('visibility','visible');
+                    $this.find('.btn-add').css('visibility','visible');
+                    $this.find('.item-close a').css('visibility','visible');
+                }).on('mouseleave',function(){
+                    $(this).find('.btn-minus').css('visibility','hidden');
+                    $(this).find('.btn-add').css('visibility','hidden');
+                    $(this).find('.item-close a').css('visibility','hidden');
+                });
+            })
+            //var peisong = sessionStorage.getItem('nps_price');
+            var qisong = "{$_store_info.qisong_price}";
+            //增加，删除订餐数量
+                $(".wrap-input").on("click",".btn-add",function() {
+                    var $this=$(this);
+                    var shuju =$this.parents('.MenuItemWrap');
+                    var url="{:U('Cart/addCart')}";
+                    var cartview="{:U('Cart/cartView')}";
+                    var idd=shuju.data("id");
+                    $.post(url,{
+                        "id":idd,
+                        "name":shuju.attr("title"),
+                        "price":shuju.data("price"),
+                        "count":1,
+                        "storeid":shuju.data("storeid"),
+                        "category_id":shuju.data("categoryid"),
+                        "category_name":shuju.data("categoryname")
+                    }).success(function(){
+                        $.get(cartview,'type=1').success(function(data){
+                            $this.prev().text(data[3][idd]);
+                            shuju.find(".cdish-total").text(data[2][idd]*data[3][idd]);
+                            calculate();
+                        });
+                    });
+            }).on("click",".btn-minus",function(){
+                    var $this=$(this);
+                    var shuju =$this.parents('.MenuItemWrap');
+                    var id=shuju.data("id");
+                    var num=1;
+                    var flag=1;
+                    var url="{:U('Cart/modifyCart')}";
+                    var url1="{:U('Cart/getOneCount')}";
+                    $.get(url,"id="+id+"&count="+num+"&flag="+flag).success(function(){
+                        $.get(url1,"id="+id).success(function(data){
+                            $this.next().text(data);
+                            var p=parseInt(shuju.data("price"));
+                            shuju.find(".cdish-total").text(data*p);
+                            if(data==null){
+                                $("#basketlist_"+id).remove();
+                                $("#basketlist_"+id).siblings().remove();
+                                window.location.reload();
+                                /*var url="{:U('Cart/empty')}";
+                                window.location.href=url;*/
+                            }else{
+                                calculate();
+                            }
+
+                        });
+                    });
+                })
+            //计算数量和金额
+            function calculate(){
+
+                var url="{:U('Cart/countPrice')}";
+                $.get(url).success(function(data){
+                    var subtotal=parseFloat(data[0]);
+                    var total=subtotal+parseInt(sessionStorage.getItem('nps_price'))+parseFloat("{$canjutotal}",2)+parseInt("{$canju_total}");
+                    $("#total_price_basket").text(total);
+                    $(".jine").html(subtotal);
+                    if(subtotal<qisong){
+                        if($("#cart_err_tip").length==0){
+                            var alertt=$("<p id=\"cart_err_tip\" class=\"ui-alert warning\" style='font-weight: bold; color: red;font-size: 1em'>未满餐厅起送价("+qisong+"元)，请继续选购美食。</p>");
+                            $(".divother-info").prepend(alertt);
+                        }
+                        $(".order-go a").attr("disabled","disabled").text("未满起送价").addClass("ui_disabled");
+                    }else if(subtotal>qisong){
+                        $("#cart_err_tip").remove();
+                    }
+                });
+            }
+            /*优惠活动*/
+
+            function zxzf(a) {
+                $.each(yhdata, function () {
+                    if (this['payment'] == 0 || this['payment'] == a) {
+                        if (this['first_ord'] == 1&&this['first_order']==1) {
+                            yh_money = parseFloat(this['vertical']);
+                        }
+                        if (this['promotion_time'] == 0) {
+                            if (this['promotion_type'] == 0) {
+                                yh_detail.push([this['promotion_type'], this['promotion_money'],this['present_name']]);
+                                yh_id.push(this['promotion_id']);
+                            } else if (this['promotion_type'] == 1) {
+                                yh_detail.push([this['promotion_type'], this['promotion_money'], this['reduction']]);
+                                yh_id.push(this['promotion_id']);
+                            } else if (this['promotion_type'] == 2) {
+                                yh_detail.push([this['promotion_type'], this['promotion_money'], this['discount']]);
+                                yh_id.push(this['promotion_id']);
+                            } else if (this['promotion_type'] == 3) {
+                                sessionStorage.setItem('nps_price', 0);
+                                $('#nps_price').text(0);
+                                yh_id.push(this['promotion_id']);
+                            } else if (this['promotion_type'] == 4) {
+                                yh_detail.push([this['promotion_type'], this['jian']]);
+                                yh_id.push(this['promotion_id']);
+                            }else if (this['promotion_type'] == 5) {
+                                yh_money = parseFloat(this['shou_jian']);
+                                yh_id.push(this['promotion_id']);
+                            }
+                        } else if (this['promotion_time'] == 1) {
+                            var date = new Date();
+                            var day = (date.getDay());
+                            var time_quantum = this['time_quantum'].split(",");
+                            for (var i = 0; i < time_quantum.length; i++) {
+                                if (time_quantum[i] == day) {
+                                    if (this['promotion_type'] == 0) {
+                                        yh_detail.push([this['promotion_type'], this['promotion_money'],this['present_name']]);
+                                        yh_id.push(this['promotion_id']);
+                                    } else if (this['promotion_type'] == 1) {
+                                        yh_detail.push([this['promotion_type'], this['promotion_money'], this['reduction']]);
+                                        yh_id.push(this['promotion_id']);
+                                    } else if (this['promotion_type'] == 2) {
+                                        yh_detail.push([this['promotion_type'], this['promotion_money'], this['discount']]);
+                                        yh_id.push(this['promotion_id']);
+                                    } else if (this['promotion_type'] == 3) {
+                                        sessionStorage.setItem('nps_price', 0);
+                                        $('#nps_price').text(0);
+                                        yh_id.push(this['promotion_id']);
+                                    } else if (this['promotion_type'] == 4) {
+                                        yh_detail.push([this['promotion_type'], this['jian']]);
+                                        yh_id.push(this['promotion_id']);
+                                    }else if (this['promotion_type'] == 5) {
+                                        yh_money = parseFloat(this['shou_jian']);
+                                        yh_id.push(this['promotion_id']);
+                                    }
+                                }
+                            }
+                        } else {
+                            var time_quantum = this['time_quantum'].split(",");
+                            var n_t = timeStamp(0, 0);
+                            var s_t = timeStamp(0, time_quantum[0]);
+                            var e_t = timeStamp(0, time_quantum[1]);
+                            if (n_t >= s_t && n_t <= e_t) {
+                                if (this['promotion_type'] == 0) {
+                                    yh_detail.push([this['promotion_type'], this['promotion_money'],this['present_name']]);
+                                    yh_id.push(this['promotion_id']);
+                                } else if (this['promotion_type'] == 1) {
+                                    yh_detail.push([this['promotion_type'], this['promotion_money'], this['reduction']]);
+                                    yh_id.push(this['promotion_id']);
+                                } else if (this['promotion_type'] == 2) {
+                                    yh_detail.push([this['promotion_type'], this['promotion_money'], this['discount']]);
+                                    yh_id.push(this['promotion_id']);
+                                } else if (this['promotion_type'] == 3) {
+                                    sessionStorage.setItem('nps_price', 0);
+                                    $('#nps_price').text(0);
+                                    yh_id.push(this['promotion_id']);
+                                } else if (this['promotion_type'] == 4) {
+                                    yh_detail.push([this['promotion_type'], this['jian']]);
+                                    yh_id.push(this['promotion_id']);
+                                }else if (this['promotion_type'] == 5) {
+                                    yh_money = parseFloat(this['shou_jian']);
+                                    yh_id.push(this['promotion_id']);
+                                }
+                            }
+                        }
+                    }
+                });
+                yhui();
+            };
+            function yhui() {
+                var quan = daijinquan();
+                var url = "{:U('Cart/countPrice')}";
+                $.get(url).success(function (data) {
+                    var subtotal = parseFloat(data[0]);
+                    if (yh_detail != null) {
+                        $.each(yh_detail,function(){
+                            if(this[0]==0&&this[1]<=subtotal){
+                                $('#zeng').html("<strong>"+赠送+"：-￥"+this[2]+"</strong>")
+                            };
+                            if(this[0]==1&&this[1]<=subtotal){
+                                yh_jian=this[2];
+                            };
+                            if(this[0]==2&&this[1]<=subtotal){
+                                zhe_jian=subtotal-subtotal*this[2]/100;
+                            };
+                            if(this[0]==4){
+                                var jian = this[1].split(',');
+                                var yh_con =[];
+                                $.each(jian,function(){
+                                    yh_con.push(this.split('-'));
+                                })
+                                for (var i = 0; i < yh_con.length; i++) {
+                                    man_jian = 0;
+                                    if (subtotal >= yh_con[i][0]) {
+                                        man_jian = yh_con[i][1];
+                                        break;
+                                    }
+                                }
+                            };
+                        })
+                       /* var s_c = yh_detail.yh_condition;
+                        var s_r = yh_detail.yh_result;
+                        var yh_condition = s_c.split(",");
+                        var yh_result = s_r.split(",");
+                        var yhn = s_c.length;
+                        for (var i = yhn-1; i < yhn; i--) {
+                            yh_jian = 0;
+                            if (subtotal >= yh_condition[i]) {
+                                yh_jian = yh_result[i];
+                                $("#activity_discount").html("<strong>"+yh_detail['yh_desc']+"：-￥"+yh_jian+"</strong>");
+                                break;
+                            }
+                        }*/
+                    }else if(quan!=null) {
+                        var condition = [];
+                        var bao_price = [];
+                        var price = [];
+                        $.each(quan, function () {
+                            condition.push(this['user_condition']);
+                            bao_price.push([this['user_bao_id'], this['user_bao_price']]);
+                        });
+                        for (var j = 0; j < condition.length; j++) {
+                            if (subtotal > condition[j]) {
+                                price.push(bao_price[j][1])
+                            }
+                        }
+                        ;
+                        quan_jian = Math.max.apply(Math, price);
+                        $.each(bao_price, function () {
+                            if (this[1] == quan_jian) {
+                                var bao_id = this[0];
+                                sessionStorage.setItem('bao_id', bao_id);
+                            }
+                        })
+                        $('#daijinquan').html("<a class='ub' href='{:U('Bao/weishiyong')}'> <span class='' text-align: right'>优惠抵用券/代金券/红包：</span> <span class='' style=''>￥-<span>"+quan_jian+"</span></div> <i class='fa fa-angle-right' style=''></i> </a>");
+                    }else {
+                        yh_jian = 0;
+                        quan_jian=0;
+                    }
+                    var total=subtotal + parseFloat(sessionStorage.getItem('nps_price')) - parseFloat(yh_money) - parseFloat(yh_jian) + parseFloat('{$canjutotal}')+parseInt("{$canju_total}")- parseFloat(quan_jian) - parseFloat('{$kanjia_total|default=0}')-parseFloat(man_jian)-parseFloat(zhe_jian);
+                    total = Math.formatFloat(total, 2);
+                    if(yh_money>0){
+                        $('#shou').html("<strong>"+首单减+"：-￥"+yh_money+"</strong>")
+                    }
+                    if(yh_jian>0){
+                        $('#activity_discount').html("<strong>"+优惠减+"：-￥"+yh_jian+"</strong>")
+                    }
+                    if(man_jian>0){
+                        $('#man').html("<strong>"+满减+"：-￥"+man_jian+"</strong>")
+                    }
+                    if(zhe_jian>0){
+                        $('#zhe').html("<strong>"+折扣减+"：-￥"+zhe_jian+"</strong>")
+                    }
+                    $('#total_price_basket').html(total)
+                })
+            }
+        //确认下单
+        function submitOrder(){
+            var doorder=$('.order-go');
+            var persons=$('#ddlDinesPersonNum').val();
+            var addressid=$('#address_id').val();
+            var delivery_date=$('#DeliveryDate').val();
+            var delivery_time=$('#DeliveryTime').val();
+            var paytype=$('input[name="PaymentType"]:checked').val();
+            var ctime=delivery_date+' '+delivery_time;
+            var dotime=Date.parse(new Date(ctime))/1000;
+            var deposit=parseInt($('#deposit').text());
+            var yunfei=sessionStorage.getItem('nps_price');
+            var storeid='{$_store_info.store_id}';
+            var shmode='{$_store_info.sh_mode}';
+            var remark=$('#Remark').val();
+            var total=parseFloat($('.jine').text());
+            var yhjian = parseFloat(yh_jian)+parseFloat(yh_money);
+            var quju_num=$('.amount-q').text();
+            var canj="{$canjutotal}";
+            var alltotal=total+parseInt(yunfei)+deposit+parseInt(canj);
+            var cuxiao_id=yh_id.join(',');
+            if(persons!='' && addressid!='' && total!=''){
+                doorder.find('a').text('确认下单...').attr('disabled',true).attr('onclick','return false');
+                $.ajax({
+                    type:'POST',
+                    url:'{:U("Home/Order/doOrder")}',
+                    dataType:'json',
+                    data:{
+                        addressid:addressid,
+                        personnum:persons,
+                        dinnertime:dotime,
+                        paytype:paytype,
+                        deposit:deposit,
+                        yunfei:yunfei,
+                        storeid:storeid,
+                        remark:remark,
+                        total:total,
+                        shmode:shmode,
+                        canjutotal:"{$canjutotal}",
+                        yh_price: yhjian,
+                        qiju_quantity:quju_num,
+                        "juan_price":quan_jian,
+                        "quan_id":sessionStorage.getItem('bao_id'),
+                        "cuxiao_id":cuxiao_id
+                    },
+                    success:function(data){
+                        if(data.status && paytype==1){
+                            var url="{:U('Cart/removeAll')}";
+                            $.get(url).success(function(){
+                                sessionStorage.removeItem("total");
+                                location.href='http://'+document.domain+'/WxPay/pay/native.php?ordsn='+data.ordsn+'&total='+alltotal;
+                            });
+
+                        }else{
+                            var url="{:U('Cart/removeAll')}";
+                            $.get(url).success(function(){
+                                sessionStorage.removeItem("total");
+                                location.href='{:U("Orderlist/index")}';
+                            });
+
+                        }
+                    }
+                });
+                /*$.post('{:U("Order/doOrder")}',{
+                    addressid:addressid,
+                    personnum:persons,
+                    dinnertime:dotime,
+                    paytype:paytype,
+                    deposit:deposit,
+                    yunfei:yunfei,
+                    storeid:storeid,
+                    remark:remark,
+                    total:total,
+                    shmode:shmode,
+                    canjutotal:"{$canjutotal}",
+                    yh_price: yhjian,
+                    qiju_quantity:quju_num
+                }).success(function(data){
+                    if(data.status && paytype==1){
+                        var url="{:U('Cart/removeAll')}";
+                        $.get(url).success(function(){});
+                        sessionStorage.removeItem("total");
+                        location.href='http://'+document.domain+'/WxPay/pay/native.php?ordsn='+data.ordsn+'&total='+alltotal;
+                    }else{
+                        var url="{:U('Cart/removeAll')}";
+                        $.get(url).success(function(){});
+                        sessionStorage.removeItem("total");
+                        //location.href='{:U("Orderlist/index")}';
+                    }
+                });*/
+            }else if(persons==''){
+                ztools.maskshow();
+                $('.xuanze').show();
+                $('#span').text('请选择用餐人数');
+                $('#tishi').click(function() {
+                    ztools.maskhide();
+                    $('.xuanze').hide();
+                })
+            }else if(addressid==''){
+                ztools.maskshow();
+                $('.xuanze').show();
+                $('#span').text('请选择用餐地址');
+                $('#tishi').click(function() {
+                    ztools.maskhide();
+                    $('.xuanze').hide();
+                })
+            }
+        }
+            //下单中
+              /*  $(document).ajaxStart(function(){
+                    $('.order-go').find('a').text('确认下单...').attr('disabled',true).attr('onclick','return false');
+                }).ajaxStop(function(){
+                    $('.order-go').find('a').text('确认下单...').attr('disabled',true).attr('onclick','return false');
+                });*/
+
+
+
+            //选择地址处理
+         $('.addressblock').click(function(){
+             var addressblock = $(this).children('.addressblock-address').html();
+             var add_id=$(this).data('addressid');
+             var uid=$(this).data('uid');
+             $.get('{:U("Cart/setDefaultAddress")}','uid='+uid+'&addressid='+add_id).success(function(data){});
+             $('.dizhi').html(addressblock);
+             $("#address_id").val(add_id);
+             var lng_add = $(this).data('lng');
+             var lat_add = $(this).data('lat');
+             $('#myModal').find('.close').trigger('click');
+             nps_price(lng_add,lat_add);
+         })
+        $('.addressblock').mouseenter(function(){
+            $(".addressblock").css('background-color','#FFFFFF');
+             $(this).css('background-color','#DDDDDD').css('cursor',' pointer');
+        })
+        $('.addressblock-button').mouseenter(function(){
+            $('.addressblock-button').css('background-color','#337ab7').css('color','#ffffff');
+            $(this).css('background-color','#5bc0de').css('color','#848788');
+        })
+
+        //表单提交
+        $('form').submit(function(){
+            var self = $(this);
+            $.post(self.attr("action"), self.serialize(), function(data){
+                if(data.status){
+                    window.location.href=data.url;
+                }else{
+                    $('div.alert').show().text(data.info);
+                }
+            }, "json");
+            return false;
+        });
+
+        var xcoordinate = {'x':'','y':''};
+        var windowsArr = [];
+        var marker = [];
+        var mapObj;
+        $("#suggestId").click(function(){
+            $('#myModal').find('.close').trigger('click');
+            $('#addaddress').find('.close').trigger('click');
+            bdmap=$("<div id=\"bdmapshow\"></div>");
+
+            $("div.bdmap-body").append(bdmap);
+
+            $("#bdmap").css({
+
+                "position":"absolute",
+
+                "top":($(window).height()/2)-240,
+
+                "left":($(window).width()/2)-300,
+
+                "width":700,
+
+                "height":470,
+
+                "background":"#fff",
+
+                "borderRadius":"10",
+
+                "box-shadow":"0 0 3px rgba(0,0,0,0.6)",
+
+                "z-index":99,
+
+                "padding-top":"10px",
+
+                "border-radius":"10px"
+
+            }).show();
+
+
+            maskshow();
+
+            $("#bdmapshow").css("height",400);
+
+            searchLocal();
+
+        })
+
+
+
+        $("#closeBdmap").click(function(){
+
+            $("#bdmap").hide();
+
+            bdmap.remove();
+
+            maskhide();
+
+        });
+
+
+
+        $("#doing").click(function(){
+            var keys=$("#keyword").val();
+            $("input[name='address_keyword']").val(keys);
+            $("input[name='detail_address']").val(keys);
+            $("input[name='lng']").val(xcoordinate.x);
+            $("input[name='lat']").val(xcoordinate.y);
+            $("#closeBdmap").click();
+        });
+
+
+        //
+        function searchLocal(){
+
+            mapObj = new AMap.Map('bdmapshow', {
+                resizeEnable: true,
+                center: [109.845664, 40.666166],
+                zoom: 13
+            });
+
+            var marker = new AMap.Marker({
+                position: mapObj.getCenter(),
+                draggable: true,
+                cursor: 'move'
+            });
+
+            //在地图中添加ToolBar插件
+            mapObj.plugin(["AMap.ToolBar"], function () {
+                toolBar = new AMap.ToolBar();
+                mapObj.addControl(toolBar);
+            });
+
+            marker.setMap(mapObj);
+            // 设置点标记的动画效果，此处为弹跳效果
+            marker.setAnimation('AMAP_ANIMATION_BOUNCE');
+            document.getElementById("keyword").onkeyup = keydown;
+            //为地图注册click事件获取鼠标点击出的经纬度坐标
+            var clickEventListener = mapObj.on('click', function (e) {
+                xcoordinate.x = e.lnglat.getLng();
+                xcoordinate.y = e.lnglat.getLat();
+                var zuobiao = new AMap.LngLat(xcoordinate.x, xcoordinate.y);
+                marker.setPosition(zuobiao);
+                marker.setAnimation('AMAP_ANIMATION_BOUNCE');
+                var geocoder;
+                //加载地理编码插件
+                mapObj.plugin(["AMap.Geocoder"], function () {
+                    geocoder = new AMap.Geocoder({
+                        radius: 1000, //以已知坐标为中心点，radius为半径，返回范围内兴趣点和道路信息
+                        extensions: "all"//返回地址描述以及附近兴趣点和道路信息，默认"base"
+                    });
+                    //返回地理编码结果
+                    AMap.event.addListener(geocoder, "complete", geocoder_CallBack2);
+                    //逆地理编码
+                    geocoder.getAddress(zuobiao);
+                });
+                function geocoder_CallBack2(data) { //回调函数
+                    //返回地址描述
+                    var address = data.regeocode.formattedAddress;
+                    $("#keyword").val(address);
+                }
+
+            });
+
+        }
+
+        //显示地图
+        function maskshow(){
+            if($("#maskDiv").length<=0){
+
+                maskdiv=$("<div id=\"maskDiv\"></div>");
+
+                $("body").append(maskdiv);
+
+                maskdiv.css({"position":"absolute","top":0,"left":0,"height":$(document).height(),"width":$(document).width(),"backgroundColor":"#000","opacity":"0.6","zIndex":88});
+
+            }else{
+
+                maskdiv.show();
+
+            }
+
+        }
+        //隐藏地图
+        function maskhide(){
+            maskdiv.hide();
+        }
+
+
+        //输入提示
+        function autoSearch() {
+            var keywords = document.getElementById("keyword").value;
+            var auto;
+            //加载输入提示插件
+            AMap.service(["AMap.Autocomplete"], function() {
+                var autoOptions = {
+                    city: "包头市" //城市，默认全国
+                };
+                auto = new AMap.Autocomplete(autoOptions);
+                //查询成功时返回查询结果
+                if (keywords.length > 0) {
+                    auto.search(keywords, function(status, result) {
+                        autocomplete_CallBack(result);
+                    });
+                }
+                else {
+                    document.getElementById("result1").style.display = "none";
+                }
+            });
+        }
+
+        //输出输入提示结果的回调函数
+        function autocomplete_CallBack(data) {
+            var resultStr = "";
+            var tipArr = data.tips;
+            if (tipArr && tipArr.length > 0) {
+                for (var i = 0; i < tipArr.length; i++) {
+                    resultStr += "<div id='divid" + (i + 1) + "' onmouseover='openMarkerTipById(" + (i + 1)
+                            + ",this)' onclick='selectResult(" + i + ")' onmouseout='onmouseout_MarkerStyle(" + (i + 1)
+                            + ",this)' style=\"font-size: 13px;cursor:pointer;padding:5px 5px 5px 5px;\"" + "data=" + tipArr[i].adcode + ">" + tipArr[i].name + "<span style='color:#C1C1C1;'>" + tipArr[i].district + "</span></div>";
+                }
+            }
+            else {
+                resultStr = " π__π 亲,人家找不到结果!<br />要不试试：<br />1.请确保所有字词拼写正确<br />2.尝试不同的关键字<br />3.尝试更宽泛的关键字";
+            }
+            document.getElementById("result1").curSelect = -1;
+            document.getElementById("result1").tipArr = tipArr;
+            document.getElementById("result1").innerHTML = resultStr;
+            document.getElementById("result1").style.display = "block";
+        }
+
+        //输入提示框鼠标滑过时的样式
+        function openMarkerTipById(pointid, thiss) {  //根据id打开搜索结果点tip
+            thiss.style.background = '#CAE1FF';
+        }
+
+        //输入提示框鼠标移出时的样式
+        function onmouseout_MarkerStyle(pointid, thiss) {  //鼠标移开后点样式恢复
+            thiss.style.background = "";
+        }
+
+        //从输入提示框中选择关键字并查询
+        function selectResult(index) {
+            if (index < 0) {
+                return;
+            }
+            if (navigator.userAgent.indexOf("MSIE") > 0) {
+                document.getElementById("keyword").onpropertychange = null;
+                document.getElementById("keyword").onfocus = focus_callback;
+
+            }
+            //截取输入提示的关键字部分
+            var text = document.getElementById("divid" + (index + 1)).innerHTML.replace(/<[^>].*?>.*<\/[^>].*?>/g, "");
+            var cityCode = document.getElementById("divid" + (index + 1)).getAttribute('data');
+            document.getElementById("keyword").value = text;
+
+
+            key_2 = text;
+            mapObj.plugin(["AMap.Geocoder"], function() {     //加载地理编码插件
+                MGeocoder = new AMap.Geocoder();
+                //返回地理编码结果
+                AMap.event.addListener(MGeocoder, "complete", geocoder_CallBack);
+                MGeocoder.getLocation(key_2);  //地理编码
+            });
+
+
+
+            document.getElementById("result1").style.display = "none";
+            //根据选择的输入提示关键字查询
+            mapObj.plugin(["AMap.PlaceSearch"], function() {
+                var msearch = new AMap.PlaceSearch();  //构造地点查询类
+                AMap.event.addListener(msearch, "complete", placeSearch_CallBack); //查询成功时的回调函数
+                msearch.setCity(cityCode);
+                msearch.search(text);  //关键字查询查询
+            });
+        }
+        //地理编码返回结果展示
+        function geocoder_CallBack(data){
+            //地理编码结果数组
+            var geocode = new Array();
+            geocode = data.geocodes;
+            if(geocode.length>0){
+
+                xcoordinate.x =  geocode[0].location.getLng();
+                xcoordinate.y =  geocode[0].location.getLat();
+            }
+
+        }
+
+        //定位选择输入提示关键字
+        function focus_callback() {
+            if (navigator.userAgent.indexOf("MSIE") > 0) {
+                document.getElementById("keyword").onpropertychange = autoSearch;
+            }
+        }
+
+        //输出关键字查询结果的回调函数
+        function placeSearch_CallBack(data) {
+            //清空地图上的InfoWindow和Marker
+            windowsArr = [];
+            marker = [];
+            mapObj.clearMap();
+            var resultStr1 = "";
+            var poiArr = data.poiList.pois;
+            var resultCount = poiArr.length;
+            for (var i = 0; i < resultCount; i++) {
+                resultStr1 += "<div id='divid" + (i + 1) + "' onmouseover='openMarkerTipById1(" + i + ",this)' onmouseout='onmouseout_MarkerStyle(" + (i + 1) + ",this)' style=\"font-size: 12px;cursor:pointer;padding:0px 0 4px 2px; border-bottom:1px solid #C1FFC1;\"><table><tr><td><img src=\"http://webapi.amap.com/images/" + (i + 1) + ".png\"></td>" + "<td><h3><font color=\"#00a6ac\">名称: " + poiArr[i].name + "</font></h3>";
+                resultStr1 += createContent(poiArr[i].type, poiArr[i].address, poiArr[i].tel) + "</td></tr></table></div>";
+                addmarker(i, poiArr[i]);
+            }
+            mapObj.setFitView();
+        }
+
+        //鼠标滑过查询结果改变背景样式，根据id打开信息窗体
+        function openMarkerTipById1(pointid, thiss) {
+            thiss.style.background = '#CAE1FF';
+            windowsArr[pointid].open(mapObj, marker[pointid]);
+        }
+
+        //添加查询结果的marker&infowindow
+        function addmarker(i, d) {
+            var lngX = d.location.getLng();
+            var latY = d.location.getLat();
+            var markerOption = {
+                map: mapObj,
+                icon:"http://webapi.amap.com/theme/v1.3/markers/n/mark_b"+(i+1)+".png",
+                position: [lngX, latY]
+            };
+            var mar = new AMap.Marker(markerOption);
+            marker.push([lngX, latY]);
+
+            var infoWindow = new AMap.InfoWindow({
+                content: "<h3><font color=\"#00a6ac\">  " + (i + 1) + ". " + d.name + "</font></h3>" + createContent(d.type, d.address, d.tel),
+                size: new AMap.Size(300, 0),
+                autoMove: true,
+                offset: new AMap.Pixel(0, -30)
+            });
+            windowsArr.push(infoWindow);
+            var aa = function(e) {
+                infoWindow.open(mapObj, mar.getPosition());
+            };
+            mar.on( "mouseover", aa);
+        }
+
+        //infowindow显示内容
+        function parseStr(p){
+            if(!p || p == "undefined" || p == " undefined"||p=="tel"){
+                p="暂无";
+            }
+            return p;
+        }
+
+        function createContent(type, address, tel) {  //窗体内容
+            type=parseStr(type);
+            address=parseStr(address);
+            tel=parseStr(tel);
+            var s=[];
+            s.push("地址：" +address);
+            s.push("电话：" +tel);
+            s.push("类型：" +type);
+            return s.join("<br>");
+        }
+
+
+        function keydown(event) {
+            var key = (event || window.event).keyCode;
+            var result = document.getElementById("result1");
+            var cur = result.curSelect;
+            if(key == 40){
+                if (cur + 1 < result.childNodes.length) {
+                    if (result.childNodes[cur]) {
+                        result.childNodes[cur].style.background = '';
+                    }
+                    result.curSelect = cur + 1;
+                    result.childNodes[cur + 1].style.background = '#CAE1FF';
+                    document.getElementById("keyword").value = result.tipArr[cur + 1].name;
+                }
+            }else if(key == 38){
+                if (cur - 1 >= 0) {
+                    if (result.childNodes[cur]) {
+                        result.childNodes[cur].style.background = '';
+                    }
+                    result.curSelect = cur - 1;
+                    result.childNodes[cur - 1].style.background = '#CAE1FF';
+                    document.getElementById("keyword").value = result.tipArr[cur - 1].name;
+                }
+            }else if(key == 13){
+                var res = document.getElementById("result1");
+                if (res && res['curSelect'] !== -1) {
+                    selectResult(document.getElementById("result1").curSelect);
+                }
+            }else{
+                autoSearch();
+            }
+        }
+            function daijinquan(){
+                var quan={$daijinquan|default =null};
+            return quan;
+            }
+    </script>
+
+
+
+
+
+</block>

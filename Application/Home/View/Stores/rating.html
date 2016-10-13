@@ -1,0 +1,297 @@
+<extend name="Base/common_store" />
+<block name="body_store">
+
+
+    <header id="topbar" class="site-topbar" role="banner">
+        <div class="container"> <a class="site-logo" href="{:U('Index/index')}" title="外卖先生" role="logo">外卖先生</a>
+            <div class="mobile-wrap"> <a id="top_mobile" class="topbar-mobile" href="#" target="_blank" onclick="ga('send', 'event', 'topbar', 'click_mobile');"><i class="icon-mobile"></i>手机应用</a>
+                <div id="popup_mobile" class="popup-mobile">
+                    <div class="arrow"></div>
+                    <div class="panel">
+                        <p class="title">扫一扫，手机订餐更方便</p>
+                        <a class="qrcode" href="#" target="_blank"><img src="__PUBLIC__/Home/images/waimai/app-qrcode-72.png" alt="扫一扫，手机订餐更方便"></a> <a class="btn-ios" href="#" target="_blank"><span>App Store下载</span></a> <a class="btn-android" href="#"><span>Android版</span></a> </div>
+                </div>
+            </div>
+            <nav class="topbar-nav" role="navigation">
+                <ul class="topbar-site-nav">
+                    <li><a class="tnav-link" href="{:U('Orderlist/index')}">我的订单</a></li>
+                    <!--<li><a class="tnav-link" href="#">礼品中心</a></li>-->
+                    <li><a id="tdp_link" class="tnav-link" href="http://www.dianping.com/baotou" target="_blank">附近团购</a></li>
+                    <li><a class="tnav-link" href="#">服务中心</a></li>
+                </ul>
+<!--                <div id="topbar_cart" class="eleme_dropdown topbar-widget topbar-cart empty"> <a class="e_toggle twidget-toggle"> <span id="tcart_total" class="tcart-total twidget-total">0</span> <i class="icon-tcart"></i> </a>
+                    <div class="e_dropdown twidget-dropdown">
+                        <div id="tcart_loading" class="twidget-loading"></div>
+                        <div id="tcart_wrapper"></div>
+                    </div>
+                </div>-->
+                <div id="topbar_username" class="eleme_dropdown topbar-user-nav">
+                    <empty name="is_login">
+                        <a class="store-no-login" href="{:U('User/login')}">登录/</a>
+                        <a class="store-no-login" href="{:U('User/register')}">注册</a>
+                        <else/>
+                        <a id="t_username" class="e_toggle tnav-link tnav-username caret">{:session('user_auth.username')}</a>
+                        <ul class="e_dropdown topbar-user-dropdown" id="menu">
+                            <li><a class="tuser-link" href="{:U('Orderlist/index')}"><i class="icon-profile"></i>个人中心</a></li>
+                            <li><a class="tuser-link" href="{:U('Favorite/index')}"><i class="icon-fav"></i>我的收藏</a></li>
+                            <li><a class="tuser-link" href="{:U('Address/address')}"><i class="icon-address"></i>我的地址</a></li>
+                            <li><a class="tuser-link" href="{:U('Account/index')}"><i class="icon-config"></i>安全设置</a></li>
+                            <li class="divider"></li>
+                            <li><a id="topbar_logout" class="tuser-link" href="{:U('User/logout')}"><i class="icon-logout"></i>退出登录</a></li>
+                        </ul>
+                    </empty>
+                </div>
+                <script>
+
+                </script>
+
+                <div id="topbar_logreg" class="topbar-user-nav tnav-link hide"> <a href="{:U('User/login')}">登录</a> / <a href="{:U('User/register')}">注册</a> </div>
+            </nav>
+        </div>
+
+    </header>
+    <div class="restaurant-header">
+        <div class="container rst_header_con"><a class="btn-last-page" onclick="javascript:history.back(-1);return false;"></a>
+            <article class="rst-header-main rst-header-toggle rst_info_header" itemscope="" itemtype="#">
+                <header class="rst-header-info group premium"> <a class="rst-logo premium" href="#" itemprop="url"> <img class="rst-logo-img" src="{$list_store.store_logo_id|get_cover='path'}" alt="{$list_store.store_name}" itemprop="logo" height="48" width="48"> </a>
+                    <div class="rst-basic-info">
+                        <div class="rst-name-wrapper caret"> <a data-original-title="{$list_store.store_name}" class="rst-name text-overflow" href="#" data-toggle="bs-tooltip" title="" itemprop="name">{$list_store.store_name}</a> </div>
+                        <div class="rst-misc">
+                            <a id="rst_rating" class="rst-rating" href="#">
+                                <div class="icon-d-star-new">
+                                    <div class="icon-d-star-box">
+                                        <div class="icon-d-star-color" style="width: {$avg}%"></div>
+                                    </div>
+                                </div> {$list_store_avg} </a>
+                            <empty name="list_store.is_open">
+                                <span class="rst-status">休息中</span>
+                            </empty>
+                        </div>
+                    </div>
+                </header>
+                <div class="rst-header-detail rst-header-dropdown">
+                    <section class="rst-header-rating group">
+                        <div class="rating-point header" itemprop="aggregateRating" itemscope="" itemtype="#"> <a class="point"><span itemprop="ratingValue">{$list_store_avg}</span></a> <a class="comment" href="#"><span itemprop="reviewCount">{$count}</span>人评价</a> </div>
+                        <ul class="rating-diagram header">
+                            <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                            </span>
+                                <span class="bar" style="width:{$five}px;"></span>{$five}%</li>
+                            <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                            </span>
+                                <span class="bar" style="width: {$four}px;"></span>{$four}% </li>
+                            <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i></span>
+                                <span class="bar" style="width: {$three}px;"></span>{$three}% </li>
+                            <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                            </span>
+                                <span class="bar" style="width: {$two}px;"></span>{$two}% </li>
+                            <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                                <i class="glyph-rating-star off">★</i>
+                            </span>
+                                <span class="bar" style="width: {$one}px;"></span>{$one}% </li>
+                        </ul>
+                    </section>
+                    <section class="rst-header-intro">欢迎光临</section>
+                    <ul class="rst-header-list">
+                        <li><span class="item">时间：</span>{$list_store.open_time}</li>
+                        <li><span class="item">地址：</span><span itemprop="address">{$list_store.address}</span></li>
+                    </ul>
+                </div>
+            </article>
+            <nav class="rst-header-nav">
+                <a class="rst-header-nav-item " href="{:U('index?store_id='.$list_store['store_id'])}">菜单</a>
+
+                <a class="rst-header-nav-item ui_active" href="#">评价</a>
+
+            </nav>
+            <ul style="display: block;" class="rst-header-aside group rst_info_panel">
+                <li class="rst-data-block">
+                    <div class="rst-data no-border"> <b class="rst-data-info value">{$list_store.sh_time}</b> <span class="rst-data-info unit open-time">分钟/送达时间</span> </div>
+                </li>
+                <li class="rst-data-block">
+                    <div class="rst-data"> <b class="rst-data-info value rst_deliver_amount">{$list_store.peisong_price}</b> <span class="rst-data-info unit">配送费/元</span> </div>
+                </li>
+                <li class="rst-data-block">
+                    <div class="rst-data"> <b class="rst-data-info value rst_deliver_amount">{$list_store.qisong_price}</b> <span class="rst-data-info unit">起送价/元</span> </div>
+                </li>
+            </ul>
+
+            <input type="hidden" value="{:session('user_auth.uid')}" id="uid" />
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="restaurant-main">
+            <div id="fixed_placeholder" class="rst-subnav-placeholder">
+                <div id="sub_nav" class="rst-block rst-subnav-wrapper group">
+                    <a class="rst-subnav ui_active" href="/tqn/rating">全部评价</a>
+                </div>
+            </div>
+
+            <div id="rating_wrap" class="rst-rating-wrapper">
+                <section class="rst-rating-column rst_rating_wrap">
+                    <volist name="list" id="vo">
+                        <div class="rst-block rst-rating-block">
+                            <div class="rst-rating-dish">
+                                <a class="link" title="{$list_store.store_name}">
+                                    {$list_store.store_name}
+                                </a>
+                                <div class="icon-d-star s0 i_s">
+                                    <i class="icon-d-star" style="width: {$avg}%"></i>
+                                </div>
+
+                            </div>
+                            <p class="rst-rating-text">{$vo.content}</p>
+                            <p class="rst-rating-info">
+                                <span class="username">{$vo.nickname}</span>
+                                {$vo.pj_time|date='Y-m-d',###}
+                            </p>
+                        </div>
+                    </volist>
+                </section>
+
+                <empty name="list">
+                    <div class="rst-block rst-empty-info rst-rating-empty">
+                        <i class="glyph-star glyph"></i>
+                        该餐厅还没有收到过评价
+                    </div>
+                </empty>
+                <style>
+
+                    #rst_pager span{display: inline-block;background: #aaa; color: #fff;  min-width: 16px;  border: 1px solid transparent;  border-radius: 2px; font-size: 14px;  line-height: 16px;  text-align: center;}
+                    #rst_pager a{display: inline-block; color: #999;  min-width: 16px;  border: 1px solid transparent;  border-radius: 2px; font-size: 14px;  line-height: 16px;  text-align: center;}
+                </style>
+
+                <div id="rst_pager" class="rst-pager">
+                    {$page}
+                </div>
+            </div>
+        </div>
+        <aside class="restaurant-aside">
+            <aside class="rst-aside">
+                <div class="rst-block rst-rating-aside group">
+
+                    <div class="rating-point aside" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
+                        <strong class="point float-l" itemprop="ratingValue">{$list_store_avg}</strong>
+                        <div class="detail">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                                <i class="glyph-rating-star">★</i>
+                            </span>
+                            <span class="comment" href="/tqn/rating"><span itemprop="reviewCount">{$count}</span>人评价</span>
+
+                        </div>
+                    </div>
+
+                    <ul class="rating-diagram aside">
+                        <li class="diagram-item">
+                            <span class="rating-stars">
+                                <i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i></span>
+                            <span class="bar" style="width: {$five}px;"></span>{$five}%
+                        </li>
+                        <li class="diagram-item">
+    <span class="rating-stars">
+  <i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star off">★</i></span>
+                            <span class="bar" style="width: {$four}px;"></span>{$four}%
+                        </li>
+                        <li class="diagram-item">
+    <span class="rating-stars">
+  <i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i></span>
+                            <span class="bar" style="width: {$three}px;"></span>{$three}%
+                        </li>
+                        <li class="diagram-item">
+    <span class="rating-stars">
+  <i class="glyph-rating-star">★</i><i class="glyph-rating-star">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i></span>
+                            <span class="bar" style="width: {$two}px;"></span>{$two}%
+                        </li>
+                        <li class="diagram-item">
+    <span class="rating-stars">
+  <i class="glyph-rating-star">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i><i class="glyph-rating-star off">★</i></span>
+                            <span class="bar" style="width: {$one}px;"></span>{$one}%
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </aside>
+    </div>
+    <div id="mod_fixed" class="global-mod-fixed">
+        <a id="back_top" class="btn-back-top" role="button" title="回顶部" style="display:none;"><i class="icon-backtop"></i></a>
+        <div class="btn-app-qrcode">
+            <i class="icon-qrcode"></i>
+            <img class="img-qrcode" src="#" alt="扫描二维码免费下载手机App">
+        </div>
+        <a class="btn-site-feedback" href="{:U('Approve/index')}" target="_blank">我要开店</a>
+
+
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+
+
+            var catescroll = $("#cate_view").offset().top;
+            var rstscroll = $("#rst_aside").height();
+            var rsttop = $("#rst_aside").offset().top;
+
+            $("#back_top").click(function(){
+                $("html,body").animate({scrollTop:"0px"},200);
+            });
+            //购物车弹窗
+            //bv.css("top",-bv.outerHeight());
+            $('div.basket_wrap').click(function(e){
+                var t=$(e.target);
+                if(t.hasClass("rcart-checkout")) return;
+                if(basket6.hasClass('basket-close')){
+                    basket6.animate({top: -(basket6.outerHeight())}).removeClass('basket-close');
+                }else{
+                    basket6.animate({top: basket6.outerHeight()}).addClass('basket-close');
+                }
+            });
+        });
+        $("#t_username").click(function(){
+            var menu = $("#menu");
+            if(menu.is(":hidden")){
+                menu.show();
+            }else{
+                menu.hide();
+            }
+        });
+
+
+    </script>
+</block>
+
+<block name="footer_store"></block>

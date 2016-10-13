@@ -1,0 +1,130 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        .content{
+            padding:20px;
+        }
+        .tab-content{
+            padding:20px 0;
+        }
+        .required:before{
+            content:"*";
+            color:red;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="content ">
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="{:U('addone')}"  style="color: #333">录入公司信息</a></li>
+            <li role="presentation" class="active"  style="cursor: pointer" ><a href="javascript('0')" style="color: #333"  role="tab"  data-toggle="tab">录入用户信息</a></li>
+        </ul>
+        <form class="form-horizontal" action="{:U('addtwo')}" method="post">
+            <input type="hidden" name="ids" value="{$id}">
+            <input type="hidden" name="founder_id" value="{$id}">
+            <!--<input type="hidden" name="create_time" value="">-->
+            <!--<input type="hidden" name="reg_ip" value="">-->
+            <div  id="base-for" class="tab-content " >
+                <div  role="tabpanel" class="tab-pane fade active in">
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label required">姓名</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="nickname" value="" placeholder="请录入用户姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">登录账号</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="username"  class="form-control" placeholder="请录入登录账号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label required">密码</label>
+                        <div class="col-sm-3">
+                            <input type="password" class="form-control" name="password" value="" placeholder="请录入登录密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">手机</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="mobile"  class="form-control" placeholder="请录入手机号码">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label  class="col-sm-2 control-label required">角色权限</label>-->
+                        <!--<div class="col-sm-6">-->
+                            <!--<input type="radio" name="status" id="1" value="1"><label style="font-weight: 100;margin-left: 8px;"  for="1">超级管理员</label>&nbsp;&nbsp;&nbsp;-->
+                            <!--<input type="radio" name="status" id="2" value="2"><label style="font-weight: 100;margin-left: 8px;"  for="2">企业账户管理员</label>&nbsp;&nbsp;&nbsp;-->
+                            <!--<input type="radio" name="status" id="3" value="3"><label style="font-weight: 100;margin-left: 8px;"  for="3">平台系统管理员</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label required">用户类型</label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="user_type" id="4" value="manage"><label style="font-weight: 100;margin-left: 8px;"  for="4">平台管理账户</label>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="user_type" id="5" value="company"><label style="font-weight: 100;margin-left: 8px;"  for="5">企业账户</label>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="user_type" id="6" value="company_member"><label style="font-weight: 100;margin-left: 8px;"  for="6">企业账户会员</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">职位</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="job"  class="form-control" placeholder="请录入职位">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail351" class="col-sm-2 control-label">部门</label>
+                        <div class="col-sm-3">
+                            <select name="dt_id" class="form-control">
+                                <volist name="dep" id="vo">
+                                    <php>$active_false_checked=($vo['id']==$info['dt_id'])?"checked":"";</php>
+                                    <option value="{$vo.id}" {$active_false_checked}>{$vo.dt_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label required">Email</label>
+                        <div class="col-sm-3">
+                            <input type="email" name="email"  class="form-control" placeholder="请录入Email账号">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">保存</button>
+                            <a class="btn btn-danger" href="javascript:history.back(-1)">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script type="text/javascript">
+
+//        $(function(){
+//            $('.tab').click(function(){
+//                if($(this).data('id') == 1){
+//                    $('#base-form').show();$('#base-for').hide();
+//                }else{
+//                    $('#base-for').show();$('#base-form').hide();
+//                }
+//            });
+//        })
+        var url="{:U('getCity','',false)}";
+        var curl="{:U('getTown','',false)}";
+        ztools.getLianDong({"p_url": url, "c_url": curl});
+    </script>
+</block>

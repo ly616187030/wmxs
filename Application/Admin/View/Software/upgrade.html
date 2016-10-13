@@ -1,0 +1,126 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+        .pd-l-0{
+            padding-left:0;
+        }
+        .pd-r-0{
+            padding-right:0;
+        }
+        .pd-lr-0{
+            padding:0;
+        }
+
+        .table tbody tr td,.table thead tr th{
+            text-align: center;
+            padding:13px 0;
+        }
+    </style>
+</block>
+<block name="script">
+
+</block>
+<block name="main">
+    <div class="col-sm-2 pd-r-0">
+            <table class="table table-bordered">
+                <thead>
+                    <tr><th>产品名称</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>授权方式</td></tr>
+                    <tr><td>价格</td></tr>
+                    <!--<tr><td>订单数量</td></tr>-->
+                    <tr><td>安装服务</td></tr>
+                    <tr><td>商户数量 </td></tr>
+                    <volist name="func" id="vo">
+                        <tr><td>{$vo.name}</td></tr>
+                    </volist>
+                    <tr><td style="padding:20px 0;">购买</td></tr>
+                </tbody>
+            </table>
+    </div>
+    <volist name="vip" id="vo">
+        <div class="col-sm-2 pd-lr-0">
+            <table class="table table-bordered">
+                <thead>
+                    <tr><th>{$vo.vip_name}</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><if condition="$vo.auth_type eq 1">租用<else/>终生</if></td></tr>
+                    <tr><td><if condition="$vo.price eq 0">永久免费<else/>{$vo.price}元/年</if></td></tr>
+                    <!--<tr><td>{$vo.order_quantity}个</td></tr>-->
+                    <tr><td><if condition="$vo.install_service eq 1">免费<else/>收费</if></td></tr>
+
+                    <tr><td>{$vo.store_number}个</td></tr>
+                    <volist name="func" id="do">
+                        <tr><td><php>if(in_array($do['id'],explode(',',$vo['function_list']))){echo '<i class="fa fa-check" style="color:green;"></i>';}else{echo '<i class="fa fa-remove" style="color:red;"></i>';}</php></td></tr>
+                    </volist>
+                    <tr><td><a class="btn btn-success buy" style="padding:0 auto;"  data-price="{$vo.price}" data-role="{$vo.role_id}" data-vipid="{$vo.id}">点击购买</a>
+                        <span class="label label-danger"><php>if($vo['id']==$vid && $_contract){echo '已购买正在使用';}elseif($vo['id']==$vid){echo '正在试用';};</php></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </volist>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-circle" style="color:green;font-size:1.2em;"></i>信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size:1em;"><span class="label label-success">欢迎您购买此版本，我们将为您提供最优质的服务。服务电话：4008-725-866</span></p>
+                    <div>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" checked id="inlineRadio1" data-year="1"> 1年×<span id="span1"></span>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" data-year="2"> 2年×<span id="span2"></span>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" data-year="3"> 3年×<span id="span3"></span>
+                        </label>
+                    </div>
+                    <h5 class="text-right">金额：<strong id="total_fee" style="color:red">200</strong><strong >元</strong></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="payment">去支付</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        var fid= '{$fid}';
+        var uid='{$_uid}';
+        $(".buy").click(function(){
+            var that = $(this);
+            var p = that.data('price');
+            $('#myModal').modal().attr('data-role',that.data('role'));
+            $('#myModal').modal().attr('data-vipid',that.data('vipid'));
+            $('#inlineRadio1,#inlineRadio2,#inlineRadio3').val(p).change(function(){
+                var $this = $(this);
+                var v = $this.val();
+                var n = parseInt($this.data('year'));
+                $("#total_fee").text(v*n);
+            });
+            $('#span1,#span2,#span3').text(p);
+            $('#inlineRadio1').prop('checked',true);
+            $("#total_fee").text(p);
+        });
+        $('#payment').click(function (e) {
+            var n = $('.modal-body').find('input:checked').data('year');
+            var pp = $("#total_fee").text();
+            var role = $('#myModal').data('role');
+            var vipid = $('#myModal').data('vipid');
+            location.href='http://'+document.domain+'/WxPay/pay/native_software.php?total='+pp+'&role='+role+'&use_time='+n+'&companyid='+fid+'&vipid='+vipid+'&uid='+uid;
+        })
+    </script>
+</block>

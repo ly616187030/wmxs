@@ -1,0 +1,75 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <div class="builder builder-list-box panel-body">
+        <form  action="{:U('distshop')}" method="post" class="form-horizontal" id="form">
+            <!-- 标签页导航 -->
+            <div class="tab-wrap">
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <button class="btn btn-success ajax-post" type="submit" target-form="form-horizontal" id="submit" >确认</button>
+                    <div style="height: 15px"></div>
+                    <input type="hidden" name="id" value="{$id}" />
+                    <div class="col-xs-10 auth" style="margin-left: 40px">
+
+                        <volist name="list" id="vo">
+                            <?php $module_name = $key; ?>
+                            <div class="{$module_name}">
+                                <label class="checkbox"><input type="checkbox"  data-module-name="{$key}" value="{$vo.id}">{$vo.c_name}</label>
+                                <div class="auth{$vo.id}" style="padding-left: 25px;">
+                                    <volist name="vo.child" id="ro">
+                                        <label class="checkbox-inline"><input type="checkbox" name="menu_auth[]" data-module-name="{$key}" value="{$ro.store_id}" <eq name="ro.check_status" value="1">checked="checked"</eq>>{$ro.store_name}</label>
+                                    </volist>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //遍历选中当前权限的子权限
+            $('.auth input[type="checkbox"]').on('change',function(){
+                $('.'+$(this).attr('data-module-name')+' .auth'+$(this).val()).find('input').prop('checked',this.checked);
+                var $this=$(this);
+                var fid=$this.data('fid');
+                $this.closest('div').each(function(){
+                    var num=$(this).find(':checked').length;
+                    if(num>0){
+                        checked_top(fid,$this.attr('data-module-name'),true);
+                    }else if(num<=0){
+                        checked_top(fid,$this.attr('data-module-name'),false);
+                    }
+                });
+
+            });
+
+            function checked_top(id,module,flag){
+                if(id != undefined ){
+                    var that=$('#'+module+'_'+id);
+                    that.prop('checked',flag);
+                    var father=that.closest('div');
+                    var counts=0;
+                    var idd=that.data('fid');
+                    var m=that.attr('data-module-name');
+                    father.find('> label').each(function(){
+                        $(this).children().is(':checked') && counts++
+                    });
+                    if(counts > 0){
+                        checked_top(idd,m,true);
+                    }else if(counts <= 0){
+                        checked_top(idd,m,false);
+                    }
+
+                }else{
+                    return;
+                }
+
+            }
+        });
+    </script>
+</block>

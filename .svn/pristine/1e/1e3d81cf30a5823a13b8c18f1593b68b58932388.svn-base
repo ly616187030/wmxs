@@ -1,0 +1,1048 @@
+[ 2016-04-08T08:50:01+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.023039s ]
+INFO: [ app_init ] --END-- [ RunTime:0.023110s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000497s ]
+SQL: SELECT `name`,`value`,`type` FROM `wm_admin_config` WHERE `status` = 1  [ RunTime:0.0004s ]
+SQL: SELECT * FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: taglib E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 56 行.
+NOTIC: [8] Undefined index: behavior E:\xampp\htdocs\zhaohuoguo\Application\Common\Behavior\InitConfigBehavior.class.php 第 63 行.
+SQL: SHOW COLUMNS FROM `wm_admin_theme` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_admin_theme` WHERE `current` = 1 ORDER BY id asc LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_hook` [ RunTime:0.0019s ]
+SQL: SELECT `addons` FROM `wm_admin_hook` WHERE `name` = 'FormBuilderExtend' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_admin_addon` [ RunTime:0.0024s ]
+SQL: SELECT `config` FROM `wm_admin_addon` WHERE `name` = '' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.018428s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.019040s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.005990s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.006032s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0022s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0025s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:50:02+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.013136s ]
+INFO: [ app_init ] --END-- [ RunTime:0.013198s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000468s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001587s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002114s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:50:09+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.023728s ]
+INFO: [ app_init ] --END-- [ RunTime:0.023794s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000462s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001517s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002039s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000420s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000470s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0029s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0024s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0022s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0034s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2016-04-08T08:50:09+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0020s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.013137s ]
+INFO: [ app_init ] --END-- [ RunTime:0.013200s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000455s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001487s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002008s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:50:20+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0024s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.022431s ]
+INFO: [ app_init ] --END-- [ RunTime:0.022501s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000470s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001651s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002198s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000373s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000412s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0021s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0021s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0026s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:50:20+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0024s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0023s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.022744s ]
+INFO: [ app_init ] --END-- [ RunTime:0.022805s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000460s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001479s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001998s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:50:57+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0027s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.013794s ]
+INFO: [ app_init ] --END-- [ RunTime:0.013886s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000421s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001593s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002073s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000882s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000930s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0021s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0024s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:50:57+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.021703s ]
+INFO: [ app_init ] --END-- [ RunTime:0.021764s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000417s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001620s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002102s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:52:22+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.021359s ]
+INFO: [ app_init ] --END-- [ RunTime:0.021423s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000477s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001897s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002449s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000600s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000642s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0021s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0024s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:52:24+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0360s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.055920s ]
+INFO: [ app_init ] --END-- [ RunTime:0.055993s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000368s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001630s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002058s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000621s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000660s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0022s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0024s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:52:24+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0036s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.022867s ]
+INFO: [ app_init ] --END-- [ RunTime:0.022934s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000363s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001604s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002025s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:52:42+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0023s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.021756s ]
+INFO: [ app_init ] --END-- [ RunTime:0.021829s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000378s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001633s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002072s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000631s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000670s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0022s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0034s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0002s ]
+
+[ 2016-04-08T08:52:45+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0025s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0021s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.012268s ]
+INFO: [ app_init ] --END-- [ RunTime:0.012334s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000365s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001769s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002198s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000628s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000668s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0021s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0023s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0024s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:52:45+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/shanghu/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0023s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.021241s ]
+INFO: [ app_init ] --END-- [ RunTime:0.021301s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000431s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.002085s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002579s ]
+ERR: 无法加载控制器:Shanghu
+
+[ 2016-04-08T08:53:08+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0024s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0024s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.024011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.024080s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000423s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001654s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002140s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000618s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000658s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0020s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0022s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 50 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 23 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 50 ) LIMIT 1   [ RunTime:0.0003s ]
+
+[ 2016-04-08T08:53:53+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0095s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0025s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.021458s ]
+INFO: [ app_init ] --END-- [ RunTime:0.021525s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000609s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001796s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002475s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000599s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000650s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0023s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0207s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0025s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_canpin` [ RunTime:0.0023s ]
+SQL: SELECT c.canpin_id,c.canpin_name,m.cm_id,m.cm_name,m.now_price,m.canping_id,p.path,m.flag FROM wm_canpin c LEFT JOIN wm_canming AS m ON c.canpin_id = m.canping_id LEFT JOIN wm_picture AS p ON m.big_img = p.id  WHERE c.store_id = '1' AND c.flag = 1  [ RunTime:0.0125s ]
+SQL: SHOW COLUMNS FROM `wm_caipin` [ RunTime:0.1349s ]
+SQL: SELECT `cp_id`,`cp_name` FROM `wm_caipin`  [ RunTime:0.0003s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000254s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000295s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 10 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Array to string conversion E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 326 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.065537s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.065597s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000239s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000267s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000500s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000537s ]
+
+[ 2016-04-08T08:53:57+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0026s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0022s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0001s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.023718s ]
+INFO: [ app_init ] --END-- [ RunTime:0.023789s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000546s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001916s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002524s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000989s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.001029s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0020s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0022s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0025s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_canming` [ RunTime:0.0022s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wm_canming` WHERE ( store_id=1 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT s.*,c.canpin_name,d.* FROM wm_canming s LEFT JOIN wm_canpin AS c ON s.canping_id=c.canpin_id LEFT JOIN wm_dangkou AS d ON s.dangkou_id=d.id  WHERE ( s.store_id=1 ) ORDER BY cm_id LIMIT 0,15   [ RunTime:0.0006s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000232s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000296s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\d290a3c9cc81183c599411f32eebdc7d.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\d290a3c9cc81183c599411f32eebdc7d.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.016858s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.016896s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000356s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000384s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000632s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000670s ]
+
+[ 2016-04-08T08:53:59+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0027s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0024s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.022237s ]
+INFO: [ app_init ] --END-- [ RunTime:0.022300s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000378s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001669s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002106s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000827s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000895s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0020s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0021s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0085s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0026s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_canpin` [ RunTime:0.0024s ]
+SQL: SELECT * FROM `wm_canpin` WHERE ( store_id =1 )  [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_dangkou` [ RunTime:0.0018s ]
+SQL: SELECT * FROM `wm_dangkou` WHERE ( uid=51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000259s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000295s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.010896s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.010933s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000281s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000310s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000478s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000511s ]
+
+[ 2016-04-08T09:04:37+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/seatcategory/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0026s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0024s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.013917s ]
+INFO: [ app_init ] --END-- [ RunTime:0.013986s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000495s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001592s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002150s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000731s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000776s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0022s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0023s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_seat_location` [ RunTime:0.0018s ]
+SQL: SELECT `id`,`name` FROM `wm_seat_location` WHERE ( uid=51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000133s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000168s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b8694a454bb0b3f7c72337db73da254a.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b8694a454bb0b3f7c72337db73da254a.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b8694a454bb0b3f7c72337db73da254a.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.008526s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.008562s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000312s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000340s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000459s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000489s ]
+
+[ 2016-04-08T09:04:39+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/seatcategory/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0027s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0023s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.022759s ]
+INFO: [ app_init ] --END-- [ RunTime:0.022827s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000480s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001911s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002457s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000636s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000687s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0021s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0021s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0001s ]
+SQL: SHOW COLUMNS FROM `wm_seat_location` [ RunTime:0.0017s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000082s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000117s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b9b5eb47e762b62ade8263bdbea4cd54.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b9b5eb47e762b62ade8263bdbea4cd54.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b9b5eb47e762b62ade8263bdbea4cd54.php 第 10 行.
+NOTIC: [8] Undefined variable: id E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b9b5eb47e762b62ade8263bdbea4cd54.php 第 56 行.
+NOTIC: [8] Undefined variable: info E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\b9b5eb47e762b62ade8263bdbea4cd54.php 第 60 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.006738s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.006771s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000315s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000343s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000424s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000453s ]
+
+[ 2016-04-08T09:04:48+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/index/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0027s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0025s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.015363s ]
+INFO: [ app_init ] --END-- [ RunTime:0.015436s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000604s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001791s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002460s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000779s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000819s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0023s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0027s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_printer` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wm_printer` WHERE `user_id` = 51  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000148s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000186s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\c385ab6759cfdd774266b97e6326f72a.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\c385ab6759cfdd774266b97e6326f72a.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\c385ab6759cfdd774266b97e6326f72a.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009477s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009522s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000396s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000425s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000511s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000541s ]
+
+[ 2016-04-08T09:04:50+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/dangkou/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0079s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0024s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.019839s ]
+INFO: [ app_init ] --END-- [ RunTime:0.019906s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000555s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001705s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002323s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000734s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000775s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0023s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0020s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_dangkou` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wm_printer` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `wm_printer` WHERE ( user_id=51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000095s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000129s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\1efa373c013bd7e23cc66aac393559d2.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\1efa373c013bd7e23cc66aac393559d2.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\1efa373c013bd7e23cc66aac393559d2.php 第 10 行.
+NOTIC: [8] Undefined variable: id E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\1efa373c013bd7e23cc66aac393559d2.php 第 59 行.
+NOTIC: [8] Undefined variable: info E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\1efa373c013bd7e23cc66aac393559d2.php 第 63 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.007441s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007476s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000402s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000432s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000541s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000573s ]
+
+[ 2016-04-08T09:04:54+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0027s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0002s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0025s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.014847s ]
+INFO: [ app_init ] --END-- [ RunTime:0.014916s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000594s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.001658s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002315s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000704s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000743s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0022s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0023s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0029s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_canpin` [ RunTime:0.0023s ]
+SQL: SELECT * FROM `wm_canpin` WHERE ( store_id =1 )  [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_dangkou` [ RunTime:0.0026s ]
+SQL: SELECT * FROM `wm_dangkou` WHERE ( uid=51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000237s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000272s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.009866s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.009901s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000400s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000428s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000534s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000567s ]
+
+[ 2016-04-08T09:30:55+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/cp_store/index.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.0026s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0003s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0026s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0002s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.014761s ]
+INFO: [ app_init ] --END-- [ RunTime:0.014831s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000459s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.002092s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002616s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.000827s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.000868s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0024s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0002s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0024s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0026s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0026s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_canpin` [ RunTime:0.0023s ]
+SQL: SELECT c.canpin_id,c.canpin_name,m.cm_id,m.cm_name,m.now_price,m.canping_id,p.path,m.flag FROM wm_canpin c LEFT JOIN wm_canming AS m ON c.canpin_id = m.canping_id LEFT JOIN wm_picture AS p ON m.big_img = p.id  WHERE c.store_id = '1' AND c.flag = 1  [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_caipin` [ RunTime:0.0026s ]
+SQL: SELECT `cp_id`,`cp_name` FROM `wm_caipin`  [ RunTime:0.0001s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000252s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000285s ]
+NOTIC: [8] Undefined variable: meta_title E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 5 行.
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 10 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Undefined index: count E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 169 行.
+NOTIC: [8] Array to string conversion E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\91356cec1aaacf00b451104b7d0f29b6.php 第 326 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.014236s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.014296s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000336s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000381s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000477s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000522s ]
+
+[ 2016-04-08T09:30:57+08:00 ] 127.0.0.1 /index.php?s=/storemanagement/canming/add.html
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_module` [ RunTime:0.4926s ]
+SQL: SELECT `name` FROM `wm_admin_module` WHERE `status` = 1  [ RunTime:0.0005s ]
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+NOTIC: [8] Use of undefined constant NOW_TIME - assumed 'NOW_TIME' E:\xampp\htdocs\zhaohuoguo\ThinkPHP\Common\functions.php 第 588 行.
+SQL: SHOW COLUMNS FROM `wm_admin_config` [ RunTime:0.0051s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'URL_MODEL' LIMIT 1   [ RunTime:0.0005s ]
+SQL: SELECT `value` FROM `wm_admin_config` WHERE `name` = 'APP_SUB_DOMAIN_DEPLOY' LIMIT 1   [ RunTime:0.0005s ]
+INFO: Run Common\Behavior\InitModuleBehavior [ RunTime:0.519467s ]
+INFO: [ app_init ] --END-- [ RunTime:0.519564s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001173s ]
+INFO: Run Common\Behavior\InitConfigBehavior [ RunTime:0.004650s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005989s ]
+INFO: [ action_begin ] --START--
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.002015s ]
+INFO: [ action_begin ] --END-- [ RunTime:0.002124s ]
+SQL: SHOW COLUMNS FROM `wm_admin_user` [ RunTime:0.0037s ]
+SQL: SHOW COLUMNS FROM `wm_admin_group` [ RunTime:0.0031s ]
+SQL: SELECT `admin_menu` FROM `wm_admin_module` WHERE `name` = 'Storemanagement' LIMIT 1   [ RunTime:0.0003s ]
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+NOTIC: [8] Undefined index: url E:\xampp\htdocs\zhaohuoguo\Application\Admin\Model\ModuleModel.class.php 第 80 行.
+SQL: SHOW COLUMNS FROM `wm_admin_access` [ RunTime:0.0028s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0003s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT `group` FROM `wm_admin_access` WHERE `uid` = 51 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SELECT * FROM `wm_admin_group` WHERE `id` = 24 LIMIT 1   [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0034s ]
+SQL: SELECT * FROM `wm_store` WHERE ( founder_id = 51 ) LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_store` [ RunTime:0.0031s ]
+SQL: SELECT `store_id`,`store_name` FROM `wm_store` WHERE ( uid = 51 ) LIMIT 1   [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `wm_canpin` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `wm_canpin` WHERE ( store_id =1 )  [ RunTime:0.0002s ]
+SQL: SHOW COLUMNS FROM `wm_dangkou` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wm_dangkou` WHERE ( uid=51 )  [ RunTime:0.0002s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000289s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000338s ]
+NOTIC: [8] Undefined variable: meta_keywords E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 9 行.
+NOTIC: [8] Undefined variable: meta_description E:\xampp\htdocs\zhaohuoguo\Runtime\Cache\Storemanagement\47f6206975c66fe430da17015a56c412.php 第 10 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.010798s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.010835s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000312s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000340s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000436s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000470s ]
+

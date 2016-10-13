@@ -1,0 +1,186 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+     <style type="text/css">
+         .top{
+             font-size: 16px;
+             font-weight: 500;
+             color: #000;
+             width: 100%;
+             height: 35px;
+             border-bottom: 1px solid #F3F3F3;
+         }
+         .ss{
+             width:100%;
+             height:auto;
+         }
+         dl{
+             float: left;
+             margin-left: 50px;
+             margin-top: 5px;
+         }
+         dd{
+             margin-top: 10px;
+         }
+         .input{
+             width: 223px;
+         }
+         .chax{
+             height: 55px;
+             width: 100%;
+         }
+         .chax p{
+             float: left;
+
+             margin-left: 50px;
+         }
+         a{
+             margin-left:5px;
+         }
+         body{
+             padding:20px 20px;
+         }
+     </style>
+
+    <div class="main-title cf">
+        <h4>配送员管理</h4>
+    </div>
+    <!------搜索------------>
+    <div style="height: 15px;"></div>
+    <div class="ss" >
+        <form action="{:U('index')}" method="post">
+        <div style="height: 130px;">
+         <dl>
+             <dt>姓名</dt>
+             <dd><input type="text" class="form-control input"  name="person_name" placeholder="姓名"></dd>
+         </dl>
+        <dl>
+            <dt>手机号码</dt>
+            <dd><input type="text" class="form-control input" name="phone" placeholder="手机号码"></dd>
+        </dl>
+        <dl>
+            <dt>审核状态</dt>
+            <dd>
+                <select class="col-sm-2 form-control input" id="shzt" name="status" style="width: 110px;">
+                    <option value="">全部</option>
+                    <option value="0">
+                        通过
+                    </option>
+                    <option value="1">
+                        驳回
+                    </option>
+                </select>
+            </dd>
+        </dl>
+        <dl>
+            <dt>员工状态</dt>
+            <dd>
+                <select class="col-sm-2 form-control input" id="ygzt" name="ygzt" style="width: 110px;">
+                    <option value="">全部</option>
+                    <option value="0">
+                       在职
+                    </option>
+                    <option value="1">
+                        离职
+                    </option>
+                </select>
+            </dd>
+        </dl>
+        </div>
+        <div class="chax">
+                <p>总共有{$count}条记录</p>
+                <p><button type="submit" class="btn btn-primary">查询</button></p>
+                <p><a href="{:U('add')}" class="btn btn-info">添加人员</a></p>
+        </div>
+        </form>
+    </div>
+
+
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>配送员编号</th>
+                    <th>手机号</th>
+                    <th>性别</th>
+                    <th>城市</th>
+                    <th>职位</th>
+                    <th>员工类型</th>
+                    <th>调度账号</th>
+                    <th>审核状态</th>
+                    <th>员工状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="_data">
+                        <tr>
+                            <td>{$_data.person_name}</td>
+                            <td>
+                                <if condition="$_data.person_bianhao eq 0">
+                                   <else/>
+                                    {$_data.person_bianhao}
+                                </if>
+                                </td>
+                            <td>{$_data.phone}</td>
+                            <td>
+                                <if condition="$_data.gender eq 0">
+                                     男
+                                    <else />
+                                    女
+                                </if>
+                            </td>
+                            <td>{$_data.name}</td>
+                            <td>
+                                <if condition="$_data.person_type eq 0">
+                                      配送员
+                                    <else/>
+                                    市场专员
+                                </if>
+                            </td>
+                            <td>
+                                <if condition="$_data.yglx eq 0">
+                                    全职
+                                    <else/>
+                                    兼职
+                                </if>
+                            </td>
+                            <td>{$_data.nickname}</td>
+                            <td>
+                                <if condition="$_data.status eq 1">
+                                    通过
+                                    <else/>
+                                    驳回
+                                </if>
+                            </td>
+                            <td>
+                                <if condition="$_data.ygzt eq 0">
+                                    在职
+                                    <else/>
+                                    离职
+                                </if>
+                            </td>
+                            <td>
+                                <a href="{:U('edit?person_id='.$_data['person_id'])}" class="glyphicon glyphicon-edit">编辑</a>
+                                <a href="{:U('del?person_id='.$_data['person_id'])}" class="glyphicon glyphicon-trash ajax-get confirm">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="13" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+        <div class="page">{$page}</div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //导航高亮
+            highlight_subnav('{:U('peisongyuan/index')}');
+        })
+
+    </script>
+</block>

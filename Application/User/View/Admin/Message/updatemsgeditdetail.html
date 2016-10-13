@@ -1,0 +1,18 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+<style>
+body{padding:20px;}
+</style>
+</block>
+<block name="main">
+    <blockquote style="background-color: #F1F8FB;margin-top: 20px;">
+      <p style="font-size: 15px;">{$msg.title}</p>
+      <p style="font-size: 10px;color: #aaa">时间{$msg.create_time|date="Y-m-d H:i:s",###}</p>
+    </blockquote>
+    <blockquote style="background-color: #F9F8FB;font-size: 12px;">
+      <p>{$msg.content}</p>
+    </blockquote>
+<a class="btn btn-default " href="{:U('user/admin/Message/updatemsgedit')}">返 回</a>
+</block>
+<block name="script">
+</block>

@@ -1,0 +1,222 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CSS__/websit.css"/>
+    <style>
+        /* 二级菜单 */
+        .sub-tab-nav {
+            padding: 10px 20px;
+            overflow: hidden;
+            zoom: 1
+        }
+        .has-sub-nav .sub_tab {
+            border: 1px solid #ddd;
+            border-top: none;
+            height: 30px;
+            padding: 10px;
+            margin: -15px 0 10px;
+        }
+        .sub_tab_content {
+            margin-top: 20px;
+            float: left;
+            width: 100%
+        }
+        .sub_tab li {
+            float: left;
+            margin-right: 10px;
+            list-style: none;
+        }
+        .sub_tab li a {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 15px;
+            background: #eee;
+            color: #333;
+            position: relative;
+            z-index: 10;
+        }
+        .sub_tab li a.cur {
+            background-color: #015dae;
+            color: #fff
+        }
+        .sub_tab li a .arrow {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            margin-left: -10px;
+            display: none
+        }
+        .sub_tab li a.cur .arrow {
+            display: block
+        }
+        .normal_tips {
+            background: #f4ffc1;
+            padding: 15px;
+            color: #da4224;
+            word-break: break-all;
+            margin: 0 20px;
+        }
+        .normal_tips .fa {
+            font-size: 20px;
+        }
+        body{
+            padding:40px 20px;
+        }
+    </style>
+    <link href="__CSS__/weiphp.css" rel="stylesheet">
+</block>
+<block name="main">
+    <div id="main-container">
+        <div>
+            <div class="span9 page_message">
+                <section id="contents">
+                    <ul class="title row">
+                        <li class="col-md-1">
+                            <a href="{:U('Website/websiteCategory')}">分类管理</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Website/websiteSlideshow')}">首页幻灯片</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Website/websiteFooter')}">底部导航</a>
+                        </li>
+                        <li class="col-md-1">
+                            <a href="{:U('Website/websiteReplyNews')}">文章管理</a>
+                        </li>
+                        <li  class="title-current col-md-1">
+                            <a  style="color:#fff;" href="{:U('Website/websiteModolIndex')}">模板管理</a>
+                        </li>
+                    </ul>
+                    <div class="sub-tab-nav">
+                        <ul class="sub_tab">
+                            <li>
+                                <a class="" href="{:U('Website/websiteModolIndex')}">首页模板</a>
+                            </li>
+                            <li>
+                                <a class="" href="{:U('Website/websiteModollist')}">图文列表模板</a>
+                            </li>
+                            <li>
+                                <a class="" href="{:U('Website/websiteModoldetail')}">图文内容模板</a>
+                            </li>
+                            <li>
+                                <a class="cur" href="{:U('Website/websiteModolfooter')}">底部菜单模板</a>
+                            </li>
+                            <!--          <li><a class="cur" href="http://localhost/wp/index.php?s=/addon/WeiSite/Footer/lists.html">底部菜单配置</a></li>
+          <li><a href="http://localhost/wp/index.php?s=/addon/WeiSite/Footer/template.html">底部菜单模板</a></li>-->
+                        </ul>
+                    </div>
+                    <p class="normal_tips"><b class="fa fa-info-circle"></b> 底部菜单的数据请在上面的“底部导航”的页面里增加</p>
+                    <div class="tab-content" id="hasSubNav">
+                        <div class="sub_tab_content">
+                            <form>
+                                <ul class="template_select">
+                                    <li class="template_item ">
+                                        <div class="use_tips">选择此模板将不会显示底部菜单</div>
+                                        <div class="phone">
+                                            <img src="__IMG__/emptyfooter.png" />
+                                        </div>
+                                        <p>
+                                            <input type="radio"  name="template" id="template_empty" value="Footerempty"/>
+                                            <label for="template_empty">没有底部菜单</label>
+                                        </p>
+                                    </li>
+                                    <li class="template_item selected">
+                                        <div class="use_tips">菜单图标为40X40以上</div>
+                                        <div class="phone">
+                                            <img src="__IMG__/tcsfooter.png" />
+                                        </div>
+                                        <p>
+                                            <input type="radio" checked="checked" name="template" id="template_PopV1" value="FooterPopV1"/>
+                                            <label for="template_PopV1">弹出式菜单v-1</label>
+                                        </p>
+                                    </li>
+                                    <li class="template_item ">
+                                        <div class="use_tips">菜单不需要图标</div>
+                                        <div class="phone">
+                                            <img src="__IMG__/jyhsfooter.png" />
+                                        </div>
+                                        <p>
+                                            <input type="radio"  name="template" id="template_V1" value="FooterV1"/>
+                                            <label for="template_V1">简约黑色底部菜单</label>
+                                        </p>
+                                    </li>
+                                    <li class="template_item ">
+                                        <div class="use_tips">菜单图标为30X30以上</div>
+                                        <div class="phone">
+                                            <img src="__IMG__/dtbfooter.png" />
+                                        </div>
+                                        <p><input type="radio"  name="template" id="template_V2" value="FooterV2"/>
+                                            <label for="template_V2">带图标黑色底部菜单</label>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+    <!-- /主体 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        (function(){
+            var ThinkPHP = window.Think = {
+                "ROOT"   : "/wp", //当前网站地址
+                "APP"    : "/wp/index.php?s=", //当前项目地址
+                "PUBLIC" : "/wp/Public", //项目公共目录地址
+                "DEEP"   : "/", //PATHINFO分割符
+                "MODEL"  : ["3", "", "html"],
+                "VAR"    : ["m", "c", "a"]
+            }
+        })();
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+        //导航高亮
+        $('.side-sub-menu').find('a[href="http://localhost/wp/index.php?s=/Home/Addons/index.html"]').closest('li').addClass('current');
+        if($('ul.tab-nav').length){
+            $('.btn-return').hide();
+        }
+        $(function(){
+            //选择模板并且ajax提交
+            //选择Ajax提交
+            $('.template_item').click(function(){
+                if(!$(this).hasClass('selected')){
+                    $(this).addClass('selected');
+                    $(this).siblings().removeClass("selected");
+                    $(this).find('input').click();
+
+                    //如果不是ajax提交 不要以下代码"index"
+                    var value = $(this).find('input').val();
+                    var type = 4 ;
+                    $.ajax({
+                        url:"{:U('saveModel')}",
+                        data:{template:value,type:type},
+                        type:"post",
+                        dataType:"json",
+                        success:function(data){
+                            if(data.status){
+                                //提交成功
+                            }
+                        }
+                    })
+                }
+            });
+        })
+        $('.template_item').hover(function(){
+            $(this).find('.use_tips').stop().fadeIn();
+            $(this).addClass('hover');
+        },function(){
+            $(this).find('.use_tips').stop().fadeOut();
+            $(this).removeClass('hover');
+        })
+    </script>
+    <!-- 用于加载js代码 -->
+    <!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+    <div class="hidden" style="display: none !important;visibility: hidden !important;"></div><div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+
+</div>
+</block>

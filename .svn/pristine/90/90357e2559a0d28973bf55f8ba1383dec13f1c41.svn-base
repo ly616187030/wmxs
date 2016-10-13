@@ -1,0 +1,136 @@
+<extend name="Public/layout"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+
+    </style>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/angular-1.4.js"></script>
+    <script>
+        var myapp = angular.module('Func',[]);
+        myapp.controller('softCtrl',function($scope){
+            $scope.isshow = true;
+            $scope.changeshow = function(){
+                $scope.isshow = !$scope.isshow;
+            }
+        });
+    </script>
+</block>
+<block name="main">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">微信支付目录设置</label>
+            <div class="col-sm-4">
+                <input type="text" id="zfml" value="{:$_SERVER['SERVER_NAME']}/WeixinPay/pay/" class="form-control" id="inputEmail3">
+            </div>
+            <button class="btn btn-primary" id="copy1" type="button">复制</button>
+            <a  href="{:U('admin/help/show',array('id'=>27))}" class="btn btn-default">帮助文档</a>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-5 col-sm-offset-2">
+                <div>(拷贝此链接到微信公众号->微信支付->开发配置->公众号支付授权目录)</div>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" action="{:U()}" method="post">
+        <?php if($list):?><input type="hidden" value="{$list.id}" name="id"/><?php endif;?>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">商户名称</label>
+            <div class="col-sm-4">
+                <input type="text" name="mchname" value="{$list.mchname|default=$cname}" class="form-control" id="inputEmail3" placeholder="必填">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail33" class="col-sm-2 control-label">商户号</label>
+            <div class="col-sm-4">
+                <input type="text" name="mchid" value="{$list.mchid}" class="form-control" id="inputEmail33" placeholder="必填，商户号（必须配置，开户邮件中可查看）">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail311" class="col-sm-2 control-label">APPID</label>
+            <div class="col-sm-4">
+                <input type="text" name="appid" value="{$list.appid}" class="form-control" id="inputEmail311" placeholder="必填，绑定支付的appid（必须配置，开户邮件中可查看）">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword32" class="col-sm-2 control-label">APPSECRET</label>
+            <div class="col-sm-4">
+                <input type="text" name="appsecret" value="{$list.appsecret}" class="form-control" id="inputPassword32" placeholder="必填，公众帐号secert（ 登录公众平台，进入开发者中心可设置）">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword34" class="col-sm-2 control-label">KEY</label>
+            <div class="col-sm-4">
+                <input type="text" name="app_key" value="{$list.app_key}" class="form-control" id="inputPassword34" placeholder="必填，商户支付密钥，参考开户邮件设置（登录商户平台自行设置）">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword35" class="col-sm-2 control-label">商户证书(cert)</label>
+            <div class="col-sm-4">
+                <input type="text" name="app_cert"  value="{$list.app_cert}" class="form-control" id="inputPassword35" placeholder="必填，设置商户证书路径">
+            </div>
+            <div class="col-lg-4"><button type="button"  class="btn btn-success upload">上传</button></div>
+            <?php ?>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword36" class="col-sm-2 control-label">商户证书(key)</label>
+            <div class="col-sm-4">
+                <input type="text" name="app_cert_key" value="{$list.app_cert_key}" class="form-control" id="inputPassword36" placeholder="必填，设置商户证书路径">
+            </div>
+            <div class="col-lg-4"><button type="button"  class="btn btn-success upload">上传</button></div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success ajax-post" target-form="form-horizontal">保存</button>
+                <a  href="{:U('admin/help/show',array('id'=>26))}" class="btn btn-default">帮助文档</a>
+            </div>
+        </div>
+    </form>
+
+    <!--上传文件-->
+    <div class="modal fade" id="modal-file-upload">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">上传文件</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe style="display:none" width="100%" frameborder="0" height="100%" name='hidden_frame' id="hidden_frame"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/jquery_zclip/jquery.zclip.min.js"></script>
+    <script type="text/javascript">
+        $('.upload').click(function(){
+            var names = $(this).closest('.form-group').find('input').attr('name');
+            $("#modal-file-upload").modal('show').find('.modal-body').css({height:300,width:600});
+            $('#hidden_frame').show().attr('src','{:U("Upload/uploadfile")}&names='+names);
+        })
+
+        function hideModal(path,title){
+            setTimeout(function(){
+                $("#modal-file-upload").modal('hide');
+                $('input[name="'+title+'"]').val(path);
+            },2000);
+        }
+
+        $('#copy1').zclip({
+            path:'__PUBLIC__/jquery_zclip/ZeroClipboard.swf',
+            copy:$('#zfml').val(),
+            afterCopy:function() {
+                alert('已复制到剪贴板');
+            }
+        });
+    </script>
+</block>

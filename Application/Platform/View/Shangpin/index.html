@@ -1,0 +1,136 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+</block>
+
+<block name="main">
+    <div class="clearfix full-container">
+
+        <div class="builder builder-list-box panel-body">
+            <!-- 顶部工具栏按钮 -->
+            <div class="builder-toolbar builder-list-toolbar">
+                <div class="row">
+                    <!-- 工具栏按钮 -->
+                    <div class="col-xs-12 col-sm-9 button-list">
+                        <a title="新增" class="btn btn-primary" href="{:U('add')}">新增</a>
+                        <a title="启用" target-form="ids" class="btn btn-success ajax-post confirm" model="article_category" href="{:U('setFlag?sp_status=1')}">启 用</a>
+                        <a title="禁用" target-form="ids" class="btn btn-warning ajax-post confirm" model="article_category" href="{:U('setFlag?sp_status=0')}">禁 用</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 数据列表 -->
+            <div class="builder-container builder-list-container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <div class="builder-table">
+                            <div class="panel panel-default">
+                                <table class="table table-bordered table-responsive table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th><input class="check-all" type="checkbox"></th>
+                                        <th>商品ID</th>
+                                        <th>商品名称</th>
+                                        <th>单价</th>
+                                        <th>单位</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <notempty name="sp">
+                                        <volist name="sp" id="vo">
+                                            <tr>
+                                                <td>
+                                                    <input class="ids" type="checkbox" value="{$vo.sp_id}" name="sp_id[]">
+                                                </td>
+                                                <td>{$vo.sp_id}</td>
+                                                <td>{$vo.sp_name}</td>
+                                                <td>{$vo.sp_danjia}</td>
+                                                <td>{$vo.sp_danwei}</td>
+                                                <td>
+                                                    <a href="{:U('setFlag?sp_status='.$vo['sp_status'].'&sp_id='.$vo['sp_id'])}" class="ajax-get">
+                                                        <if condition="$vo.sp_status eq 1">
+                                                            启用
+                                                            <else /> 禁用
+                                                        </if>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{:U('edit?sp_id='.$vo['sp_id'])}">编辑</a>
+                                                    <a href="{:U('del?sp_id='.$vo['sp_id'])}" class="ajax-get">删除</a>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        <else/>
+                                        <td colspan="17" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </notempty>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="page">
+                                {$page}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 额外功能代码 -->
+        </div>
+
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            if (!$('.builder')) {
+                return false;
+            }
+
+            //全选/反选/单选的实现
+            $(".builder .check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".builder .ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '.builder #search', function() {
+                var url = $(this).attr('url');
+                var query = $('.builder .search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".builder .search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+
+
+    </script>
+</block>

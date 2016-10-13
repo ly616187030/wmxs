@@ -1,0 +1,32 @@
+<div class="header" style="background-image: none;width: 1219px;height: 129px;">
+<link href="__HOME_CSS__/member_center_zhg.css" rel="stylesheet">
+    <style type="text/css">
+        .heradnavR a:hover{
+             text-decoration: none;
+            color: orange;
+        }
+    </style>
+
+    <div class="logo">
+        <a href="{:U('Index/index')}">
+            <img src="__HOME_IMAGES__/zhgIndex/login_logo.png" alt="找火锅" title="找火锅">
+        </a>
+    </div>
+    <div class="heradnavR">
+        <empty name="is_login">
+
+            <a href="{:U('User/User/login')}">登录</a>
+            <else/>
+            <a href="{:U('Orderlist/index')}">{:session('user_auth.username')}</a>&nbsp;|&nbsp;
+            <a href="{:U('User/user/logout')}" class="div">退出登录</a>
+        </empty>
+        &nbsp;|&nbsp;
+        <a href="{:U('User/user/register')}">免费注册</a> &nbsp;|&nbsp;
+        <a href="{:U('Orderlist/index')}">我的订单</a> &nbsp;|&nbsp;
+
+        <a href="{:U('Index/index')}">帮助中心</a> &nbsp;|&nbsp;
+        <a href="{:U('Favorite/index')}">我的收藏</a> &nbsp;&nbsp;
+
+    </div>
+
+</div>

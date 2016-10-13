@@ -1,0 +1,612 @@
+<?php if (!defined('THINK_PATH')) exit();?><!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title><?php echo ($meta_title); ?>｜<?php echo C('WEB_SITE_TITLE');?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="keywords" content="<?php echo C('WEB_SITE_KEYWORD');?>">
+    <meta name="description" content="<?php echo C('WEB_SITE_DESCRIPTION');?>">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="<?php echo C('WEB_SITE_TITLE');?>">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/admin.css?v=<?php echo C('STATIC_VERSION');?>">
+    <link rel="stylesheet" type="text/css" href="/./Application/Admin/View/Public/css/theme/<?php echo C('ADMIN_THEME');?>.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/treeTable/treeTable.css">
+    
+    <style type="text/css">
+        body{
+            padding:0 20px;
+        }
+        .list{
+            list-style-type: none;
+        }
+        .list span{
+
+            border:1px solid blue;
+            display:block;
+            height:40px;
+            line-height: 40px;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        <?php echo C('CDN_RESOURCE_LIST');?>
+    <?php else: ?>
+        <!--<script type="text/javascript" src="/Public/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="/Public/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="/Public/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        
+    </div>
+
+    <div class="clearfix full-container">
+
+        
+
+    <div class="builder builder-list-box panel-body">
+        <div class="builder-tabs builder-form-tabs">
+            <ul class="nav nav-tabs">
+                <li><a class="active" href="<?php echo U('Userconfig/index',array('group'=>1));?>">基本</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>2));?>">系统</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>3));?>">开发</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>4));?>">部署</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>5));?>">授权</a></li>
+                <li><a href="<?php echo U('Userconfig/groupone',array('group'=>6));?>">项目</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="table-bar" style="margin: 1em 0em;">
+        <div class="fl">
+            <div class="tools">
+                <a class="btn btn-primary" href="<?php echo U('add',array('id'=>0));?>" id="user_config">新 增</a>
+                <button class="btn ajax-post confirm btn-danger" target-form="ids" url="<?php echo U('del',array('m'=>'user_config'));?>">删 除</button>
+            </div>
+        </div>
+    </div>
+    <!------搜索------------>
+    <div style="height: 15px;"></div>
+    <div class="data-table table-striped" id="peizhi">
+        <form class="ids">
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>标题</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(!empty($info)): if(is_array($info)): $i = 0; $__LIST__ = $info;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$_data): $mod = ($i % 2 );++$i;?><tr class="list_type" data-group="<?php echo ($_data["group"]); ?>">
+                            <td>
+                                <input class="ids" type="checkbox" value="<?php echo ($_data["id"]); ?>" name="id[]">
+                            </td>
+                            <td><?php echo ($_data["id"]); ?></td>
+                            <td><?php echo ($_data["name"]); ?></td>
+                            <td><?php echo ($_data["title"]); ?></td>
+                            <td><?php echo ($_data["sort"]); ?></td>
+                            <td><?php echo ($_data["status"]); ?></td>
+                            <td>
+                                <a href="<?php echo U('add',array('id'=>$_data['id']));?>" class="glyphicon glyphicon-edit">编辑</a>
+                                <a href="<?php echo U('storeinfo',array('id'=>$_data['id']));?>" class="glyphicon glyphicon-edit">禁用</a>
+                                <a href="<?php echo U('del',array('id'=>$_data['id'],'m'=>'user_config'));?>" class="glyphicon glyphicon-trash ajax-get confirm">删除</a>
+                            </td>
+                        </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                    <?php else: ?>
+                    <td colspan="13" class="text-center"> aOh! 暂时还没有内容! </td><?php endif; ?>
+                </tbody>
+            </table>
+        </form>
+        <div class="page"><?php echo ($page); ?></div>
+    </div>
+
+    </div>
+
+    <div class="clearfix full-footer">
+        
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="/./Application/Home/View/Public/img">
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.js"></script>
+            <script type="text/javascript" src="/./Application/Admin/View/Public/js/admin.js?v=<?php echo C('STATIC_VERSION');?>"></script>
+            <script type="text/javascript" src="/Public/libs/cui/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="/Public/libs/treeTable/treeTable.js"></script>
+            
+    <script type="text/javascript">
+
+//        //初始只显示group为1的数据
+//        $(document).ready(function(){
+//            $('.list_type').each(function(){
+//                var group=$(this).data('group');
+//                if(group==1){
+//                    $(this).show();
+//                }else{
+//                    $(this).hide();
+//                }
+//            });
+//        })
+        //第一个选项卡选中
+        $(".nav li:first").addClass('active');
+
+
+//        //相同组的显示，不相同的不显示加选项卡显示
+//        function showType(type_id,obj){
+//            $('.list_type').each(function(){
+//                var group=$(this).data('group');
+//                if(type_id==group){
+//                    $(this).show();
+//                }else{
+//                    $(this).hide();
+//                }
+//            });
+//            $(obj).addClass('active').siblings().removeClass('active');
+//        }
+
+        $(function() {
+
+            //全选/反选/单选的实现
+            $(".check-all").click(function() {
+                $(".ids").prop("checked", this.checked);
+            });
+
+            $(".ids").click(function() {
+                var option = $(".ids");
+                option.each(function() {
+                    if (!this.checked) {
+                        $(".check-all").prop("checked", false);
+                        return false;
+                    } else {
+                        $(".check-all").prop("checked", true);
+                    }
+                });
+            });
+
+            //搜索功能
+            $('body').on('click', '#search', function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/(^&)|(\+)/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+        });
+    </script>
+
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>您试用期内的订单数量已全部使用完毕，如继续使用将开始收费，我们采用先使用后付的模式，收费标准为每个订单0.1元，每月2号进行结算，如需继续使用请仔细阅读下方合同，签署合同后，即可继续使用。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-fid="<?php echo ($fid); ?>" class="btn btn-primary" id="sign">签订合同</button>
+                    <button type="button" class="btn btn-info" id="nosign">暂不签订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree):?>
+    <!--Agree Modal -->
+    <div class="modal fade" id="agreeModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel2">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                                <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td width="50%" colspan="2">甲方：<?php echo ($contractlist["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                                <tr><td colspan="2">地址：<?php echo ($contractlist["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                                <tr><td>邮编：<?php echo ($contractlist["post_code"]); ?></td><td>传真：<?php echo ($contractlist["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                                <tr><td>联系人：<?php echo ($contractlist["username"]); ?></td><td>电话：<?php echo ($contractlist["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                                <tr><td>EMAIL：<?php echo ($contractlist["email"]); ?></td><td>网站：<?php echo ($contractlist["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                        <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                        <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                    </td>
+                                </tr>
+                                <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                                <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>功能模块</td><td>功能说明</td></tr>
+                                <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                                <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                                <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                                <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($contractlist["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                        <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                        <button type="button"  class="btn btn-primary" data-fid="<?php echo ($fid); ?>" id="read">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread">暂不签订</button>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread2">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($agree2):?>
+    <div class="modal fade" id="agreeModal2" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"  style="text-align: center" id="myModalLabel3">外卖先生SAAS版服务协议V2.0（2016 Edition）</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered">
+                            <caption>协议编号：zhuyou-wmxs-2016050501</caption>
+                            <thead>
+                            <tr class="success"><th colspan="4">联系信息</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td width="50%" colspan="2" class="a1">甲方：<?php echo ($info9["c_name"]); ?></td><td width="50%" colspan="2">乙方：包头市助友科技有限公司</td></tr>
+                            <tr><td colspan="2">地址：<?php echo ($info9["address"]); ?></td><td colspan="2">乙方：包头市青山区友谊大街65号当代生态大厦1210</td></tr>
+                            <tr><td>邮编：<?php echo ($info9["post_code"]); ?></td><td>传真：<?php echo ($info9["code"]); ?></td><td>邮编：014030</td><td>传真：6167567</td></tr>
+                            <tr><td>联系人：<?php echo ($info9["username"]); ?></td><td>电话：<?php echo ($info9["tel"]); ?></td><td>联系人：张玉</td><td>电话：6919989</td></tr>
+                            <tr><td>EMAIL：<?php echo ($info9["email"]); ?></td><td>网站：<?php echo ($info9["c_website"]); ?></td><td>EMAIL：张玉</td><td>网站：www.wmxs.me</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">服务内容及资费标准</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td  colspan="4">具体服务内容详见下文“服务明细”。</td></tr>
+                            <tr>
+                                <td colspan="4">
+                                    <p>1、甲方通过网址http://www.wmxs.me在线以按单（每条外卖记录为一单）付费的方式使用乙方提供外卖先生云平台SAAS软件。</p>
+                                    <p>2、甲方注册正式账号后，可以免费使用300单，300单免费记录到期后，以每单（小写）：￥<strong style="color:red;">0.1元</strong>（大写）： 壹角按月向乙方支付服务费用，每年甲方向乙方支付的按单付费的服务费用以（小写）：￥<strong style="color:red;">10000元</strong>（大写）： 壹万元为封顶，即每年的服务费达到￥<strong style="color:red;">10000</strong>元时本合同年度（以合同签订日期为年度起始日期）甲方无需向乙方再支付服务费用。</p>
+                                    <p>3、合同有效期：自合同签日起，有效期壹年；</p>
+                                </td>
+                            </tr>
+                            <tr><td>付款方式：</td><td>甲方可以通过银行转账或在线支付的方式向乙方付款；</td></tr>
+                            <tr><td>收款信息：</td><td>收款单位：包头市助友科技有限公司 开户行：中国建设银行股份有限公司包头市当代支行 账号：1500 1716 6910 5250 1687</td></tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="success"><th colspan="4">软件服务清单</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td>功能模块</td><td>功能说明</td></tr>
+                            <tr><td>电话订单</td><td>电话订单系统自动弹屏显示客户信息，并可以快速下单，下单后可自动打印小票，并推送到配送员手机客户端</td></tr>
+                            <tr><td>微信外卖系统</td><td>甲方可以用自己的微信公众账号作为入口搭建外卖系统，用户可以通过微信公众账号直接下单，甲方可接单后配送</td></tr>
+                            <tr><td>调度平台</td><td>电话订单或微信下单的订单信息可以推送到配送员手机客户端进行订单的任务接收，并完成配送过程的管理</td></tr>
+                            <tr><td>报表统计</td><td>电话订单、微信订单、配送相关系统的报表统计</td></tr>
+                        </table>
+                        <div>
+                            <h5 class="text-center">服务条款</h5>
+                            <p>1、乙方有权在未预先告知甲方的情况下随时删除含有任何危害中国国家安全、淫秽色情、虚假、诽谤（包括商业诽谤）、非法恐吓或非法骚扰、有损他人名誉、利益、侵权等违法或有违公序良俗的信息或链接的网站。</p>
+                            <p>2、不可抗力免责：不可抗力是指不能预见、不能避免且不能克服的客观情况；包括但不限于：自然灾害、政府行为以及罢工、战争、电信运营商信号中断、网站遭受黑客攻击、乙方服务器发生非人为因素的故障等。上述原因所造成的本协议任何一方无法完全或部分履行协议义务，或虽能履行协议义务但已失去必要性或实际意义的，遭遇不可抗力的一方可据此免责。</p>
+                            <p>3、任何一方违反本协议约定的，应承担违约责任。当违约行为的处理方法未在本协议其他条款中作具体规定时，违约方须支付给守约方本协议一年服务费用10%的违约金，造成其他损失的，还须承担相应的法律责任。</p>
+                            <p>4、双方当事人对本协议的订立、解释、履行、效力等发生争议的，应友好协商解决；协商不成的，双方均同意向原起诉人所在地人民法院以提起诉讼的方式解决。</p>
+                            <p>5、本协议一式贰份，双方各执一份，经签字、同意后生效，两份协议具有同等法律效力，传真件具有同等法律效力。</p>
+                            <p><strong>6、对本协议格式化条款进行的任何手工涂改均属无效行为。双方确有未尽事宜需要在本协议上标注的，电子合同点击同意即为生效。</strong></p>
+                        </div>
+                        <p class="col-sm-6">甲方：<?php echo ($info9["c_name"]); ?></p>
+                        <p class="col-sm-6">乙方：包头市助友科技有限公司</p>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                        <?php if(($hetongzt) == "1"): ?><p class="col-sm-6">日期：<?php echo (date('Y-m-d',$info9["sign_time"])); ?></p>
+                            <?php else: ?>
+                            <p class="col-sm-6">日期：<?php echo date('Y-m-d');?></p><?php endif; ?>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <?php if(is_company()):?>
+                    <?php if(($hetongzt) == "1"): ?><button type="button" class="btn btn-info" id="noread5">关闭</button>
+                        <?php else: ?>
+                        <button type="button"  class="btn btn-primary" data-founder_id="<?php echo ($founder_id); ?>" id="read1">已阅读并同意签订</button>
+                        <button type="button" class="btn btn-info" id="noread3">暂不签订</button><?php endif; ?>
+                    <?php else:?>
+                    <button type="button" class="btn btn-primary">请联系上级公司《<?php echo ($contractlist["c_name"]); ?>》签订合同，电话：<?php echo ($contractlist["tel"]); ?></button>
+                    <button type="button" class="btn btn-info" id="noread4">关闭</button>
+                    <?php endif;?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">未结有效订单</th>
+                          <th style="text-align: center;">未结全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;"><?php echo ($name); ?></td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                          <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                          <td style="text-align: center;">￥0.10/单</td>
+                          <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                          <td style="text-align: center;">
+                            <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                            <?php else: ?>
+                              <span style="color: red">未结算</span><?php endif; ?>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-default" id="closeds">关闭</button>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan1):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuan1Modal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您<?php echo ($ctime); ?>未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                        <tr class="active">
+                            <th style="text-align: center;">企业名称</th>
+                            <th style="text-align: center;">未结有效订单</th>
+                            <th style="text-align: center;">未结全部订单</th>
+                            <th style="text-align: center;">收费标准</th>
+                            <th style="text-align: center;">收费金额</th>
+                            <th style="text-align: center;">结算状态</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;"><?php echo ($name); ?></td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_valid_order"]); ?>单</td>
+                            <td style="text-align: center;"><?php echo ($settlement["this_all_valid_order"]); ?>单</td>
+                            <td style="text-align: center;">￥0.10/单</td>
+                            <td style="text-align: center;color: red;">￥<?php echo ($settlement["total_fee"]); ?></td>
+                            <td style="text-align: center;">
+                                <?php if($settlement["sett_status"] == 1): ?><span style="color: green">已结算</span>
+                                    <?php else: ?>
+                                    <span style="color: red">未结算</span><?php endif; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://<?php echo ($www); ?>/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="<?php echo ($settlement["total_fee"]); ?>" />
+                    <input type="hidden" name="ordsn" value="<?php echo ($ordsn); ?>" />
+                    <input type="hidden" name="sett_id" value="<?php echo ($settlement["id"]); ?>" />
+                    <input type="hidden" name="founder_id" value="<?php echo ($fid); ?>" />
+                    <input type="hidden" name="user_id" value="<?php echo ($uid); ?>" />
+                    <input type="hidden" name="link" value="<?php echo ($link); ?>" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu1">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《<?php echo ($contractlist123["c_name"]); ?>》支付，电话：<?php echo ($contractlist123["tel"]); ?></button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '<?php echo ($contract); ?>';
+    var agree = '<?php echo ($agree); ?>';
+    var jiesuan = '<?php echo ($jiesuan); ?>';
+    var jiesuan1 = '<?php echo ($jiesuan1); ?>';
+    var riqi = '<?php echo ($riqi); ?>';
+
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (contract=='' && agree) && $('#agreeModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan1) && $('#jiesuan1Modal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=1').success(function(res){
+                res == 'success' &&  location.reload();
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+    $('#read').on('click',function(e){
+        var fid = $(e.target).data('fid');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+fid+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#read1').on('click',function(e){
+        var founder_id = $(e.target).data('founder_id');
+        $.get('<?php echo U("Admin/contract/agree");?>','id='+founder_id+'&type=2').success(function(res){
+            res == 'success' && location.reload();
+        });
+    });
+    $('#noread,#noread2').click(function(){
+        $('#agreeModal').modal('hide');
+    });
+    $('#noread3,#noread4,#noread5').click(function(){
+        $('#agreeModal2').modal('hide');
+    });
+     $('#closed,#closeds').click(function(){
+        $('#jiesuanModal').modal('hide');
+        //riqi !='' && location.reload();
+    });
+</script>
+</body>
+</html>
+<style>
+    .wyq{
+        width:180px;
+        height:400px;
+        position: absolute;top:45%;right: 0%;
+    }
+    .wyu{
+        text-decoration: none;
+        color: #000;
+        padding:10px 20px 10px 20px;
+        border:1px solid deepskyblue;
+        border-radius: 5px;
+        display: none;
+    }
+    .wyu:hover{
+        background-color: #00a73c;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        border:1px solid white;
+    }
+</style>
+<?php if($downloadapp):?>
+<div style="position: absolute;top:94%;right: 0%;">
+    <a class="wyu">App下载</a>
+</div>
+<div class="wyq" style="display: none">
+    <p class="apps" style="width: 100%;height:190px;text-align: center;background-color: #ddd;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Admin/View/Public/img/Appa.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">商家端手机App</span>
+    </p>
+    <p class="appp"  style="width: 100%;height: 190px;;text-align: center;background-color: #ddd;margin-top: 20px;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="/./Application/Admin/View/Public/img/Appp.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">配送端手机App</span>
+    </p>
+</div>
+<?php endif;?>
+<script>
+    $(document).ready(function(){
+        $('.wyu').click(function(){
+            $(".wyq").toggle(1000);
+        });
+        var aaa = "<?php echo session('user_auth.uid');?>";
+        if(aaa){
+            $('.wyu').show();
+        }
+    });
+</script>

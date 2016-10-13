@@ -1,0 +1,49 @@
+<extend name="Public/layout"/>
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        body{
+            padding:20px;
+        }
+        .table thead tr th{
+            text-align: left;
+        }
+    </style>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/angular-1.4.js"></script>
+    <script>
+        var myapp = angular.module('Func',[]);
+        myapp.controller('softCtrl',function($scope){
+            $scope.isshow = true;
+            $scope.changeshow = function(){
+                $scope.isshow = !$scope.isshow;
+            }
+        });
+    </script>
+</block>
+<block name="main">
+    <p><a href="{:U('vipadd')}" class="btn btn-success"><i class="fa fa-plus-square"></i>添加VIP</a></p>
+    <table class="table table-bordered">
+        <thead>
+            <tr><th width="2%">ID</th><th>产品名称</th><th>授权方式</th><th>租用时间</th><th>安装服务</th><th>可建商铺数量</th><th>价格</th><th>订单数量</th><th>每单收费标准</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+            <volist name="list" id="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.vip_name}</td>
+                    <td><if condition="$vo.auth_type eq 1">租用<else/>按订单</if></td>
+                    <td>{$vo.rent_time}</td>
+                    <td><if condition="$vo.install_service eq 1">免费<else/>收费</if></td>
+                    <td>{$vo.store_number}</td>
+                    <td>{$vo.price}</td>
+                    <td>{$vo.order_quantity}</td>
+                    <td>{$vo.charge_standard}</td>
+                    <td><a href="{:U('vipedit',array('id'=>$vo['id']))}">编辑</a>&nbsp;<a class="ajax-get confirm" href="{:U('vipdel',array('id'=>$vo['id']))}">删除</a></td>
+                </tr>
+            </volist>
+
+        </tbody>
+    </table>
+</block>

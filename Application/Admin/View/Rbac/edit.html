@@ -1,0 +1,69 @@
+
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+
+        <!-- 标签页导航 -->
+        <div class="tab-wrap" style="margin-top: 50px;">
+            <div class="tab-content">
+                <!-- 表单 -->
+                <form id="form" action="{:U('edit')}" method="post" class="form-horizontal ">
+
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">vip等级</label>
+
+                        <div class="col-sm-3">
+
+                            <input type="text" class="form-control " name="name" value="{$data.name}">
+
+                        </div>
+
+                        <label class="control-label" style="color: #ff0000;font-weight: normal">*</label>
+
+                    </div>
+                    
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label">角色描述：</label>
+
+                        <div class="col-sm-3">
+
+                            <textarea class="form-control" rows="3" name="remark" maxlength="120" placeholder="">{$data.remark}</textarea>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label sr-only"></label>
+
+                        <div class="col-sm-3">
+                            <input type="hidden" name="id" value="{$data.id}"/>
+                            <button class="btn submit-btn ajax-post btn-info" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                            <button class="btn btn-return" onclick="history.back(-1);return false;">返 回</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+
+
+
+
+
+
+

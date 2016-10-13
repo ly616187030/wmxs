@@ -1,0 +1,103 @@
+<extend name="Base/common-1"/>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/main.css">
+    <link rel="stylesheet" href="__CSS__/mui.min.css">
+<style>
+
+</style>
+</block>
+<block name="body">
+    <div id="page_0" class="up ub ub-ver bc-bg" tabindex="0">
+        <!--header开始-->
+        <div id="header" class="uh bc-text-head ub " style="color:#777;border-bottom:1px solid #dcdcdc;">
+            <div class="nav-btn" id="nav-left">
+                <a style="color: #808080;" href="{:U('usercenter/index')}"><div class="fa fa-angle-left fa-2x"></div></a>
+            </div>
+            <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0" >我的收藏</h1>
+            <div class="nav-btn nav-bt" id="nav-right">
+                <div class="ub-img iocn-more umw2 umh4"></div>
+            </div>
+        </div>
+        <!--header结束--><!--content开始-->
+        <div id="content1" class="ub-f1 tx-l">
+            <div id="import">
+
+                <!-- 商品列表 -->
+                <div style="border-bottom: 0px;" class="lists" id="list">
+                    <volist name="store" id="vo">
+                        <ul id="OA_task_1" class="mui-table-view">
+                            <li class="mui-table-view-cell">
+                                <a href="{:U('menu/index?store_id='.$vo['store_id'])}">
+                        <div style="height: 4em; float: left;" class="mui-slider-handle">
+                            <div style="float: left;">
+                                <img style="width: 5em; height: 3em;" src="__IMG__/img/11.jpg" />
+                            </div>
+                            <div style="float: left;">
+                                <p style="margin-left: 1em">{$vo.store_name}
+                                    <if condition="$vo.is_piao eq 1">
+                                        <span style=" font-size: 0.8em; position: absolute; right: 0em; color: red;">付</span>
+                                    </if>
+                                    <if condition="$vo.is_online_pay eq 1">
+                                        <span style=" font-size: 0.8em; position: absolute; right: -1.5em; color: red;">票</span>
+                                    </if>
+                                    <volist name="vo.child" id="ro">
+                                        <if condition="$ro.yh_type eq 1">
+                                            <span style=" font-size: 0.8em; position: absolute; right: -3em; color: red;">新</span>
+                                            </else>
+                                            <span style=" font-size: 0.8em; position: absolute; right: -4.5em; color: red;">减</span>
+                                        </if>
+                                    </volist>
+                                </p>
+                                <p class="">
+
+                                <div class="" style="color:red;font-size:0.7em; margin-top: 0.3em; float: left; margin-left: 1.3em;"><img class="stars" style=" position: absolute; clip: rect(0px,75px,15px,0px);" src="__IMG__/img/white_star.png" /></div>
+                                <div class="" style="color:red;font-size:0.7em; margin-top: 0.1em; float: left; margin-left: -0.3em;"><img class="star" style=" position: absolute; clip: rect(0px,75px,15px,0px);" src="__IMG__/img/12.png" /></div>
+                                <label style="font-size:0.7em; position: relative; left: 8em; top: -0.2em;">月销<span>{$vo.xiaoliang}<span>份</label>
+                                <div style="clear:both;"></div>
+                                </p>
+                                <p style="font-size: 0.8em; margin-left: 1.5em; width: 16em;">
+                                 <span class="" style="border-right:1px solid #dcdcdc;">起送价￥
+                                   <font>{$vo.qisong_price}</font>
+                                 </span>
+										<span class="" style="border-right:1px solid #dcdcdc;">配送费￥
+                                   <font>{$vo.peisong_price}</font>
+                                 </span>
+										<span class="">
+                                   <font>{$vo.sh_time}</font>分钟到达<div style="clear:both;"></div>
+                                 </span>
+                                </p>
+                            </div>
+                        </div>
+                                </a>
+
+                                <div class="mui-slider-right mui-disabled">
+                                    <a href="{:U('del?store_id='.$vo['store_id'])}" class="mui-btn mui-btn-red">删除</a>
+                                </div>
+
+                                </li>
+                            </ul>
+
+                        <div style="clear:both;"></div>
+                        <input type="hidden" id="{$key}" class="pingfen" value="{$vo.pingfen}">
+                    </volist>
+                </div>
+            </div>
+        </div>
+        <!--content结束-->
+
+    </div>
+    <script src="__JS__/mui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var i;
+            var len = $(".mui-slider-handle").length;
+            for (i = 0; i <= len - 1; i++) {
+                var user_num = 75;
+                var one = user_num / 5;
+                var ok = $('.pingfen:eq(' + i + ')').attr('value');
+                var nowpx = one * ok;
+                $('.star:eq(' + i + ')').css('clip', ' rect(0px,' + nowpx + 'px,15px,0px)');
+            }
+        })
+    </script>
+</block>

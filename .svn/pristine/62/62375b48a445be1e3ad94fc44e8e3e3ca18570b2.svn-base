@@ -1,0 +1,109 @@
+<extend name="Public/base" />
+
+<block name="body">
+    <link rel="stylesheet" type="text/css" href="__CSS__/canming.css">
+    <div class="main-title cf">
+        <h3 class="m-b col-sm-8">菜品管理 <notempty name="storename">/<span style="font-size: 0.6em;color:green;">{$storename}</span></notempty></h3>
+    </div>
+	<div class="cf">
+		<div class="fl">
+			<a href="{:U('canming/add',array('storeid'=>$store_id,'storename'=>$storename))}">
+				<button class="btn" id="sqbtn" style="background-color:#0073dd;">新 增</button>
+			</a>
+			<!--<button class="btn ajax-post" target-form="ids" url="{:U('setFlag?flag=1')}" style="background-color:limegreen;">启 用</button>
+			<button class="btn ajax-post" target-form="ids" url="{:U('setFlag?flag=0')}" style="background-color:orange;">下 架</button>-->
+			<button class="btn confirm ajax-post" target-form="ids" url="{:U('del')}" style="background-color:#fa4c4c;">删 除</button>
+		</div>
+	</div>
+
+    <div class="Blank20"></div>
+	<div class="canpin">
+        <div class="canpin_title">单品</div>
+        <div class="canpin_box">
+            <ul>
+                <volist name="data" id="vo">
+                <li>
+                    <div class="canpin_box_left">
+                        <neq name="vo.big_img" value="0">
+                            <img src="{$vo.big_img|get_cover='path'}" />
+                            <else />
+                            <img src="__IMG__/nopic.jpg" />
+                        </neq>
+
+                        <input type="checkbox" name="cm_id[]" class="ids" value="{$vo.cm_id}" />
+                    </div>
+                    <div class="canpin_box_right">
+                        <div class="canming_title">
+                            {$vo.cm_name}
+                            <a href="{:U('canming/del',array('cm_id'=>$vo['cm_id']))}" class="fa fa-trash-o confirm ajax-get"></a>
+                            <a href="{:U('canming/edit',array('cm_id'=>$vo['cm_id'],'storename'=>$storename))}" class="fa fa-pencil-square-o"></a>
+                        </div>
+                        <div class="canming_box">
+                            <P>
+                            库存：{$vo.storage_number}<span>￥{$vo.now_price}</span><!--<span>{$vo['discount']/10}折</span>-->
+                            </P>
+                            <P>剩余库存：{$vo.remain_storage_number}</P>
+                        </div>
+                        <div class="canming_footer">
+                            <span>单品</span>
+                        </div>
+                    </div>
+                </li>
+                </volist>
+
+            </ul>
+            <div class="Both"></div>
+        </div>
+        <div class="Blank20"></div>
+	</div>
+	<!-- 分页 -->
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header form-horizontal">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title " id="myModalLabel">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">地址:</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="suggestId" name="address" class="form-control" placeholder="地址">
+                            </div>
+                            <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                            <div class="col-sm-2"><button class="btn btn-default btn-block">确定</button></div>
+                        </div>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+	<script>
+
+		$(function() {
+
+			//全选/反选/单选的实现
+			$(".check-all").click(function() {
+				$(".ids").prop("checked", this.checked);
+			});
+
+			$(".ids").click(function() {
+				var option = $(".ids");
+				option.each(function() {
+					if (!this.checked) {
+						$(".check-all").prop("checked", false);
+						return false;
+					} else {
+						$(".check-all").prop("checked", true);
+					}
+				});
+			});
+		});
+	</script>
+</block>

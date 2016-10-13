@@ -1,0 +1,55 @@
+<extend name="Base/common-1" />
+<block name="style">
+
+</block>
+<block name="body">
+    <div id="page_0" class="up ub ub-ver bc-bg" tabindex="0">
+        <!--header开始-->
+        <div id="header" class="uh bc-text-head ub bc-head">
+            <div class="nav-btn" id="nav-left">
+                <a style="color: white;" href="javascript:history.back(-1)"><div class="fa fa-angle-left fa-2x"></div></a>
+            </div>
+            <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">我的送餐地址</h1>
+            <div class="nav-btn nav-bt" id="nav-right"><a style="color: white;" href="{:U('newaddress')}">新增</a></div>
+        </div>
+        <!--header结束--><!--content开始-->
+        <div id="content" class="ub-f1 tx-l">
+            <volist name="address" id="vo">
+                <div id="listcontent" style="border: 1px solid #FFFFFF;">
+                    <div  style="margin-top: 1em;height: 4em;background-color:#FFFFFF;border: solid 1px #E5E5E5;">
+                        <if condition="$vo.src eq 1">
+                            <div style="float: left; margin-left: 1em; width: 80%;" >
+                                <div class="infoaa" style="padding-top: 0.3em;"><span>{$vo.username}</span>&nbsp;
+                                    <if condition="$vo.gender eq 1">
+                                        <span>先生</span>
+                                    </if>
+                                    <if condition="$vo.gender eq 2">
+                                        <span>女士</span>
+                                    </if>
+                                    &nbsp;&nbsp;<span style="margin-left: 2em;">{$vo.phone}</span></div>
+                                <div class="infoaa" style="padding-top: 0.3em; text-overflow: ellipsis;white-space:nowrap;overflow:hidden; width: 15em;">{$vo[detail_address][0]}{$vo[detail_address][1]}</div>
+                            </div>
+                            <else/>
+                            <a href="{:U('Cart/index?address_id='.$vo['address_id'].'&peisongfei='.$Think.session('peisongfei'))}">
+                                <div style="float: left; margin-left: 1em; width: 80%;" >
+                                    <div class="infoaa" style="padding-top: 0.3em;"><span>{$vo.username}</span>&nbsp;
+                                        <if condition="$vo.gender eq 1">
+                                            <span>先生</span>
+                                        </if>
+                                        <if condition="$vo.gender eq 2">
+                                            <span>女士</span>
+                                        </if>
+                                        &nbsp;&nbsp;<span style="margin-left: 2em;">{$vo.phone}</span></div>
+                                    <div class="infoaa" style="padding-top: 0.3em; text-overflow: ellipsis;white-space:nowrap;overflow:hidden; width: 15em;">{$vo[detail_address][0]}{$vo[detail_address][1]}</div>
+                                </div>
+                            </a>
+                        </if>
+                        <div style="float: right;margin-top: 1em;margin-right: 1em;"><a href="{:U('saveaddress?address_id='.$vo['address_id'])}"><i style="font-size: 1.5em;" class="fa fa-edit"></i></a></div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <!--content结束-->
+    </div>
+</block>

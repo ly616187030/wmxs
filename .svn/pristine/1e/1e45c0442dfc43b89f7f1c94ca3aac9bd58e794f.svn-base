@@ -1,0 +1,101 @@
+<extend name="Public/base" />
+<block name="body">
+	<div class="cf">
+		<a class="btn" href="{:U('add')}">新 增</a>
+		<button class="btn ajax-post confirm" url="{:U('del')}" target-form="ids">删 除</button>
+	</div>
+	<div class="data-table table-striped">
+		<form class="ids">
+			<table>
+				<thead>
+					<tr>
+						<th class="row-selected">
+							<input class="checkbox check-all" type="checkbox">
+						</th>
+						<th>店铺ID</th>
+						<th>店铺名称</th>
+						<th>所属商圈</th>
+						<th>电话</th>
+						<th>地址</th>
+						<empty name="is_admin">
+							<th>查看编辑店铺</th>
+							<th>操作</th>
+						</empty>
+						<th>商家后台</th>
+						<th>推荐</th>
+					</tr>
+				</thead>
+				<tbody>
+					<notempty name="list">
+						<volist name="list" id="_data">
+							<tr>
+								<td>
+									<input class="ids row-selected" type="checkbox" name="store_id[]" value="{$_data.store_id}">
+								</td>
+								<td>{$_data.store_id}</td>
+								<td>{$_data.store_name}</td>
+								<td>{$_data.sq_name}</td>
+								<td>{$_data.tel}</td>
+								<td>{$_data.address_detail}</td>
+								<empty name="is_admin">
+									<td>
+										<a title="编辑" href="{:U('edit?store_id='.$_data['store_id'])}">编辑店铺</a>
+									</td>
+									<td>
+										<a href="{:U('toogleHide',array('id'=>$_data['store_id'],'value'=>abs($_data['status']-1)))}" class="ajax-get">
+											<if condition="$_data.status == 0 ">禁用
+												<else /> 启用</if>
+										</a>
+										|
+										<a class="confirm ajax-get" title="删除" href="{:U('del?store_id='.$_data['store_id'])}">删除</a>
+									</td>
+								</empty>
+
+								<td>
+									<a title="进入后台" data-id="{$_data.store_id}"  class="tai" style="cursor: pointer">
+										进入后台
+									</a>
+								</td>
+                                 <td>
+									 <a href="{:U('top?istop='.$_data['istop'].'&store_id='.$_data['store_id'])}" class="ajax-get">
+										  <if condition="$_data.istop eq 1">
+											    <span title="置顶">置顶</span>
+											  <else/>
+											  <span title="不置顶">不置顶</span>
+										  </if>
+
+									 </a>
+								 </td>
+								
+							</tr>
+						</volist>
+						<else/>
+						<td colspan="7" class="text-center"> aOh! 暂时还没有内容! </td>
+					</notempty>
+				</tbody>
+			</table>
+		</form>
+		<div class="page">{$page}</div>
+	</div>
+	<block name="script">
+		<script type="text/javascript">
+		</script>
+	</block>
+</block>
+	</block>
+
+<block name="script">
+	<script type="text/javascript">
+		$('.tai').click(function(){
+			var id = $(this).data('id');
+			$.post("{:U('tai')}",{id:id},function(data){
+//				alert(JSON.stringify(data));
+				if(data == 1){
+					window.open("{:U('Store/index')}") ;
+				}else{
+					alert("未授权访问！");
+				}
+			})
+		})
+	</script>
+</block>

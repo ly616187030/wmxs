@@ -1,0 +1,112 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="style">
+	<style>
+		body{
+			padding:20px;
+		}
+		.builder-toolbar{margin-bottom: 20px;}
+	</style>
+</block>
+
+<block name="main">
+	<div class="table-bar" style="margin: 1em 0em;">
+		<div class="fl">
+			<div class="tools">
+				<button class="btn ajax-post confirm btn-danger"  target-form="ids"  url="{:U('del')}">删 除</button>&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-warning ajax-post confirm"  target-form="ids"  url="{:U('dels')}">一 键 清 空</button>
+				<form action="{:U('actionLog')}" method="post" style="float:right;">
+					<button style="float:right;" type="submit" class="btn btn-primary">筛选</button>
+					<div class="col-sm-3" style="float:right;width: 250px;">
+						<select class="form-control" name="action" style="height:38px;">
+								<if condition="$selected eq 0">
+									<option value="0" selected = "selected">全部行为</option>
+									<volist name="action" id="vo">
+										<option value="{$vo.id}">{$vo.title}</option>
+									</volist>
+									<else />
+										<option value="0">全部行为</option>
+										<volist name="action" id="vo">
+											<if condition="$vo.id eq $selected">
+												<option value="{$vo.id}" selected = "selected">{$vo.title}</option>
+												<else />
+												<option value="{$vo.id}">{$vo.title}</option>
+											</if>
+										</volist>
+								</if>
+
+							<!--<option value="0">全部行为</option>-->
+							<!--<option value="{$vo.id}">{$vo.title}</option>-->
+
+						</select>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- 数据列表 -->
+	<div class="data-table  table-striped">
+		<form class="ids">
+			<table class="table table-bordered text-center">
+				<thead >
+					<tr>
+						<th class="row-selected row-selected">
+							<input class="check-all" type="checkbox">
+						</th>
+					<th class="">编号</th>
+					<th class="">行为名称</th>
+					<th class="">执行者</th>
+					<th class="">执行IP</th>
+					<th class="">执行时间</th>
+					<th class="">操作表名</th>
+					<th class="">数据id</th>
+					<th class="">日志备注</th>
+					<!--<th class="">操作</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="list" id="vo">
+							  <tr>
+								  <td>
+									  <input class="ids" type="checkbox" value="{$vo.id}" name="id[]">
+								  </td>
+								  <td>{$vo.id}</td>
+								  <td>{$vo.action_id}</td>
+								  <td>{$vo.user_id}</td>
+								  <td>{$vo.action_ip}</td>
+								  <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+								  <td>{$vo.model}</td>
+								  <td>{$vo.record_id}</td>
+								  <td>{$vo.remark}</td>
+								  <!--<td><a href="#">详情</a></td>-->
+							  </tr>
+					</volist>
+				</tbody>
+    		</table>
+		</form>
+	</div>
+	<!-- 分页 -->
+	<div class="page">{$_page}</div>
+	<!-- /分页 -->
+
+</block>
+<block name="script">
+	<script>
+		//全选/反选/单选的实现
+		$(".check-all").click(function() {
+			$(".ids").prop("checked", this.checked);
+		});
+//		$(".ids").click(function() {
+//			var option = $(".ids");
+//			option.each(function() {
+//				if (!this.checked) {
+//					$(".check-all").prop("checked", false);
+//					return false;
+//				} else {
+//					$(".check-all").prop("checked", true);
+//				}
+//			});
+//		});
+	</script>
+</block>
+

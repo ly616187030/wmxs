@@ -1,0 +1,119 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+
+<block name="main">
+    <div class="row">
+        <div class="col-sm-2" style="margin-top: 20px;margin-left:50px;width: auto;padding: 6px 35px 6px 35px;font-size:16px;">编辑红包</div>
+    </div>
+
+    <form action="{:U('edit')}" method="post" class="form-horizontal" enctype="multipart/form-data" style="margin-top: 50px;">
+        <input type="hidden" value="{$bao.bao_id}" name="bao_id">
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">红包个数：</label>
+
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="bao_price" value="{$bao.bao_price}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">红包到期时间：</label>
+            <div class="col-sm-2">
+                <input type="text"  name="end_time" class="form-control time-start" value="{$bao.end_time|date='Y-m-d',###}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">抢红包最低限额：</label>
+            <div class="col-sm-1">
+                <input type="text"  name="bao_lowest" class="form-control " value="{$bao.bao_lowest}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">抢红包最高限额：</label>
+            <div class="col-sm-1">
+                <input type="text"  name="bao_heighest" class="form-control " value="{$bao.bao_heighest}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">使用条件(金额)：</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="bao_condition" id="bao_condition" value="{$bao.bao_condition}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">*</span></label>
+        </div>
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">排序：</label>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" name="sort_order" value="{$bao.sort_order}">
+            </div>
+            <label class="control-label"><span style="color: red;font-size: 16px;">(数值越小,优先执行此红包)</span></label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">使用条件说明：</label>
+            <div class="col-sm-3">
+                <textarea class="form-control" rows="3" name="bao_condition_desc" maxlength="50" id="bao_condition_desc">{$bao.bao_condition_desc}</textarea>
+            </div>
+            <label class="control-label" style="font-weight: normal">（50字以内）</label>
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">&nbsp;</label>
+
+            <div class="col-sm-4">
+
+                <button class="btn  ajax-post btn-info" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                <button class="btn btn-info" onclick="history.back(-1);return false;">返 回</button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</block>
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function() {
+            highlight_subnav("{:U('Bao/index')}");
+            var datetime = new Date();
+            var year = datetime.getFullYear();
+            var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+            var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+            shijian = year+'-'+month+'-'+date;
+            $('.time-start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language: "zh-CN",
+                minView: 2,
+                startDate: shijian,
+                autoclose: true
+            });
+            $('#bao_condition').bind('input propertychange',function(){
+                var  bao_condition= $('#bao_condition').val();
+                if(bao_condition<0||bao_condition>10000){
+                    $('#bao_condition_desc').val("请重新输入使用条件金额");
+                    $('#bao_condition').val("");
+                }
+                else if(bao_condition!=0){
+                    $('#bao_condition_desc').val("在线支付专享,满"+bao_condition+"元可用");
+                }else if(bao_condition==0){
+                    $('#bao_condition_desc').val("随时可用");
+                }
+            })
+        })
+    </script>
+</block>

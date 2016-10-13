@@ -1,0 +1,261 @@
+<extend name="Public/layout"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <style>
+        .content{
+            padding:20px;
+        }
+        .tab-content{
+            padding:20px 0;
+        }
+        .required:before{
+            content:"*";
+            color:red;
+            font-size:1.2em;
+            padding-right: 5px;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="content ">
+        <ul class="nav nav-tabs">
+            <li role="presentation"  class="active"><a href="#base-form" role="tab"  data-toggle="tab">基本信息</a></li>
+            <!--<li role="presentation" ><a href="#permission" role="tab" data-toggle="tab">选择商户</a></li>-->
+        </ul>
+        <form class="form-horizontal" action="<?php echo  $isedit?U('edit'):U('add');?>" method="post">
+            <input type="hidden" name="reg_type" value="admin"/>
+            <notempty name="info"><input type="hidden" value="{$info.id}" name="id" /></notempty>
+            <div class="tab-content">
+                <div id="base-form" role="tabpanel" class="tab-pane fade active in">
+                    <div class="form-group">
+                        <label for="inputEmail30" class="col-sm-2 control-label required">姓名</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="nickname" value="{$info.nickname}" id="inputEmail30" placeholder="必填">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail31" class="col-sm-2 control-label required">登录账号</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="username" <php>echo $isedit?'readonly':'';</php> value="{$info.username}"  class="form-control" id="inputEmail31" placeholder="必填">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail32" class="col-sm-2 control-label required">密码</label>
+                        <div class="col-sm-3">
+                            <input type="password" name="password" class="form-control" id="inputEmail32">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail35" class="col-sm-2 control-label">手机</label>
+                        <div class="col-sm-3">
+                            <input type="tel" name="mobile"  value="{$info.mobile}" <php>echo !is_company_member($info['id'])&&$isedit?'readonly':'';</php> class="form-control" id="inputEmail35" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail33" class="col-sm-2 control-label required">角色权限</label>
+                        <div class="col-sm-6">
+                            <?php if(is_company($info['id']) && $isedit && is_administrator()): ?>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" checked disabled="disabled"> 企业账号管理员
+                                <input type="hidden" name="role_id[]" value="2">
+                            </label>
+                            <?php elseif(is_admin($info['id'])&&$isedit): ?>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" checked disabled="disabled"> 超级管理员
+                                <input type="hidden" name="role_id[]" value="1">
+                            </label>
+                            <?php elseif(is_company($info['id']) && $isedit && !is_administrator()):?>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" checked disabled="disabled"> 系统管理员
+                                <input type="hidden" name="role_id[]" value="2">
+                            </label>
+                            <?php elseif(is_agent($info['id']) && $isedit && !is_administrator()):?>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" checked disabled="disabled"> 系统管理员
+                                <input type="hidden" name="role_id[]" value="{$role_ids[0]}">
+                            </label>
+                            <?php else: ?>
+                            <notempty name="permission">
+                                <volist name="permission" id="vo" >
+                                    <php>$role_id_checked=in_array($vo['id'],$role_ids)?"checked":"";</php>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="role_id[]" value="{$vo.id}" {$role_id_checked}> {$vo.name}
+                                    </label>
+                                </volist>
+
+                                <else/>
+                                <a style="display:block;padding-top:7px;color:red;" href="{:U('rbac/index')}">请先添加角色</a>
+                            </notempty>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <notempty name="usertype">
+                    <div class="form-group">
+                        <label for="inputEmail33" class="col-sm-2 control-label required">用户类型</label>
+                        <div class="col-sm-6">
+                            <?php if(is_agent($info['id']) && $isedit):?>
+                                <label class="radio-inline">
+                                    <input type="radio" name="user_type" checked value="{$info['user_type']}" > 代理商
+                                </label>
+                            <?php elseif(is_company($info['id']) && $isedit):?>
+                            <label class="radio-inline">
+                                <input type="radio" name="user_type" checked value="{$info['user_type']}" > 企业账户
+                            </label>
+                                <?php else:?>
+                                <volist name="usertype" id="vo" >
+                                    <php>$role_id_checkeds=$vo['name'] == $info['user_type']?"checked":"";</php>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="user_type" value="{$vo.name}" {$role_id_checkeds}> {$vo.title}
+                                    </label>
+                                </volist>
+                            <?php endif;?>
+                        </div>
+                    </div>
+                    </notempty>
+                    <?php if((!is_administrator() && !is_company($info['id']) && !is_agent()) || (!$isedit && is_company() && !is_administrator()) ):?>
+                        <div class="form-group" >
+                            <label class="col-sm-2 control-label">关联商户</label>
+                            <notempty name="storelist">
+                                <div class="col-sm-6">
+                                    <volist name="storelist" id="vo">
+                                        <label class="checkbox-inline ">
+                                            <input type="checkbox" class="ids" name="storeid[]" <?php if(in_array($vo['store_id'],$_info)):?>checked<?php endif;?> value="{$vo.store_id}"> {$vo.store_name}
+                                        </label>
+                                    </volist>
+                                </div>
+                                <else/>
+                                <div class="col-sm-6" style="padding-top:7px;"><a  href="{:U('business/shanghu/index')}">请先新建商户</a></div>
+                            </notempty>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">省市区</label>
+                        <div class="col-sm-2">
+                            <select name="province_code" id="province" class="form-control">
+                                <option value="">省</option>
+                                <volist name="_province" id="vo">
+                                    <option value="{$vo.code}" <eq name="vo.code" value="$info.province_code">selected="selected"</eq> >{$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select name="city_code" id="city" class="form-control">
+                                <empty name="info.city_code">
+                                    <option value="">市</option>
+                                    <else/>
+                                    <option value="{$info.city_code}">{$info.city_code|get_city_name="city",###}</option>
+                                </empty>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select name="town_code" id="town" class="form-control">
+                                <empty name="info.town_code">
+                                    <option value="">区、县</option>
+                                    <else/>
+                                    <option value="{$info.town_code}">{$info.town_code|get_city_name="town",###}</option>
+                                </empty>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail352" class="col-sm-2 control-label">职位</label>
+                        <div class="col-sm-3">
+                            <input type="tel" name="job"  value="{$info.job}"  class="form-control" id="inputEmail352">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail351" class="col-sm-2 control-label">部门</label>
+                        <div class="col-sm-3">
+                            <select name="dt_id" class="form-control">
+                                <volist name="dep" id="vo">
+                                    <php>$active_false_checked=($vo['id']==$info['dt_id'])?"checked":"";</php>
+                                    <option value="{$vo.id}" {$active_false_checked}>{$vo.dt_name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail34" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-3">
+                            <input type="email" name="email"  value="{$info.email}"  class="form-control" id="inputEmail34" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail342" class="col-sm-2 control-label">QQ</label>
+                        <div class="col-sm-3">
+                            <input type="email" name="qq"  value="{$info.qq}"  class="form-control" id="inputEmail342" >
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!--<div role="tabpanel"  id="permission" class="tab-pane fade">
+                    <div class="form-group">
+                        <div class="col-sm-5 col-sm-offset-2">
+                            <div class="col-sm-4">
+                                <label class="checkbox-inline ">
+                                    <input type="checkbox" class="check-all"> 全选
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5 col-sm-offset-2">
+                            <volist name="storelist" id="vo">
+                                <div class="col-sm-4">
+                                    <label class="checkbox-inline ">
+                                        <input type="checkbox" class="ids" name="storeid[]" <?php if(in_array($vo['store_id'],explode(',',$info['store_list']))):?>checked<?php endif;?> value="{$vo.store_id}"> {$vo.store_name}
+                                    </label>
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <?php if(!is_administrator()):?>
+                    <button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">保存</button>
+                    <?php elseif(is_administrator() && !$isedit):?>
+                    <button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">保存</button>
+                    <?php endif;?>
+                    <a class="btn btn-danger" href="javascript:history.back(-1)">返回</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__CUI__/js/ztools.js"></script>
+    <script>
+        $('.nav-tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+        //全选/反选/单选的实现
+        $(".check-all").click(function() {
+            $(".ids").prop("checked", this.checked);
+        });
+
+        $(".ids").click(function() {
+            var option = $(".ids");
+            option.each(function() {
+                if (!this.checked) {
+                    $(".check-all").prop("checked", false);
+                    return false;
+                } else {
+                    $(".check-all").prop("checked", true);
+                }
+            });
+        });
+        //三级联动
+        var url="{:U('Business/MenuPct/getCity','',false)}";
+        var curl="{:U('Business/MenuPct/getTown','',false)}";
+        ztools.getPctMenu({"p_url":url,"c_url":curl})
+    </script>
+</block>

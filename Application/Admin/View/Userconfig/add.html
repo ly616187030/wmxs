@@ -1,0 +1,89 @@
+<extend name="./Application/Admin/View/Public/layout.html"/>
+<block name="main">
+    <style type="text/css">
+        body{
+            padding:20px;
+        }
+    </style>
+    <div class="builder-container builder-form-container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="{:U()}" method="post" class="form-horizontal form builder-form">
+                    <input type="hidden" value="{$id}" name="id"/>
+                    <div class="form-group item_group ">
+                        <label class="left control-label col-sm-1">配置分组：</label>
+                        <div class="right col-sm-6">
+                            <select name="group" class="form-control custom-select select">
+                                <option value="">请选择：</option>
+                                <volist name="CONFIG_GROUP_LIST" id="vo">
+                                    <option value="{$key}" <eq name="info.group" value="$key">selected="selected"</eq>>{$vo}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group item_type ">
+                        <label class="left control-label col-sm-1">配置类型：</label>
+                        <div class="right col-sm-6">
+                            <select name="type" class="form-control custom-select select">
+                                <option value="">请选择：</option>
+                                <volist name="item_type" id="voa">
+                                    <option value="{$key}" <eq name="info.type" value="$key">selected="selected"</eq>>{$voa}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group item_name ">
+                        <label class="left control-label col-sm-1">配置名称：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input text " name="name" value="{$info.name}">
+                            <span class="check-tips text-muted small">配置名称</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_title ">
+                        <label class="left control-label col-sm-1">配置标题：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input text" name="title" value="{$info.title}">
+                            <span class="check-tips text-muted small">配置标题</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_value ">
+                        <label class="left control-label col-sm-1">配置值：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="value">{$info.value}</textarea>
+                            <span class="check-tips text-muted small">配置值</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_options ">
+                        <label class="left control-label col-sm-1">配置项：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="options">{$info.options}</textarea>
+                            <span class="check-tips text-muted small">如果是单选、多选、下拉等类型 需要配置该项</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_tip ">
+                        <label class="left control-label col-sm-1">配置说明：</label>
+                        <div class="right col-sm-6">
+                            <textarea class="form-control textarea" rows="5" name="tip">{$info.tip}</textarea>
+                            <span class="check-tips text-muted small">配置说明</span>
+                        </div>
+                    </div>
+                    <div class="form-group item_sort ">
+                        <label class="left control-label col-sm-1">排序：</label>
+                        <div class="right col-sm-6">
+                            <input type="text" class="form-control input num" name="sort" value="{$info.sort}">
+                            <span class="check-tips small">用于显示的顺序</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 15em;">
+                        <button class="btn btn-primary submit ajax-post visible-md-inline visible-lg-inline" type="submit" target-form="builder-form" style="width:12%;margin: 3em 5em 0em 0em;">确定</button>
+                        <button class="btn btn-default return visible-md-inline visible-lg-inline" onclick="javascript:history.back(-1);return false;" style="width:12%;margin: 3em 0em 0em 0em;">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript"></script>
+</block>

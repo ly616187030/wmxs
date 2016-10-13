@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>{$meta_title}｜{:C('WEB_SITE_TITLE')}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}">
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="apple-touch-icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="__ADMIN_CSS__/admin.css?v={:C('STATIC_VERSION')}">
+    <link rel="stylesheet" type="text/css" href="__ADMIN_CSS__/theme/{:C('ADMIN_THEME')}.css">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/page.css">
+    <link rel="stylesheet" type="text/css" href="/Public/libs/cui/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/treeTable/treeTable.css">
+    <block name="style"></block>
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- 如果配置里CDN静态资源列表则使用CDN否则使用静态资源 -->
+    <?php if(C('CDN_RESOURCE_LIST')): ?>
+        {:C('CDN_RESOURCE_LIST')}
+    <?php else: ?>
+        <!--<script type="text/javascript" src="__PUBLIC__/libs/jquery/1.x/jquery.min.js"></script>-->
+        <script type="text/javascript" src="__PUBLIC__/jquery.js"></script>
+    <?php endif; ?>
+    <!--<script type="text/javascript" src="__PUBLIC__/common.js"></script>-->
+</head>
+
+<body>
+    <div class="clearfix full-header">
+        <block name="full-header"></block>
+    </div>
+
+    <div class="clearfix full-container">
+
+        <block name="main"></block>
+    </div>
+
+    <div class="clearfix full-footer">
+        <block name="full-footer"></block>
+    </div>
+
+    <div class="clearfix full-script">
+        <div class="container-fluid">
+            <input type="hidden" id="corethink_home_img" value="__HOME_IMG__">
+            <script type="text/javascript" src="__CUI__/js/cui.js"></script>
+            <script type="text/javascript" src="__ADMIN_JS__/admin.js?v={:C('STATIC_VERSION')}"></script>
+            <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+            <script type="text/javascript" src="__PUBLIC__/libs/treeTable/treeTable.js"></script>
+            <block name="script"></block>
+        </div>
+    </div>
+    <style>
+        .modal {
+            font-size: 12px ;
+        }
+        .modal table td{
+            padding:2px 8px;
+        }
+    </style>
+    <?php if($contract):?>
+    <!-- Modal -->
+    <div class="modal fade" id="contractModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">尊敬的用户您好：</h5>
+                    <p>您试用天数或订单数量已到，如继续使用请到【系统->软件升级购买】，进行在线购买，或联系平台购买。</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" id="nosign">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuanModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您{$ctime}未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                    <tr class="active">
+                          <th style="text-align: center;">企业名称</th>
+                          <th style="text-align: center;">未结有效订单</th>
+                          <th style="text-align: center;">未结全部订单</th>
+                          <th style="text-align: center;">收费标准</th>
+                          <th style="text-align: center;">收费金额</th>
+                          <th style="text-align: center;">结算状态</th>
+                      </tr>
+                      <tr>
+                          <td style="text-align: center;">{$name}</td>
+                          <td style="text-align: center;">{$settlement.this_valid_order}单</td>
+                          <td style="text-align: center;">{$settlement.this_all_valid_order}单</td>
+                          <td style="text-align: center;">￥0.10/单</td>
+                          <td style="text-align: center;color: red;">￥{$settlement.total_fee}</td>
+                          <td style="text-align: center;">
+                            <if condition="$settlement.sett_status eq 1">
+                              <span style="color: green">已结算</span>
+                            <else/>
+                              <span style="color: red">未结算</span>
+                            </if>
+                          </td>
+                      </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://{$www}/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="{$settlement.total_fee}" />
+                    <input type="hidden" name="ordsn" value="{$ordsn}" />
+                    <input type="hidden" name="sett_id" value="{$settlement.id}" />
+                    <input type="hidden" name="founder_id" value="{$fid}" />
+                    <input type="hidden" name="user_id" value="{$uid}" />
+                    <input type="hidden" name="link" value="{$link}" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="button" class="btn btn-default" id="closed">关闭</button>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-default" id="closeds">关闭</button>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《{$contractlist123.c_name}》支付，电话：{$contractlist123.tel}</button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+
+    <?php if($jiesuan1):?>
+    <!-- Modal -->
+    <div class="modal fade" id="jiesuan1Modal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">支付提示</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>尊敬的用户您好：</h4>
+                    <p>以下表格是您{$ctime}未结算的订单统计，请您核对后支付！</p>
+                    <p>（收费标准￥0.10/单）</p>
+                    <table class="table table-bordered">
+                        <tr class="active">
+                            <th style="text-align: center;">企业名称</th>
+                            <th style="text-align: center;">未结有效订单</th>
+                            <th style="text-align: center;">未结全部订单</th>
+                            <th style="text-align: center;">收费标准</th>
+                            <th style="text-align: center;">收费金额</th>
+                            <th style="text-align: center;">结算状态</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">{$name}</td>
+                            <td style="text-align: center;">{$settlement.this_valid_order}单</td>
+                            <td style="text-align: center;">{$settlement.this_all_valid_order}单</td>
+                            <td style="text-align: center;">￥0.10/单</td>
+                            <td style="text-align: center;color: red;">￥{$settlement.total_fee}</td>
+                            <td style="text-align: center;">
+                                <if condition="$settlement.sett_status eq 1">
+                                    <span style="color: green">已结算</span>
+                                    <else/>
+                                    <span style="color: red">未结算</span>
+                                </if>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form class="form-horizontal" action="http://{$www}/WxPay/pay/native1.php" method="post">
+                    <input type="hidden" name="total" value="{$settlement.total_fee}" />
+                    <input type="hidden" name="ordsn" value="{$ordsn}" />
+                    <input type="hidden" name="sett_id" value="{$settlement.id}" />
+                    <input type="hidden" name="founder_id" value="{$fid}" />
+                    <input type="hidden" name="user_id" value="{$uid}" />
+                    <input type="hidden" name="link" value="{$link}" />
+                    <div class="modal-footer">
+                        <?php if(is_company()):?>
+                        <button type="submit" class="btn btn-success" target-form="form-horizontal" id="zhifu1">去支付</button>
+                        <?php else:?>
+                        <button type="button" class="btn btn-success" target-form="form-horizontal">请联系上级公司《{$contractlist123.c_name}》支付，电话：{$contractlist123.tel}</button>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif;?>
+<script>
+    var contract = '{$contract}';
+    var jiesuan = '{$jiesuan}';
+    var jiesuan1 = '{$jiesuan1}';
+    var riqi = '{$riqi}';
+
+    if(contract!='') $('#contractModal').modal({backdrop: 'static', keyboard: false});
+    (jiesuan) && $('#jiesuanModal').modal({backdrop:'static',keyboard:false});
+    (jiesuan1) && $('#jiesuan1Modal').modal({backdrop:'static',keyboard:false});
+    $('#sign').on('click', function (e) {
+        var fid = $(e.target).data('fid');
+        $('#contractModal').modal('hide').on('hidden.bs.modal',function(){
+            $.get('{:U("Admin/contract/agree")}','id='+fid+'&type=1').success(function(res){
+                res == 'success' &&  location.reload();
+            });
+        });
+    });
+    $('#nosign').click(function(){
+        $('#contractModal').modal('hide');
+    });
+     $('#closed,#closeds').click(function(){
+        $('#jiesuanModal').modal('hide');
+        //riqi !='' && location.reload();
+    });
+</script>
+</body>
+</html>
+<style>
+    .wyq{
+        width:160px;
+        height:400px;
+        position: absolute;bottom:8%;right: 0%;
+    }
+    .wyu{
+        text-decoration: none;
+        color: #000;
+        padding:10px 20px 10px 20px;
+        border:1px solid deepskyblue;
+        border-radius: 5px;
+        display: none;
+    }
+    .wyu:hover{
+        background-color: #00a73c;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        border:1px solid white;
+    }
+</style>
+<?php if($downloadapp):?>
+<div class="wyq" style="display: none">
+    <p class="apps" style="width: 100%;height:190px;text-align: center;background-color: #ddd;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="__IMG__/Appa.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">商家端手机App</span>
+    </p>
+    <p class="appp"  style="width: 100%;height: 190px;;text-align: center;background-color: #ddd;margin-top: 20px;font-size: 18px;font-weight: 500;cursor: pointer">
+        <img src="__IMG__/Appp.png" style="width: 100%;height: 160px;">
+        <span style="color: deepskyblue">配送端手机App</span>
+    </p>
+</div>
+<div style="position: absolute;top:94%;right: 0%;">
+    <a class="wyu">App下载</a>
+</div>
+<?php endif;?>
+<script>
+    $(document).ready(function(){
+        $('.wyu').click(function(){
+            $(".wyq").toggle(1000);
+        });
+        var aaa = "{:session('user_auth.uid')}";
+        if(aaa){
+            $('.wyu').show();
+        }
+    });
+</script>

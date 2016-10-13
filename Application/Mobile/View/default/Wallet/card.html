@@ -1,0 +1,29 @@
+<extend name="Base/orderlist" />
+<block name="title">
+    我的银行卡
+</block>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/main.css">
+    <link rel="stylesheet" href="__CSS__/qianbao_content/css/balance.css">
+</block>
+<block name="body">
+    <style>
+        .top-style{
+            background-color: #000000;
+        }
+    </style>
+        <!-----账户余额明细--------->
+        <div class="yue" style=" width: 100%; height: 38.2em;"></div>
+                               <div id="" class="123"></div>
+        <script type="text/javascript">
+            $(function(){
+                var detailed = $('.123').attr('id');
+                if(detailed == ''){
+                    $('.yue').html("<div class='detailed'><img src='__IMG__/123456.jpg'><p>添加银行卡</p><p style='margin-left: 4em;margin-top: 0em'>即可享受安全便捷的移动支付体验</p></div><a href='{:U('open')}'><div class='card'><p>+添加银行卡</p></div></a>")
+                }else{
+                    $('.yue').html("<div><p>355</p></div><a href='{:U('open')}'><div class='card-22'><p>+添加银行卡</p></div></a>");
+                }
+            })
+        </script>
+        <!-----账户余额明细结束--------->
+</block>

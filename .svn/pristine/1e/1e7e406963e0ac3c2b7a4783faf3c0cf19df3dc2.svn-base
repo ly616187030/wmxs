@@ -1,0 +1,402 @@
+<extend name="Base/common" />
+<block name="style">
+	<link rel="stylesheet" href="__CSS__/mui.min.css">
+	<style>
+		html,body {
+			background-color: #efeff4;
+			font: 14px/1.5 "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
+		}
+		.title{
+			margin: 20px 15px 10px;
+			color: #6d6d72;
+			font-size: 15px;
+		}
+
+		.mui-android header.mui-bar{
+			display: none;
+		}
+		.mui-android .mui-bar-nav~.mui-content{
+			padding: 0;
+		}
+		.mui-slider img{
+			height: 11em;
+		}
+		h5{
+			 padding-top: 8px;
+			 padding-bottom: 8px;
+			 text-indent: 12px;
+		 }
+
+		.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body{
+			font-size: 15px;
+			margin-top:8px;
+			color: #333;
+		}
+	</style>
+
+</block>
+<block name="body">
+	<!--header开始-->
+	<div style="width: 100%; height: 3em; position: fixed; top: 0; z-index: 999999; background-color: #dd3131; line-height: 3em; font-size: 1.2em; color: white;" class="ub ub-fh">
+		<div class="ub-f2"></div>
+		<div style="  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 3em;" class="ub-f3 tex">
+			<span><i class="fa fa-map-marker"></i></span>
+			<if condition="$addrtitle neq null">
+				<a style="color: white;" href="{:U('Weizhi/shou')}"><span id="tit" style="">{$addrtitle}</span></a>
+				<else />
+				<a style="color: white;" href="{:U('Weizhi/index')}"><span id="tit" style=""></span></a>
+			</if>
+		</div>
+		<div class="ub-f2"><a style="color: white;" href="javascript:void (0)" id="search"><i style="margin-left: 60%;" class="fa fa-search"></i></a></div>
+	</div>
+	<!--header结束-->
+	<!--content开始-->
+	<div style="margin-top: 3em;overflow: auto;" id="pullrefresh" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<!--数据列表-->
+			<div class="mui-table-view mui-table-view-chevron">
+				<!--content开始-->
+				<div class="mui-content" style="background-color: #e3e3e3;">
+					<!--导航栏下方图片轮播开始-->
+					<div id="slider" class="mui-slider">
+						<div class="mui-slider-group mui-slider-loop">
+							<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+							<volist name="lunbo" id="vo">
+								<if condition="$i eq count($lunbo)">
+									<div class="mui-slider-item mui-slider-item-duplicate">
+										<a href="#">
+											<img src="{$vo.lb_pic|get_cover='path'}">
+										</a>
+									</div>
+								</if>
+							</volist>
+							<!-- 第一张 -->
+							<volist name="lunbo" id="vo">
+								<div class="mui-slider-item">
+									<a href="#">
+										<img src="{$vo.lb_pic|get_cover='path'}">
+									</a>
+								</div>
+							</volist>
+							<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+							<volist name="lunbo" id="vo" offset="0" length='1'>
+								<div class="mui-slider-item mui-slider-item-duplicate">
+									<a href="#">
+										<img src="{$vo.lb_pic|get_cover='path'}">
+									</a>
+								</div>
+							</volist>
+						</div>
+					</div>
+					<!--导航栏下方图片轮播结束-->
+
+					<!--图片轮播下方图标组开始-->
+					<div class="mui-content">
+						<ul class="mui-table-view mui-grid-view mui-grid-9"  style="margin:0px;padding:0px;background-color: #fff;">
+							<volist name="data" id="vo">
+								<li class="hd1 mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-2" store_c_name="{$vo.store_c_name}" store_c_id="{$vo.store_c_id}" style="border:none;padding:0px;margin:0px;">
+									<a href="javascript:void(0)">
+										<span>
+											<img class="preview"  style="width:2.5em;height:2.5em;border-radius: 50%;" src="{$vo.store_pic|get_cover='path'}">
+										</span>
+										<div class="mui-media-body">{$vo.store_c_name}</div>
+									</a>
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<!--图片轮播下方图标组结束-->
+
+					<!--图标组下方特价专区开始-->
+						<div class="mui-content" style="width:100%;margin-top: 0.8em;">
+							<ul class="mui-table-view mui-grid-view tjzq" style="padding:0px;margin:0px;border-bottom:1px solid #ccc; ">
+								<volist name="info" id="vo">
+									<li class="twlb mui-table-view-cell mui-media mui-col-xs-6" tj_id="{$vo.tj_id}"  tj_name="{$vo.tj_name}" style="border:1px solid #ccc;border-right:none;border-bottom:none;width:50%;margin:0px;height:100%;padding:6% 3%;">
+										<a href="javascript:void(0)" style="width:100%;padding:0px;margin:0px;height:100%;">
+											<div class="mui-col-sm-3" style="float:left;width:60%;height:100%;padding-right:2%;margin-top: 2.2%;">
+												<div class="tj_name" style="width:80%;font-size: 16px;font-weight: bold;">{$vo.tj_name}</div>
+												<div style="width:80%;font-size: 12px;margin-top: 2%;color:#666;">{$vo.tj_remark}</div>
+											</div>
+											<span class="mui-col-sm-3" style="float:right;width:40%;">
+												<img class="preview"  style="width:3em;height:3em;padding-left:2%;border-radius: 50%;" src="{$vo.tj_pic|get_cover='path'}">
+											</span>
+											<!--<div class="mui-media-body">{$vo.tj_name}</div>-->
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					<!--图标组下方特价专区结束-->
+
+						<!--<div style="width: 100%;margin-top: 8em;">-->
+							<!--&lt;!&ndash;<div style="width: 92%;margin-left: 4%;">&ndash;&gt;-->
+								<!--&lt;!&ndash;<img width="100%" src="__IMG__/huoguo/banner_ad.png" style="height: 100px"/>&ndash;&gt;-->
+							<!--&lt;!&ndash;</div>&ndash;&gt;-->
+						<!--</div>-->
+
+					<!--首页商家显示开始-->
+					<div class="mui-content sysp" style="margin-top: 0.8em;background-color: #fff;"></div>
+					<!--首页商家显示结束-->
+						<div class="mui-content" style="width: 100%;margin-top: 0.8em;">
+							<a href="tel:{$other.qt_kefu_tel}">
+								<div class="ub" style="height: 3em;background-color: #fff;border-radius: 4px;text-align:center;">
+									<div  class="ub-f1" style="color: #F1373C;font-size:1em;height: 3em;line-height: 3em;"><i class="mui-icon mui-icon-phone"></i>联系客服{$other.qt_kefu_tel}</div>
+								</div>
+							</a>
+							<p style="color: grey;text-align: center;font-size: 14px;padding:5px 0;">由《外卖先生》提供技术支持</p>
+						</div>
+						<div style="height: 50px;width: 100%;"></div>
+					</div>
+					<!--content结束-->
+				</div>
+		</div>
+	</div>
+	<div style="display:none ;position: absolute;width: 80% ;height: 200px; left: 10%;top: 130px;z-index: 10;background-color: white;padding:10px 10px ;border-radius: 5px" id="fanwei_tip">
+		<p>以商家为中心</p>
+		<p>3公里以内20元</p>
+		<p>3-4公里25元</p>
+		<p>4-5公里35元</p>
+		<p>5-7公里50元</p>
+		<p style="color: red">7公里以上暂不配送</p>
+	</div>
+	<!--<div style="display:none ; position: absolute;width: 80%; left: 10%;top: 330px;z-index: 10;color: red;background-color: white;text-align: center" id="tip">当前位置7km以内</div>-->
+    <div style="display:none ; position: absolute;width: 80%;max-height:65%;left: 10%;top: 15%;z-index: 10;background-color: white;padding: 10px 10px 10px 10px;border-radius: 5px;color: #000;overflow: auto" id="tips">
+		<p>第一步：关注我们的微信公众账号或<a href="http://zhg.zhuyousoft.com/index.php?s=/Appupload/index.html">下载找火锅APP</a></p>
+		<p>第二步：找到您想吃的火锅店</p>
+		<p>第三步：点锅底，点菜品</p>
+		<p>第四步：当您家里没有锅具和电磁炉时，可以租用我们的锅具和电磁炉，只收押金，回收时退回</p>
+		<p>第五步：提交订单，在线支付或货到付款</p>
+		<p>第六步：等待美食上门吧！</p>
+		<p style="color: red;text-align: center">开始点餐吧</p>
+	</div>
+	<div id="allmap" style="display: none;"></div>
+	<div style="width: 100%; height: 100%; opacity: 0.8; background-color: #000;position: absolute;z-index: 5;display: none" id="zhezao"></div>
+	<!--content结束-->
+
+	<script src="__JS__/mui.min.js"></script>
+	<script src="__CUI__/js/jquery.lazyload.js" type="text/javascript"></script>
+	<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MqpoxhZcinOGfzZkZlG33PDM"></script>-->
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4e7f747958afeac1324ccd3e2015c006"></script>
+	<script>
+		//图片轮播
+		var slider = mui("#slider");
+		slider.slider({
+			interval: 3000
+		});
+		var original="<?php  echo get_cover(C('WEB_SITE_STORE_PICTURE'),'path') ?>";
+		$(function(){
+			$('#fanwei').click(function(){
+				$('#fanwei_tip').show();
+				$('#zhezao').show();
+				$('#tip').show()
+			})
+			$('#bangzhu').click(function(){
+				$('#tips').show();
+				$('#zhezao').show();
+			})
+			$('#zhezao').click(function(){
+				$('#fanwei_tip').hide();
+				$('#zhezao').hide();
+				$('#tip').hide()
+				$('#tips').hide()
+			})
+			if($('#tit').text() == '') {
+				//加载地图，调用浏览器定位服务
+				var map = new AMap.Map('allmap', {
+					resizeEnable: true
+				});
+				map.plugin('AMap.Geolocation', function () {
+					var geolocation = new AMap.Geolocation({
+						enableHighAccuracy: true,//是否使用高精度定位，默认:true
+						timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+						maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+						convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+						showButton: true,        //显示定位按钮，默认：true
+						buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
+						buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+						showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+						showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+						panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
+						zoomToAccuracy: true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+					});
+					map.addControl(geolocation);
+					geolocation.getCurrentPosition();
+					/*geolocation.watchPosition();//持续监控当前位置*/
+					AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位成功信息
+					AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+				});
+				AMap.service(["AMap.Geocoder"], function () {
+					Geocoder = new AMap.Geocoder({
+						radius: 1000,
+						extensions: "all"
+					});
+				})
+			}else{
+				var cityName="{$city}";
+				var a = "{$lng}";
+				var b = "{$lat}";
+				var map = new AMap.Map('allmap', {
+					resizeEnable: true,
+					// 设置中心点
+					center: [a, b],
+					// 设置缩放级别
+					zoom: 12
+				});
+				var marker = new AMap.Marker({
+					position: [a, b]
+				});
+				marker.setMap(map);
+				$('#huoguo').click(function(){
+					location.href = "{:U('Index/store','',false)}&cityName="+cityName+"&lng="+a+"&lat="+b;
+				})
+				$('#search').click(function(){
+					location.href = "{:U('Search/search','',false)}&cityName="+cityName+"&lng="+a+"&lat="+b;
+				})
+				$('#qiye').click(function(){
+					location.href = "{:U('qiye','',false)}&cityName="+cityName+"&lng="+a+"&lat="+b;
+				})
+				var alllist1 = document.querySelectorAll(".hd1");
+				var qy_id="{$qy_id}";
+				for(var i = 0;i<alllist1.length;i++){
+					alllist1[i].addEventListener("tap",function(){
+						var store_c_name=this.getAttribute("store_c_name");
+						var store_c_id=this.getAttribute("store_c_id");
+						location.href = "{:U('store','',false)}&cityName="+cityName+"&lng="+a+"&lat="+b+"&fenlei="+store_c_name+"&qy_id="+qy_id+"&fenlei_id="+store_c_id;
+					});
+				}
+				var alllist4 = document.querySelectorAll(".twlb");
+				for(var i = 0;i<alllist4.length;i++){
+					alllist4[i].addEventListener("tap",function(){
+						var tj_id=this.getAttribute("tj_id");
+						var tj_name=this.getAttribute("tj_name");
+						location.href = "{:U('specialarea','',false)}&cityName="+cityName+"&lng="+a+"&lat="+b+"&qy_id="+qy_id+"&tj_id="+tj_id+"&tj_name="+tj_name;
+					});
+				}
+				var url="{:U('Mobile/Index/index')}";
+				storedetail(url,a,b,qy_id);
+			}
+
+		})
+		function onComplete(data){
+			var a = data.position.getLng();
+			var b = data.position.getLat();
+			var lnglatXY = [a, b];
+			Geocoder.getAddress(lnglatXY, function(status, result) {
+				var c=result.regeocode.addressComponent;
+				if (status === 'complete' && result.info === 'OK') {
+					//获得了有效的地址信息:
+					//即，result.regeocode.formattedAddress
+					$('#tit').replaceWith(c.city + c.district + c.township);
+					$('#huoguo').click(function(){
+						location.href = "{:U('store','',false)}&cityName="+c.city+"&lng="+a+"&lat="+b;
+					})
+					$('#search').click(function(){
+						location.href = "{:U('Search/search','',false)}&cityName="+ c.city+"&lng="+a+"&lat="+b;
+					})
+					$('#qiye').click(function(){
+						location.href = "{:U('qiye','',false)}&cityName="+c.city+"&lng="+a+"&lat="+b;
+					});
+					var alllist1 = document.querySelectorAll(".hd1");
+					for(var i = 0;i<alllist1.length;i++){
+						alllist1[i].addEventListener("tap",function(){
+							var store_c_name=this.getAttribute("store_c_name");
+							var store_c_id=this.getAttribute("store_c_id");
+							var qy_id="{$qy_id}";
+							location.href = "{:U('store','',false)}&cityName="+ c.city +"&lng="+ a +"&lat="+ b +"&fenlei="+store_c_name+"&qy_id="+qy_id+"&fenlei_id="+store_c_id;
+						});
+					}
+					var alllist4 = document.querySelectorAll(".twlb");
+					for(var i = 0;i<alllist4.length;i++){
+						alllist4[i].addEventListener("tap",function(){
+							var tj_id=this.getAttribute("tj_id");
+							var tj_name=this.getAttribute("tj_name");
+							var qy_id="{$qy_id}";
+							location.href = "{:U('specialarea','',false)}&cityName="+c.city+"&lng="+a+"&lat="+b+"&qy_id="+qy_id+"&tj_id="+tj_id+"&tj_name="+tj_name;
+						});
+					}
+
+					var url="{:U('Mobile/Index/index')}";
+					var qy_id="{$qy_id}";
+					storedetail(url,a,b,qy_id);
+			}
+			});
+		}
+		function onError(data) {
+			var str = '定位失败;';
+			str += '错误信息：'
+			switch (data.info) {
+				case 'PERMISSION_DENIED':
+					str += '浏览器阻止了定位操作';
+					break;
+				case 'POSITION_UNAVAILBLE':
+					str += '无法获得当前位置';
+					break;
+				case 'TIMEOUT':
+					str += '定位超时';
+					break;
+				default:
+					str += '未知错误';
+					break;
+			}
+			alert(str);
+		}
+
+		$(".tjzq  .twlb:nth-child(1)").find('.tj_name').css('color','hotpink');
+		$(".tjzq  .twlb:nth-child(2)").find('.tj_name').css('color','deepskyblue');
+		$(".tjzq  .twlb:nth-child(3)").find('.tj_name').css('color','orange');
+		$(".tjzq  .twlb:nth-child(4)").find('.tj_name').css('color','cornflowerblue');
+		function youhui(storeid){
+			$('.youhui_'+storeid).slideToggle('');
+		}
+		function storedetail(url,a,b,qy_id){
+			$.post(url,{lng:a,lat:b,qy_id:qy_id},function(data){
+				if (data == false) {
+					$('.sysp').html('aOh! 查询出现错误! ');
+				} else {
+					var temp='';
+					for (var a in data) {
+						var url = "{:U('Menu/index')}&store_id="+ data[a].store_id +"&peisongfei="+ data[a]['peisongfei'] + "&is_open=" + data[a]['is_open'];
+						if(data[a]['is_open']==1){
+							var juli='<div class="ub-f1" style="color: grey;width: 50%">距离<span class="km">'+ data[a]['juli'] +'</span>km</div>';
+						}else{
+							var juli='<div class="ub-f1" style="color: green;width: 50%">商家休息中</div>';
+						}
+						var clk="youhui('" + data[a].store_id + "')";
+						var ytemp='';
+						$.each(data[a].youhui,function(){
+							ytemp+='<span style="color:#fff;text-align: center;border-radius: 2px;background-color: #'+this.color+';font-size:16px">' + this['promotional_labels'] +'</span><span class="" style="color: grey;white-space: pre-wrap">'+ this.promotion_name +'</span></br>';
+						})
+
+						if(data[a]['istop']==0){
+							temp+="<li class=\"mui-table-view-cell mui-media\" style='padding-right: 30px;'><a href=\""+url+"\">"+
+									'<img class="mui-media-object mui-pull-left lazy" data-original=" '+ data[a]['lujing']['path'] +'" src="'+original+'" style="width: 6em;height: 5em">'+
+									'<div class="mui-media-body">'+ data[a].store_name +'<div style="font-size: 14px; color: #333" class="ub"><input type="hidden" value="'+ data[a]['is_open'] +'">'+ juli + '</div>'+
+									'<div style="font-size: 12px;" class="ub"><div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">起送价 ￥ ' +
+									+ data[a].qisong_price +'</div></div><div style="font-size: 12px;" class="ub"><div class="ub-f1" style="color: #999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">配送费 ￥' + data[a]['peisongfei'] +
+									'</div><div class="ub-f1" style="color:#999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">约' + data[a].sh_time + '分钟送达</div></div>'+
+									'</div></a><div style="font-size: 13px;color: #333;"  class="ub" onclick="' + clk + '"><div class="ub-f1" style="color: blue">优惠详情</div><div class="ub-f1"'+
+									'style="text-align: right;font-size: 16px"><i class="fa fa-angle-down"></i></div></div><div style="font-size: 13px;color: #333;border-top: solid 1px #eee"  class="youhui_' + data[a].store_id +'">'+
+									'<ul class="">'+ytemp+'</ul></div></li>';
+
+//									alert(JSON.stringify(data[a]));
+						}else{
+							temp+="<li class=\"mui-table-view-cell mui-media\" style='padding-right: 30px;'><a href=\""+url+"\">"+'<div class="istop" style="">推 荐</div>'+
+									'<img class="mui-media-object mui-pull-left lazy" data-original="' + data[a]['lujing']['path'] +'" src="'+original+'" style="width: 6em;height: 5em">'+
+									'<div class="mui-media-body">'+ data[a].store_name +'<div style="font-size: 14px; color: #333" class="ub"><input type="hidden" value="'+ data[a]['is_open'] +'">'+ juli + '</div>'+
+									'<div style="font-size: 12px;" class="ub"><div class="ub-f1" style="color: orangered;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">起送价 ￥ ' +
+									+ data[a].qisong_price +'</div></div><div style="font-size: 12px;" class="ub"><div class="ub-f1" style="color: #999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">配送费 ￥' + data[a]['peisongfei'] +
+									'</div><div class="ub-f1" style="color:#999;width: 33.33%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">约' + data[a].sh_time + '分钟送达</div></div>'+
+									'</div></a><div style="font-size: 13px;color: #333;"  class="ub" onclick="' + clk + '"><div class="ub-f1" style="color: blue">优惠详情</div><div class="ub-f1"'+
+									'style="text-align: right;font-size: 16px"><i class="fa fa-angle-down"></i></div></div><div style="font-size: 13px;color: #333;border-top: solid 1px #eee"  class="youhui_' + data[a].store_id +'">'+
+									'<ul class="">'+ytemp+'</ul></div></li>';
+						}
+					}
+					$('.sysp').html(temp);
+					$('img.lazy').lazyload({
+						effect:'fadeIn'
+					});
+				}
+			})
+		}
+	</script>
+</block>

@@ -1,0 +1,165 @@
+<extend name="Base/orderlist"/>
+<block name="title">
+    现金红包
+</block>
+<block name="style">
+    <style>
+        .bili {
+            width: 50%;
+
+            text-align: center;
+        }
+
+        .bottom-all {
+            color: orangered;
+            border-bottom: solid 2px orangered;
+        }
+
+        #bg {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.7;
+            opacity: .70;
+            filter: alpha(opacity=70);
+        }
+
+        .text-c {
+            text-align: center;
+        }
+    </style>
+</block>
+<block name="body">
+
+    <div id="bg" style="display: none"></div>
+
+    <div class="ub ub-fh" style="border-bottom: 1px solid #dddddd; padding: 5px 0 0 0; line-height: 2em">
+
+        <div id="keyong" class="bili bottom-all">未兑现</div>
+
+        <div style="width: 2px; height: 1.5em;background-color: #dddddd; position: absolute"></div>
+
+        <div id="yiyong" class="bili">已兑现</div>
+
+
+    </div>
+
+    <div id="left">
+
+        <div style="padding: 5px;" id="left-content">
+            <notempty name="list">
+                <volist name="list" id="vo">
+                    <div class="ub" style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;">
+                        <div class="ub-f1 text-c" style="border-right: 1px dashed #000000">
+                            <p style="color: darkred">￥<span style="font-size: 24px">{$vo.award_price}</span></p>
+                            <p>现金红包</p>
+                        </div>
+                        <div class="ub-f3" style="padding-left:5%">
+                            <p style="color: orangered;font-size:16px;">获得时间{$vo.award_time|date='Y-m-d',###}</p>
+                            <p style="font-size:16px;">暂未兑现</p>
+                        </div>
+                    </div>
+                </volist>
+                <else/>
+                <div style="text-align: center;color: orangered;">Oh,您没有未兑现的现金红包！</div>
+            </notempty>
+        </div>
+    </div>
+    <script>
+
+        $(function () {
+            $('#keyong').click(function () {
+
+                $('#keyong').addClass('bottom-all');
+
+                $('#yiyong').removeClass('bottom-all');
+
+                $('#guoqi').removeClass('bottom-all');
+                info_bao(1);
+            })
+
+            $('#yiyong').click(function () {
+
+                $('#keyong').removeClass('bottom-all');
+
+                $('#yiyong').addClass('bottom-all');
+
+                $('#guoqi').removeClass('bottom-all');
+                info_bao(2);
+
+            })
+        })
+        function info_bao(flag) {
+            var url = "{:U('Usercenter/xianjin')}"
+            if(flag==1){
+                $.post(url, 'flag=' + flag, function (data) {
+                    if(data==null){
+                        $('#left-content').html('<div style="color: orangered;text-align: center">Oh,您没有未兑现的现金红包！</div>');
+                        return;
+                    }
+                    var info = '';
+                    $.each(data, function () {
+                        var time = Trans_php_time_to_str(this['award_time'], 2)
+                        info +='<div class="ub" style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;">'
+                                +'<div class="ub-f1 text-c" style="border-right: 1px dashed #000000">'
+                                +'<p style="color: darkred">￥<span style="font-size: 24px">'+this['award_price']+'</span></p>'
+                                +'<p>现金红包</p>'
+                                +'</div>'
+                                +'<div class="ub-f3" style="padding-left:5%">'
+                                +'<p style="color: orangered;font-size:16px;">获得时间'+time+'</p>'
+                                +'<p style="font-size:16px;">暂未兑现</p>'
+                                +'</div>'
+                                +'</div>'
+                    });
+                    $('#left-content').html(info);
+                })
+            }
+            if(flag==2){
+                $.post(url, 'flag=' + flag, function (data) {
+                    if(data==null){
+                        $('#left-content').html('<div style="color: orangered;text-align: center">Oh,您没有已兑现的现金红包！</div>');
+                        return;
+                    }
+                    var info = '';
+                    $.each(data, function () {
+                        var time = Trans_php_time_to_str(this['award_time'], 2)
+                        info +='<div class="ub" style="border: 1px solid palevioletred; border-radius: 4px; font-size: 12px ;margin-top: 5px;">'
+                                +'<div class="ub-f1 text-c" style="border-right: 1px dashed #000000">'
+                                +'<p style="color: darkred">￥<span style="font-size: 24px">'+this['award_price']+'</span></p>'
+                                +'<p>现金红包</p>'
+                                +'</div>'
+                                +'<div class="ub-f3" style="padding-left:5%">'
+                                +'<p style="color: orangered;font-size:16px;">获得时间'+time+'</p>'
+                                +'<p style="font-size:16px;color:brown;">已兑现</p>'
+                                +'</div>'
+                                +'</div>'
+                    });
+                    $('#left-content').html(info);
+                })
+            }
+
+        }
+        function Trans_php_time_to_str(timestamp, n) {
+            var update = new Date(timestamp * 1000);//戳要乘1000
+            var year = update.getFullYear();
+            var month = (update.getMonth() + 1 < 10) ? ('0' + (update.getMonth() + 1)) : (update.getMonth() + 1);
+            var day = (update.getDate() < 10) ? ('0' + update.getDate()) : (update.getDate());
+            var hour = (update.getHours() < 10) ? ('0' + update.getHours()) : (update.getHours());
+            var minute = (update.getMinutes() < 10) ? ('0' + update.getMinutes()) : (update.getMinutes());
+            var second = (update.getSeconds() < 10) ? ('0' + update.getSeconds()) : (update.getSeconds());
+            if (n == 1) {
+                return (year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second);
+            } else if (n == 2) {
+                return (year + '-' + month + '-' + day);
+            } else {
+                return 0;
+            }
+        }
+    </script>
+
+</block>

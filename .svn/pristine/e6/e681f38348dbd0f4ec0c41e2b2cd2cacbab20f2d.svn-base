@@ -1,0 +1,87 @@
+
+    <extend name="./Application/Admin/View/Public/layout.html"/>
+
+    <block name="main">
+        <div class="builder builder-list-box panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="{:U('index')}">菜单管理</a></li>
+                        <li ><a href="{:U('add')}" style="color:#287DDE;">添加菜单</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+        <form  action="{:U('listorders')}" method="post" class="form-horizontal" id="form">
+            <!-- 标签页导航 -->
+            <div class="tab-wrap" style="margin-top: 50px;">
+                <div class="tab-content">
+                    <!-- 表单 -->
+                    <button class="btn btn-success ajax-post" type="submit" target-form="form-horizontal" id="submit" >排序</button>
+                    <div style="height: 15px"></div>
+
+                    <table class="table table-bordered table-hove">
+                        <thead>
+                        <tr>
+                            <th>排序</th>
+                            <th>ID</th>
+                            <th>应用</th>
+                            <th>菜单名称</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {$categorys}
+
+                        <!--<empty name="table_data_list">-->
+                            <!--<tr class="builder-data-empty">-->
+                                <!--<td class="text-center empty-info" colspan="6">-->
+                                    <!--<i class="fa fa-database"></i> 暂时没有数据<br>-->
+                                    <!--&lt;!&ndash;<span class="small">本系统由 <a href="{:C('WEBSITE_DOMAIN')}" class="text-muted" target="_blank">{:C('PRODUCT_NAME')}</a> v{:C('CURRENT_VERSION')} 强力驱动</span>&ndash;&gt;-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                        <!--</empty>-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    </block>
+    <block name="script">
+        <script>
+            $(document).ready(function() {
+
+//                var option = {
+//                    theme:'vsStyle',
+//                    expandLevel : 2,
+//                    beforeExpand : function($treeTable, id) {
+//                        //判断id是否已经有了孩子节点，如果有了就不再加载，这样就可以起到缓存的作用
+//                        if ($('.' + id, $treeTable).length) { return; }
+//                        //这里的html可以是ajax请求
+//                        var html = '<tr id="8" pId="6"><td>5.1</td><td>可以是ajax请求来的内容</td></tr>'
+//                                + '<tr id="9" pId="6"><td>5.2</td><td>动态的内容</td></tr>';
+//
+//                        $treeTable.addChilds(html);
+//                    },
+//                    onSelect : function($treeTable, id) {
+//                        window.console && console.log('onSelect:' + id);
+//
+//                    }
+//
+//                };
+                $('.table').treeTable("");
+            });
+
+        </script>
+
+    </block>
+
+
+
